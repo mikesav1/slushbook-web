@@ -1,0 +1,255 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { toast } from 'sonner';
+import { FaCog, FaPlus, FaTrash } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { API } from '../App';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
+
+const SettingsPage = ({ sessionId }) => {
+  const [machines, setMachines] = useState([]);
+  const [userRecipesCount, setUserRecipesCount] = useState(0);
+  const [canAddRecipe, setCanAddRecipe] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [isAddMachineOpen, setIsAddMachineOpen] = useState(false);
+  const [newMachine, setNewMachine] = useState({
+    name: '',
+    tank_volumes_ml: [12000],
+    loss_margin_pct: 5
+  });
+
+  useEffect(() => {
+    fetchData();
+  }, [sessionId]);
+
+  const fetchData = async () => {
+    try {
+      const [machinesRes, limitsRes] = await Promise.all([
+        axios.get(`${API}/machines/${sessionId}`),
+        axios.get(`${API}/user/${sessionId}/limits`)
+      ]);
+      setMachines(machinesRes.data);
+      setUserRecipesCount(limitsRes.data.user_recipes_count);
+      setCanAddRecipe(limitsRes.data.can_add_recipe);
+    } catch (error) {
+      console.error('Error fetching settings:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const addMachine = async (e) => {
+    e.preventDefault();
+    if (!newMachine.name) {
+      toast.error('Indtast maskine navn');
+      return;
+    }
+
+    try {
+      await axios.post(`${API}/machines`, {
+        session_id: sessionId,
+        ...newMachine
+      });
+      toast.success('Maskine tilføjet!');
+      setIsAddMachineOpen(false);
+      setNewMachine({
+        name: '',
+        tank_volumes_ml: [12000],
+        loss_margin_pct: 5
+      });
+      fetchData();
+    } catch (error) {
+      console.error('Error adding machine:', error);
+      toast.error('Kunne ikke tilføje maskine');
+    }
+  };
+
+  const presetMachines = [
+    { name: 'SPM Pictor 6L', volumes: [6000] },
+    { name: 'SPM Pictor 12L', volumes: [12000] },
+    { name: 'SPM Pictor 2x12L', volumes: [12000, 12000] },
+    { name: 'UGOLINI 10L', volumes: [10000] },
+    { name: 'Custom 6L', volumes: [6000] }
+  ];
+
+  return (
+    <div className="space-y-6 fade-in" data-testid="settings-page">
+      <div>
+        <h1 className="text-4xl font-bold mb-2">Indstillinger</h1>
+        <p className="text-gray-600">Administrér din maskine og konto</p>
+      </div>
+
+      {/* User Info */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <h2 className="text-2xl font-bold mb-4">Din Konto</h2>
+        <div className="space-y-3">
+          <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+            <span className="text-gray-700">Session ID</span>
+            <span className="text-sm font-mono text-gray-500">{sessionId.slice(0, 8)}...</span>
+          </div>
+          <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+            <span className="text-gray-700">Mine Opskrifter</span>
+            <span className="font-semibold">{userRecipesCount} / 2</span>
+          </div>
+          <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+            <span className="text-gray-700">Status</span>
+            <span className="px-3 py-1 bg-cyan-100 text-cyan-700 rounded-full text-sm font-semibold">
+              Gratis
+            </span>
+          </div>
+        </div>
+        <div className="mt-4 p-4 bg-gradient-to-br from-cyan-50 to-coral-50 rounded-lg">
+          <p className="text-sm text-gray-700">
+            🎉 <strong>Gratis plan:</strong> Maks 2 egne opskrifter. Opgradér til Pro for ubegrænset adgang!
+          </p>
+        </div>
+      </div>
+
+      {/* My Recipes */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-bold">Mine Opskrifter</h2>
+          <Link to="/add-recipe">
+            <Button
+              disabled={!canAddRecipe}
+              data-testid="add-recipe-button"
+              className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700"
+            >
+              <FaPlus className="mr-2" /> Tilføj Opskrift
+            </Button>
+          </Link>
+        </div>
+        <p className="text-gray-600">
+          {canAddRecipe
+            ? `Du kan tilføje ${2 - userRecipesCount} mere opskrift${2 - userRecipesCount !== 1 ? 'er' : ''}`
+            : 'Gratis limit nået (2/2). Opgradér til Pro for ubegrænset!'}
+        </p>
+      </div>
+
+      {/* Machines */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-bold">Mine Maskiner</h2>
+          <Dialog open={isAddMachineOpen} onOpenChange={setIsAddMachineOpen}>
+            <DialogTrigger asChild>
+              <Button data-testid="add-machine-button" variant="outline">
+                <FaPlus className="mr-2" /> Tilføj Maskine
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Tilføj Maskine</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={addMachine} className="space-y-4">
+                <div>
+                  <Label>Maskine Navn</Label>
+                  <Input
+                    data-testid="machine-name-input"
+                    value={newMachine.name}
+                    onChange={(e) => setNewMachine({...newMachine, name: e.target.value})}
+                    placeholder="fx SPM Pictor 12L"
+                  />
+                </div>
+                <div>
+                  <Label>Hurtig Valg</Label>
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    {presetMachines.map((preset, index) => (
+                      <button
+                        key={index}
+                        type="button"
+                        onClick={() => setNewMachine({
+                          name: preset.name,
+                          tank_volumes_ml: preset.volumes,
+                          loss_margin_pct: 5
+                        })}
+                        className="px-3 py-2 bg-cyan-50 text-cyan-700 rounded-lg hover:bg-cyan-100 text-sm"
+                      >
+                        {preset.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <Label>Beholder Størrelse (ml)</Label>
+                  <Input
+                    type="number"
+                    data-testid="tank-volume-input"
+                    value={newMachine.tank_volumes_ml[0]}
+                    onChange={(e) => setNewMachine({
+                      ...newMachine,
+                      tank_volumes_ml: [parseInt(e.target.value)]
+                    })}
+                  />
+                </div>
+                <div>
+                  <Label>Tab Margin (%)</Label>
+                  <Input
+                    type="number"
+                    value={newMachine.loss_margin_pct}
+                    onChange={(e) => setNewMachine({
+                      ...newMachine,
+                      loss_margin_pct: parseFloat(e.target.value)
+                    })}
+                  />
+                </div>
+                <Button type="submit" className="w-full" data-testid="submit-machine">
+                  Tilføj Maskine
+                </Button>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        {loading ? (
+          <div className="flex justify-center py-6">
+            <div className="loading-spinner"></div>
+          </div>
+        ) : machines.length === 0 ? (
+          <p className="text-gray-600">Ingen maskiner tilføjet endnu. Tilføj din første maskine for auto-skalering.</p>
+        ) : (
+          <div className="space-y-3">
+            {machines.map((machine) => (
+              <div
+                key={machine.id}
+                data-testid={`machine-${machine.id}`}
+                className="p-4 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-lg"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-bold text-lg">{machine.name}</h3>
+                    <p className="text-sm text-gray-600">
+                      Beholder: {machine.tank_volumes_ml.map(v => `${v/1000}L`).join(', ')}
+                      {' • '}
+                      Tab: {machine.loss_margin_pct}%
+                    </p>
+                    {machine.is_default && (
+                      <span className="inline-block mt-2 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
+                        ✓ Standard
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* About */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <h2 className="text-2xl font-bold mb-2">Om SlushFinder</h2>
+        <p className="text-gray-600 mb-4">
+          SlushFinder hjælper dig med at finde og lave de perfekte slushice opskrifter. Match med dine ingredienser, skalér automatisk til din maskine, og gem dine favoritter.
+        </p>
+        <p className="text-sm text-gray-500">
+          Version 1.0.0 • Made with ❤️ for slushice entusiaster
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default SettingsPage;
