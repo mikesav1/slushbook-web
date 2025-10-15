@@ -241,6 +241,7 @@ async def seed_recipes():
         {
             "name": "Appelsin Sol",
             "description": "Solrig appelsin slushice med vaniljesmag",
+            "image_url": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=400&h=600&fit=crop",
             "color": "orange",
             "alcohol_flag": False,
             "target_brix": 14.0,
