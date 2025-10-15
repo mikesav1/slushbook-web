@@ -107,6 +107,20 @@ const AddRecipePage = ({ sessionId }) => {
     setRecipe({ ...recipe, steps: recipe.steps.filter((_, i) => i !== index) });
   };
 
+  const moveStepUp = (index) => {
+    if (index === 0) return;
+    const newSteps = [...recipe.steps];
+    [newSteps[index - 1], newSteps[index]] = [newSteps[index], newSteps[index - 1]];
+    setRecipe({ ...recipe, steps: newSteps });
+  };
+
+  const moveStepDown = (index) => {
+    if (index === recipe.steps.length - 1) return;
+    const newSteps = [...recipe.steps];
+    [newSteps[index], newSteps[index + 1]] = [newSteps[index + 1], newSteps[index]];
+    setRecipe({ ...recipe, steps: newSteps });
+  };
+
   const addTag = () => {
     if (tagInput.trim() && !recipe.tags.includes(tagInput.trim())) {
       setRecipe({ ...recipe, tags: [...recipe.tags, tagInput.trim()] });
