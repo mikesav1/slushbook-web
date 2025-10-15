@@ -492,6 +492,7 @@ async def seed_recipes():
         {
             "name": "Strawberry Daiquiri (18+)",
             "description": "Klassisk strawberry daiquiri frozen",
+            "image_url": "https://images.unsplash.com/photo-1597306687537-a252f6f71f49?w=400&h=600&fit=crop",
             "color": "red",
             "alcohol_flag": True,
             "target_brix": 12.0,
