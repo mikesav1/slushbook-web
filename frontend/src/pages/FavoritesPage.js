@@ -41,7 +41,7 @@ const FavoritesPage = ({ sessionId }) => {
           <p className="text-gray-600">Tilføj dine yndlings opskrifter her</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {favorites.map((recipe) => (
             <RecipeCard key={recipe.id} recipe={recipe} sessionId={sessionId} />
           ))}
