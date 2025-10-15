@@ -212,6 +212,7 @@ async def seed_recipes():
         {
             "name": "Citron Frisk",
             "description": "Forfriskende citron slushice med mint",
+            "image_url": "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=400&h=600&fit=crop",
             "color": "yellow",
             "alcohol_flag": False,
             "target_brix": 15.0,
