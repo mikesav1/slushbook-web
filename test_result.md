@@ -153,6 +153,18 @@ frontend:
       - working: true
         agent: "testing"
         comment: "Comprehensive authentication frontend testing completed successfully. All major flows working: ✅ Login Page UI (beige background, green fields, SLUSHBOOK logo, all elements present) ✅ Signup Flow (form validation, successful account creation, redirect to login with success message) ✅ Login Flow (successful authentication, redirect to homepage, user info appears in nav) ✅ Authenticated Navigation (user name + role badge visible, navigation between pages works, nav persists) ✅ Logout Flow (clears user state, 'Log ind' button reappears, user info removed) ✅ Forgot Password Flow (email submission, reset token display in test mode, password reset works, login with new password successful) ✅ Mobile View (responsive design, mobile menu button, bottom navigation visible). Minor: Some 401 errors on /api/auth/me during initial load (expected for unauthenticated users) and some image loading failures (non-critical). All core authentication functionality working perfectly."
+  
+  - task: "Machine CRUD Operations on SettingsPage"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/SettingsPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added edit and delete functionality for user machines. Features: Edit button opens dialog with existing machine data pre-filled, Delete button shows confirmation dialog before deletion, Cancel button added to form, Dialog is scrollable with max-h-[90vh] for mobile. Only user-created machines (is_system=false) show edit/delete buttons. Form adapts title based on edit mode."
 
 metadata:
   created_by: "main_agent"
