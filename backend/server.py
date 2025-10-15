@@ -735,6 +735,7 @@ async def get_user_limits(session_id: str):
 async def get_recipes(
     alcohol: str = "both",
     color: Optional[str] = None,
+    type: Optional[str] = None,
     search: Optional[str] = None,
     session_id: Optional[str] = None
 ):
@@ -747,6 +748,9 @@ async def get_recipes(
     
     if color:
         query["color"] = color
+    
+    if type:
+        query["type"] = type
     
     if search:
         query["$or"] = [
