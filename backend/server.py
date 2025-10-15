@@ -384,6 +384,7 @@ async def seed_recipes():
         {
             "name": "Ananas Tropical",
             "description": "Sød ananas slushice med kokos",
+            "image_url": "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?w=400&h=600&fit=crop",
             "color": "yellow",
             "alcohol_flag": False,
             "target_brix": 14.0,
