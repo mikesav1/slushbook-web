@@ -255,18 +255,32 @@ const MembersPage = () => {
                     {new Date(member.created_at).toLocaleDateString('da-DK')}
                   </td>
                   <td className="px-6 py-4">
-                    {member.id !== user?.id && (
-                      <select
-                        value={member.role}
-                        onChange={(e) => updateUserRole(member.id, e.target.value)}
-                        className="text-sm border border-gray-200 rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                      >
-                        <option value="guest">Gæst</option>
-                        <option value="pro">Pro</option>
-                        <option value="editor">Redaktør</option>
-                        <option value="admin">Admin</option>
-                      </select>
-                    )}
+                    <div className="flex items-center gap-2">
+                      {member.id !== user?.id && (
+                        <>
+                          <select
+                            value={member.role}
+                            onChange={(e) => updateUserRole(member.id, e.target.value)}
+                            className="text-sm border border-gray-200 rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                          >
+                            <option value="guest">Gæst</option>
+                            <option value="pro">Pro</option>
+                            <option value="editor">Redaktør</option>
+                            <option value="admin">Admin</option>
+                          </select>
+                          <button
+                            onClick={() => {
+                              setSelectedUser(member);
+                              setIsResetModalOpen(true);
+                            }}
+                            className="p-2 text-orange-600 hover:bg-orange-50 rounded-lg"
+                            title="Reset password"
+                          >
+                            <FaKey />
+                          </button>
+                        </>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}
