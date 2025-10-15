@@ -240,9 +240,9 @@ const SettingsPage = ({ sessionId }) => {
 
       {/* About */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-        <h2 className="text-2xl font-bold mb-2">Om SlushFinder</h2>
+        <h2 className="text-2xl font-bold mb-2">Om SLUSHBOOK</h2>
         <p className="text-gray-600 mb-4">
-          SlushFinder hjælper dig med at finde og lave de perfekte slushice opskrifter. Match med dine ingredienser, skalér automatisk til din maskine, og gem dine favoritter.
+          SLUSHBOOK hjælper dig med at finde og lave de perfekte slushice opskrifter. Match med dine ingredienser, skalér automatisk til din maskine, og gem dine favoritter.
         </p>
         <p className="text-sm text-gray-500">
           Version 1.0.0 • Made with ❤️ for slushice entusiaster
