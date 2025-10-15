@@ -146,3 +146,5 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: "Fixed recipe image display issue. Problem was that seeded recipes (recipes 6-25) were missing image_url field, and recipes 1-5 had placeholder URLs in database. Added Unsplash image URLs to all 25 recipes in code and created migration endpoint to update database. All recipes now display images correctly on both list and detail pages."
+  - agent: "main"
+    message: "Implemented recipe type icons. Downloaded 9 type icons (klassisk, juice, smoothie, sodavand, cocktail, kaffe, sport, sukkerfri, maelk) to /app/frontend/public/icons/. Updated RecipeCard.js to display type icons instead of color circles in bottom-left corner. Updated all system recipes in database with correct types (klassisk for non-alcoholic, cocktail for 18+ recipes). Icons display correctly with fallback to color circles if icon not found."
