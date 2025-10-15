@@ -557,6 +557,7 @@ async def seed_recipes():
         {
             "name": "Frozen Bellini (18+)",
             "description": "Elegant fersken prosecco slushice",
+            "image_url": "https://images.unsplash.com/photo-1587223075055-82e9a937ddff?w=400&h=600&fit=crop",
             "color": "orange",
             "alcohol_flag": True,
             "target_brix": 12.0,
