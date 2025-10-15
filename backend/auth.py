@@ -30,15 +30,12 @@ ROLES = {
 
 # Models
 class User(BaseModel):
-    id: str = Field(alias="_id")
+    id: str
     email: EmailStr
     name: str
     role: str = "guest"  # guest, pro, editor, admin
     picture: Optional[str] = None
     created_at: datetime
-    
-    class Config:
-        populate_by_name = True
 
 
 class UserInDB(User):
