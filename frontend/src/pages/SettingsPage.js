@@ -92,24 +92,39 @@ const SettingsPage = ({ sessionId }) => {
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <h2 className="text-2xl font-bold mb-4">Din Konto</h2>
         <div className="space-y-3">
+          {user && (
+            <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+              <span className="text-gray-700">Bruger</span>
+              <span className="text-sm font-semibold">{user.name}</span>
+            </div>
+          )}
+          {!user && (
+            <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+              <span className="text-gray-700">Session ID</span>
+              <span className="text-sm font-mono text-gray-500">{sessionId.slice(0, 8)}...</span>
+            </div>
+          )}
           <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-            <span className="text-gray-700">Session ID</span>
-            <span className="text-sm font-mono text-gray-500">{sessionId.slice(0, 8)}...</span>
-          </div>
-          <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-            <span className="text-gray-700">Mine Opskrifter</span>
-            <span className="font-semibold">{userRecipesCount} / 2</span>
+            <span className="text-gray-700">Mine opskrifter</span>
+            <span className="font-semibold">
+              {userRecipesCount} {(isAdmin() || isPro() || isEditor()) ? '(ubegrænset)' : '/ 2'}
+            </span>
           </div>
           <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
             <span className="text-gray-700">Status</span>
-            <span className="px-3 py-1 bg-cyan-100 text-cyan-700 rounded-full text-sm font-semibold">
-              Gratis
+            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+              isAdmin() ? 'bg-red-100 text-red-700' :
+              isEditor() ? 'bg-purple-100 text-purple-700' :
+              isPro() ? 'bg-green-100 text-green-700' :
+              'bg-cyan-100 text-cyan-700'
+            }`}>
+              {user ? user.role : 'Gæst'}
             </span>
           </div>
         </div>
         <div className="mt-4 p-4 bg-gradient-to-br from-cyan-50 to-coral-50 rounded-lg">
           <p className="text-sm text-gray-700">
-            🎉 <strong>Gratis plan:</strong> Maks 2 egne opskrifter. Opgradér til Pro for ubegrænset adgang!
+            {limitMessage || 'Indlæser...'}
           </p>
         </div>
       </div>
