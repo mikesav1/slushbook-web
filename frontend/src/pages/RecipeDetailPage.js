@@ -151,111 +151,121 @@ const RecipeDetailPage = ({ sessionId }) => {
         <FaArrowLeft /> Tilbage
       </button>
 
-      {/* Header */}
+      {/* Header - Two Column Layout */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="h-64 relative overflow-hidden">
-          {recipe.image_url && recipe.image_url !== '/api/images/placeholder.jpg' ? (
-            <img 
-              src={recipe.image_url} 
-              alt={recipe.name}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className={`w-full h-full bg-gradient-to-br from-${recipe.color}-500 to-${recipe.color}-600`}></div>
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-          <div className="absolute bottom-6 left-6 right-24 text-white">
-            <h1 className="text-4xl font-bold mb-2">{recipe.name}</h1>
-            <div className="flex flex-wrap gap-3 items-center">
-              {recipe.type && (
-                <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-800 rounded-full text-sm font-semibold capitalize">
-                  {recipe.type}
+        <div className="grid md:grid-cols-2 gap-0">
+          {/* Left: Description & Info */}
+          <div className="p-6 md:p-8 flex flex-col justify-center order-2 md:order-1">
+            <div className="mb-4">
+              <h1 className="text-3xl md:text-4xl font-bold mb-3">{recipe.name}</h1>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {recipe.type && (
+                  <span className="px-3 py-1 bg-cyan-50 text-cyan-700 rounded-full text-sm font-semibold capitalize">
+                    {recipe.type}
+                  </span>
+                )}
+                <span className="brix-indicator text-xs" title="Sukkergrad - Perfekt slush: 13-15°Bx">
+                  {recipe.target_brix}°Bx
                 </span>
-              )}
-              <span className={`color-badge color-${recipe.color}`}></span>
-              <span className="brix-indicator" title="Sukkergrad - Perfekt slush: 13-15°Bx">
-                {recipe.target_brix}°Bx
-              </span>
-              {recipe.alcohol_flag && (
-                <span className="alcohol-badge">
-                  <FaWineBottle /> 18+
-                </span>
-              )}
+                {recipe.alcohol_flag && (
+                  <span className="alcohol-badge text-xs">
+                    <FaWineBottle /> 18+
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="absolute top-6 right-6 flex gap-2">
-            {recipe.author === sessionId && (
-              <Link
-                to={`/edit-recipe/${recipe.id}`}
-                data-testid="edit-recipe-button"
-                className="bg-white/90 backdrop-blur-sm p-3 rounded-full hover:bg-white transition-colors"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
-              </Link>
-            )}
-            <button
-              onClick={toggleFavorite}
-              data-testid="toggle-favorite-button"
-              className="bg-white/90 backdrop-blur-sm p-3 rounded-full hover:bg-white transition-colors"
-            >
-              {recipe.is_favorite ? (
-                <FaHeart className="text-red-500" size={24} />
-              ) : (
-                <FaRegHeart className="text-gray-600" size={24} />
-              )}
-            </button>
-          </div>
-        </div>
-
-        <div className="p-6">
-          <p className="text-gray-700 text-lg mb-4">{recipe.description}</p>
-          
-          {/* Info */}
-          <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
-            <span>📏 Basis: {recipe.base_volume_ml || 2700}ml</span>
-            <span>🍬 Sukkergrad: {recipe.target_brix}°Bx</span>
-          </div>
-          
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2 mb-4">
-            {recipe.tags?.map((tag, index) => (
-              <span
-                key={index}
-                className="px-3 py-1 bg-cyan-50 text-cyan-700 rounded-full text-sm font-medium"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-
-          {/* Rating */}
-          <div className="flex items-center gap-4 pt-4 border-t border-gray-100">
-            <div className="flex gap-1">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  data-testid={`star-${star}`}
-                  onMouseEnter={() => setHoverRating(star)}
-                  onMouseLeave={() => setHoverRating(0)}
-                  onClick={() => rateRecipe(star)}
-                  className="transition-transform hover:scale-125"
+            
+            <p className="text-gray-700 text-base md:text-lg mb-4">{recipe.description}</p>
+            
+            {/* Info */}
+            <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
+              <span>📏 Basis: {recipe.base_volume_ml || 2700}ml</span>
+              <span>🍬 Sukkergrad: {recipe.target_brix}°Bx</span>
+            </div>
+            
+            {/* Tags */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              {recipe.tags?.map((tag, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1 bg-cyan-50 text-cyan-700 rounded-full text-xs font-medium"
                 >
-                  <FaStar
-                    size={24}
-                    className={(
-                      hoverRating >= star || rating >= star
-                        ? 'text-yellow-500'
-                        : 'text-gray-300'
-                    )}
-                  />
-                </button>
+                  {tag}
+                </span>
               ))}
             </div>
-            <span className="text-sm text-gray-600">
-              {recipe.rating_count} bedømmelser
-            </span>
+
+            {/* Rating */}
+            <div className="flex items-center gap-4 pt-4 border-t border-gray-100">
+              <div className="flex gap-1">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    data-testid={`star-${star}`}
+                    onMouseEnter={() => setHoverRating(star)}
+                    onMouseLeave={() => setHoverRating(0)}
+                    onClick={() => rateRecipe(star)}
+                    className="transition-transform hover:scale-125"
+                  >
+                    <FaStar
+                      size={20}
+                      className={(
+                        hoverRating >= star || rating >= star
+                          ? 'text-yellow-500'
+                          : 'text-gray-300'
+                      )}
+                    />
+                  </button>
+                ))}
+              </div>
+              <span className="text-sm text-gray-600">
+                {recipe.rating_count} bedømmelser
+              </span>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-2 mt-6">
+              {recipe.author === sessionId && (
+                <Link
+                  to={`/edit-recipe/${recipe.id}`}
+                  data-testid="edit-recipe-button"
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  <span className="text-sm font-medium">Rediger</span>
+                </Link>
+              )}
+              <button
+                onClick={toggleFavorite}
+                data-testid="toggle-favorite-button"
+                className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+              >
+                {recipe.is_favorite ? (
+                  <FaHeart className="text-red-500" size={20} />
+                ) : (
+                  <FaRegHeart className="text-gray-600" size={20} />
+                )}
+                <span className="text-sm font-medium">
+                  {recipe.is_favorite ? 'Fjern favorit' : 'Tilføj favorit'}
+                </span>
+              </button>
+            </div>
+          </div>
+
+          {/* Right: Image (Portrait) */}
+          <div className="relative h-96 md:h-auto order-1 md:order-2">
+            {recipe.image_url && recipe.image_url !== '/api/images/placeholder.jpg' ? (
+              <img 
+                src={recipe.image_url} 
+                alt={recipe.name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className={`w-full h-full bg-gradient-to-br from-${recipe.color}-500 to-${recipe.color}-600`}></div>
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
           </div>
         </div>
       </div>
