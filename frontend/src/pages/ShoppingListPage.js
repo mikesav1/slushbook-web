@@ -132,44 +132,60 @@ const ShoppingListPage = ({ sessionId }) => {
             <div key={recipeName} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
               <h3 className="font-bold text-lg mb-4 text-cyan-600">{recipeName}</h3>
               <div className="space-y-2">
-                {recipeItems.map((item) => (
-                  <div
-                    key={item.id}
-                    data-testid={`shopping-item-${item.id}`}
-                    className={`flex items-center gap-4 p-3 rounded-lg transition-all ${
-                      item.checked ? 'bg-gray-50 opacity-60' : 'bg-cyan-50'
-                    }`}
-                  >
-                    <button
-                      onClick={() => toggleCheck(item.id, item.checked)}
-                      data-testid={`check-${item.id}`}
-                      className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
-                        item.checked
-                          ? 'bg-green-500 border-green-500'
-                          : 'border-gray-300 hover:border-cyan-500'
+                {recipeItems.map((item) => {
+                  const product = getProductForIngredient(item.category_key);
+                  return (
+                    <div
+                      key={item.id}
+                      data-testid={`shopping-item-${item.id}`}
+                      className={`p-3 rounded-lg transition-all ${
+                        item.checked ? 'bg-gray-50 opacity-60' : 'bg-cyan-50'
                       }`}
                     >
-                      {item.checked && <FaCheck className="text-white" size={12} />}
-                    </button>
-                    <div className="flex-1">
-                      <p className={`font-medium ${
-                        item.checked ? 'line-through text-gray-500' : 'text-gray-800'
-                      }`}>
-                        {item.ingredient_name}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        {item.quantity} {item.unit}
-                      </p>
+                      <div className="flex items-center gap-4 mb-2">
+                        <button
+                          onClick={() => toggleCheck(item.id, item.checked)}
+                          data-testid={`check-${item.id}`}
+                          className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
+                            item.checked
+                              ? 'bg-green-500 border-green-500'
+                              : 'border-gray-300 hover:border-cyan-500'
+                          }`}
+                        >
+                          {item.checked && <FaCheck className="text-white" size={12} />}
+                        </button>
+                        <div className="flex-1">
+                          <p className={`font-medium ${
+                            item.checked ? 'line-through text-gray-500' : 'text-gray-800'
+                          }`}>
+                            {item.ingredient_name}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            {item.quantity} {item.unit}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => deleteItem(item.id)}
+                          data-testid={`delete-${item.id}`}
+                          className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
+                      {product && !item.checked && (
+                        <a
+                          href={product.product_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => trackClick(product.id)}
+                          className="flex items-center gap-2 text-sm text-emerald-600 hover:text-emerald-700 font-medium ml-10"
+                        >
+                          🛒 Køb hos {product.brand?.name || 'leverandør'} →
+                        </a>
+                      )}
                     </div>
-                    <button
-                      onClick={() => deleteItem(item.id)}
-                      data-testid={`delete-${item.id}`}
-                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                    >
-                      <FaTrash />
-                    </button>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ))}
