@@ -256,6 +256,7 @@ const AppContent = ({ sessionId }) => {
             <Route path="/settings" element={<SettingsPage sessionId={sessionId} />} />
             <Route path="/add-recipe" element={<AddRecipePage sessionId={sessionId} />} />
             <Route path="/edit-recipe/:id" element={<EditRecipePage sessionId={sessionId} />} />
+            <Route path="/members" element={<MembersPage />} />
           </Routes>
         </main>
       </div>
