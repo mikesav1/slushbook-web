@@ -568,7 +568,7 @@ class BackendTester:
         self.log(f"\nOverall: {passed}/{total} tests passed")
         
         if passed == total:
-            self.log("🎉 All authentication tests PASSED!")
+            self.log("🎉 All backend tests PASSED!")
             return True
         else:
             self.log(f"⚠️  {total - passed} test(s) FAILED")
@@ -576,14 +576,14 @@ class BackendTester:
 
 def main():
     """Main test execution"""
-    tester = AuthTester()
+    tester = BackendTester()
     success = tester.run_all_tests()
     
     if success:
-        print("\n✅ SLUSHBOOK Authentication System: ALL TESTS PASSED")
+        print("\n✅ SLUSHBOOK Backend System: ALL TESTS PASSED")
         exit(0)
     else:
-        print("\n❌ SLUSHBOOK Authentication System: SOME TESTS FAILED")
+        print("\n❌ SLUSHBOOK Backend System: SOME TESTS FAILED")
         exit(1)
 
 if __name__ == "__main__":
