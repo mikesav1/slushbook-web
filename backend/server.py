@@ -590,6 +590,7 @@ async def seed_recipes():
         {
             "name": "Long Island Iced Tea Frozen (18+)",
             "description": "Stærk klassiker som slushice",
+            "image_url": "https://images.unsplash.com/photo-1544145945-35c4e5f2b6cb?w=400&h=600&fit=crop",
             "color": "brown",
             "alcohol_flag": True,
             "target_brix": 11.0,
