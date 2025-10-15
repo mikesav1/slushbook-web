@@ -174,7 +174,7 @@ const Navigation = () => {
       {/* Mobile Navigation */}
       <div className="md:hidden border-t border-gray-200 bg-white fixed bottom-0 left-0 right-0 z-50 shadow-lg">
         <div className="grid grid-cols-5 gap-1 p-2">
-          {navItems.slice(0, 5).map((item) => {
+          {navItems.slice(0, 4).map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
             return (
@@ -191,7 +191,72 @@ const Navigation = () => {
               </Link>
             );
           })}
+          
+          {/* User/Login Button */}
+          {user ? (
+            <button
+              onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+              className="flex flex-col items-center gap-1 p-2 rounded-lg text-gray-600"
+            >
+              <div className="w-6 h-6 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-full flex items-center justify-center text-white text-xs font-semibold">
+                {user.name.charAt(0).toUpperCase()}
+              </div>
+              <span className="text-xs font-medium">Profil</span>
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="flex flex-col items-center gap-1 p-2 rounded-lg text-gray-600"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+              </svg>
+              <span className="text-xs font-medium">Log ind</span>
+            </Link>
+          )}
         </div>
+        
+        {/* Mobile Dropdown Menu */}
+        {isUserMenuOpen && user && (
+          <div className="absolute bottom-full right-2 mb-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-1">
+            <div className="px-4 py-3 border-b border-gray-100">
+              <div className="text-sm font-medium text-gray-800">{user.name}</div>
+              <div className="text-xs text-gray-500 capitalize">{user.role}</div>
+            </div>
+            <Link
+              to="/profile"
+              onClick={() => setIsUserMenuOpen(false)}
+              className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              Min profil
+            </Link>
+            {user.role === 'admin' && (
+              <Link
+                to="/members"
+                onClick={() => setIsUserMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                Medlemmer
+              </Link>
+            )}
+            <button
+              onClick={() => {
+                setIsUserMenuOpen(false);
+                logout();
+              }}
+              className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+            >
+              <FaSignOutAlt className="w-4 h-4" />
+              Log ud
+            </button>
+          </div>
+        )}
       </div>
     </nav>
   );
