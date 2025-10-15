@@ -72,6 +72,32 @@ const Navigation = () => {
                 </Link>
               );
             })}
+            
+            {/* User Info / Login */}
+            {user ? (
+              <div className="flex items-center gap-3 pl-6 border-l border-gray-200">
+                <span className="text-sm text-gray-600">
+                  {user.name} 
+                  <span className="ml-1 text-xs bg-cyan-100 text-cyan-700 px-2 py-0.5 rounded-full">
+                    {user.role}
+                  </span>
+                </span>
+                <button
+                  onClick={logout}
+                  className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+                  title="Log ud"
+                >
+                  <FaSignOutAlt />
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                className="px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 font-medium"
+              >
+                Log ind
+              </Link>
+            )}
           </div>
 
           {/* Mobile menu button */}
