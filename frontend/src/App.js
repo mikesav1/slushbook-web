@@ -30,6 +30,18 @@ const Navigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout, isGuest } = useAuth();
+  const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
+
+  // Close dropdown when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (isUserMenuOpen && !e.target.closest('.relative')) {
+        setIsUserMenuOpen(false);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isUserMenuOpen]);
 
   const navItems = [
     { path: "/", icon: FaHome, label: "Hjem" },
