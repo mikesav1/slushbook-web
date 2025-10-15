@@ -1116,6 +1116,44 @@ async def reset_member_password(user_id: str, password_data: dict, request: Requ
     
     return {"message": "Password nulstillet"}
 
+
+
+@api_router.delete("/admin/members/{user_id}")
+async def delete_member(user_id: str, request: Request):
+    """Delete a user (admin only)"""
+    user = await get_current_user(request, None, db)
+    if not user or user.role != "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Kun admin har adgang"
+        )
+    
+    # Prevent admin from deleting themselves
+    if user.id == user_id:
+        raise HTTPException(
+            status_code=400,
+            detail="Du kan ikke slette dig selv"
+        )
+    
+    # Delete user
+    result = await db.users.delete_one({"id": user_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(
+            status_code=404,
+            detail="Bruger ikke fundet"
+        )
+    
+    # Clean up user data
+    await db.user_sessions.delete_many({"user_id": user_id})
+    await db.recipes.delete_many({"created_by": user_id})
+    await db.favorites.delete_many({"session_id": user_id})
+    await db.pantry_items.delete_many({"session_id": user_id})
+    await db.shopping_list.delete_many({"session_id": user_id})
+    await db.machines.delete_many({"session_id": user_id})
+    
+    return {"message": "Bruger slettet"}
+
 # User initialization
 @api_router.post("/user/init", response_model=UserInitResponse)
 async def init_user():
