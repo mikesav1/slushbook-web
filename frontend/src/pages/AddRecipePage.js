@@ -102,6 +102,40 @@ const AddRecipePage = ({ sessionId }) => {
     setRecipe({ ...recipe, tags: recipe.tags.filter(t => t !== tag) });
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5000000) { // 5MB limit
+        toast.error('Billede må maks være 5MB');
+        return;
+      }
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const uploadImage = async () => {
+    if (!imageFile) return recipe.image_url;
+    
+    const formData = new FormData();
+    formData.append('file', imageFile);
+    
+    try {
+      const response = await axios.post(`${API}/upload`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      return response.data.image_url;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      toast.error('Kunne ikke uploade billede');
+      return recipe.image_url;
+    }
+  };
+
   const submitRecipe = async (e) => {
     e.preventDefault();
     
@@ -122,9 +156,13 @@ const AddRecipePage = ({ sessionId }) => {
 
     setLoading(true);
     try {
+      // Upload image first if exists
+      const imageUrl = await uploadImage();
+      
       const response = await axios.post(`${API}/recipes`, {
         session_id: sessionId,
         ...recipe,
+        image_url: imageUrl,
         target_brix: parseFloat(recipe.target_brix),
         ingredients: recipe.ingredients.map(ing => ({
           ...ing,
