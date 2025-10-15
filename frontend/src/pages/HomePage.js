@@ -81,7 +81,7 @@ const HomePage = ({ sessionId }) => {
       {/* Featured Recipes */}
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold">Populære Opskrifter</h2>
+          <h2 className="text-2xl font-bold">Seneste Opskrifter</h2>
           <Link to="/recipes" className="text-cyan-600 hover:text-cyan-700 font-semibold flex items-center gap-2">
             Se Alle <FaFire />
           </Link>
