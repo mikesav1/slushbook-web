@@ -164,7 +164,7 @@ const MatchFinderPage = ({ sessionId }) => {
             <div className="empty-state">
               <div className="empty-state-icon">🤷</div>
               <h3 className="text-xl font-bold mb-2">Ingen matches fundet</h3>
-              <p className="text-gray-600">Prøv at tilføje flere ingredienser til dit pantry</p>
+              <p className="text-gray-600">Prøv at tilføje flere ingredienser</p>
             </div>
           )}
         </div>
