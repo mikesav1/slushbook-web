@@ -4,7 +4,11 @@ import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { API } from '../App';
 import { useAuth } from '../context/AuthContext';
-import { FaUsers, FaCrown, FaStar, FaUserShield, FaSearch } from 'react-icons/fa';
+import { FaUsers, FaCrown, FaStar, FaUserShield, FaSearch, FaPlus, FaKey } from 'react-icons/fa';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
+import { Button } from '../components/ui/button';
 
 const MembersPage = () => {
   const { user, isAdmin } = useAuth();
