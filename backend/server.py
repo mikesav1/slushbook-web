@@ -650,7 +650,7 @@ def scale_recipe(recipe: Dict, target_volume_ml: int, margin_pct: float = 5.0) -
 # Routes
 @api_router.get("/")
 async def root():
-    return {"message": "SlushFinder API"}
+    return {"message": "SLUSHBOOK API"}
 
 # User initialization
 @api_router.post("/user/init", response_model=UserInitResponse)
