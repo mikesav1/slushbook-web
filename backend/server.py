@@ -790,6 +790,38 @@ async def create_recipe(recipe_data: RecipeCreate):
     await db.user_recipes.insert_one(doc)
     return recipe
 
+@api_router.put("/recipes/{recipe_id}", response_model=Recipe)
+async def update_recipe(recipe_id: str, recipe_data: RecipeCreate):
+    # Check ownership
+    existing = await db.user_recipes.find_one(
+        {"id": recipe_id, "session_id": recipe_data.session_id}
+    )
+    
+    if not existing:
+        raise HTTPException(status_code=404, detail="Recipe not found or not owned by you")
+    
+    recipe_dict = recipe_data.model_dump()
+    session_id = recipe_dict.pop('session_id')
+    
+    recipe = Recipe(
+        **recipe_dict,
+        id=recipe_id,
+        author=session_id,
+        author_name="Mig",
+        created_at=datetime.fromisoformat(existing['created_at']) if isinstance(existing['created_at'], str) else existing['created_at']
+    )
+    
+    doc = recipe.model_dump()
+    doc['session_id'] = session_id
+    doc['created_at'] = doc['created_at'].isoformat()
+    
+    await db.user_recipes.replace_one(
+        {"id": recipe_id},
+        doc
+    )
+    
+    return recipe
+
 @api_router.delete("/recipes/{recipe_id}")
 async def delete_recipe(recipe_id: str, session_id: str):
     result = await db.user_recipes.delete_one(
