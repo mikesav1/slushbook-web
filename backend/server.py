@@ -63,10 +63,11 @@ class RecipeCreate(BaseModel):
     name: str
     description: str
     image_url: Optional[str] = "/api/images/placeholder.jpg"
-    base_volume_ml: int = 1000
+    base_volume_ml: int = 2700
     target_brix: float = 14.0
     alcohol_flag: bool = False
     color: str = "red"
+    type: str = "klassisk"
     tags: List[str] = []
     ingredients: List[Ingredient]
     steps: List[str]
