@@ -218,6 +218,44 @@ const AddRecipePage = ({ sessionId }) => {
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
           <h2 className="text-xl font-bold">Basis Information</h2>
           
+          {/* Image Upload */}
+          <div>
+            <Label>Billede</Label>
+            <div className="mt-2 space-y-3">
+              {imagePreview ? (
+                <div className="relative">
+                  <img 
+                    src={imagePreview} 
+                    alt="Preview" 
+                    className="w-full h-48 object-cover rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setImageFile(null);
+                      setImagePreview(null);
+                    }}
+                    className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600"
+                  >
+                    <FaTrash size={12} />
+                  </button>
+                </div>
+              ) : (
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                  <FaPlus className="mx-auto text-gray-400 mb-2" size={32} />
+                  <p className="text-gray-600 mb-2">Upload billede</p>
+                  <p className="text-xs text-gray-500">Maks 5MB - JPG, PNG</p>
+                </div>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="w-full"
+              />
+            </div>
+          </div>
+          
           <div>
             <Label>Navn *</Label>
             <Input
