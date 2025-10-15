@@ -214,9 +214,9 @@ const SettingsPage = ({ sessionId }) => {
                 <FaPlus className="mr-2" /> Tilføj Maskine
               </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-h-[90vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle>Tilføj Maskine</DialogTitle>
+                <DialogTitle>{isEditMode ? 'Redigér Maskine' : 'Tilføj Maskine'}</DialogTitle>
               </DialogHeader>
               <form onSubmit={addMachine} className="space-y-4">
                 <div>
@@ -228,25 +228,27 @@ const SettingsPage = ({ sessionId }) => {
                     placeholder="fx SPM Pictor 12L"
                   />
                 </div>
-                <div>
-                  <Label>Hurtig Valg</Label>
-                  <div className="grid grid-cols-2 gap-2 mt-2">
-                    {presetMachines.map((preset, index) => (
-                      <button
-                        key={index}
-                        type="button"
-                        onClick={() => setNewMachine({
-                          name: preset.name,
-                          tank_volumes_ml: preset.volumes,
-                          loss_margin_pct: 5
-                        })}
-                        className="px-3 py-2 bg-cyan-50 text-cyan-700 rounded-lg hover:bg-cyan-100 text-sm"
-                      >
-                        {preset.name}
-                      </button>
-                    ))}
+                {!isEditMode && (
+                  <div>
+                    <Label>Hurtig Valg</Label>
+                    <div className="grid grid-cols-2 gap-2 mt-2">
+                      {presetMachines.map((preset, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          onClick={() => setNewMachine({
+                            name: preset.name,
+                            tank_volumes_ml: preset.volumes,
+                            loss_margin_pct: 5
+                          })}
+                          className="px-3 py-2 bg-cyan-50 text-cyan-700 rounded-lg hover:bg-cyan-100 text-sm"
+                        >
+                          {preset.name}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
                 <div>
                   <Label>Beholder Størrelse (ml)</Label>
                   <Input
@@ -270,9 +272,23 @@ const SettingsPage = ({ sessionId }) => {
                     })}
                   />
                 </div>
-                <Button type="submit" className="w-full" data-testid="submit-machine">
-                  Tilføj Maskine
-                </Button>
+                <div className="flex space-x-2">
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    className="flex-1"
+                    onClick={handleCancelMachine}
+                  >
+                    Annuller
+                  </Button>
+                  <Button 
+                    type="submit" 
+                    className="flex-1" 
+                    data-testid="submit-machine"
+                  >
+                    {isEditMode ? 'Gem Ændringer' : 'Tilføj Maskine'}
+                  </Button>
+                </div>
               </form>
             </DialogContent>
           </Dialog>
