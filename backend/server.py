@@ -182,6 +182,7 @@ async def seed_recipes():
         {
             "name": "Jordbær Klassisk",
             "description": "En klassisk jordbær slushice perfekt til varme sommerdage",
+            "image_url": "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=600&fit=crop",
             "color": "red",
             "alcohol_flag": False,
             "target_brix": 14.0,
