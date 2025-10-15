@@ -323,6 +323,7 @@ async def seed_recipes():
         {
             "name": "Fersken Sommer",
             "description": "Dejlig fersken slushice med ingefær",
+            "image_url": "https://images.unsplash.com/photo-1629828874514-d4b56b1d8e46?w=400&h=600&fit=crop",
             "color": "orange",
             "alcohol_flag": False,
             "target_brix": 13.0,
