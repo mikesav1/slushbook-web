@@ -22,6 +22,7 @@ const RecipeDetailPage = ({ sessionId }) => {
   useEffect(() => {
     fetchRecipe();
     fetchMachines();
+    fetchProducts();
   }, [id, sessionId]);
 
   const fetchRecipe = async () => {
