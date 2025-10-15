@@ -93,24 +93,45 @@ const RecipesPage = ({ sessionId }) => {
           )}
         </div>
 
-        {/* Alkohol Filter */}
+        {/* Alkohol Filter - Toggle Switch */}
         <div className="mb-4">
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Alkohol</label>
-          <div className="flex gap-2">
-            {['both', 'none', 'only'].map((option) => (
+          <label className="block text-sm font-semibold text-gray-700 mb-2">Alkohol Filter</label>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setAlcoholFilter('both')}
+              data-testid="alcohol-filter-both"
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                alcoholFilter === 'both'
+                  ? 'bg-cyan-500 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              Alle
+            </button>
+            
+            {/* Toggle Switch */}
+            <div className="flex items-center gap-3 px-4 py-2 bg-gray-50 rounded-lg">
+              <span className={`text-sm font-medium transition-colors ${alcoholFilter === 'none' ? 'text-gray-900' : 'text-gray-400'}`}>
+                Uden Alkohol
+              </span>
               <button
-                key={option}
-                data-testid={`alcohol-filter-${option}`}
-                onClick={() => setAlcoholFilter(option)}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  alcoholFilter === option
-                    ? 'bg-cyan-500 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                onClick={() => setAlcoholFilter(alcoholFilter === 'none' ? 'only' : 'none')}
+                data-testid="alcohol-toggle"
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 ${
+                  alcoholFilter === 'only' ? 'bg-red-500' : 'bg-green-500'
                 }`}
+                disabled={alcoholFilter === 'both'}
               >
-                {option === 'both' ? 'Alle' : option === 'none' ? 'Uden Alkohol' : 'Kun Alkohol'}
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    alcoholFilter === 'only' ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
               </button>
-            ))}
+              <span className={`text-sm font-medium transition-colors ${alcoholFilter === 'only' ? 'text-gray-900' : 'text-gray-400'}`}>
+                Med Alkohol
+              </span>
+            </div>
           </div>
         </div>
 
