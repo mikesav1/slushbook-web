@@ -1216,11 +1216,12 @@ async def create_recipe(recipe_data: RecipeCreate, request: Request):
     return recipe
 
 @api_router.put("/recipes/{recipe_id}", response_model=Recipe)
-async def update_recipe(recipe_id: str, recipe_data: RecipeCreate):
+async def update_recipe(recipe_id: str, recipe_data: RecipeCreate, request: Request):
+    # Get current user
+    user = await get_current_user(request, None, db)
+    
     # Check if recipe exists in user_recipes first
-    existing_user = await db.user_recipes.find_one(
-        {"id": recipe_id, "session_id": recipe_data.session_id}
-    )
+    existing_user = await db.user_recipes.find_one({"id": recipe_id})
     
     # Check if it's a system recipe
     existing_system = await db.recipes.find_one({"id": recipe_id})
@@ -1231,8 +1232,14 @@ async def update_recipe(recipe_id: str, recipe_data: RecipeCreate):
     recipe_dict = recipe_data.model_dump()
     session_id = recipe_dict.pop('session_id')
     
-    # If it's a system recipe, update in recipes collection
+    # Check permissions
     if existing_system:
+        # System recipe - only admin can edit
+        if not user or user.role != "admin":
+            raise HTTPException(
+                status_code=403,
+                detail="Kun admin kan redigere system opskrifter"
+            )
         existing = existing_system
         collection = db.recipes
         recipe = Recipe(
@@ -1245,14 +1252,30 @@ async def update_recipe(recipe_id: str, recipe_data: RecipeCreate):
         doc = recipe.model_dump()
         doc['created_at'] = doc['created_at'].isoformat()
     else:
-        # User recipe
+        # User recipe - check ownership
         existing = existing_user
+        
+        # Admin can edit all, others only their own
+        if user:
+            if user.role != "admin" and existing.get('author') != user.id:
+                raise HTTPException(
+                    status_code=403,
+                    detail="Du kan kun redigere dine egne opskrifter"
+                )
+        else:
+            # Guest user - check session
+            if existing.get('session_id') != session_id:
+                raise HTTPException(
+                    status_code=403,
+                    detail="Du kan kun redigere dine egne opskrifter"
+                )
+        
         collection = db.user_recipes
         recipe = Recipe(
             **recipe_dict,
             id=recipe_id,
-            author=session_id,
-            author_name="Mig",
+            author=existing.get('author', session_id),
+            author_name=existing.get('author_name', 'Mig'),
             created_at=datetime.fromisoformat(existing['created_at']) if isinstance(existing['created_at'], str) else existing['created_at']
         )
         doc = recipe.model_dump()
