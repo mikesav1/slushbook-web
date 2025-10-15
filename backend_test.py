@@ -16,12 +16,14 @@ TEST_EMAIL = f"test.user.{int(time.time())}@example.com"
 TEST_PASSWORD = "testpass123"
 TEST_NAME = "Test User"
 
-class AuthTester:
+class BackendTester:
     def __init__(self):
         self.session = requests.Session()
         self.user_id = None
         self.session_token = None
         self.reset_token = None
+        self.test_session_id = f"test_session_{int(time.time())}"
+        self.created_machine_id = None
         
     def log(self, message):
         print(f"[{datetime.now().strftime('%H:%M:%S')}] {message}")
