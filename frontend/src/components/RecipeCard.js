@@ -45,8 +45,8 @@ const RecipeCard = ({ recipe, sessionId, showMatchInfo }) => {
       data-testid={`recipe-card-${recipe.id}`}
       className="block bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all hover:scale-105 overflow-hidden border border-gray-100"
     >
-      {/* Image/Color Header */}
-      <div className="h-40 relative overflow-hidden">
+      {/* Image/Color Header - Portrait */}
+      <div className="h-64 relative overflow-hidden">
         {recipe.image_url && recipe.image_url !== '/api/images/placeholder.jpg' ? (
           <img 
             src={recipe.image_url} 
