@@ -399,6 +399,7 @@ async def seed_recipes():
         {
             "name": "Blåbær Vild",
             "description": "Intens blåbær slushice",
+            "image_url": "https://images.unsplash.com/photo-1498557850523-fd3d118b962e?w=400&h=600&fit=crop",
             "color": "purple",
             "alcohol_flag": False,
             "target_brix": 14.0,
