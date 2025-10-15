@@ -18,6 +18,8 @@ const SettingsPage = ({ sessionId }) => {
   const [limitMessage, setLimitMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const [isAddMachineOpen, setIsAddMachineOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editMachineId, setEditMachineId] = useState(null);
   const [newMachine, setNewMachine] = useState({
     name: '',
     tank_volumes_ml: [12000],
