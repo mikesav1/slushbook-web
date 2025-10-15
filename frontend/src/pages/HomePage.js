@@ -70,7 +70,7 @@ const HomePage = ({ sessionId }) => {
           </div>
           <div className="relative z-10 hidden md:flex justify-center items-center">
             <img 
-              src="/logo-samlet.png" 
+              src="/logo.png" 
               alt="SLUSHBOOK" 
               className="w-full max-w-md drop-shadow-2xl"
             />
