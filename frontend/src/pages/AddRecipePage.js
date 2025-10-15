@@ -488,7 +488,7 @@ const AddRecipePage = ({ sessionId }) => {
         </div>
 
         {/* Steps */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4 steps-section">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold">Fremgangsmåde</h2>
             <Button type="button" onClick={addStep} size="sm">
