@@ -907,6 +907,64 @@ async def reset_password(request: ResetPasswordRequest):
     
     return {"message": "Password reset successful"}
 
+
+@api_router.put("/auth/profile")
+async def update_profile(request: Request, update_data: dict):
+    """Update user profile"""
+    user = await get_current_user(request, None, db)
+    if not user:
+        raise HTTPException(
+            status_code=401,
+            detail="Not authenticated"
+        )
+    
+    update_fields = {}
+    
+    # Update name
+    if "name" in update_data and update_data["name"]:
+        update_fields["name"] = update_data["name"]
+    
+    # Update email
+    if "email" in update_data and update_data["email"]:
+        # Check if email already exists
+        existing = await db.users.find_one({
+            "email": update_data["email"],
+            "id": {"$ne": user.id}
+        })
+        if existing:
+            raise HTTPException(
+                status_code=400,
+                detail="Email er allerede registreret"
+            )
+        update_fields["email"] = update_data["email"]
+    
+    # Update password if provided
+    if "new_password" in update_data and update_data["new_password"]:
+        if "current_password" not in update_data:
+            raise HTTPException(
+                status_code=400,
+                detail="Nuværende password påkrævet"
+            )
+        
+        # Verify current password
+        user_doc = await db.users.find_one({"id": user.id})
+        if not verify_password(update_data["current_password"], user_doc["hashed_password"]):
+            raise HTTPException(
+                status_code=400,
+                detail="Forkert nuværende password"
+            )
+        
+        update_fields["hashed_password"] = get_password_hash(update_data["new_password"])
+    
+    # Update user
+    if update_fields:
+        await db.users.update_one(
+            {"id": user.id},
+            {"$set": update_fields}
+        )
+    
+    return {"message": "Profil opdateret"}
+
 # User initialization
 @api_router.post("/user/init", response_model=UserInitResponse)
 async def init_user():
