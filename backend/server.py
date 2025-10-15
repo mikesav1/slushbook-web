@@ -718,6 +718,195 @@ def scale_recipe(recipe: Dict, target_volume_ml: int, margin_pct: float = 5.0) -
 async def root():
     return {"message": "SLUSHBOOK API"}
 
+# =============================================================================
+# AUTHENTICATION ENDPOINTS
+# =============================================================================
+
+@api_router.post("/auth/signup")
+async def signup(request: SignupRequest):
+    """Sign up new user"""
+    # Check if user exists
+    existing_user = await db.users.find_one({"email": request.email})
+    if existing_user:
+        raise HTTPException(
+            status_code=400,
+            detail="Email already registered"
+        )
+    
+    # Create user
+    user_id = str(uuid.uuid4())
+    hashed_password = get_password_hash(request.password)
+    
+    user = {
+        "id": user_id,
+        "email": request.email,
+        "name": request.name,
+        "role": "guest",  # Start as guest, can upgrade to pro
+        "picture": None,
+        "hashed_password": hashed_password,
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.users.insert_one(user)
+    
+    return {"message": "User created successfully", "user_id": user_id}
+
+
+@api_router.post("/auth/login")
+async def login(request: LoginRequest, response: Response):
+    """Login with email/password"""
+    # Find user
+    user_doc = await db.users.find_one({"email": request.email})
+    if not user_doc:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
+    
+    # Verify password
+    if not verify_password(request.password, user_doc["hashed_password"]):
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
+    
+    # Create session
+    session_token = create_session_token()
+    expires_at = datetime.now(timezone.utc) + timedelta(days=7)
+    
+    session = {
+        "user_id": user_doc["id"],
+        "session_token": session_token,
+        "expires_at": expires_at,
+        "created_at": datetime.now(timezone.utc)
+    }
+    
+    await db.user_sessions.insert_one(session)
+    
+    # Set cookie
+    response.set_cookie(
+        key="session_token",
+        value=session_token,
+        httponly=True,
+        secure=True,
+        samesite="none",
+        max_age=7 * 24 * 60 * 60  # 7 days
+    )
+    
+    # Remove password from response
+    user_doc.pop("hashed_password", None)
+    
+    return {
+        "message": "Login successful",
+        "user": {
+            "id": user_doc["id"],
+            "email": user_doc["email"],
+            "name": user_doc["name"],
+            "role": user_doc["role"],
+            "picture": user_doc.get("picture")
+        },
+        "session_token": session_token
+    }
+
+
+@api_router.get("/auth/me")
+async def get_me(request: Request):
+    """Get current user info"""
+    async def get_user_with_db(req):
+        return await get_current_user(req, None, db)
+    
+    user = await get_user_with_db(request)
+    if not user:
+        raise HTTPException(
+            status_code=401,
+            detail="Not authenticated"
+        )
+    
+    return user
+
+
+@api_router.post("/auth/logout")
+async def logout(request: Request, response: Response):
+    """Logout user"""
+    session_token = request.cookies.get("session_token")
+    
+    if session_token:
+        # Delete session from database
+        await db.user_sessions.delete_one({"session_token": session_token})
+    
+    # Clear cookie
+    response.delete_cookie("session_token")
+    
+    return {"message": "Logged out successfully"}
+
+
+@api_router.post("/auth/forgot-password")
+async def forgot_password(request: ForgotPasswordRequest):
+    """Request password reset"""
+    # Find user
+    user = await db.users.find_one({"email": request.email})
+    if not user:
+        # Don't reveal if email exists
+        return {"message": "If email exists, reset link will be sent"}
+    
+    # Create reset token
+    reset_token = create_reset_token()
+    expires_at = datetime.now(timezone.utc) + timedelta(hours=1)
+    
+    # Delete old reset tokens for this email
+    await db.password_resets.delete_many({"email": request.email})
+    
+    # Save new reset token
+    reset = {
+        "email": request.email,
+        "reset_token": reset_token,
+        "expires_at": expires_at,
+        "created_at": datetime.now(timezone.utc)
+    }
+    
+    await db.password_resets.insert_one(reset)
+    
+    # TODO: Send email with reset link (for now, return token in response for testing)
+    # In production, send email here
+    
+    return {
+        "message": "If email exists, reset link will be sent",
+        "reset_token": reset_token  # REMOVE THIS IN PRODUCTION
+    }
+
+
+@api_router.post("/auth/reset-password")
+async def reset_password(request: ResetPasswordRequest):
+    """Reset password with token"""
+    # Find reset token
+    reset = await db.password_resets.find_one({
+        "reset_token": request.reset_token,
+        "expires_at": {"$gt": datetime.now(timezone.utc)}
+    })
+    
+    if not reset:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid or expired reset token"
+        )
+    
+    # Update user password
+    hashed_password = get_password_hash(request.new_password)
+    await db.users.update_one(
+        {"email": reset["email"]},
+        {"$set": {"hashed_password": hashed_password}}
+    )
+    
+    # Delete reset token
+    await db.password_resets.delete_one({"reset_token": request.reset_token})
+    
+    # Delete all sessions for this user
+    user = await db.users.find_one({"email": reset["email"]})
+    if user:
+        await db.user_sessions.delete_many({"user_id": user["id"]})
+    
+    return {"message": "Password reset successful"}
+
 # User initialization
 @api_router.post("/user/init", response_model=UserInitResponse)
 async def init_user():
