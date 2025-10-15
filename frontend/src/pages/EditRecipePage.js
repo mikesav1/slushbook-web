@@ -26,11 +26,7 @@ const EditRecipePage = ({ sessionId }) => {
   const fetchRecipe = async () => {
     try {
       const response = await axios.get(`${API}/recipes/${id}?session_id=${sessionId}`);
-      if (response.data.author !== sessionId) {
-        toast.error('Du kan kun redigere dine egne opskrifter');
-        navigate('/recipes');
-        return;
-      }
+      // Allow editing all recipes (removed author check)
       setRecipe(response.data);
       setImagePreview(response.data.image_url);
     } catch (error) {
