@@ -38,7 +38,16 @@ const HomePage = ({ sessionId }) => {
       {/* Hero Section */}
       <div className="relative bg-gradient-to-br from-cyan-50 to-coral-50 rounded-3xl p-8 md:p-12 overflow-hidden" data-testid="hero-section">
         <div className="grid md:grid-cols-2 gap-8 items-center">
-          <div className="relative z-10">
+          {/* Logo først på mobil (øverst) */}
+          <div className="relative z-10 flex justify-center items-center md:order-2">
+            <img 
+              src="/logo.png" 
+              alt="SLUSHBOOK" 
+              className="w-full max-w-xs md:max-w-md drop-shadow-2xl"
+            />
+          </div>
+          {/* Tekst under logo på mobil */}
+          <div className="relative z-10 md:order-1">
             <h1 className="text-4xl md:text-6xl font-bold mb-4">
               Find Den Perfekte
               <br />
@@ -67,13 +76,6 @@ const HomePage = ({ sessionId }) => {
                 Gennemse Alle
               </Link>
             </div>
-          </div>
-          <div className="relative z-10 hidden md:flex justify-center items-center">
-            <img 
-              src="/logo.png" 
-              alt="SLUSHBOOK" 
-              className="w-full max-w-md drop-shadow-2xl"
-            />
           </div>
         </div>
         <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-cyan-400 to-coral-400 rounded-full opacity-20 blur-3xl"></div>
