@@ -60,11 +60,7 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-2" data-testid="logo-link">
-            <img 
-              src="/kop.png" 
-              alt="SLUSHBOOK" 
-              className="h-10"
-            />
+            <span className="text-2xl font-bold text-cyan-600">SLUSHBOOK</span>
           </Link>
 
           {/* Desktop Navigation */}
