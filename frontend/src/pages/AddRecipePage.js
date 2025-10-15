@@ -17,7 +17,9 @@ const AddRecipePage = ({ sessionId }) => {
     name: '',
     description: '',
     color: 'red',
+    type: 'klassisk',
     alcohol_flag: false,
+    base_volume_ml: 2700,
     target_brix: 14,
     tags: [],
     ingredients: [
