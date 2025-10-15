@@ -27,6 +27,27 @@ const ShoppingListPage = ({ sessionId }) => {
     }
   };
 
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get(`${API}/products`);
+      setProducts(response.data);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
+
+  const getProductForIngredient = (categoryKey) => {
+    return products.find(p => p.category_key === categoryKey);
+  };
+
+  const trackClick = async (productId) => {
+    try {
+      await axios.post(`${API}/products/${productId}/click`);
+    } catch (error) {
+      console.error('Error tracking click:', error);
+    }
+  };
+
   const toggleCheck = async (itemId, currentChecked) => {
     try {
       await axios.put(`${API}/shopping-list/${itemId}`, null, {
