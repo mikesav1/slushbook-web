@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, UploadFile, File
+from fastapi import FastAPI, APIRouter, HTTPException, UploadFile, File, Depends, Request, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from dotenv import load_dotenv
@@ -10,8 +10,17 @@ from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional, Dict, Any
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import shutil
+
+# Import auth module
+from auth import (
+    User, UserInDB, UserSession, PasswordReset,
+    SignupRequest, LoginRequest, ForgotPasswordRequest, ResetPasswordRequest,
+    get_password_hash, verify_password, create_session_token, create_reset_token,
+    get_current_user, require_auth, require_role,
+    can_edit_recipe, can_view_recipe, can_create_recipe
+)
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
