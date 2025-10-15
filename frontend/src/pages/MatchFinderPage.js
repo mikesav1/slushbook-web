@@ -49,7 +49,7 @@ const MatchFinderPage = ({ sessionId }) => {
   return (
     <div className="space-y-6 fade-in" data-testid="match-finder-page">
       <div>
-        <h1 className="text-4xl font-bold mb-2">Find Match</h1>
+        <h1 className="text-4xl font-bold mb-2">Find match</h1>
         <p className="text-gray-600">Opdag hvilke opskrifter du kan lave med dine ingredienser</p>
       </div>
 
