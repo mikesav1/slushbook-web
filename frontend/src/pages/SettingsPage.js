@@ -57,12 +57,25 @@ const SettingsPage = ({ sessionId }) => {
     }
 
     try {
-      await axios.post(`${API}/machines`, {
-        session_id: sessionId,
-        ...newMachine
-      });
-      toast.success('Maskine tilføjet!');
+      if (isEditMode) {
+        // Update existing machine
+        await axios.put(`${API}/machines/${editMachineId}`, {
+          session_id: sessionId,
+          ...newMachine
+        });
+        toast.success('Maskine opdateret!');
+      } else {
+        // Add new machine
+        await axios.post(`${API}/machines`, {
+          session_id: sessionId,
+          ...newMachine
+        });
+        toast.success('Maskine tilføjet!');
+      }
+      
       setIsAddMachineOpen(false);
+      setIsEditMode(false);
+      setEditMachineId(null);
       setNewMachine({
         name: '',
         tank_volumes_ml: [12000],
@@ -70,9 +83,46 @@ const SettingsPage = ({ sessionId }) => {
       });
       fetchData();
     } catch (error) {
-      console.error('Error adding machine:', error);
-      toast.error('Kunne ikke tilføje maskine');
+      console.error('Error saving machine:', error);
+      toast.error(isEditMode ? 'Kunne ikke opdatere maskine' : 'Kunne ikke tilføje maskine');
     }
+  };
+
+  const handleEditMachine = (machine) => {
+    setIsEditMode(true);
+    setEditMachineId(machine.id);
+    setNewMachine({
+      name: machine.name,
+      tank_volumes_ml: machine.tank_volumes_ml,
+      loss_margin_pct: machine.loss_margin_pct
+    });
+    setIsAddMachineOpen(true);
+  };
+
+  const handleDeleteMachine = async (machineId) => {
+    if (!window.confirm('Er du sikker på, at du vil slette denne maskine?')) {
+      return;
+    }
+
+    try {
+      await axios.delete(`${API}/machines/${machineId}?session_id=${sessionId}`);
+      toast.success('Maskine slettet!');
+      fetchData();
+    } catch (error) {
+      console.error('Error deleting machine:', error);
+      toast.error('Kunne ikke slette maskine');
+    }
+  };
+
+  const handleCancelMachine = () => {
+    setIsAddMachineOpen(false);
+    setIsEditMode(false);
+    setEditMachineId(null);
+    setNewMachine({
+      name: '',
+      tank_volumes_ml: [12000],
+      loss_margin_pct: 5
+    });
   };
 
   const presetMachines = [
