@@ -100,11 +100,12 @@ def create_reset_token() -> str:
 security = HTTPBearer(auto_error=False)
 
 
-async def get_current_user(
-    request: Request,
-    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
-    db = None
-) -> Optional[User]:
+async def get_current_user_factory(db):
+    """Factory function that returns get_current_user with db injected"""
+    async def get_current_user(
+        request: Request,
+        credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
+    ) -> Optional[User]:
     """
     Get current authenticated user from session token
     Checks both cookie and Authorization header
