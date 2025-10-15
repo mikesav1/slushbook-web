@@ -114,34 +114,38 @@ const RecipesPage = ({ sessionId }) => {
           </div>
         </div>
 
-        {/* Color Filter */}
+        {/* Type Filter */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Farve</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">Type</label>
           <div className="flex flex-wrap gap-2">
             <button
-              onClick={() => setColorFilter('')}
-              data-testid="color-filter-all"
+              onClick={() => setTypeFilter('')}
+              data-testid="type-filter-all"
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                colorFilter === ''
+                typeFilter === ''
                   ? 'bg-cyan-500 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
               Alle
             </button>
-            {colors.map((color) => (
+            {types.map((type) => (
               <button
-                key={color.value}
-                data-testid={`color-filter-${color.value}`}
-                onClick={() => setColorFilter(color.value)}
+                key={type.value}
+                data-testid={`type-filter-${type.value}`}
+                onClick={() => setTypeFilter(type.value)}
                 className={`px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-colors ${
-                  colorFilter === color.value
+                  typeFilter === type.value
                     ? 'bg-cyan-500 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                <span className={`color-badge ${color.class}`}></span>
-                {color.label}
+                <img 
+                  src={`/icons/${type.icon}`} 
+                  alt={type.label}
+                  className="w-6 h-6 rounded-full"
+                />
+                {type.label}
               </button>
             ))}
           </div>
