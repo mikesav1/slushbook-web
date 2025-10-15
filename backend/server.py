@@ -308,6 +308,7 @@ async def seed_recipes():
         {
             "name": "Grøn Æble",
             "description": "Frisk grøn æble slushice",
+            "image_url": "https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=400&h=600&fit=crop",
             "color": "green",
             "alcohol_flag": False,
             "target_brix": 14.0,
