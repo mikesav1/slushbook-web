@@ -109,7 +109,7 @@ const PantryPage = ({ sessionId }) => {
     <div className="space-y-6 fade-in" data-testid="pantry-page">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold mb-2">Mine Ingredienser</h1>
+          <h1 className="text-4xl font-bold mb-2">Mine ingredienser</h1>
           <p className="text-gray-600">Administrer dine ingredienser</p>
         </div>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
