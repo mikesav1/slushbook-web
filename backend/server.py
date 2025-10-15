@@ -1031,22 +1031,43 @@ async def get_recipe(recipe_id: str, session_id: Optional[str] = None):
     return recipe
 
 @api_router.post("/recipes", response_model=Recipe)
-async def create_recipe(recipe_data: RecipeCreate):
-    # Check user limit
-    count = await db.user_recipes.count_documents({"session_id": recipe_data.session_id})
-    if count >= 2:
-        raise HTTPException(
-            status_code=403,
-            detail="Gratis limit nået! Maks 2 egne opskrifter. Opgradér til Pro for ubegrænset adgang."
-        )
+async def create_recipe(recipe_data: RecipeCreate, request: Request):
+    # Get current user
+    user = await get_current_user(request, None, db)
+    
+    # Check user limit based on role
+    if not user:
+        # Guest user - check session limit
+        count = await db.user_recipes.count_documents({"session_id": recipe_data.session_id})
+        if count >= 2:
+            raise HTTPException(
+                status_code=403,
+                detail="Gæste limit nået! Maks 2 egne opskrifter. Log ind eller opgradér til Pro for ubegrænset adgang."
+            )
+        author_id = recipe_data.session_id
+        author_name = "Gæst"
+    elif user.role in ["admin", "editor", "pro"]:
+        # Admin, Editor, Pro - unlimited
+        author_id = user.id
+        author_name = user.name
+    else:
+        # Regular guest user (logged in but not pro) - still limited to 2
+        count = await db.user_recipes.count_documents({"author": user.id})
+        if count >= 2:
+            raise HTTPException(
+                status_code=403,
+                detail="Gratis limit nået! Maks 2 egne opskrifter. Opgradér til Pro for ubegrænset adgang."
+            )
+        author_id = user.id
+        author_name = user.name
     
     recipe_dict = recipe_data.model_dump()
     session_id = recipe_dict.pop('session_id')
     
     recipe = Recipe(
         **recipe_dict,
-        author=session_id,
-        author_name="Mig"
+        author=author_id,
+        author_name=author_name
     )
     
     doc = recipe.model_dump()
