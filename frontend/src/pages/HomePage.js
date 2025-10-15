@@ -26,13 +26,6 @@ const HomePage = ({ sessionId }) => {
     }
   };
 
-  const quickActions = [
-    { icon: FaMagic, label: 'Find match', path: '/match', color: 'from-purple-500 to-pink-500', bg: 'bg-purple-50' },
-    { icon: FaBook, label: 'Gennemse', path: '/recipes', color: 'from-cyan-500 to-blue-500', bg: 'bg-cyan-50' },
-    { icon: FaBoxOpen, label: 'Ingredienser', path: '/pantry', color: 'from-emerald-500 to-green-500', bg: 'bg-emerald-50' },
-    { icon: FaHeart, label: 'Favoritter', path: '/favorites', color: 'from-rose-500 to-red-500', bg: 'bg-rose-50' }
-  ];
-
   return (
     <div className="space-y-8 fade-in">
       {/* Hero Section */}
