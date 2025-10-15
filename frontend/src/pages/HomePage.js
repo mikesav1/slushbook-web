@@ -81,29 +81,6 @@ const HomePage = ({ sessionId }) => {
         <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-cyan-400 to-coral-400 rounded-full opacity-20 blur-3xl"></div>
       </div>
 
-      {/* Quick Actions */}
-      <div>
-        <h2 className="text-2xl font-bold mb-4">Hurtig Adgang</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {quickActions.map((action, index) => {
-            const Icon = action.icon;
-            return (
-              <Link
-                key={index}
-                to={action.path}
-                data-testid={`quick-action-${action.label.toLowerCase()}`}
-                className={`${action.bg} p-6 rounded-2xl hover:shadow-lg transition-all hover:scale-105`}
-              >
-                <div className={`w-12 h-12 bg-gradient-to-br ${action.color} rounded-xl flex items-center justify-center mb-3`}>
-                  <Icon className="text-white" size={24} />
-                </div>
-                <h3 className="font-semibold text-gray-800">{action.label}</h3>
-              </Link>
-            );
-          })}
-        </div>
-      </div>
-
       {/* Featured Recipes */}
       <div>
         <div className="flex items-center justify-between mb-4">
