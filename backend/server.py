@@ -354,6 +354,7 @@ async def seed_recipes():
         {
             "name": "Kirsebær Luksus",
             "description": "Lækker kirsebær slushice med mandel",
+            "image_url": "https://images.unsplash.com/photo-1528821128474-27f963b062bf?w=400&h=600&fit=crop",
             "color": "red",
             "alcohol_flag": False,
             "target_brix": 15.0,
