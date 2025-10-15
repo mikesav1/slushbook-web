@@ -126,12 +126,21 @@ const MembersPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="mb-6">
-        <h1 className="text-4xl font-bold mb-2 flex items-center gap-3">
-          <FaUsers className="text-cyan-500" />
-          Medlemmer
-        </h1>
-        <p className="text-gray-600">Administrer brugere og roller</p>
+      <div className="mb-6 flex justify-between items-start">
+        <div>
+          <h1 className="text-4xl font-bold mb-2 flex items-center gap-3">
+            <FaUsers className="text-cyan-500" />
+            Medlemmer
+          </h1>
+          <p className="text-gray-600">Administrer brugere og roller</p>
+        </div>
+        <button
+          onClick={() => setIsCreateModalOpen(true)}
+          className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg hover:from-cyan-600 hover:to-cyan-700 flex items-center gap-2 font-medium"
+        >
+          <FaPlus />
+          Opret bruger
+        </button>
       </div>
 
       {/* Filters */}
