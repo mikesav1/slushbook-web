@@ -524,6 +524,7 @@ async def seed_recipes():
         {
             "name": "Sex on the Beach Slush (18+)",
             "description": "Populær cocktail som slushice",
+            "image_url": "https://images.unsplash.com/photo-1609951651556-5334e2706168?w=400&h=600&fit=crop",
             "color": "orange",
             "alcohol_flag": True,
             "target_brix": 12.0,
