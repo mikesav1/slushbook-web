@@ -429,6 +429,7 @@ async def seed_recipes():
         {
             "name": "Lime Cool",
             "description": "Super frisk lime slushice med mynte",
+            "image_url": "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=400&h=600&fit=crop",
             "color": "green",
             "alcohol_flag": False,
             "target_brix": 15.0,
