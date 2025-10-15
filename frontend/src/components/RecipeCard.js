@@ -76,7 +76,22 @@ const RecipeCard = ({ recipe, sessionId, showMatchInfo }) => {
           </button>
         </div>
         <div className="absolute bottom-4 left-4">
-          <span className={`inline-block w-6 h-6 rounded-full border-2 border-white shadow-lg color-${recipe.color}`}></span>
+          {recipe.type && (
+            <img 
+              src={`/icons/${recipe.type}.png`} 
+              alt={recipe.type}
+              className="w-10 h-10 rounded-full border-2 border-white shadow-lg bg-white"
+              onError={(e) => {
+                // Fallback to color circle if icon not found
+                e.target.style.display = 'none';
+                e.target.nextSibling.style.display = 'inline-block';
+              }}
+            />
+          )}
+          <span 
+            className={`inline-block w-6 h-6 rounded-full border-2 border-white shadow-lg color-${recipe.color}`}
+            style={{ display: recipe.type ? 'none' : 'inline-block' }}
+          ></span>
         </div>
       </div>
 
