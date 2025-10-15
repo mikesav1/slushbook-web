@@ -46,7 +46,16 @@ const RecipeCard = ({ recipe, sessionId, showMatchInfo }) => {
       className="block bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all hover:scale-105 overflow-hidden border border-gray-100"
     >
       {/* Image/Color Header */}
-      <div className={`h-40 bg-gradient-to-br ${getColorClass(recipe.color)} relative`}>
+      <div className="h-40 relative overflow-hidden">
+        {recipe.image_url && recipe.image_url !== '/api/images/placeholder.jpg' ? (
+          <img 
+            src={recipe.image_url} 
+            alt={recipe.name}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className={`w-full h-full bg-gradient-to-br ${getColorClass(recipe.color)}`}></div>
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
         <div className="absolute top-4 right-4 flex gap-2">
           {recipe.alcohol_flag && (
