@@ -141,12 +141,14 @@ class AuthTester:
             self.log(f"❌ Auth check failed: {response.status_code} - {response.text}")
             return False
             
-        # Test without session token
-        no_auth_response = self.session.get(f"{BASE_URL}/auth/me")
+        # Test without session token (use fresh session to avoid cookies)
+        fresh_session = requests.Session()
+        no_auth_response = fresh_session.get(f"{BASE_URL}/auth/me")
         if no_auth_response.status_code == 401:
             self.log("✅ Unauthorized access correctly rejected (401)")
         else:
             self.log(f"❌ Unauthorized access not rejected: {no_auth_response.status_code}")
+            self.log(f"Response: {no_auth_response.text}")
             return False
             
         return True
