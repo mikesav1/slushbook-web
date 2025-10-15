@@ -23,7 +23,7 @@ const AddRecipePage = ({ sessionId }) => {
     target_brix: 14,
     tags: [],
     ingredients: [
-      { name: '', category_key: '', quantity: 0, unit: 'ml', role: 'required', brix: null }
+      { name: '', category_key: '', quantity: '', unit: 'ml', role: 'required', brix: null }
     ],
     steps: [''],
     image_url: '/api/images/placeholder.jpg'
