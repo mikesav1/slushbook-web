@@ -26,7 +26,7 @@ const Navigation = () => {
   const navItems = [
     { path: "/", icon: FaHome, label: "Hjem" },
     { path: "/recipes", icon: FaBook, label: "Opskrifter" },
-    { path: "/pantry", icon: FaBoxOpen, label: "Mit Pantry" },
+    { path: "/pantry", icon: FaBoxOpen, label: "Ingredienser" },
     { path: "/match", icon: FaMagic, label: "Match" },
     { path: "/shopping", icon: FaShoppingCart, label: "Liste" },
     { path: "/favorites", icon: FaHeart, label: "Favoritter" },
