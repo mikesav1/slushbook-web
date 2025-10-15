@@ -37,34 +37,43 @@ const HomePage = ({ sessionId }) => {
     <div className="space-y-8 fade-in">
       {/* Hero Section */}
       <div className="relative bg-gradient-to-br from-cyan-50 to-coral-50 rounded-3xl p-8 md:p-12 overflow-hidden" data-testid="hero-section">
-        <div className="relative z-10">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">
-            Find Den Perfekte
-            <br />
-            <span className="bg-gradient-to-r from-cyan-500 to-coral-500 bg-clip-text text-transparent">
-              Slushice Opskrift
-            </span>
-          </h1>
-          <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl">
-            Opdag lækre slushice opskrifter, match med dine ingredienser, og skalér automatisk til din maskine
-          </p>
-          <div className="flex flex-wrap gap-4">
-            <Link
-              to="/match"
-              data-testid="hero-match-button"
-              className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-full font-semibold hover:shadow-xl transition-all hover:scale-105"
-            >
-              <FaMagic className="inline mr-2" />
-              Find Match Nu
-            </Link>
-            <Link
-              to="/recipes"
-              data-testid="hero-browse-button"
-              className="px-8 py-4 bg-white text-gray-800 rounded-full font-semibold hover:shadow-xl transition-all hover:scale-105"
-            >
-              <FaBook className="inline mr-2" />
-              Gennemse Alle
-            </Link>
+        <div className="grid md:grid-cols-2 gap-8 items-center">
+          <div className="relative z-10">
+            <h1 className="text-4xl md:text-6xl font-bold mb-4">
+              Find Den Perfekte
+              <br />
+              <span className="bg-gradient-to-r from-cyan-500 to-coral-500 bg-clip-text text-transparent">
+                Slushice Opskrift
+              </span>
+            </h1>
+            <p className="text-lg md:text-xl text-gray-600 mb-8">
+              Opdag lækre slushice opskrifter, match med dine ingredienser, og skalér automatisk til din maskine
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link
+                to="/match"
+                data-testid="hero-match-button"
+                className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-full font-semibold hover:shadow-xl transition-all hover:scale-105"
+              >
+                <FaMagic className="inline mr-2" />
+                Find Match Nu
+              </Link>
+              <Link
+                to="/recipes"
+                data-testid="hero-browse-button"
+                className="px-8 py-4 bg-white text-gray-800 rounded-full font-semibold hover:shadow-xl transition-all hover:scale-105"
+              >
+                <FaBook className="inline mr-2" />
+                Gennemse Alle
+              </Link>
+            </div>
+          </div>
+          <div className="relative z-10 hidden md:flex justify-center items-center">
+            <img 
+              src="/logo-samlet.png" 
+              alt="SLUSHBOOK" 
+              className="w-full max-w-md drop-shadow-2xl"
+            />
           </div>
         </div>
         <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-cyan-400 to-coral-400 rounded-full opacity-20 blur-3xl"></div>
