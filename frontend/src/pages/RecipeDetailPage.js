@@ -155,7 +155,7 @@ const RecipeDetailPage = ({ sessionId }) => {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className={`h-64 bg-gradient-to-br from-${recipe.color}-500 to-${recipe.color}-600 relative`}>
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-          <div className="absolute bottom-6 left-6 right-6 text-white">
+          <div className="absolute bottom-6 left-6 right-24 text-white">
             <h1 className="text-4xl font-bold mb-2">{recipe.name}</h1>
             <div className="flex flex-wrap gap-3 items-center">
               <span className={`color-badge color-${recipe.color}`}></span>
