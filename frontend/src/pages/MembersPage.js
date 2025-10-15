@@ -296,6 +296,13 @@ const MembersPage = () => {
                           >
                             <FaKey />
                           </button>
+                          <button
+                            onClick={() => handleDeleteMember(member.id, member.name)}
+                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
+                            title="Slet medlem"
+                          >
+                            <FaTrash />
+                          </button>
                         </>
                       )}
                     </div>
