@@ -159,15 +159,18 @@ frontend:
   
   - task: "Machine CRUD Operations on SettingsPage"
     implemented: true
-    working: "NA"
+    working: true
     file: "frontend/src/pages/SettingsPage.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added edit and delete functionality for user machines. Features: Edit button opens dialog with existing machine data pre-filled, Delete button shows confirmation dialog before deletion, Cancel button added to form, Dialog is scrollable with max-h-[90vh] for mobile. Only user-created machines (is_system=false) show edit/delete buttons. Form adapts title based on edit mode."
+      - working: true
+        agent: "main"
+        comment: "Machine CRUD operations fully functional. Added is_system field to Machine model. Edit and delete buttons now display correctly for user-created machines. Annuller (Cancel) button working. Dialog is scrollable for mobile. Logout now redirects to login page. User feedback issues resolved."
 
 metadata:
   created_by: "main_agent"
