@@ -919,14 +919,37 @@ async def init_user():
     )
 
 @api_router.get("/user/{session_id}/limits")
-async def get_user_limits(session_id: str):
-    count = await db.user_recipes.count_documents({"session_id": session_id})
-    can_add = count < 2
-    return {
-        "user_recipes_count": count,
-        "can_add_recipe": can_add,
-        "limit_message": "Gratis: Maks 2 egne opskrifter. Opgradér til Pro for ubegrænset!" if not can_add else f"Du kan tilføje {2 - count} mere opskrift(er)"
-    }
+async def get_user_limits(session_id: str, request: Request):
+    # Get current user
+    user = await get_current_user(request, None, db)
+    
+    if user and user.role in ["admin", "editor", "pro"]:
+        # Unlimited for admin, editor, pro
+        if user.role == "admin":
+            count = await db.user_recipes.count_documents({"author": user.id})
+        elif user.role == "editor":
+            count = await db.user_recipes.count_documents({"author": user.id})
+        else:  # pro
+            count = await db.user_recipes.count_documents({"author": user.id})
+        
+        return {
+            "user_recipes_count": count,
+            "can_add_recipe": True,
+            "limit_message": f"{user.role.capitalize()}: Ubegrænset opskrifter!"
+        }
+    else:
+        # Guest or regular user - limited to 2
+        if user:
+            count = await db.user_recipes.count_documents({"author": user.id})
+        else:
+            count = await db.user_recipes.count_documents({"session_id": session_id})
+        
+        can_add = count < 2
+        return {
+            "user_recipes_count": count,
+            "can_add_recipe": can_add,
+            "limit_message": "Gratis: Maks 2 egne opskrifter. Opgradér til Pro for ubegrænset!" if not can_add else f"Du kan tilføje {2 - count} mere opskrift(er)"
+        }
 
 # Recipes
 @api_router.get("/recipes")
