@@ -27,7 +27,7 @@ const MatchFinderPage = ({ sessionId }) => {
 
   const findMatches = async () => {
     if (pantryCount === 0) {
-      toast.error('Tilføj ingredienser til dit pantry først!');
+      toast.error('Tilføj ingredienser først!');
       return;
     }
 
