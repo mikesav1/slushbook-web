@@ -101,3 +101,48 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Recipe images were disappearing from recipe cards - all seeded recipes showed gradient colors instead of images"
+
+backend:
+  - task: "Add image URLs to seeded recipes"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Added image_url field to all 25 seeded recipes with appropriate Unsplash URLs. Created migration endpoint /api/admin/update-recipe-images to update existing recipes in database. All 25/25 recipes now have images."
+
+frontend:
+  - task: "Display recipe images on cards and detail pages"
+    implemented: true
+    working: true
+    file: "frontend/src/components/RecipeCard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Recipe cards and detail pages now correctly display images. Verified with screenshots - all recipes show proper images instead of gradient fallbacks."
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Recipe image display fixed"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: "Fixed recipe image display issue. Problem was that seeded recipes (recipes 6-25) were missing image_url field, and recipes 1-5 had placeholder URLs in database. Added Unsplash image URLs to all 25 recipes in code and created migration endpoint to update database. All recipes now display images correctly on both list and detail pages."
