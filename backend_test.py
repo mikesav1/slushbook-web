@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-SLUSHBOOK Authentication System Test Suite
-Tests all authentication endpoints and flows
+SLUSHBOOK Backend Test Suite
+Tests authentication endpoints and machine CRUD operations
 """
 
 import requests
