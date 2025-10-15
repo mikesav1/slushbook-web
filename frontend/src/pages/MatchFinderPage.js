@@ -174,7 +174,7 @@ const MatchFinderPage = ({ sessionId }) => {
         <div className="text-center py-12">
           <div className="text-6xl mb-4">🔍</div>
           <h3 className="text-xl font-bold mb-2">Klar til at finde matches?</h3>
-          <p className="text-gray-600">Klik på "Find Matches" for at se hvilke opskrifter du kan lave</p>
+          <p className="text-gray-600">Klik på "Find matches" for at se hvilke opskrifter du kan lave</p>
         </div>
       )}
     </div>
