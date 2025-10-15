@@ -144,7 +144,9 @@ const SettingsPage = ({ sessionId }) => {
           </Link>
         </div>
         <p className="text-gray-600">
-          {canAddRecipe
+          {isAdmin() || isPro() || isEditor()
+            ? `Du har oprettet ${userRecipesCount} opskrift${userRecipesCount !== 1 ? 'er' : ''}`
+            : canAddRecipe
             ? `Du kan tilføje ${2 - userRecipesCount} mere opskrift${2 - userRecipesCount !== 1 ? 'er' : ''}`
             : 'Gratis limit nået (2/2). Opgradér til Pro for ubegrænset!'}
         </p>
