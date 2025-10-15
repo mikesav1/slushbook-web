@@ -242,6 +242,7 @@ const AppContent = ({ sessionId }) => {
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
 
             {/* App Routes */}
             <Route path="/" element={<HomePage sessionId={sessionId} />} />
