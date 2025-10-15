@@ -41,9 +41,9 @@ const LoginPage = ({ onLogin }) => {
         {/* Logo */}
         <div className="text-center mb-8">
           <img 
-            src="/logo-samlet.png" 
+            src="/logo-login.png" 
             alt="SLUSHBOOK" 
-            className="w-64 mx-auto mb-2"
+            className="w-80 mx-auto mb-2"
           />
         </div>
 
