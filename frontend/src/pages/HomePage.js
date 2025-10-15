@@ -100,8 +100,34 @@ const HomePage = ({ sessionId }) => {
 
       {/* Featured Recipes */}
       <div>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold">Seneste Opskrifter</h2>
+        <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
+          <div className="flex items-center gap-4">
+            <h2 className="text-2xl font-bold">
+              {sortBy === 'latest' ? 'Seneste Opskrifter' : 'Mest Populære'}
+            </h2>
+            <div className="flex bg-gray-100 rounded-lg p-1">
+              <button
+                onClick={() => setSortBy('latest')}
+                className={`px-4 py-2 rounded-md text-sm font-semibold transition-all ${
+                  sortBy === 'latest'
+                    ? 'bg-white text-cyan-600 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Seneste
+              </button>
+              <button
+                onClick={() => setSortBy('popular')}
+                className={`px-4 py-2 rounded-md text-sm font-semibold transition-all ${
+                  sortBy === 'popular'
+                    ? 'bg-white text-cyan-600 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Populære
+              </button>
+            </div>
+          </div>
           <Link to="/recipes" className="text-cyan-600 hover:text-cyan-700 font-semibold flex items-center gap-2">
             Se Alle <FaFire />
           </Link>
