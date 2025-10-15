@@ -203,6 +203,12 @@ const RecipeDetailPage = ({ sessionId }) => {
         <div className="p-6">
           <p className="text-gray-700 text-lg mb-4">{recipe.description}</p>
           
+          {/* Info */}
+          <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
+            <span>📏 Basis: {recipe.base_volume_ml || 2700}ml</span>
+            <span>🍬 Sukkergrad: {recipe.target_brix}°Bx</span>
+          </div>
+          
           {/* Tags */}
           <div className="flex flex-wrap gap-2 mb-4">
             {recipe.tags?.map((tag, index) => (
