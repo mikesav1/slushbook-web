@@ -113,6 +113,7 @@ class Machine(BaseModel):
     tank_volumes_ml: List[int] = [12000]
     loss_margin_pct: float = 5.0
     is_default: bool = True
+    is_system: bool = False
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class MachineCreate(BaseModel):
