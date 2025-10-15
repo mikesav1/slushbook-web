@@ -177,7 +177,6 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Machine DELETE endpoint"
     - "Machine CRUD Operations on SettingsPage"
   stuck_tasks: []
   test_all: false
