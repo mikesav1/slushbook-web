@@ -227,6 +227,7 @@ async def seed_recipes():
         {
             "name": "Cola Original",
             "description": "Klassisk cola slushice - altid en favorit",
+            "image_url": "https://images.unsplash.com/photo-1581006852262-e4307cf6283a?w=400&h=600&fit=crop",
             "color": "brown",
             "alcohol_flag": False,
             "target_brix": 16.0,
