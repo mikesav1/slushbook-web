@@ -38,13 +38,12 @@ const Navigation = () => {
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center gap-3" data-testid="logo-link">
-            <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-coral-500 rounded-full flex items-center justify-center">
-              <span className="text-white text-xl font-bold">S</span>
-            </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-500 to-coral-500 bg-clip-text text-transparent">
-              SlushFinder
-            </h1>
+          <Link to="/" className="flex items-center gap-2" data-testid="logo-link">
+            <img 
+              src="/logo-samlet.png" 
+              alt="SLUSHBOOK" 
+              className="h-12"
+            />
           </Link>
 
           {/* Desktop Navigation */}
