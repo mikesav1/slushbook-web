@@ -29,7 +29,9 @@ const SettingsPage = ({ sessionId }) => {
     try {
       const [machinesRes, limitsRes] = await Promise.all([
         axios.get(`${API}/machines/${sessionId}`),
-        axios.get(`${API}/user/${sessionId}/limits`)
+        axios.get(`${API}/user/${sessionId}/limits`, {
+          withCredentials: true
+        })
       ]);
       setMachines(machinesRes.data);
       setUserRecipesCount(limitsRes.data.user_recipes_count);
