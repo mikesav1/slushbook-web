@@ -57,7 +57,7 @@ const MatchFinderPage = ({ sessionId }) => {
       <div className="bg-gradient-to-br from-cyan-50 to-coral-50 rounded-2xl p-8">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
-            <h3 className="text-2xl font-bold mb-2">Dit Pantry</h3>
+            <h3 className="text-2xl font-bold mb-2">Dine Ingredienser</h3>
             <p className="text-gray-700 text-lg">
               Du har <span className="font-bold text-cyan-600">{pantryCount}</span> ingrediens{pantryCount !== 1 ? 'er' : ''}
             </p>
@@ -65,7 +65,7 @@ const MatchFinderPage = ({ sessionId }) => {
           <div className="flex gap-3">
             <Link to="/pantry">
               <Button variant="outline" data-testid="manage-pantry-button">
-                <FaBoxOpen className="mr-2" /> Administrér Pantry
+                <FaBoxOpen className="mr-2" /> Administrér Ingredienser
               </Button>
             </Link>
             <Button
