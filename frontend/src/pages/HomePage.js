@@ -8,21 +8,41 @@ import RecipeCard from '../components/RecipeCard';
 const HomePage = ({ sessionId }) => {
   const [featuredRecipes, setFeaturedRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sortBy, setSortBy] = useState('latest'); // 'latest' or 'popular'
 
   useEffect(() => {
     fetchFeaturedRecipes();
-  }, [sessionId]);
+  }, [sessionId, sortBy]);
 
   const fetchFeaturedRecipes = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(`${API}/recipes?session_id=${sessionId}`);
-      // Sort by created_at (newest first) and get 8 most recent
-      const sortedByDate = response.data.sort((a, b) => {
-        const dateA = new Date(a.created_at || 0);
-        const dateB = new Date(b.created_at || 0);
-        return dateB - dateA; // Newest first
-      });
-      setFeaturedRecipes(sortedByDate.slice(0, 8));
+      
+      let sortedRecipes;
+      if (sortBy === 'latest') {
+        // Sort by created_at (newest first)
+        sortedRecipes = response.data.sort((a, b) => {
+          const dateA = new Date(a.created_at || 0);
+          const dateB = new Date(b.created_at || 0);
+          return dateB - dateA; // Newest first
+        });
+      } else {
+        // Sort by popularity (rating, then favorites count)
+        sortedRecipes = response.data.sort((a, b) => {
+          const ratingA = a.average_rating || 0;
+          const ratingB = b.average_rating || 0;
+          if (ratingB !== ratingA) {
+            return ratingB - ratingA; // Higher rating first
+          }
+          // If ratings are equal, sort by favorites count
+          const favA = a.favorites_count || 0;
+          const favB = b.favorites_count || 0;
+          return favB - favA;
+        });
+      }
+      
+      setFeaturedRecipes(sortedRecipes.slice(0, 8));
     } catch (error) {
       console.error('Error fetching recipes:', error);
     } finally {
