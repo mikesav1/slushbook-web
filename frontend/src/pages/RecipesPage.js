@@ -111,26 +111,34 @@ const RecipesPage = ({ sessionId }) => {
             
             {/* Toggle Switch */}
             <div className="flex items-center gap-3 px-4 py-2 bg-gray-50 rounded-lg">
-              <span className={`text-sm font-medium transition-colors ${alcoholFilter === 'none' ? 'text-gray-900' : 'text-gray-400'}`}>
+              <button
+                onClick={() => setAlcoholFilter('none')}
+                data-testid="alcohol-filter-none"
+                className={`text-sm font-medium transition-colors ${alcoholFilter === 'none' ? 'text-gray-900 font-bold' : 'text-gray-400'}`}
+              >
                 Uden Alkohol
-              </span>
+              </button>
               <button
                 onClick={() => setAlcoholFilter(alcoholFilter === 'none' ? 'only' : 'none')}
                 data-testid="alcohol-toggle"
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 ${
-                  alcoholFilter === 'only' ? 'bg-red-500' : 'bg-green-500'
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 ${
+                  alcoholFilter === 'only' ? 'bg-red-500' : alcoholFilter === 'none' ? 'bg-green-500' : 'bg-gray-300'
                 }`}
                 disabled={alcoholFilter === 'both'}
               >
                 <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-all ${
                     alcoholFilter === 'only' ? 'translate-x-6' : 'translate-x-1'
                   }`}
                 />
               </button>
-              <span className={`text-sm font-medium transition-colors ${alcoholFilter === 'only' ? 'text-gray-900' : 'text-gray-400'}`}>
+              <button
+                onClick={() => setAlcoholFilter('only')}
+                data-testid="alcohol-filter-only"
+                className={`text-sm font-medium transition-colors ${alcoholFilter === 'only' ? 'text-gray-900 font-bold' : 'text-gray-400'}`}
+              >
                 Med Alkohol
-              </span>
+              </button>
             </div>
           </div>
         </div>
