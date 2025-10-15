@@ -130,7 +130,42 @@ const RecipesPage = ({ sessionId }) => {
         {/* Type Filter */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">Type</label>
-          <div className="flex flex-wrap gap-2">
+          
+          {/* Mobile: Dropdown */}
+          <div className="md:hidden">
+            <div className="relative">
+              <select
+                value={typeFilter}
+                onChange={(e) => setTypeFilter(e.target.value)}
+                className="w-full px-4 py-3 pr-10 bg-white border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-cyan-500 font-medium"
+              >
+                <option value="">Alle typer</option>
+                {types.map((type) => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
+                  </option>
+                ))}
+              </select>
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+            {typeFilter && (
+              <div className="flex items-center gap-2 mt-2 text-sm text-gray-600">
+                <img 
+                  src={`/icons/${types.find(t => t.value === typeFilter)?.icon}`} 
+                  alt={types.find(t => t.value === typeFilter)?.label}
+                  className="w-5 h-5 rounded-full"
+                />
+                <span>Filtreret: {types.find(t => t.value === typeFilter)?.label}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Desktop: Buttons */}
+          <div className="hidden md:flex flex-wrap gap-2">
             <button
               onClick={() => setTypeFilter('')}
               data-testid="type-filter-all"
