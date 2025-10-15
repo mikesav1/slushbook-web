@@ -9,7 +9,7 @@ const RecipesPage = ({ sessionId }) => {
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [alcoholFilter, setAlcoholFilter] = useState('both');
+  const [alcoholFilter, setAlcoholFilter] = useState('none');
   const [typeFilter, setTypeFilter] = useState('');
 
   useEffect(() => {
