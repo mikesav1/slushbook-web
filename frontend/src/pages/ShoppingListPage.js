@@ -12,6 +12,7 @@ const ShoppingListPage = ({ sessionId }) => {
 
   useEffect(() => {
     fetchShoppingList();
+    fetchProducts();
   }, [sessionId]);
 
   const fetchShoppingList = async () => {
