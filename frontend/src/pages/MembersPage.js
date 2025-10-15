@@ -294,6 +294,111 @@ const MembersPage = () => {
           </div>
         )}
       </div>
+
+      {/* Create User Modal */}
+      {isCreateModalOpen && (
+        <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Opret ny bruger</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleCreateUser} className="space-y-4 mt-4">
+              <div>
+                <Label htmlFor="create-name">Navn</Label>
+                <Input
+                  id="create-name"
+                  value={createForm.name}
+                  onChange={(e) => setCreateForm({...createForm, name: e.target.value})}
+                  required
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label htmlFor="create-email">Email</Label>
+                <Input
+                  id="create-email"
+                  type="email"
+                  value={createForm.email}
+                  onChange={(e) => setCreateForm({...createForm, email: e.target.value})}
+                  required
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label htmlFor="create-password">Password</Label>
+                <Input
+                  id="create-password"
+                  type="password"
+                  value={createForm.password}
+                  onChange={(e) => setCreateForm({...createForm, password: e.target.value})}
+                  required
+                  minLength={6}
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label htmlFor="create-role">Rolle</Label>
+                <select
+                  id="create-role"
+                  value={createForm.role}
+                  onChange={(e) => setCreateForm({...createForm, role: e.target.value})}
+                  className="w-full mt-1 px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                >
+                  <option value="guest">Gæst</option>
+                  <option value="pro">Pro</option>
+                  <option value="editor">Redaktør</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+              <div className="flex gap-2">
+                <Button type="submit" className="flex-1">Opret bruger</Button>
+                <Button type="button" variant="outline" onClick={() => setIsCreateModalOpen(false)}>
+                  Annuller
+                </Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {/* Reset Password Modal */}
+      {isResetModalOpen && selectedUser && (
+        <Dialog open={isResetModalOpen} onOpenChange={setIsResetModalOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Nulstil password for {selectedUser.name}</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleResetPassword} className="space-y-4 mt-4">
+              <div>
+                <Label htmlFor="reset-password">Nyt password</Label>
+                <Input
+                  id="reset-password"
+                  type="password"
+                  value={resetPassword}
+                  onChange={(e) => setResetPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  placeholder="Min. 6 tegn"
+                  className="mt-1"
+                />
+              </div>
+              <p className="text-sm text-gray-600">
+                Dette vil også logge brugeren ud fra alle enheder.
+              </p>
+              <div className="flex gap-2">
+                <Button type="submit" className="flex-1">Nulstil password</Button>
+                <Button type="button" variant="outline" onClick={() => {
+                  setIsResetModalOpen(false);
+                  setResetPassword('');
+                  setSelectedUser(null);
+                }}>
+                  Annuller
+                </Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };
