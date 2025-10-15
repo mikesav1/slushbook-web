@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { FaMagic, FaBook, FaBoxOpen, FaFire, FaHeart } from 'react-icons/fa';
+import { FaMagic, FaBook, FaFire } from 'react-icons/fa';
 import { API } from '../App';
 import RecipeCard from '../components/RecipeCard';
 
