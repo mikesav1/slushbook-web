@@ -39,6 +39,7 @@ const SettingsPage = ({ sessionId }) => {
       setMachines(machinesRes.data);
       setUserRecipesCount(limitsRes.data.user_recipes_count);
       setCanAddRecipe(limitsRes.data.can_add_recipe);
+      setLimitMessage(limitsRes.data.limit_message);
     } catch (error) {
       console.error('Error fetching settings:', error);
     } finally {
