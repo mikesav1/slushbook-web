@@ -414,6 +414,7 @@ async def seed_recipes():
         {
             "name": "Solbær Intense",
             "description": "Kraftig solbær slushice med ingefær",
+            "image_url": "https://images.unsplash.com/photo-1464454709131-ffd692591ee5?w=400&h=600&fit=crop",
             "color": "purple",
             "alcohol_flag": False,
             "target_brix": 15.0,
