@@ -158,6 +158,43 @@ class ShoppingListItemCreate(BaseModel):
     linked_recipe_id: Optional[str] = None
     linked_recipe_name: Optional[str] = None
 
+class Brand(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    logo_url: Optional[str] = None
+    website: str
+    active: bool = True
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class Product(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    brand_id: str
+    name: str
+    category_key: str  # Maps to ingredient category
+    product_url: str
+    price: Optional[float] = None
+    size: Optional[str] = None
+    image_url: Optional[str] = None
+    active: bool = True
+    click_count: int = 0
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class BrandCreate(BaseModel):
+    name: str
+    logo_url: Optional[str] = None
+    website: str
+
+class ProductCreate(BaseModel):
+    brand_id: str
+    name: str
+    category_key: str
+    product_url: str
+    price: Optional[float] = None
+    size: Optional[str] = None
+    image_url: Optional[str] = None
+
 class MatchRequest(BaseModel):
     session_id: str
 
