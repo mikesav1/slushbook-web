@@ -756,16 +756,25 @@ async def signup(request: SignupRequest):
 @api_router.post("/auth/login")
 async def login(request: LoginRequest, response: Response):
     """Login with email/password"""
+    logger.info(f"Login attempt for: {request.email}")
+    
     # Find user
     user_doc = await db.users.find_one({"email": request.email})
     if not user_doc:
+        logger.warning(f"User not found: {request.email}")
         raise HTTPException(
             status_code=401,
             detail="Invalid email or password"
         )
     
+    logger.info(f"User found: {request.email}, verifying password...")
+    
     # Verify password
-    if not verify_password(request.password, user_doc["hashed_password"]):
+    password_valid = verify_password(request.password, user_doc["hashed_password"])
+    logger.info(f"Password verification result: {password_valid}")
+    
+    if not password_valid:
+        logger.warning(f"Password verification failed for: {request.email}")
         raise HTTPException(
             status_code=401,
             detail="Invalid email or password"
