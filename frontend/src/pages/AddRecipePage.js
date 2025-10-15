@@ -23,9 +23,12 @@ const AddRecipePage = ({ sessionId }) => {
     ingredients: [
       { name: '', category_key: '', quantity: 0, unit: 'ml', role: 'required', brix: null }
     ],
-    steps: ['']
+    steps: [''],
+    image_url: '/api/images/placeholder.jpg'
   });
   const [tagInput, setTagInput] = useState('');
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   useEffect(() => {
     checkLimits();
