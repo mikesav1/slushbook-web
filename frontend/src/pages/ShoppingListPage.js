@@ -8,6 +8,7 @@ import { Button } from '../components/ui/button';
 const ShoppingListPage = ({ sessionId }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     fetchShoppingList();
