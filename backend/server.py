@@ -369,6 +369,7 @@ async def seed_recipes():
         {
             "name": "Vandmelon Splash",
             "description": "Forfriskende vandmelon slushice med mynte",
+            "image_url": "https://images.unsplash.com/photo-1587049352846-4a222e784099?w=400&h=600&fit=crop",
             "color": "pink",
             "alcohol_flag": False,
             "target_brix": 13.0,
