@@ -524,6 +524,28 @@ const AddRecipePage = ({ sessionId }) => {
                 rows={2}
                 className="flex-1"
               />
+              <div className="flex flex-col gap-1">
+                {index > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => moveStepUp(index)}
+                    className="text-cyan-500 hover:text-cyan-700 p-1"
+                    title="Flyt op"
+                  >
+                    <FaArrowUp size={14} />
+                  </button>
+                )}
+                {index < recipe.steps.length - 1 && (
+                  <button
+                    type="button"
+                    onClick={() => moveStepDown(index)}
+                    className="text-cyan-500 hover:text-cyan-700 p-1"
+                    title="Flyt ned"
+                  >
+                    <FaArrowDown size={14} />
+                  </button>
+                )}
+              </div>
               {recipe.steps.length > 1 && (
                 <button
                   type="button"
