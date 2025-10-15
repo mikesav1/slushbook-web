@@ -444,6 +444,7 @@ async def seed_recipes():
         {
             "name": "Mojito Slush (18+)",
             "description": "Klassisk mojito som frozen slushice",
+            "image_url": "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=600&fit=crop",
             "color": "green",
             "alcohol_flag": True,
             "target_brix": 12.0,
