@@ -556,7 +556,7 @@ async def seed_recipes():
             **recipe_data,
             base_volume_ml=1000,
             author="system",
-            author_name="SlushFinder"
+            author_name="SLUSHBOOK"
         )
         doc = recipe.model_dump()
         doc['created_at'] = doc['created_at'].isoformat()
