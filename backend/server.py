@@ -860,30 +860,49 @@ async def create_recipe(recipe_data: RecipeCreate):
 
 @api_router.put("/recipes/{recipe_id}", response_model=Recipe)
 async def update_recipe(recipe_id: str, recipe_data: RecipeCreate):
-    # Check ownership
-    existing = await db.user_recipes.find_one(
+    # Check if recipe exists in user_recipes first
+    existing_user = await db.user_recipes.find_one(
         {"id": recipe_id, "session_id": recipe_data.session_id}
     )
     
-    if not existing:
-        raise HTTPException(status_code=404, detail="Recipe not found or not owned by you")
+    # Check if it's a system recipe
+    existing_system = await db.recipes.find_one({"id": recipe_id})
+    
+    if not existing_user and not existing_system:
+        raise HTTPException(status_code=404, detail="Recipe not found")
     
     recipe_dict = recipe_data.model_dump()
     session_id = recipe_dict.pop('session_id')
     
-    recipe = Recipe(
-        **recipe_dict,
-        id=recipe_id,
-        author=session_id,
-        author_name="Mig",
-        created_at=datetime.fromisoformat(existing['created_at']) if isinstance(existing['created_at'], str) else existing['created_at']
-    )
+    # If it's a system recipe, update in recipes collection
+    if existing_system:
+        existing = existing_system
+        collection = db.recipes
+        recipe = Recipe(
+            **recipe_dict,
+            id=recipe_id,
+            author=existing.get('author', 'system'),
+            author_name=existing.get('author_name', 'SLUSHBOOK'),
+            created_at=datetime.fromisoformat(existing['created_at']) if isinstance(existing['created_at'], str) else existing['created_at']
+        )
+        doc = recipe.model_dump()
+        doc['created_at'] = doc['created_at'].isoformat()
+    else:
+        # User recipe
+        existing = existing_user
+        collection = db.user_recipes
+        recipe = Recipe(
+            **recipe_dict,
+            id=recipe_id,
+            author=session_id,
+            author_name="Mig",
+            created_at=datetime.fromisoformat(existing['created_at']) if isinstance(existing['created_at'], str) else existing['created_at']
+        )
+        doc = recipe.model_dump()
+        doc['session_id'] = session_id
+        doc['created_at'] = doc['created_at'].isoformat()
     
-    doc = recipe.model_dump()
-    doc['session_id'] = session_id
-    doc['created_at'] = doc['created_at'].isoformat()
-    
-    await db.user_recipes.replace_one(
+    await collection.replace_one(
         {"id": recipe_id},
         doc
     )
