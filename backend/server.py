@@ -1184,6 +1184,60 @@ async def delete_shopping_list_item(item_id: str):
     
     return {"message": "Item deleted"}
 
+# Brands & Products (Leverandører)
+@api_router.post("/brands", response_model=Brand)
+async def create_brand(brand_data: BrandCreate):
+    brand = Brand(**brand_data.model_dump())
+    doc = brand.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.brands.insert_one(doc)
+    return brand
+
+@api_router.get("/brands")
+async def get_brands():
+    brands = await db.brands.find({"active": True}, {"_id": 0}).to_list(100)
+    for brand in brands:
+        if isinstance(brand.get('created_at'), str):
+            brand['created_at'] = datetime.fromisoformat(brand['created_at'])
+    return brands
+
+@api_router.post("/products", response_model=Product)
+async def create_product(product_data: ProductCreate):
+    product = Product(**product_data.model_dump())
+    doc = product.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.products.insert_one(doc)
+    return product
+
+@api_router.get("/products")
+async def get_products(category_key: Optional[str] = None):
+    query = {"active": True}
+    if category_key:
+        query["category_key"] = category_key
+    
+    products = await db.products.find(query, {"_id": 0}).to_list(100)
+    for product in products:
+        if isinstance(product.get('created_at'), str):
+            product['created_at'] = datetime.fromisoformat(product['created_at'])
+    
+    # Get brand info for each product
+    for product in products:
+        brand = await db.brands.find_one({"id": product['brand_id']}, {"_id": 0})
+        if brand:
+            product['brand'] = brand
+    
+    return products
+
+@api_router.post("/products/{product_id}/click")
+async def track_product_click(product_id: str):
+    result = await db.products.update_one(
+        {"id": product_id},
+        {"$inc": {"click_count": 1}}
+    )
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return {"message": "Click tracked"}
+
 # Image upload
 @api_router.post("/upload")
 async def upload_image(file: UploadFile = File(...)):
