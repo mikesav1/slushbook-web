@@ -16,9 +16,13 @@ const HomePage = ({ sessionId }) => {
   const fetchFeaturedRecipes = async () => {
     try {
       const response = await axios.get(`${API}/recipes?session_id=${sessionId}`);
-      // Get 6 random recipes
-      const shuffled = response.data.sort(() => 0.5 - Math.random());
-      setFeaturedRecipes(shuffled.slice(0, 6));
+      // Sort by created_at (newest first) and get 8 most recent
+      const sortedByDate = response.data.sort((a, b) => {
+        const dateA = new Date(a.created_at || 0);
+        const dateB = new Date(b.created_at || 0);
+        return dateB - dateA; // Newest first
+      });
+      setFeaturedRecipes(sortedByDate.slice(0, 8));
     } catch (error) {
       console.error('Error fetching recipes:', error);
     } finally {
