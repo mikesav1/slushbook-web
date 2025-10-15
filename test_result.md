@@ -119,15 +119,18 @@ backend:
   
   - task: "Machine DELETE endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added DELETE /api/machines/{machine_id} endpoint to delete user machines. Endpoint accepts session_id as query parameter for ownership verification."
+      - working: true
+        agent: "testing"
+        comment: "Comprehensive machine CRUD testing completed successfully. All endpoints working correctly: ✅ POST /api/machines (creates machines with proper data validation) ✅ GET /api/machines/{session_id} (retrieves machines for session) ✅ PUT /api/machines/{machine_id} (updates machine data correctly) ✅ DELETE /api/machines/{machine_id} (deletes machines and removes from database) ✅ Complete CRUD flow test (create → get → update → delete → verify deletion). All operations handle session_id ownership verification properly. Machine data structure includes id, session_id, name, tank_volumes_ml, loss_margin_pct fields. Database persistence working correctly."
 
 frontend:
   - task: "Display recipe images on cards and detail pages"
