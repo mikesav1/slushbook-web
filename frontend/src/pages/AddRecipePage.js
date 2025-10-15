@@ -458,6 +458,7 @@ const AddRecipePage = ({ sessionId }) => {
                   placeholder="Mængde"
                   value={ingredient.quantity}
                   onChange={(e) => updateIngredient(index, 'quantity', e.target.value)}
+                  onFocus={(e) => e.target.select()}
                 />
                 <select
                   value={ingredient.unit}
