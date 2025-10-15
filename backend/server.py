@@ -476,6 +476,7 @@ async def seed_recipes():
         {
             "name": "Piña Colada Slush (18+)",
             "description": "Tropisk piña colada som slushice",
+            "image_url": "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=400&h=600&fit=crop",
             "color": "yellow",
             "alcohol_flag": True,
             "target_brix": 13.0,
