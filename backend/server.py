@@ -541,6 +541,7 @@ async def seed_recipes():
         {
             "name": "Aperol Spritz Frozen (18+)",
             "description": "Italiensk favorit som slushice",
+            "image_url": "https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?w=400&h=600&fit=crop",
             "color": "orange",
             "alcohol_flag": True,
             "target_brix": 11.0,
