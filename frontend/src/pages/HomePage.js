@@ -65,7 +65,7 @@ const HomePage = ({ sessionId }) => {
                 className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-full font-semibold hover:shadow-xl transition-all hover:scale-105"
               >
                 <FaMagic className="inline mr-2" />
-                Find Match Nu
+                Find match nu
               </Link>
               <Link
                 to="/recipes"
@@ -73,7 +73,7 @@ const HomePage = ({ sessionId }) => {
                 className="px-8 py-4 bg-white text-gray-800 rounded-full font-semibold hover:shadow-xl transition-all hover:scale-105"
               >
                 <FaBook className="inline mr-2" />
-                Gennemse Alle
+                Gennemse alle
               </Link>
             </div>
           </div>
