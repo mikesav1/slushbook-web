@@ -366,23 +366,42 @@ const RecipeDetailPage = ({ sessionId }) => {
           </Button>
         </div>
         <div className="space-y-3">
-          {ingredientsToShow.map((ingredient, index) => (
-            <div
-              key={index}
-              data-testid={`ingredient-${index}`}
-              className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-            >
-              <div className="flex-1">
-                <span className="font-medium">{ingredient.name}</span>
-                {ingredient.role === 'optional' && (
-                  <span className="ml-2 text-xs text-gray-500">(valgfri)</span>
+          {ingredientsToShow.map((ingredient, index) => {
+            const product = getProductForIngredient(ingredient.category_key);
+            return (
+              <div
+                key={index}
+                data-testid={`ingredient-${index}`}
+                className="p-3 bg-gray-50 rounded-lg"
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex-1">
+                    <span className="font-medium">{ingredient.name}</span>
+                    {ingredient.role === 'optional' && (
+                      <span className="ml-2 text-xs text-gray-500">(valgfri)</span>
+                    )}
+                  </div>
+                  <span className="font-semibold text-cyan-600">
+                    {ingredient.quantity} {ingredient.unit}
+                  </span>
+                </div>
+                {product && (
+                  <a
+                    href={product.product_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => trackClick(product.id)}
+                    className="flex items-center gap-2 text-sm text-emerald-600 hover:text-emerald-700 font-medium"
+                  >
+                    🛒 Køb hos {product.brand?.name || 'leverandør'}
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
                 )}
               </div>
-              <span className="font-semibold text-cyan-600">
-                {ingredient.quantity} {ingredient.unit}
-              </span>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
