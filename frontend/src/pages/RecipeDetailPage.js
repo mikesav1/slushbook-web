@@ -158,8 +158,15 @@ const RecipeDetailPage = ({ sessionId }) => {
           <div className="absolute bottom-6 left-6 right-24 text-white">
             <h1 className="text-4xl font-bold mb-2">{recipe.name}</h1>
             <div className="flex flex-wrap gap-3 items-center">
+              {recipe.type && (
+                <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-800 rounded-full text-sm font-semibold capitalize">
+                  {recipe.type}
+                </span>
+              )}
               <span className={`color-badge color-${recipe.color}`}></span>
-              <span className="brix-indicator">{recipe.target_brix}°Bx</span>
+              <span className="brix-indicator" title="Sukkergrad - Perfekt slush: 13-15°Bx">
+                {recipe.target_brix}°Bx
+              </span>
               {recipe.alcohol_flag && (
                 <span className="alcohol-badge">
                   <FaWineBottle /> 18+
