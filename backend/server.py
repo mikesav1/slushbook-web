@@ -1022,6 +1022,90 @@ async def update_member_role(user_id: str, role_data: dict, request: Request):
     
     return {"message": "Rolle opdateret"}
 
+
+@api_router.post("/admin/members/create")
+async def create_member(member_data: dict, request: Request):
+    """Create new user (admin only)"""
+    user = await get_current_user(request, None, db)
+    if not user or user.role != "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Kun admin har adgang"
+        )
+    
+    email = member_data.get("email")
+    name = member_data.get("name")
+    password = member_data.get("password")
+    role = member_data.get("role", "guest")
+    
+    if not email or not name or not password:
+        raise HTTPException(
+            status_code=400,
+            detail="Email, navn og password påkrævet"
+        )
+    
+    # Check if user exists
+    existing = await db.users.find_one({"email": email})
+    if existing:
+        raise HTTPException(
+            status_code=400,
+            detail="Email er allerede registreret"
+        )
+    
+    # Create user
+    user_id = str(uuid.uuid4())
+    hashed_password = get_password_hash(password)
+    
+    new_user = {
+        "id": user_id,
+        "email": email,
+        "name": name,
+        "role": role,
+        "picture": None,
+        "hashed_password": hashed_password,
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.users.insert_one(new_user)
+    
+    return {"message": "Bruger oprettet", "user_id": user_id}
+
+
+@api_router.put("/admin/members/{user_id}/reset-password")
+async def reset_member_password(user_id: str, password_data: dict, request: Request):
+    """Reset user password (admin only)"""
+    user = await get_current_user(request, None, db)
+    if not user or user.role != "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Kun admin har adgang"
+        )
+    
+    new_password = password_data.get("password")
+    if not new_password or len(new_password) < 6:
+        raise HTTPException(
+            status_code=400,
+            detail="Password skal være mindst 6 tegn"
+        )
+    
+    # Update password
+    hashed_password = get_password_hash(new_password)
+    result = await db.users.update_one(
+        {"id": user_id},
+        {"$set": {"hashed_password": hashed_password}}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(
+            status_code=404,
+            detail="Bruger ikke fundet"
+        )
+    
+    # Delete all sessions for this user
+    await db.user_sessions.delete_many({"user_id": user_id})
+    
+    return {"message": "Password nulstillet"}
+
 # User initialization
 @api_router.post("/user/init", response_model=UserInitResponse)
 async def init_user():
