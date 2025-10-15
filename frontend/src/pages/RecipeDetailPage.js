@@ -297,6 +297,17 @@ const RecipeDetailPage = ({ sessionId }) => {
               <div className={`w-full h-full bg-gradient-to-br from-${recipe.color}-500 to-${recipe.color}-600`}></div>
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            
+            {/* Type Icon - Mobile (in corner of image) */}
+            {recipe.type && (
+              <div className="md:hidden absolute bottom-4 left-4">
+                <img 
+                  src={`/icons/${recipe.type}.png`} 
+                  alt={recipe.type}
+                  className="w-12 h-12 rounded-full border-2 border-white shadow-lg bg-white p-1"
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
