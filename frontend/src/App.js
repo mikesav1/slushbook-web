@@ -158,33 +158,63 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="app-container">
-        {/* Background decorations */}
-        <div className="bg-decoration bg-decoration-1"></div>
-        <div className="bg-decoration bg-decoration-2"></div>
-
-        <div className="relative z-10">
-          <Navigation />
-
-          <main className="container mx-auto px-4 py-6 mb-20 md:mb-6">
-            <Routes>
-              <Route path="/" element={<HomePage sessionId={sessionId} />} />
-              <Route path="/recipes" element={<RecipesPage sessionId={sessionId} />} />
-              <Route path="/recipe/:id" element={<RecipeDetailPage sessionId={sessionId} />} />
-              <Route path="/pantry" element={<PantryPage sessionId={sessionId} />} />
-              <Route path="/match" element={<MatchFinderPage sessionId={sessionId} />} />
-              <Route path="/shopping" element={<ShoppingListPage sessionId={sessionId} />} />
-              <Route path="/favorites" element={<FavoritesPage sessionId={sessionId} />} />
-              <Route path="/settings" element={<SettingsPage sessionId={sessionId} />} />
-              <Route path="/add-recipe" element={<AddRecipePage sessionId={sessionId} />} />
-              <Route path="/edit-recipe/:id" element={<EditRecipePage sessionId={sessionId} />} />
-            </Routes>
-          </main>
-        </div>
-
-        <Toaster position="top-center" richColors />
-      </div>
+      <AuthProvider>
+        <AppContent sessionId={sessionId} />
+      </AuthProvider>
     </BrowserRouter>
+  );
+}
+
+// Separate component to use AuthContext
+const AppContent = ({ sessionId }) => {
+  const { user, loading, login } = useAuth();
+  const location = useLocation();
+
+  // Don't show nav on auth pages
+  const isAuthPage = ['/login', '/signup', '/forgot-password', '/reset-password'].includes(location.pathname);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="loading-spinner"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="app-container">
+      {/* Background decorations */}
+      <div className="bg-decoration bg-decoration-1"></div>
+      <div className="bg-decoration bg-decoration-2"></div>
+
+      <div className="relative z-10">
+        {!isAuthPage && <Navigation />}
+
+        <main className={`container mx-auto px-4 py-6 ${!isAuthPage ? 'mb-20 md:mb-6' : ''}`}>
+          <Routes>
+            {/* Auth Routes */}
+            <Route path="/login" element={<LoginPage onLogin={login} />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+
+            {/* App Routes */}
+            <Route path="/" element={<HomePage sessionId={sessionId} />} />
+            <Route path="/recipes" element={<RecipesPage sessionId={sessionId} />} />
+            <Route path="/recipe/:id" element={<RecipeDetailPage sessionId={sessionId} />} />
+            <Route path="/pantry" element={<PantryPage sessionId={sessionId} />} />
+            <Route path="/match" element={<MatchFinderPage sessionId={sessionId} />} />
+            <Route path="/shopping" element={<ShoppingListPage sessionId={sessionId} />} />
+            <Route path="/favorites" element={<FavoritesPage sessionId={sessionId} />} />
+            <Route path="/settings" element={<SettingsPage sessionId={sessionId} />} />
+            <Route path="/add-recipe" element={<AddRecipePage sessionId={sessionId} />} />
+            <Route path="/edit-recipe/:id" element={<EditRecipePage sessionId={sessionId} />} />
+          </Routes>
+        </main>
+      </div>
+
+      <Toaster position="top-center" richColors />
+    </div>
   );
 }
 
