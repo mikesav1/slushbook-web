@@ -965,6 +965,63 @@ async def update_profile(request: Request, update_data: dict):
     
     return {"message": "Profil opdateret"}
 
+
+# =============================================================================
+# ADMIN ENDPOINTS - Members Management
+# =============================================================================
+
+@api_router.get("/admin/members")
+async def get_all_members(request: Request):
+    """Get all members (admin only)"""
+    user = await get_current_user(request, None, db)
+    if not user or user.role != "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Kun admin har adgang"
+        )
+    
+    # Get all users
+    users = await db.users.find({}).to_list(length=None)
+    
+    # Remove password hashes
+    for u in users:
+        u.pop("hashed_password", None)
+        u["_id"] = str(u.get("_id", ""))
+    
+    return users
+
+
+@api_router.put("/admin/members/{user_id}/role")
+async def update_member_role(user_id: str, role_data: dict, request: Request):
+    """Update user role (admin only)"""
+    user = await get_current_user(request, None, db)
+    if not user or user.role != "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Kun admin har adgang"
+        )
+    
+    new_role = role_data.get("role")
+    if new_role not in ["guest", "pro", "editor", "admin"]:
+        raise HTTPException(
+            status_code=400,
+            detail="Ugyldig rolle"
+        )
+    
+    # Update role
+    result = await db.users.update_one(
+        {"id": user_id},
+        {"$set": {"role": new_role}}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(
+            status_code=404,
+            detail="Bruger ikke fundet"
+        )
+    
+    return {"message": "Rolle opdateret"}
+
 # User initialization
 @api_router.post("/user/init", response_model=UserInitResponse)
 async def init_user():
