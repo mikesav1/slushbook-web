@@ -179,14 +179,24 @@ const RecipeDetailPage = ({ sessionId }) => {
         <div className="grid md:grid-cols-2 gap-0">
           {/* Left: Description & Info */}
           <div className="p-6 md:p-8 flex flex-col justify-center order-2 md:order-1">
+            {/* Type Icon - Desktop (above description) */}
+            {recipe.type && (
+              <div className="hidden md:flex items-center gap-3 mb-6">
+                <img 
+                  src={`/icons/${recipe.type}.png`} 
+                  alt={recipe.type}
+                  className="w-16 h-16 rounded-full border-2 border-gray-200 shadow-md bg-white p-2"
+                />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase font-semibold">Type</p>
+                  <p className="text-lg font-bold text-gray-800 capitalize">{recipe.type}</p>
+                </div>
+              </div>
+            )}
+            
             <div className="mb-4">
               <h1 className="text-3xl md:text-4xl font-bold mb-3">{recipe.name}</h1>
               <div className="flex flex-wrap gap-2 mb-4">
-                {recipe.type && (
-                  <span className="px-3 py-1 bg-cyan-50 text-cyan-700 rounded-full text-sm font-semibold capitalize">
-                    {recipe.type}
-                  </span>
-                )}
                 <span className="brix-indicator text-xs" title="Sukkergrad - Perfekt slush: 13-15°Bx">
                   {recipe.target_brix}°Bx
                 </span>
