@@ -37,6 +37,12 @@ const MembersPage = () => {
     }
   };
 
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [createForm, setCreateForm] = useState({ email: '', name: '', password: '', role: 'guest' });
+  const [resetPassword, setResetPassword] = useState('');
+
   const updateUserRole = async (userId, newRole) => {
     try {
       await axios.put(`${API}/admin/members/${userId}/role`, 
@@ -48,6 +54,39 @@ const MembersPage = () => {
     } catch (error) {
       console.error('Error updating role:', error);
       toast.error('Kunne ikke opdatere rolle');
+    }
+  };
+
+  const handleCreateUser = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(`${API}/admin/members/create`, createForm, {
+        withCredentials: true
+      });
+      toast.success('Bruger oprettet!');
+      setIsCreateModalOpen(false);
+      setCreateForm({ email: '', name: '', password: '', role: 'guest' });
+      fetchMembers();
+    } catch (error) {
+      console.error('Error creating user:', error);
+      toast.error(error.response?.data?.detail || 'Kunne ikke oprette bruger');
+    }
+  };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`${API}/admin/members/${selectedUser.id}/reset-password`, 
+        { password: resetPassword },
+        { withCredentials: true }
+      );
+      toast.success('Password nulstillet!');
+      setIsResetModalOpen(false);
+      setResetPassword('');
+      setSelectedUser(null);
+    } catch (error) {
+      console.error('Error resetting password:', error);
+      toast.error(error.response?.data?.detail || 'Kunne ikke nulstille password');
     }
   };
 
