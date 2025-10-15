@@ -40,9 +40,9 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-2" data-testid="logo-link">
             <img 
-              src="/logo-samlet.png" 
+              src="/kop.png" 
               alt="SLUSHBOOK" 
-              className="h-12"
+              className="h-10"
             />
           </Link>
 
