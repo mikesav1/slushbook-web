@@ -83,7 +83,14 @@ const AddRecipePage = ({ sessionId }) => {
   };
 
   const addStep = () => {
-    setRecipe({ ...recipe, steps: [...recipe.steps, ''] });
+    setRecipe({ ...recipe, steps: ['', ...recipe.steps] });
+    // Scroll to top of steps section
+    setTimeout(() => {
+      const stepsSection = document.querySelector('.steps-section');
+      if (stepsSection) {
+        stepsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }, 100);
   };
 
   const updateStep = (index, value) => {
