@@ -10,11 +10,11 @@ const RecipesPage = ({ sessionId }) => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [alcoholFilter, setAlcoholFilter] = useState('both');
-  const [colorFilter, setColorFilter] = useState('');
+  const [typeFilter, setTypeFilter] = useState('');
 
   useEffect(() => {
     fetchRecipes();
-  }, [sessionId, alcoholFilter, colorFilter]);
+  }, [sessionId, alcoholFilter, typeFilter]);
 
   useEffect(() => {
     filterRecipes();
@@ -26,7 +26,7 @@ const RecipesPage = ({ sessionId }) => {
         session_id: sessionId,
         alcohol: alcoholFilter
       });
-      if (colorFilter) params.append('color', colorFilter);
+      if (typeFilter) params.append('type', typeFilter);
       
       const response = await axios.get(`${API}/recipes?${params}`);
       setRecipes(response.data);
@@ -50,15 +50,16 @@ const RecipesPage = ({ sessionId }) => {
     setFilteredRecipes(filtered);
   };
 
-  const colors = [
-    { value: 'red', label: 'Rød', class: 'color-red' },
-    { value: 'blue', label: 'Blå', class: 'color-blue' },
-    { value: 'green', label: 'Grøn', class: 'color-green' },
-    { value: 'yellow', label: 'Gul', class: 'color-yellow' },
-    { value: 'orange', label: 'Orange', class: 'color-orange' },
-    { value: 'pink', label: 'Pink', class: 'color-pink' },
-    { value: 'purple', label: 'Lilla', class: 'color-purple' },
-    { value: 'brown', label: 'Brun', class: 'color-brown' }
+  const types = [
+    { value: 'klassisk', label: 'Klassisk', icon: 'klassisk.png' },
+    { value: 'juice', label: 'Juice', icon: 'juice.png' },
+    { value: 'smoothie', label: 'Smoothie', icon: 'smoothie.png' },
+    { value: 'sodavand', label: 'Sodavand', icon: 'sodavand.png' },
+    { value: 'cocktail', label: 'Cocktail', icon: 'cocktail.png' },
+    { value: 'kaffe', label: 'Kaffe', icon: 'kaffe.png' },
+    { value: 'sport', label: 'Sport', icon: 'sport.png' },
+    { value: 'sukkerfri', label: 'Sukkerfri', icon: 'sukkerfri.png' },
+    { value: 'maelk', label: 'Mælk', icon: 'maelk.png' }
   ];
 
   return (
