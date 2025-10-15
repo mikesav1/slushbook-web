@@ -338,6 +338,7 @@ async def seed_recipes():
         {
             "name": "Tropisk Paradise",
             "description": "Eksotisk blanding af mango og passionsfrugt",
+            "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=600&fit=crop",
             "color": "yellow",
             "alcohol_flag": False,
             "target_brix": 14.0,
