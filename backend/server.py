@@ -197,6 +197,7 @@ async def seed_recipes():
         {
             "name": "Blå Hawaii",
             "description": "Eksotisk blå slushice med tropisk smag",
+            "image_url": "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&h=600&fit=crop",
             "color": "blue",
             "alcohol_flag": False,
             "target_brix": 13.0,
