@@ -278,9 +278,253 @@ class BackendTester:
             
         return True
         
+    def test_machine_create(self):
+        """Test machine creation (POST /api/machines)"""
+        self.log("Testing machine creation...")
+        
+        machine_data = {
+            "session_id": self.test_session_id,
+            "name": "Test Machine",
+            "tank_volumes_ml": [10000],
+            "loss_margin_pct": 5
+        }
+        
+        response = self.session.post(f"{BASE_URL}/machines", json=machine_data)
+        
+        if response.status_code == 200:
+            data = response.json()
+            self.created_machine_id = data.get("id")
+            self.log(f"✅ Machine created successfully - ID: {self.created_machine_id}")
+            
+            # Verify machine data structure
+            required_fields = ['id', 'session_id', 'name', 'tank_volumes_ml', 'loss_margin_pct']
+            for field in required_fields:
+                if field not in data:
+                    self.log(f"❌ Missing required field in machine data: {field}")
+                    return False
+            
+            # Verify data values
+            if data['name'] != machine_data['name']:
+                self.log(f"❌ Machine name mismatch: expected {machine_data['name']}, got {data['name']}")
+                return False
+                
+            if data['tank_volumes_ml'] != machine_data['tank_volumes_ml']:
+                self.log(f"❌ Tank volumes mismatch: expected {machine_data['tank_volumes_ml']}, got {data['tank_volumes_ml']}")
+                return False
+                
+            self.log("✅ Machine data structure and values are correct")
+            
+        else:
+            self.log(f"❌ Machine creation failed: {response.status_code} - {response.text}")
+            return False
+            
+        return True
+        
+    def test_machine_get(self):
+        """Test getting machines (GET /api/machines/{session_id})"""
+        self.log("Testing machine retrieval...")
+        
+        response = self.session.get(f"{BASE_URL}/machines/{self.test_session_id}")
+        
+        if response.status_code == 200:
+            machines = response.json()
+            self.log(f"✅ Machines retrieved successfully - Count: {len(machines)}")
+            
+            # Verify our created machine is in the list
+            found_machine = None
+            for machine in machines:
+                if machine.get('id') == self.created_machine_id:
+                    found_machine = machine
+                    break
+                    
+            if found_machine:
+                self.log("✅ Created machine found in machine list")
+                
+                # Verify machine data
+                if found_machine['name'] == "Test Machine":
+                    self.log("✅ Machine name matches")
+                else:
+                    self.log(f"❌ Machine name mismatch: expected 'Test Machine', got {found_machine['name']}")
+                    return False
+                    
+            else:
+                self.log("❌ Created machine not found in machine list")
+                return False
+                
+        else:
+            self.log(f"❌ Machine retrieval failed: {response.status_code} - {response.text}")
+            return False
+            
+        return True
+        
+    def test_machine_update(self):
+        """Test machine update (PUT /api/machines/{machine_id})"""
+        self.log("Testing machine update...")
+        
+        if not self.created_machine_id:
+            self.log("❌ No machine ID available for update test")
+            return False
+            
+        update_data = {
+            "session_id": self.test_session_id,
+            "name": "Updated Machine",
+            "tank_volumes_ml": [15000],
+            "loss_margin_pct": 7
+        }
+        
+        response = self.session.put(f"{BASE_URL}/machines/{self.created_machine_id}", json=update_data)
+        
+        if response.status_code == 200:
+            self.log("✅ Machine update successful")
+            
+            # Verify update by getting the machine again
+            get_response = self.session.get(f"{BASE_URL}/machines/{self.test_session_id}")
+            if get_response.status_code == 200:
+                machines = get_response.json()
+                updated_machine = None
+                for machine in machines:
+                    if machine.get('id') == self.created_machine_id:
+                        updated_machine = machine
+                        break
+                        
+                if updated_machine:
+                    if updated_machine['name'] == "Updated Machine":
+                        self.log("✅ Machine name updated correctly")
+                    else:
+                        self.log(f"❌ Machine name not updated: expected 'Updated Machine', got {updated_machine['name']}")
+                        return False
+                        
+                    if updated_machine['tank_volumes_ml'] == [15000]:
+                        self.log("✅ Tank volumes updated correctly")
+                    else:
+                        self.log(f"❌ Tank volumes not updated: expected [15000], got {updated_machine['tank_volumes_ml']}")
+                        return False
+                        
+                else:
+                    self.log("❌ Updated machine not found")
+                    return False
+            else:
+                self.log(f"❌ Failed to verify update: {get_response.status_code}")
+                return False
+                
+        else:
+            self.log(f"❌ Machine update failed: {response.status_code} - {response.text}")
+            return False
+            
+        return True
+        
+    def test_machine_delete(self):
+        """Test machine deletion (DELETE /api/machines/{machine_id})"""
+        self.log("Testing machine deletion...")
+        
+        if not self.created_machine_id:
+            self.log("❌ No machine ID available for delete test")
+            return False
+            
+        response = self.session.delete(f"{BASE_URL}/machines/{self.created_machine_id}?session_id={self.test_session_id}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            self.log("✅ Machine deletion successful")
+            
+            # Verify deletion by checking if machine is no longer in the list
+            get_response = self.session.get(f"{BASE_URL}/machines/{self.test_session_id}")
+            if get_response.status_code == 200:
+                machines = get_response.json()
+                deleted_machine = None
+                for machine in machines:
+                    if machine.get('id') == self.created_machine_id:
+                        deleted_machine = machine
+                        break
+                        
+                if not deleted_machine:
+                    self.log("✅ Machine successfully removed from list")
+                else:
+                    self.log("❌ Machine still exists after deletion")
+                    return False
+            else:
+                self.log(f"❌ Failed to verify deletion: {get_response.status_code}")
+                return False
+                
+        else:
+            self.log(f"❌ Machine deletion failed: {response.status_code} - {response.text}")
+            return False
+            
+        return True
+        
+    def test_machine_crud_complete_flow(self):
+        """Test complete machine CRUD flow as requested"""
+        self.log("Testing complete machine CRUD flow...")
+        
+        # Step 1: Create a test machine
+        machine_data = {
+            "session_id": self.test_session_id,
+            "name": "Test Machine",
+            "tank_volumes_ml": [10000],
+            "loss_margin_pct": 5
+        }
+        
+        create_response = self.session.post(f"{BASE_URL}/machines", json=machine_data)
+        if create_response.status_code != 200:
+            self.log(f"❌ Step 1 - Machine creation failed: {create_response.status_code}")
+            return False
+            
+        machine_id = create_response.json().get("id")
+        self.log(f"✅ Step 1 - Machine created with ID: {machine_id}")
+        
+        # Step 2: Get machines and verify creation
+        get_response = self.session.get(f"{BASE_URL}/machines/{self.test_session_id}")
+        if get_response.status_code != 200:
+            self.log(f"❌ Step 2 - Get machines failed: {get_response.status_code}")
+            return False
+            
+        machines = get_response.json()
+        found = any(m.get('id') == machine_id for m in machines)
+        if not found:
+            self.log("❌ Step 2 - Created machine not found in list")
+            return False
+        self.log("✅ Step 2 - Machine found in list")
+        
+        # Step 3: Update machine
+        update_data = {
+            "session_id": self.test_session_id,
+            "name": "Updated Machine",
+            "tank_volumes_ml": [15000],
+            "loss_margin_pct": 7
+        }
+        
+        update_response = self.session.put(f"{BASE_URL}/machines/{machine_id}", json=update_data)
+        if update_response.status_code != 200:
+            self.log(f"❌ Step 3 - Machine update failed: {update_response.status_code}")
+            return False
+        self.log("✅ Step 3 - Machine updated successfully")
+        
+        # Step 4: Delete machine
+        delete_response = self.session.delete(f"{BASE_URL}/machines/{machine_id}?session_id={self.test_session_id}")
+        if delete_response.status_code != 200:
+            self.log(f"❌ Step 4 - Machine deletion failed: {delete_response.status_code}")
+            return False
+        self.log("✅ Step 4 - Machine deleted successfully")
+        
+        # Step 5: Verify deletion
+        verify_response = self.session.get(f"{BASE_URL}/machines/{self.test_session_id}")
+        if verify_response.status_code != 200:
+            self.log(f"❌ Step 5 - Verification get failed: {verify_response.status_code}")
+            return False
+            
+        final_machines = verify_response.json()
+        still_exists = any(m.get('id') == machine_id for m in final_machines)
+        if still_exists:
+            self.log("❌ Step 5 - Machine still exists after deletion")
+            return False
+        self.log("✅ Step 5 - Machine successfully removed from list")
+        
+        self.log("✅ Complete machine CRUD flow successful")
+        return True
+        
     def run_all_tests(self):
-        """Run all authentication tests"""
-        self.log("Starting SLUSHBOOK Authentication System Tests")
+        """Run all backend tests"""
+        self.log("Starting SLUSHBOOK Backend System Tests")
         self.log("=" * 60)
         
         tests = [
@@ -289,7 +533,12 @@ class BackendTester:
             ("Auth Check", self.test_auth_check),
             ("Logout", self.test_logout),
             ("Password Reset", self.test_password_reset),
-            ("Password Validation", self.test_password_validation)
+            ("Password Validation", self.test_password_validation),
+            ("Machine Create", self.test_machine_create),
+            ("Machine Get", self.test_machine_get),
+            ("Machine Update", self.test_machine_update),
+            ("Machine Delete", self.test_machine_delete),
+            ("Complete Machine CRUD Flow", self.test_machine_crud_complete_flow)
         ]
         
         results = {}
