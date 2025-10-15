@@ -80,10 +80,16 @@ const EditRecipePage = ({ sessionId }) => {
     setRecipe({
       ...recipe,
       ingredients: [
-        ...recipe.ingredients,
-        { name: '', category_key: '', quantity: 0, unit: 'ml', role: 'required', brix: null }
+        { name: '', category_key: '', quantity: '', unit: 'ml', role: 'required', brix: null },
+        ...recipe.ingredients
       ]
     });
+    setTimeout(() => {
+      const ingredientsSection = document.querySelector('.ingredients-section');
+      if (ingredientsSection) {
+        ingredientsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }, 100);
   };
 
   const updateIngredient = (index, field, value) => {
