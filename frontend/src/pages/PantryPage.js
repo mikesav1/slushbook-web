@@ -208,7 +208,7 @@ const PantryPage = ({ sessionId }) => {
       ) : pantryItems.length === 0 ? (
         <div className="empty-state">
           <div className="empty-state-icon"><FaBox /></div>
-          <h3 className="text-xl font-bold mb-2">Dit pantry er tomt</h3>
+          <h3 className="text-xl font-bold mb-2">Dine ingredienser er tomme</h3>
           <p className="text-gray-600 mb-4">Tilføj ingredienser for at få opskrift-forslag</p>
           <Button onClick={() => setIsAddDialogOpen(true)} data-testid="empty-add-button">
             <FaPlus className="mr-2" /> Tilføj Første Ingrediens
