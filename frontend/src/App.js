@@ -59,9 +59,9 @@ const Navigation = () => {
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center gap-2" data-testid="logo-link">
-            <span className="text-2xl font-bold text-cyan-600">SLUSHBOOK</span>
-          </Link>
+          <div className="flex-shrink-0">
+            {/* Logo placeholder - din egen app ikon kommer her */}
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
