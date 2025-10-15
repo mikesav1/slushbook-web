@@ -1283,6 +1283,43 @@ async def get_image(filename: str):
     
     return FileResponse(file_path)
 
+@api_router.post("/admin/update-recipe-images")
+async def update_recipe_images():
+    """Migration endpoint to update existing recipes with image URLs"""
+    image_mappings = {
+        "Hindbær Drøm": "https://images.unsplash.com/photo-1505252585461-04db1eb84625?w=400&h=600&fit=crop",
+        "Grøn Æble": "https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=400&h=600&fit=crop",
+        "Fersken Sommer": "https://images.unsplash.com/photo-1629828874514-d4b56b1d8e46?w=400&h=600&fit=crop",
+        "Tropisk Paradise": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=600&fit=crop",
+        "Kirsebær Luksus": "https://images.unsplash.com/photo-1528821128474-27f963b062bf?w=400&h=600&fit=crop",
+        "Vandmelon Splash": "https://images.unsplash.com/photo-1587049352846-4a222e784099?w=400&h=600&fit=crop",
+        "Ananas Tropical": "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?w=400&h=600&fit=crop",
+        "Blåbær Vild": "https://images.unsplash.com/photo-1498557850523-fd3d118b962e?w=400&h=600&fit=crop",
+        "Solbær Intense": "https://images.unsplash.com/photo-1464454709131-ffd692591ee5?w=400&h=600&fit=crop",
+        "Lime Cool": "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=400&h=600&fit=crop",
+        "Mojito Slush (18+)": "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=600&fit=crop",
+        "Margarita Ice (18+)": "https://images.unsplash.com/photo-1618890111938-16d077babb67?w=400&h=600&fit=crop",
+        "Piña Colada Slush (18+)": "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=400&h=600&fit=crop",
+        "Strawberry Daiquiri (18+)": "https://images.unsplash.com/photo-1597306687537-a252f6f71f49?w=400&h=600&fit=crop",
+        "Blue Lagoon Frozen (18+)": "https://images.unsplash.com/photo-1571613316887-6f8d5cbf7ef7?w=400&h=600&fit=crop",
+        "Sex on the Beach Slush (18+)": "https://images.unsplash.com/photo-1609951651556-5334e2706168?w=400&h=600&fit=crop",
+        "Aperol Spritz Frozen (18+)": "https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?w=400&h=600&fit=crop",
+        "Frozen Bellini (18+)": "https://images.unsplash.com/photo-1587223075055-82e9a937ddff?w=400&h=600&fit=crop",
+        "Cosmopolitan Slush (18+)": "https://images.unsplash.com/photo-1514361892635-6b07e31e75f9?w=400&h=600&fit=crop",
+        "Long Island Iced Tea Frozen (18+)": "https://images.unsplash.com/photo-1544145945-35c4e5f2b6cb?w=400&h=600&fit=crop"
+    }
+    
+    updated_count = 0
+    for recipe_name, image_url in image_mappings.items():
+        result = await db.recipes.update_one(
+            {"name": recipe_name, "author": "system"},
+            {"$set": {"image_url": image_url}}
+        )
+        if result.modified_count > 0:
+            updated_count += 1
+    
+    return {"message": f"Updated {updated_count} recipes with images", "total_mapped": len(image_mappings)}
+
 # Include router
 app.include_router(api_router)
 
