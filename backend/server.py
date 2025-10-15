@@ -508,6 +508,7 @@ async def seed_recipes():
         {
             "name": "Blue Lagoon Frozen (18+)",
             "description": "Blå lagune som frozen drink",
+            "image_url": "https://images.unsplash.com/photo-1571613316887-6f8d5cbf7ef7?w=400&h=600&fit=crop",
             "color": "blue",
             "alcohol_flag": True,
             "target_brix": 12.0,
