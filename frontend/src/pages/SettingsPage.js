@@ -309,7 +309,7 @@ const SettingsPage = ({ sessionId }) => {
                 className="p-4 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-lg"
               >
                 <div className="flex items-center justify-between">
-                  <div>
+                  <div className="flex-1">
                     <h3 className="font-bold text-lg">{machine.name}</h3>
                     <p className="text-sm text-gray-600">
                       Beholder: {machine.tank_volumes_ml.map(v => `${v/1000}L`).join(', ')}
@@ -322,6 +322,28 @@ const SettingsPage = ({ sessionId }) => {
                       </span>
                     )}
                   </div>
+                  {!machine.is_system && (
+                    <div className="flex space-x-2 ml-4">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEditMachine(machine)}
+                        data-testid={`edit-machine-${machine.id}`}
+                        className="hover:bg-cyan-100"
+                      >
+                        <FaEdit className="text-cyan-600" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleDeleteMachine(machine.id)}
+                        data-testid={`delete-machine-${machine.id}`}
+                        className="hover:bg-red-100"
+                      >
+                        <FaTrash className="text-red-600" />
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
