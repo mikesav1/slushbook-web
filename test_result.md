@@ -150,7 +150,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Authentication System Testing"
+    - "Authentication Frontend Flows"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
