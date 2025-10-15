@@ -174,7 +174,8 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Authentication Frontend Flows"
+    - "Machine DELETE endpoint"
+    - "Machine CRUD Operations on SettingsPage"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -184,3 +185,5 @@ agent_communication:
     message: "Completed comprehensive authentication system testing for SLUSHBOOK. Tested all 5 major authentication flows with real data using backend_test.py. Found and fixed critical issue in auth.py User model (was using _id alias instead of id field). All authentication endpoints now working correctly: signup creates users with hashed passwords, login creates sessions and returns tokens, auth check validates sessions, logout deletes sessions, password reset flow works end-to-end. Database collections (users, user_sessions, password_resets) functioning properly. Only minor issue: no password length validation implemented, but core functionality unaffected."
   - agent: "testing"
     message: "Completed comprehensive frontend authentication testing for SLUSHBOOK. Tested all requested scenarios using Playwright automation: Login Page UI (correct design with beige background, green fields, SLUSHBOOK logo), Signup Flow (form validation, account creation, redirect), Login Flow (authentication, homepage redirect, user info display), Authenticated Navigation (user name + role badge, page navigation), Logout Flow (state clearing, UI updates), Forgot Password Flow (email submission, reset token, password reset, new login), and Mobile View (responsive design, mobile navigation). All authentication frontend flows working perfectly. Used unique test email test1760551893@example.com for testing. Minor 401 errors on initial /api/auth/me calls are expected for unauthenticated users. Ready for production use."
+  - agent: "main"
+    message: "Implemented machine management CRUD operations. Backend: Added DELETE endpoint at /api/machines/{machine_id} with session_id verification. Frontend: Updated SettingsPage.js with edit/delete functionality - edit button opens pre-filled dialog, delete button shows confirmation, cancel button added. Dialog made scrollable (max-h-[90vh]) for mobile devices. Edit/delete buttons only shown for user-created machines (not system machines). Ready for testing."
