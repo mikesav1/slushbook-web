@@ -1536,6 +1536,16 @@ async def update_machine(machine_id: str, machine_data: MachineCreate):
     
     return {"message": "Machine updated"}
 
+
+@api_router.delete("/machines/{machine_id}")
+async def delete_machine(machine_id: str, session_id: str):
+    result = await db.machines.delete_one({"id": machine_id, "session_id": session_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Machine not found")
+    
+    return {"message": "Machine deleted"}
+
 # Favorites
 @api_router.get("/favorites/{session_id}")
 async def get_favorites(session_id: str):
