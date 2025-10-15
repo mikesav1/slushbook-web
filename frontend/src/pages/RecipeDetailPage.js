@@ -17,6 +17,7 @@ const RecipeDetailPage = ({ sessionId }) => {
   const [machines, setMachines] = useState([]);
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     fetchRecipe();
