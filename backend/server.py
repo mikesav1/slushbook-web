@@ -573,6 +573,7 @@ async def seed_recipes():
         {
             "name": "Cosmopolitan Slush (18+)",
             "description": "Trendy cosmopolitan som frozen drink",
+            "image_url": "https://images.unsplash.com/photo-1514361892635-6b07e31e75f9?w=400&h=600&fit=crop",
             "color": "pink",
             "alcohol_flag": True,
             "target_brix": 11.0,
