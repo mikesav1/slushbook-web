@@ -460,6 +460,7 @@ async def seed_recipes():
         {
             "name": "Margarita Ice (18+)",
             "description": "Frozen margarita slushice",
+            "image_url": "https://images.unsplash.com/photo-1618890111938-16d077babb67?w=400&h=600&fit=crop",
             "color": "yellow",
             "alcohol_flag": True,
             "target_brix": 12.0,
