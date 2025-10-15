@@ -4,15 +4,18 @@ import { toast } from 'sonner';
 import { FaCog, FaPlus, FaTrash } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { API } from '../App';
+import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
 
 const SettingsPage = ({ sessionId }) => {
+  const { user, isAdmin, isPro, isEditor } = useAuth();
   const [machines, setMachines] = useState([]);
   const [userRecipesCount, setUserRecipesCount] = useState(0);
   const [canAddRecipe, setCanAddRecipe] = useState(true);
+  const [limitMessage, setLimitMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const [isAddMachineOpen, setIsAddMachineOpen] = useState(false);
   const [newMachine, setNewMachine] = useState({
