@@ -94,6 +94,24 @@ const MembersPage = () => {
     }
   };
 
+  const handleDeleteMember = async (userId, userName) => {
+    if (!window.confirm(`Er du sikker på at du vil slette brugeren "${userName}"? Dette kan ikke fortrydes.`)) {
+      return;
+    }
+
+    try {
+      await axios.delete(`${API}/admin/members/${userId}`, {
+        withCredentials: true
+      });
+      
+      toast.success('Medlem slettet!');
+      fetchMembers(); // Refresh list
+    } catch (error) {
+      console.error('Error deleting member:', error);
+      toast.error(error.response?.data?.detail || 'Kunne ikke slette medlem');
+    }
+  };
+
   const filteredMembers = members.filter(member => {
     const matchesSearch = 
       member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
