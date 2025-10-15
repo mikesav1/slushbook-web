@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Test SLUSHBOOK authentication system thoroughly"
+user_problem_statement: "Implement machine management CRUD operations (edit, delete) and fix mobile scrolling issue on SettingsPage"
 
 backend:
   - task: "Authentication System Testing"
@@ -116,6 +116,18 @@ backend:
       - working: true
         agent: "testing"
         comment: "Comprehensive authentication testing completed. All major flows working: ✅ Signup (creates users, hashes passwords, rejects duplicates) ✅ Login (creates sessions, returns tokens, rejects invalid credentials) ✅ Auth Check (validates session tokens, returns user data) ✅ Logout (deletes sessions from database) ✅ Password Reset (creates reset tokens, updates passwords, deletes old sessions). Fixed critical User model issue in auth.py (_id vs id field). Minor: No password length validation implemented but doesn't affect functionality. Database collections (users, user_sessions, password_resets) working correctly."
+  
+  - task: "Machine DELETE endpoint"
+    implemented: true
+    working: "NA"
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added DELETE /api/machines/{machine_id} endpoint to delete user machines. Endpoint accepts session_id as query parameter for ownership verification."
 
 frontend:
   - task: "Display recipe images on cards and detail pages"
