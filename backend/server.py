@@ -293,6 +293,7 @@ async def seed_recipes():
         {
             "name": "Hindbær Drøm",
             "description": "Skøn hindbær slushice med lime",
+            "image_url": "https://images.unsplash.com/photo-1505252585461-04db1eb84625?w=400&h=600&fit=crop",
             "color": "pink",
             "alcohol_flag": False,
             "target_brix": 14.0,
