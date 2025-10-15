@@ -482,6 +482,7 @@ const AddRecipePage = ({ sessionId }) => {
                   placeholder="Brix (valgfrit)"
                   value={ingredient.brix || ''}
                   onChange={(e) => updateIngredient(index, 'brix', e.target.value)}
+                  onFocus={(e) => e.target.select()}
                 />
               </div>
             </div>
