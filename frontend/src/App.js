@@ -29,6 +29,7 @@ export const API = `${BACKEND_URL}/api`;
 const Navigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user, logout, isGuest } = useAuth();
 
   const navItems = [
     { path: "/", icon: FaHome, label: "Hjem" },
