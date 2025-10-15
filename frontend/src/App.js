@@ -14,6 +14,7 @@ import ShoppingListPage from "./pages/ShoppingListPage";
 import FavoritesPage from "./pages/FavoritesPage";
 import SettingsPage from "./pages/SettingsPage";
 import AddRecipePage from "./pages/AddRecipePage";
+import EditRecipePage from "./pages/EditRecipePage";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export const API = `${BACKEND_URL}/api`;
