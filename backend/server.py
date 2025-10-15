@@ -53,7 +53,7 @@ class Recipe(BaseModel):
     ingredients: List[Ingredient]
     steps: List[str]
     author: str = "system"
-    author_name: str = "SlushFinder"
+    author_name: str = "SLUSHBOOK"
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     rating_avg: float = 0.0
     rating_count: int = 0
