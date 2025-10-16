@@ -99,7 +99,7 @@ const HomePage = ({ sessionId }) => {
                 Opdag lækre slushice opskrifter, match med dine ingredienser, og skalér automatisk til din maskine
               </p>
               
-              <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+              <div className="flex flex-wrap gap-4 justify-start">
                 <Link
                   to="/match"
                   className="px-8 py-4 bg-gradient-to-r from-teal-400 to-cyan-500 text-white rounded-full hover:from-teal-500 hover:to-cyan-600 font-semibold text-lg shadow-lg transition-all transform hover:scale-105"
