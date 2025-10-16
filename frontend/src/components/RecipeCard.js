@@ -135,7 +135,7 @@ const RecipeCard = ({ recipe, sessionId, showMatchInfo }) => {
 
         {/* Footer */}
         <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-          <span className="brix-indicator text-xs">
+          <span className="brix-indicator">
             {recipe.target_brix}°Bx
           </span>
           {recipe.rating_avg > 0 && (
