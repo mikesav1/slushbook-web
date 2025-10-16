@@ -121,7 +121,7 @@ const HomePage = ({ sessionId }) => {
       </div>
 
       {/* Featured Recipes */}
-      <div>
+      <div className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
           <div className="flex items-center gap-4">
             <h2 className="text-2xl font-bold">
