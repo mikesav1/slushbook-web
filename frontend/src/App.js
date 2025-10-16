@@ -58,9 +58,18 @@ const Navigation = () => {
   return (
     <nav className="border-b border-gray-200 sticky top-0 z-40 shadow-sm relative" style={{backgroundColor: '#115DA8'}}>
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-end h-16">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo - Visible on mobile, hidden on desktop */}
+          <Link to="/" className="flex-shrink-0 md:hidden">
+            <img 
+              src="/slushbook-nav-logo.png" 
+              alt="SLUSHBOOK" 
+              className="h-10 w-auto"
+            />
+          </Link>
+          
           {/* Desktop Navigation - Right side only */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4 ml-auto">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
