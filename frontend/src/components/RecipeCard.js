@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaHeart, FaRegHeart, FaStar, FaWineBottle } from 'react-icons/fa';
 import axios from 'axios';
 import { toast } from 'sonner';
