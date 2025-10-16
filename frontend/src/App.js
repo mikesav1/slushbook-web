@@ -148,7 +148,7 @@ const Navigation = () => {
             ) : (
               <Link
                 to="/login"
-                className="px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 font-medium"
+                className="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-white/90 font-medium"
               >
                 Log ind
               </Link>
@@ -159,7 +159,7 @@ const Navigation = () => {
           <div className="md:hidden">
             <button
               onClick={() => navigate("/settings")}
-              className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+              className="p-2 text-white hover:bg-white/10 rounded-lg"
               data-testid="mobile-menu-button"
             >
               <FaCog size={24} />
