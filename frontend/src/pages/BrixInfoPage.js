@@ -45,9 +45,9 @@ const BrixInfoPage = () => {
             <table className="w-full">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 border-b">Type</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 border-b">Anbefalet Brix</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 border-b">Kommentar</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 border-b w-[30%]">Type</th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 border-b w-[20%]">Anbefalet Brix</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 border-b w-[50%]">Kommentar</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -57,10 +57,8 @@ const BrixInfoPage = () => {
                     Klassisk slushice<br />
                     <span className="text-sm text-gray-500">(sirup + vand)</span>
                   </td>
-                  <td className="px-6 py-4">
-                    <span className="inline-block bg-cyan-500 text-white px-4 py-2 rounded-full font-bold text-sm">
-                      12 – 15 °Bx
-                    </span>
+                  <td className="px-6 py-4 bg-cyan-500 text-white text-center font-bold whitespace-nowrap">
+                    12 – 15 °Bx
                   </td>
                   <td className="px-6 py-4 text-gray-700">Standard for de fleste maskiner.</td>
                 </tr>
@@ -68,10 +66,8 @@ const BrixInfoPage = () => {
                 {/* Juice-baseret */}
                 <tr className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 text-gray-800 font-medium">Juice-baseret</td>
-                  <td className="px-6 py-4">
-                    <span className="inline-block bg-cyan-500 text-white px-4 py-2 rounded-full font-bold text-sm">
-                      11 – 13 °Bx
-                    </span>
+                  <td className="px-6 py-4 bg-cyan-500 text-white text-center font-bold whitespace-nowrap">
+                    11 – 13 °Bx
                   </td>
                   <td className="px-6 py-4 text-gray-700">Indeholder naturligt frugtsukker.</td>
                 </tr>
@@ -82,10 +78,8 @@ const BrixInfoPage = () => {
                     Sodavands-slush<br />
                     <span className="text-sm text-gray-500">(cola, Fanta)</span>
                   </td>
-                  <td className="px-6 py-4">
-                    <span className="inline-block bg-cyan-500 text-white px-4 py-2 rounded-full font-bold text-sm">
-                      10 – 12 °Bx
-                    </span>
+                  <td className="px-6 py-4 bg-cyan-500 text-white text-center font-bold whitespace-nowrap">
+                    10 – 12 °Bx
                   </td>
                   <td className="px-6 py-4 text-gray-700">
                     Skal ofte justeres, da sodavand er lidt for sukkerrig.
@@ -97,10 +91,8 @@ const BrixInfoPage = () => {
                   <td className="px-6 py-4 text-gray-800 font-medium">
                     Smoothie-/milkshake-slush
                   </td>
-                  <td className="px-6 py-4">
-                    <span className="inline-block bg-cyan-500 text-white px-4 py-2 rounded-full font-bold text-sm">
-                      13 – 16 °Bx
-                    </span>
+                  <td className="px-6 py-4 bg-cyan-500 text-white text-center font-bold whitespace-nowrap">
+                    13 – 16 °Bx
                   </td>
                   <td className="px-6 py-4 text-gray-700">
                     Mælkesukker og frugt giver tykkere masse.
@@ -113,10 +105,8 @@ const BrixInfoPage = () => {
                     Alkohol-slush<br />
                     <span className="text-sm text-gray-500">(fx rom, vodka)</span>
                   </td>
-                  <td className="px-6 py-4">
-                    <span className="inline-block bg-cyan-500 text-white px-4 py-2 rounded-full font-bold text-sm">
-                      14 – 18 °Bx
-                    </span>
+                  <td className="px-6 py-4 bg-cyan-500 text-white text-center font-bold whitespace-nowrap">
+                    14 – 18 °Bx
                   </td>
                   <td className="px-6 py-4 text-gray-700">
                     Alkohol sænker frysepunktet, så du skal hæve Brix for at få den til at sætte sig.
@@ -126,10 +116,8 @@ const BrixInfoPage = () => {
                 {/* Sukkerfri */}
                 <tr className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 text-gray-800 font-medium">Sukkerfri (light)</td>
-                  <td className="px-6 py-4">
-                    <span className="inline-block bg-gray-400 text-white px-4 py-2 rounded-full font-bold text-sm">
-                      0 – 3 °Bx
-                    </span>
+                  <td className="px-6 py-4 bg-gray-400 text-white text-center font-bold whitespace-nowrap">
+                    0 – 3 °Bx
                   </td>
                   <td className="px-6 py-4 text-gray-700">
                     Fryser for hårdt, så du skal tilsætte glycerin, frugtsaft eller fortykningsmiddel for at undgå iskrystaller.
