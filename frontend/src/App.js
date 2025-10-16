@@ -74,7 +74,7 @@ const Navigation = () => {
                   to={item.path}
                   data-testid={`nav-${item.label.toLowerCase()}`}
                   className={`nav-link flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
-                    isActive ? "bg-cyan-50 text-cyan-600" : "text-gray-600 hover:bg-gray-50"
+                    isActive ? "bg-white/20 text-white" : "text-white/80 hover:bg-white/10 hover:text-white"
                   }`}
                 >
                   <Icon />
@@ -85,12 +85,12 @@ const Navigation = () => {
             
             {/* User Info / Login */}
             {user ? (
-              <div className="relative pl-6 border-l border-gray-200">
+              <div className="relative pl-6 border-l border-white/20">
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/10 transition-colors"
                 >
-                  <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-full flex items-center justify-center text-white font-semibold">
+                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-blue-600 font-semibold">
                     {user.name.charAt(0).toUpperCase()}
                   </div>
                   <div className="text-left">
