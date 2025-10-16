@@ -52,32 +52,75 @@ const HomePage = ({ sessionId }) => {
 
   return (
     <div className="space-y-8 fade-in">
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-cyan-50 to-coral-50 rounded-3xl p-8 md:p-12 overflow-hidden" data-testid="hero-section">
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          {/* Logo først på mobil (øverst) */}
-          <div className="relative z-10 flex justify-center items-center md:order-2">
-            <img 
-              src="/logo.png" 
-              alt="SLUSHBOOK" 
-              className="w-full max-w-xs md:max-w-md drop-shadow-2xl"
-            />
-          </div>
-          {/* Tekst under logo på mobil */}
-          <div className="relative z-10 md:order-1">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              Find Den Perfekte
+      {/* Hero Section with Video Background */}
+      <div className="relative rounded-3xl overflow-hidden" data-testid="hero-section" style={{minHeight: '500px'}}>
+        {/* Video Background */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{filter: 'brightness(0.7)'}}
+        >
+          <source src="/slush-bg-video.mp4" type="video/mp4" />
+        </video>
+        
+        {/* Blue Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/60 via-cyan-500/50 to-blue-600/60"></div>
+        
+        {/* Shimmer/Glitter Effect */}
+        <div className="absolute inset-0 opacity-30" style={{
+          backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
+          backgroundSize: '50px 50px',
+          animation: 'shimmer 3s infinite'
+        }}></div>
+        
+        {/* Content */}
+        <div className="relative z-10 p-8 md:p-12 text-center">
+          {/* SLUSHBOOK Logo Text with Colors */}
+          <div className="mb-6">
+            <h1 className="text-6xl md:text-8xl font-bold mb-2" style={{fontFamily: 'Fredoka'}}>
+              <span style={{color: '#7CB342'}}>SLUSH</span>
               <br />
-              <span className="bg-gradient-to-r from-cyan-500 to-coral-500 bg-clip-text text-transparent">
-                Slushice Opskrift
-              </span>
+              <span style={{color: '#FDD835'}}>B</span>
+              <span style={{color: '#1E88E5'}}>OO</span>
+              <span style={{color: '#E53935'}}>K</span>
             </h1>
-            <p className="text-lg md:text-xl text-gray-600 mb-8">
-              Opdag lækre slushice opskrifter, match med dine ingredienser, og skalér automatisk til din maskine
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link
-                to="/match"
+          </div>
+          
+          <h2 className="text-3xl md:text-5xl font-bold mb-2 text-white drop-shadow-lg">
+            Find Den perfekte
+          </h2>
+          <h2 className="text-4xl md:text-6xl font-bold mb-6" style={{
+            background: 'linear-gradient(90deg, #FDD835 0%, #FFB300 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.3))'
+          }}>
+            Slushice Opskrifter
+          </h2>
+          
+          <p className="text-lg md:text-xl text-white mb-8 max-w-3xl mx-auto drop-shadow-md">
+            Opdag lækre slushice opskrifter, match med dine ingredienser, og skalér automatisk til din maskine
+          </p>
+          
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link
+              to="/match"
+              className="px-8 py-4 bg-gradient-to-r from-teal-400 to-cyan-500 text-white rounded-full hover:from-teal-500 hover:to-cyan-600 font-semibold text-lg shadow-lg transition-all transform hover:scale-105"
+            >
+              Find et match
+            </Link>
+            <Link
+              to="/recipes"
+              className="px-8 py-4 bg-white text-gray-800 rounded-full hover:bg-gray-100 font-semibold text-lg shadow-lg transition-all transform hover:scale-105"
+            >
+              Gennemse alle
+            </Link>
+          </div>
+        </div>
+      </div>
                 data-testid="hero-match-button"
                 className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-full font-semibold hover:shadow-xl transition-all hover:scale-105"
               >
