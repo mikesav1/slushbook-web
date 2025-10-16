@@ -87,7 +87,7 @@ const HomePage = ({ sessionId }) => {
                 Find Den perfekte
               </h1>
               <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6" style={{
-                background: 'linear-gradient(90deg, #FFD700 0%, #FFA500 30%, #FFD700 50%, rgba(255,215,0,0.5) 70%, rgba(255,215,0,0.1) 85%, transparent 100%)',
+                background: 'linear-gradient(90deg, #FFD700 0%, #FFA500 40%, rgba(255,215,0,0.3) 80%, rgba(255,215,0,0) 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text'
