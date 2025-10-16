@@ -71,8 +71,8 @@ const HomePage = ({ sessionId }) => {
         {/* Content - Logo first, then text */}
         <div className="relative z-10 container mx-auto px-8 md:px-12 py-12" style={{minHeight: '700px'}}>
           <div className="flex flex-col items-center md:items-start justify-center h-full">
-            {/* SLUSHBOOK Logo - Large, centered on mobile, left on desktop */}
-            <div className="mb-8 flex justify-center md:justify-start w-full">
+            {/* SLUSHBOOK Logo - Large, left aligned */}
+            <div className="mb-8 flex justify-start w-full">
               <img 
                 src="/slushbook-nav-logo.png" 
                 alt="SLUSHBOOK" 
@@ -81,8 +81,8 @@ const HomePage = ({ sessionId }) => {
               />
             </div>
             
-            {/* Text Content Below Logo */}
-            <div className="text-center md:text-left max-w-3xl w-full">
+            {/* Text Content Below Logo - Left Aligned */}
+            <div className="text-left max-w-3xl w-full">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 text-black">
                 Find Den perfekte
               </h1>
