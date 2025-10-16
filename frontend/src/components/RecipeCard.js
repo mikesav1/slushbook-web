@@ -136,16 +136,9 @@ const RecipeCard = ({ recipe, sessionId, showMatchInfo }) => {
 
         {/* Footer */}
         <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              navigate('/brix-info');
-            }}
-            className="brix-indicator text-xs hover:scale-110 transition-transform cursor-pointer"
-          >
+          <span className="brix-indicator text-xs">
             {recipe.target_brix}°Bx
-          </button>
+          </span>
           {recipe.rating_avg > 0 && (
             <div className="flex items-center gap-1 text-yellow-500">
               <FaStar size={14} />
