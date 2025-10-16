@@ -121,25 +121,6 @@ const HomePage = ({ sessionId }) => {
           </div>
         </div>
       </div>
-                data-testid="hero-match-button"
-                className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-full font-semibold hover:shadow-xl transition-all hover:scale-105"
-              >
-                <FaMagic className="inline mr-2" />
-                Find match nu
-              </Link>
-              <Link
-                to="/recipes"
-                data-testid="hero-browse-button"
-                className="px-8 py-4 bg-white text-gray-800 rounded-full font-semibold hover:shadow-xl transition-all hover:scale-105"
-              >
-                <FaBook className="inline mr-2" />
-                Gennemse alle
-              </Link>
-            </div>
-          </div>
-        </div>
-        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-cyan-400 to-coral-400 rounded-full opacity-20 blur-3xl"></div>
-      </div>
 
       {/* Featured Recipes */}
       <div>
