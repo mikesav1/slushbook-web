@@ -19,7 +19,7 @@ const BrixInfoPage = () => {
         <h1 className="text-3xl font-bold">Hvad Brix betyder</h1>
       </div>
 
-      <div className="mx-[2%] p-6 space-y-8">
+      <div className="px-4 py-6 space-y-8">
         {/* Introduction */}
         <div className="bg-white rounded-xl shadow-md p-6 space-y-4">
           <p className="text-lg text-gray-700 leading-relaxed">
