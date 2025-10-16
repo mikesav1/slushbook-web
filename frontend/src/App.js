@@ -59,9 +59,13 @@ const Navigation = () => {
     <nav className="border-b border-gray-200 sticky top-0 z-40 shadow-sm" style={{backgroundColor: '#115DA8'}}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <div className="flex-shrink-0">
-            {/* Logo placeholder - din egen app ikon kommer her */}
-          </div>
+          <Link to="/" className="flex-shrink-0">
+            <img 
+              src="/slushbook-logo-new.png" 
+              alt="SLUSHBOOK" 
+              className="h-12 w-auto"
+            />
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
