@@ -71,8 +71,8 @@ const HomePage = ({ sessionId }) => {
         {/* Content - Logo first, then text - all left aligned */}
         <div className="relative z-10 container mx-auto px-8 md:px-12 py-12" style={{minHeight: '700px'}}>
           <div className="flex flex-col items-start justify-center h-full">
-            {/* SLUSHBOOK Logo - Large, left aligned */}
-            <div className="mb-8 flex justify-start w-full">
+            {/* SLUSHBOOK Logo - Large, centered */}
+            <div className="mb-8 flex justify-center w-full">
               <img 
                 src="/slushbook-nav-logo.png" 
                 alt="SLUSHBOOK" 
