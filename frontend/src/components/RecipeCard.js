@@ -133,8 +133,11 @@ const RecipeCard = ({ recipe, sessionId, showMatchInfo }) => {
           ))}
         </div>
 
+        {/* Spacer to push footer to bottom */}
+        <div className="flex-grow"></div>
+
         {/* Footer */}
-        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+        <div className="flex items-center justify-between pt-3 border-t border-gray-100 mt-auto">
           <span className="brix-indicator">
             {recipe.target_brix}°Bx
           </span>
