@@ -216,23 +216,23 @@ const RecipeDetailPage = ({ sessionId }) => {
             
             {/* Test Brix Button - VERY OBVIOUS */}
             <div className="mb-4">
-              <Link
-                to="/brix-info"
-                className="inline-block bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:scale-105 transition-transform shadow-lg"
+              <button
+                onClick={() => window.location.href = '/brix-info'}
+                className="inline-block bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:scale-105 transition-transform shadow-lg cursor-pointer"
               >
                 ❓ Hvad er Brix? Klik her for at lære mere
-              </Link>
+              </button>
             </div>
             
             {/* Info */}
             <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
               <span>📏 Basis: {recipe.base_volume_ml || 2700}ml</span>
-              <Link
-                to="/brix-info"
-                className="hover:text-cyan-600 hover:scale-105 transition-all cursor-pointer underline decoration-dotted font-medium inline-block"
+              <button
+                onClick={() => window.location.href = '/brix-info'}
+                className="hover:text-cyan-600 hover:scale-105 transition-all cursor-pointer underline decoration-dotted font-medium inline-block bg-transparent border-0"
               >
                 🍬 Sukkergrad: {recipe.target_brix}°Bx
-              </Link>
+              </button>
             </div>
             
             {/* Tags */}
