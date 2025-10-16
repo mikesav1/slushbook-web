@@ -197,13 +197,13 @@ const RecipeDetailPage = ({ sessionId }) => {
             <div className="mb-4">
               <h1 className="text-3xl md:text-4xl font-bold mb-3">{recipe.name}</h1>
               <div className="flex flex-wrap gap-2 mb-4">
-                <Link
-                  to="/brix-info"
-                  className="brix-indicator text-sm px-3 py-2 hover:scale-110 transition-transform cursor-pointer inline-block"
+                <button
+                  onClick={() => window.location.href = '/brix-info'}
+                  className="brix-indicator text-sm px-3 py-2 hover:scale-110 transition-transform cursor-pointer"
                   title="Klik for at lære om Brix"
                 >
                   {recipe.target_brix}°Bx
-                </Link>
+                </button>
                 {recipe.alcohol_flag && (
                   <span className="alcohol-badge text-xs">
                     <FaWineBottle /> 18+
