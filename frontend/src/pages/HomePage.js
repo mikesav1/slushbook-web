@@ -65,8 +65,8 @@ const HomePage = ({ sessionId }) => {
           <source src="/slush-bg-video.mp4" type="video/mp4" />
         </video>
         
-        {/* Light White Overlay */}
-        <div className="absolute inset-0 bg-white/75"></div>
+        {/* Very light overlay for text readability - reduced opacity */}
+        <div className="absolute inset-0 bg-white/20"></div>
         
         {/* Content - Logo centered, text left aligned */}
         <div className="relative z-10 container mx-auto px-8 md:px-12 py-12" style={{minHeight: '700px'}}>
