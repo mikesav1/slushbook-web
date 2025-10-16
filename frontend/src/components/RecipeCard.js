@@ -7,6 +7,7 @@ import { API } from '../App';
 
 const RecipeCard = ({ recipe, sessionId, showMatchInfo }) => {
   const [isFavorite, setIsFavorite] = useState(recipe.is_favorite || false);
+  const navigate = useNavigate();
 
   const toggleFavorite = async (e) => {
     e.preventDefault();
