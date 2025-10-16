@@ -58,13 +58,12 @@ const Navigation = () => {
   return (
     <nav className="border-b border-gray-200 sticky top-0 z-40 shadow-sm relative" style={{backgroundColor: '#115DA8'}}>
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-center h-20">
+        <div className="flex items-center justify-center py-4">
           <Link to="/" className="flex-shrink-0">
             <img 
               src="/slushbook-nav-logo.png" 
               alt="SLUSHBOOK" 
-              className="w-auto"
-              style={{height: '22em'}}
+              className="w-auto h-16 md:h-20"
             />
           </Link>
         </div>
