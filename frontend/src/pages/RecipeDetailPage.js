@@ -197,9 +197,13 @@ const RecipeDetailPage = ({ sessionId }) => {
             <div className="mb-4">
               <h1 className="text-3xl md:text-4xl font-bold mb-3">{recipe.name}</h1>
               <div className="flex flex-wrap gap-2 mb-4">
-                <span className="brix-indicator text-xs" title="Sukkergrad - Perfekt slush: 13-15°Bx">
+                <button
+                  onClick={() => navigate('/brix-info')}
+                  className="brix-indicator text-xs hover:scale-110 transition-transform cursor-pointer"
+                  title="Klik for at lære om Brix"
+                >
                   {recipe.target_brix}°Bx
-                </span>
+                </button>
                 {recipe.alcohol_flag && (
                   <span className="alcohol-badge text-xs">
                     <FaWineBottle /> 18+
@@ -213,7 +217,12 @@ const RecipeDetailPage = ({ sessionId }) => {
             {/* Info */}
             <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
               <span>📏 Basis: {recipe.base_volume_ml || 2700}ml</span>
-              <span>🍬 Sukkergrad: {recipe.target_brix}°Bx</span>
+              <button
+                onClick={() => navigate('/brix-info')}
+                className="hover:text-cyan-600 transition-colors cursor-pointer underline decoration-dotted"
+              >
+                🍬 Sukkergrad: {recipe.target_brix}°Bx
+              </button>
             </div>
             
             {/* Tags */}
