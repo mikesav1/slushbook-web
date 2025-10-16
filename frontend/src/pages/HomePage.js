@@ -54,64 +54,65 @@ const HomePage = ({ sessionId }) => {
     <div className="space-y-0 fade-in">
       {/* Hero Section with Video Background - Full Width */}
       <div className="relative w-screen -mx-4 md:-mx-0" style={{minHeight: '700px'}}>
-        {/* Video Background */}
+        {/* Video Background - No darkness filter */}
         <video
           autoPlay
           loop
           muted
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
-          style={{filter: 'brightness(0.5)'}}
         >
           <source src="/slush-bg-video.mp4" type="video/mp4" />
         </video>
         
-        {/* White Overlay for Content Readability */}
-        <div className="absolute inset-0 bg-white/85"></div>
+        {/* Light White Overlay */}
+        <div className="absolute inset-0 bg-white/75"></div>
         
-        {/* Content - Left Aligned */}
-        <div className="relative z-10 container mx-auto px-8 md:px-12 py-12 flex flex-col md:flex-row items-start md:items-center gap-8" style={{minHeight: '700px'}}>
-          {/* Left Side - Text Content */}
-          <div className="flex-1 text-left">
-            <h1 className="text-4xl md:text-5xl font-bold mb-2 text-black">
-              Find Den perfekte
-            </h1>
-            <h2 className="text-5xl md:text-7xl font-bold mb-6" style={{
-              background: 'linear-gradient(90deg, #FFD700 0%, #FFA500 50%, rgba(255,215,0,0.3) 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text'
-            }}>
-              Slushice Opskrifter
-            </h2>
-            
-            <p className="text-lg md:text-xl text-gray-800 mb-8 max-w-2xl">
-              Opdag lækre slushice opskrifter, match med dine ingredienser, og skalér automatisk til din maskine
-            </p>
-            
-            <div className="flex flex-wrap gap-4">
-              <Link
-                to="/match"
-                className="px-8 py-4 bg-gradient-to-r from-teal-400 to-cyan-500 text-white rounded-full hover:from-teal-500 hover:to-cyan-600 font-semibold text-lg shadow-lg transition-all transform hover:scale-105"
-              >
-                Find et match
-              </Link>
-              <Link
-                to="/recipes"
-                className="px-8 py-4 bg-white text-gray-800 rounded-full hover:bg-gray-100 font-semibold text-lg shadow-lg border-2 border-gray-300 transition-all transform hover:scale-105"
-              >
-                Gennemse alle
-              </Link>
+        {/* Content - Logo on top, text below */}
+        <div className="relative z-10 container mx-auto px-8 md:px-12 py-12" style={{minHeight: '700px'}}>
+          <div className="flex flex-col items-start justify-center h-full">
+            {/* Logo First - Large */}
+            <div className="mb-8">
+              <img 
+                src="/slushbook-logo-new.png" 
+                alt="SLUSHBOOK" 
+                className="w-auto h-48 md:h-64 lg:h-72 drop-shadow-2xl"
+              />
             </div>
-          </div>
-          
-          {/* Right Side - Large Logo */}
-          <div className="flex-1 flex justify-center items-center">
-            <img 
-              src="/slushbook-logo-new.png" 
-              alt="SLUSHBOOK" 
-              className="w-full max-w-lg h-auto drop-shadow-2xl"
-            />
+            
+            {/* Text Content Below Logo - Left Aligned */}
+            <div className="text-left max-w-3xl">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 text-black">
+                Find Den perfekte
+              </h1>
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6" style={{
+                background: 'linear-gradient(90deg, #FFD700 0%, #FFA500 50%, rgba(255,215,0,0.2) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}>
+                Slushice Opskrifter
+              </h2>
+              
+              <p className="text-lg md:text-xl text-gray-800 mb-8">
+                Opdag lækre slushice opskrifter, match med dine ingredienser, og skalér automatisk til din maskine
+              </p>
+              
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  to="/match"
+                  className="px-8 py-4 bg-gradient-to-r from-teal-400 to-cyan-500 text-white rounded-full hover:from-teal-500 hover:to-cyan-600 font-semibold text-lg shadow-lg transition-all transform hover:scale-105"
+                >
+                  Find et match
+                </Link>
+                <Link
+                  to="/recipes"
+                  className="px-8 py-4 bg-white text-gray-800 rounded-full hover:bg-gray-100 font-semibold text-lg shadow-lg border-2 border-gray-300 transition-all transform hover:scale-105"
+                >
+                  Gennemse alle
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
