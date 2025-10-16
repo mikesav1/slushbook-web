@@ -71,31 +71,40 @@ const HomePage = ({ sessionId }) => {
         {/* Content - Logo centered, text left aligned */}
         <div className="relative z-10 container mx-auto px-8 md:px-12 py-12" style={{minHeight: '700px'}}>
           <div className="flex flex-col items-center justify-center h-full">
-            {/* SLUSHBOOK Logo - Large, centered */}
+            {/* SLUSHBOOK Logo - Large, centered with shadow */}
             <div className="mb-8 flex justify-center w-full">
               <img 
                 src="/slushbook-nav-logo.png" 
                 alt="SLUSHBOOK" 
                 className="w-auto"
-                style={{width: '22em', maxWidth: '90%'}}
+                style={{
+                  width: '22em', 
+                  maxWidth: '90%',
+                  filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.3))'
+                }}
               />
             </div>
             
-            {/* Text Content Below Logo - Left Aligned */}
+            {/* Text Content Below Logo - Left Aligned with shadows */}
             <div className="text-left max-w-3xl w-full">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 text-black">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 text-black" style={{
+                textShadow: '2px 2px 8px rgba(0,0,0,0.3)'
+              }}>
                 Find Den perfekte
               </h1>
               <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6" style={{
                 background: 'linear-gradient(90deg, #FFD700 0%, #FFA500 40%, rgba(255,215,0,0.3) 80%, rgba(255,215,0,0) 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
+                backgroundClip: 'text',
+                filter: 'drop-shadow(2px 2px 8px rgba(0,0,0,0.3))'
               }}>
                 Slushice Opskrifter
               </h2>
               
-              <p className="text-lg md:text-xl text-gray-800 mb-8">
+              <p className="text-lg md:text-xl text-gray-800 mb-8" style={{
+                textShadow: '1px 1px 4px rgba(255,255,255,0.8)'
+              }}>
                 Opdag lækre slushice opskrifter, match med dine ingredienser, og skalér automatisk til din maskine
               </p>
               
