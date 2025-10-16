@@ -63,7 +63,8 @@ const Navigation = () => {
             <img 
               src="/slushbook-nav-logo.png" 
               alt="SLUSHBOOK" 
-              className="w-auto h-16 md:h-20"
+              className="w-auto"
+              style={{width: '22em'}}
             />
           </Link>
         </div>
