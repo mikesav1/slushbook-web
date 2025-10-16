@@ -242,6 +242,41 @@ const AppContent = ({ sessionId }) => {
         </main>
       </div>
 
+      {/* Mobile Bottom Navigation */}
+      {!isAuthPage && (
+        <div className="md:hidden border-t border-gray-200 bg-white fixed bottom-0 left-0 right-0 z-50 shadow-lg">
+          <div className="grid grid-cols-5 gap-1 p-2">
+            {navItems.slice(0, 4).map((item) => {
+              const Icon = item.icon;
+              const isActive = location.pathname === item.path;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
+                    isActive ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
+                  }`}
+                >
+                  <Icon size={20} />
+                  <span className="text-xs font-medium">{item.label}</span>
+                </Link>
+              );
+            })}
+            
+            {/* Settings/Profile Button */}
+            <Link
+              to="/settings"
+              className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
+                location.pathname === '/settings' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
+              }`}
+            >
+              <FaCog size={20} />
+              <span className="text-xs font-medium">Indstillinger</span>
+            </Link>
+          </div>
+        </div>
+      )}
+
       <Toaster position="top-center" richColors />
     </div>
   );
