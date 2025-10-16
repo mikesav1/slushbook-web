@@ -149,10 +149,11 @@ const Navigation = () => {
                 Log ind
               </Link>
             )}
+          </div>
         </div>
       </div>
 
-      {/* Mobile menu button - Absolute positioned */}
+      {/* Mobile menu button */}
       <div className="absolute right-4 top-4 md:hidden">
         <button
           onClick={() => navigate("/settings")}
