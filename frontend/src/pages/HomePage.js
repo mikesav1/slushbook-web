@@ -68,11 +68,21 @@ const HomePage = ({ sessionId }) => {
         {/* Light White Overlay */}
         <div className="absolute inset-0 bg-white/75"></div>
         
-        {/* Content - Text only, no logo */}
+        {/* Content - Logo first, then text */}
         <div className="relative z-10 container mx-auto px-8 md:px-12 py-12" style={{minHeight: '700px'}}>
-          <div className="flex flex-col items-start justify-center h-full">
-            {/* Text Content - Left Aligned */}
-            <div className="text-left max-w-3xl">
+          <div className="flex flex-col items-center md:items-start justify-center h-full">
+            {/* SLUSHBOOK Logo - Large, centered on mobile, left on desktop */}
+            <div className="mb-8 flex justify-center md:justify-start w-full">
+              <img 
+                src="/slushbook-nav-logo.png" 
+                alt="SLUSHBOOK" 
+                className="w-auto"
+                style={{width: '22em', maxWidth: '90%'}}
+              />
+            </div>
+            
+            {/* Text Content Below Logo */}
+            <div className="text-center md:text-left max-w-3xl w-full">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 text-black">
                 Find Den perfekte
               </h1>
