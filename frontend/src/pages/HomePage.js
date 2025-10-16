@@ -51,9 +51,9 @@ const HomePage = ({ sessionId }) => {
   };
 
   return (
-    <div className="space-y-8 fade-in">
-      {/* Hero Section with Video Background */}
-      <div className="relative rounded-3xl overflow-hidden" data-testid="hero-section" style={{minHeight: '500px'}}>
+    <div className="space-y-0 fade-in">
+      {/* Hero Section with Video Background - Full Width */}
+      <div className="relative w-screen -mx-4 md:-mx-0" style={{minHeight: '600px'}}>
         {/* Video Background */}
         <video
           autoPlay
@@ -78,15 +78,13 @@ const HomePage = ({ sessionId }) => {
         
         {/* Content */}
         <div className="relative z-10 p-8 md:p-12 text-center">
-          {/* SLUSHBOOK Logo Text with Colors */}
-          <div className="mb-6">
-            <h1 className="text-6xl md:text-8xl font-bold mb-2" style={{fontFamily: 'Fredoka'}}>
-              <span style={{color: '#7CB342'}}>SLUSH</span>
-              <br />
-              <span style={{color: '#FDD835'}}>B</span>
-              <span style={{color: '#1E88E5'}}>OO</span>
-              <span style={{color: '#E53935'}}>K</span>
-            </h1>
+          {/* SLUSHBOOK Logo with Smiley - Need to add logo image here */}
+          <div className="mb-6 flex justify-center">
+            <img 
+              src="/logo-samlet.png" 
+              alt="SLUSHBOOK" 
+              className="h-32 md:h-40 drop-shadow-2xl"
+            />
           </div>
           
           <h2 className="text-3xl md:text-5xl font-bold mb-2 text-white drop-shadow-lg">
