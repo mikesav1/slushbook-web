@@ -214,6 +214,16 @@ const RecipeDetailPage = ({ sessionId }) => {
             
             <p className="text-gray-700 text-base md:text-lg mb-4">{recipe.description}</p>
             
+            {/* Test Brix Button - VERY OBVIOUS */}
+            <div className="mb-4">
+              <Link
+                to="/brix-info"
+                className="inline-block bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:scale-105 transition-transform shadow-lg"
+              >
+                ❓ Hvad er Brix? Klik her for at lære mere
+              </Link>
+            </div>
+            
             {/* Info */}
             <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
               <span>📏 Basis: {recipe.base_volume_ml || 2700}ml</span>
