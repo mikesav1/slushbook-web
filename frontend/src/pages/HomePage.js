@@ -68,19 +68,10 @@ const HomePage = ({ sessionId }) => {
         {/* Light White Overlay */}
         <div className="absolute inset-0 bg-white/75"></div>
         
-        {/* Content - Logo on top, text below */}
+        {/* Content - Text only, no logo */}
         <div className="relative z-10 container mx-auto px-8 md:px-12 py-12" style={{minHeight: '700px'}}>
           <div className="flex flex-col items-start justify-center h-full">
-            {/* Logo First - Large */}
-            <div className="mb-8">
-              <img 
-                src="/slushbook-logo-new.png" 
-                alt="SLUSHBOOK" 
-                className="w-auto h-48 md:h-64 lg:h-72 drop-shadow-2xl"
-              />
-            </div>
-            
-            {/* Text Content Below Logo - Left Aligned */}
+            {/* Text Content - Left Aligned */}
             <div className="text-left max-w-3xl">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 text-black">
                 Find Den perfekte
