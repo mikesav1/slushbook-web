@@ -51,10 +51,10 @@ const HomePage = ({ sessionId }) => {
   };
 
   return (
-    <div className="space-y-0 fade-in">
-      {/* Hero Section with Video Background - Full Width */}
+    <div className="space-y-0 fade-in -mt-6">
+      {/* Hero Section with Video Background - Full Width, no top margin */}
       <div className="relative w-screen -mx-4 md:-mx-0" style={{minHeight: '700px'}}>
-        {/* Video Background - No darkness filter */}
+        {/* Video Background - Full brightness, no filter */}
         <video
           autoPlay
           loop
