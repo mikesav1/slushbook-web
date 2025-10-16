@@ -161,18 +161,19 @@ const Navigation = () => {
                 Log ind
               </Link>
             )}
-          </div>
+        </div>
+      </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => navigate("/settings")}
-              className="p-2 text-white hover:bg-white/10 rounded-lg"
-              data-testid="mobile-menu-button"
-            >
-              <FaCog size={24} />
-            </button>
-          </div>
+      {/* Mobile menu button - Absolute positioned */}
+      <div className="absolute right-4 top-4 md:hidden">
+        <button
+          onClick={() => navigate("/settings")}
+          className="p-2 text-white hover:bg-white/10 rounded-lg"
+          data-testid="mobile-menu-button"
+        >
+          <FaCog size={24} />
+        </button>
+      </div>
         </div>
       </div>
 
