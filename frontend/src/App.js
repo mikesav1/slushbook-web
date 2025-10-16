@@ -94,10 +94,10 @@ const Navigation = () => {
                     {user.name.charAt(0).toUpperCase()}
                   </div>
                   <div className="text-left">
-                    <div className="text-sm font-medium text-gray-800">{user.name}</div>
-                    <div className="text-xs text-gray-500 capitalize">{user.role}</div>
+                    <div className="text-sm font-medium text-white">{user.name}</div>
+                    <div className="text-xs text-white/70 capitalize">{user.role}</div>
                   </div>
-                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
