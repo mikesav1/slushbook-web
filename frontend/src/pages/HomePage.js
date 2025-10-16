@@ -61,29 +61,29 @@ const HomePage = ({ sessionId }) => {
           muted
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
-          style={{filter: 'brightness(0.7)'}}
+          style={{filter: 'brightness(0.8)'}}
         >
           <source src="/slush-bg-video.mp4" type="video/mp4" />
         </video>
         
         {/* Blue Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/60 via-cyan-500/50 to-blue-600/60"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/40 via-cyan-500/30 to-blue-600/40"></div>
         
         {/* Shimmer/Glitter Effect */}
-        <div className="absolute inset-0 opacity-30" style={{
+        <div className="absolute inset-0 opacity-20" style={{
           backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
           backgroundSize: '50px 50px',
           animation: 'shimmer 3s infinite'
         }}></div>
         
         {/* Content */}
-        <div className="relative z-10 p-8 md:p-12 text-center">
-          {/* SLUSHBOOK Logo with Smiley - Need to add logo image here */}
-          <div className="mb-6 flex justify-center">
+        <div className="relative z-10 p-8 md:p-12 text-center flex flex-col items-center justify-center" style={{minHeight: '600px'}}>
+          {/* SLUSHBOOK Logo - Larger Size */}
+          <div className="mb-8">
             <img 
-              src="/logo-samlet.png" 
+              src="/slushbook-logo-new.png" 
               alt="SLUSHBOOK" 
-              className="h-32 md:h-40 drop-shadow-2xl"
+              className="w-auto h-64 md:h-80 drop-shadow-2xl"
             />
           </div>
           
