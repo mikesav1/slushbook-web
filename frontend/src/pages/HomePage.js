@@ -115,39 +115,6 @@ const HomePage = ({ sessionId }) => {
           </div>
         </div>
       </div>
-          
-          <h2 className="text-3xl md:text-5xl font-bold mb-2 text-white drop-shadow-lg">
-            Find Den perfekte
-          </h2>
-          <h2 className="text-4xl md:text-6xl font-bold mb-6" style={{
-            background: 'linear-gradient(90deg, #FDD835 0%, #FFB300 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.3))'
-          }}>
-            Slushice Opskrifter
-          </h2>
-          
-          <p className="text-lg md:text-xl text-white mb-8 max-w-3xl mx-auto drop-shadow-md">
-            Opdag lækre slushice opskrifter, match med dine ingredienser, og skalér automatisk til din maskine
-          </p>
-          
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Link
-              to="/match"
-              className="px-8 py-4 bg-gradient-to-r from-teal-400 to-cyan-500 text-white rounded-full hover:from-teal-500 hover:to-cyan-600 font-semibold text-lg shadow-lg transition-all transform hover:scale-105"
-            >
-              Find et match
-            </Link>
-            <Link
-              to="/recipes"
-              className="px-8 py-4 bg-white text-gray-800 rounded-full hover:bg-gray-100 font-semibold text-lg shadow-lg transition-all transform hover:scale-105"
-            >
-              Gennemse alle
-            </Link>
-          </div>
-        </div>
-      </div>
 
       {/* Featured Recipes */}
       <div className="container mx-auto px-4 py-8">
