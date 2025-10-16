@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FaHeart, FaRegHeart, FaStar, FaWineBottle } from 'react-icons/fa';
 import axios from 'axios';
 import { toast } from 'sonner';
@@ -7,7 +7,6 @@ import { API } from '../App';
 
 const RecipeCard = ({ recipe, sessionId, showMatchInfo }) => {
   const [isFavorite, setIsFavorite] = useState(recipe.is_favorite || false);
-  const navigate = useNavigate();
 
   const toggleFavorite = async (e) => {
     e.preventDefault();
