@@ -25,7 +25,7 @@ const adminLimiter = rateLimit({
 
 // Health endpoint
 app.get('/health', (req, res) => {
-  try ={
+  try {
     // Test DB connection
     db.prepare('SELECT 1').get();
     res.json({ ok: true, db: true });
