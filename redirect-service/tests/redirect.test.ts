@@ -8,6 +8,8 @@ const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'dev-token';
 beforeAll(() => {
   // Seed test data
   dbService.upsertMapping({ id: 'test-mapping', name: 'Test Product' });
+  dbService.upsertMapping({ id: 'test-mapping-2', name: 'Test Product 2' });
+  
   dbService.upsertOption({
     id: 'test-option-active',
     mappingId: 'test-mapping',
