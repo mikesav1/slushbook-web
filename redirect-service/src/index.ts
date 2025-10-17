@@ -25,7 +25,7 @@ const adminLimiter = rateLimit({
 
 // Health endpoint
 app.get('/health', (req, res) => {
-  try {
+  try ={
     // Test DB connection
     db.prepare('SELECT 1').get();
     res.json({ ok: true, db: true });
@@ -38,8 +38,11 @@ app.get('/health', (req, res) => {
 app.use('/admin', adminLimiter, adminRoutes);
 app.use('/go', goRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Redirect service running on port ${PORT}`);
-});
+// Only start server if not in test mode
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`Redirect service running on port ${PORT}`);
+  });
+}
 
 export default app;
