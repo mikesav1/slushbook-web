@@ -55,18 +55,16 @@ const HomePage = ({ sessionId }) => {
       {/* Hero Section with Video Background - Full Width, no top margin */}
       <div className="relative w-screen -mx-4 md:-mx-0 overflow-hidden" style={{minHeight: '700px'}}>
         {/* Video Background - Full brightness, no filter */}
-        <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="min-w-full min-h-full"
-            style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center'}}
-          >
-            <source src="/slush-bg-video.mp4" type="video/mp4" />
-          </video>
-        </div>
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full"
+          style={{objectFit: 'cover', objectPosition: '50% 50%'}}
+        >
+          <source src="/slush-bg-video.mp4" type="video/mp4" />
+        </video>
         
         {/* Very light overlay for text readability - reduced opacity */}
         <div className="absolute inset-0 bg-white/20"></div>
