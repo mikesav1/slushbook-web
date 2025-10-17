@@ -61,7 +61,7 @@ const HomePage = ({ sessionId }) => {
           muted
           playsInline
           className="absolute inset-0 w-full h-full"
-          style={{objectFit: 'cover', objectPosition: '50% 50%'}}
+          style={{objectFit: 'cover', objectPosition: '40% 50%'}}
         >
           <source src="/slush-bg-video.mp4" type="video/mp4" />
         </video>
