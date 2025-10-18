@@ -1879,8 +1879,6 @@ app.add_middleware(
 )
 
 # Proxy endpoints for redirect service
-import httpx
-
 REDIRECT_SERVICE_URL = "http://localhost:3001"
 
 @api_router.api_route("/redirect-proxy/{path:path}", methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"])
