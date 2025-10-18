@@ -414,6 +414,16 @@ const RecipeDetailPage = ({ sessionId }) => {
                   {recipe.is_favorite ? 'Fjern favorit' : 'Tilføj favorit'}
                 </span>
               </button>
+              {isAdmin() && (
+                <button
+                  onClick={deleteRecipe}
+                  data-testid="delete-recipe-button"
+                  className="flex items-center gap-2 px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition-colors ml-auto"
+                >
+                  <FaTrash size={16} />
+                  <span className="text-sm font-medium">Slet Opskrift</span>
+                </button>
+              )}
             </div>
           </div>
 
