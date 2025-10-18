@@ -56,11 +56,24 @@ const RecipeCard = ({ recipe, sessionId, showMatchInfo, onLockedClick }) => {
   return (
     <Link
       to={`/recipe/${recipe.id}`}
+      onClick={handleClick}
       data-testid={`recipe-card-${recipe.id}`}
-      className="flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all hover:scale-105 overflow-hidden border border-gray-100"
+      className={`flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all hover:scale-105 overflow-hidden border border-gray-100 ${
+        isLocked ? 'opacity-75' : ''
+      }`}
     >
       {/* Image/Color Header - Portrait */}
       <div className="h-64 relative overflow-hidden flex-shrink-0">
+        {isLocked && (
+          <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center z-10">
+            <div className="text-center">
+              <FaLock className="text-white text-4xl mb-2 mx-auto" />
+              <span className="text-white font-bold text-sm bg-black bg-opacity-50 px-3 py-1 rounded-full">
+                🔒 Kun for Pro
+              </span>
+            </div>
+          </div>
+        )}
         {recipe.image_url && recipe.image_url !== '/api/images/placeholder.jpg' ? (
           <img 
             src={recipe.image_url} 
