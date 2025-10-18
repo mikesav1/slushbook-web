@@ -3,6 +3,7 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import { FaPlus, FaEdit, FaTrash, FaExternalLinkAlt, FaToggleOn, FaToggleOff, FaChartBar } from 'react-icons/fa';
 import { Button } from '../components/ui/button';
+import { API } from '../App';
 
 const AdminLinksPage = () => {
   const [mappings, setMappings] = useState([]);
@@ -11,7 +12,8 @@ const AdminLinksPage = () => {
   const [editingMapping, setEditingMapping] = useState(null);
   const [saving, setSaving] = useState(false);
   
-  const REDIRECT_SERVICE = 'http://localhost:3001';
+  // Use proxy through backend instead of direct localhost
+  const REDIRECT_API = `${API}/redirect-proxy`;
   const ADMIN_TOKEN = 'dev-token-change-in-production';
 
   useEffect(() => {
