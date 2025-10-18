@@ -41,19 +41,23 @@ const ShoppingListPage = ({ sessionId }) => {
   const getMappingId = (ingredientName) => {
     const name = ingredientName.toLowerCase().trim();
     
-    // Check against all mappings' keywords
+    let bestMatch = null;
+    let bestMatchLength = 0;
+    
+    // Check against all mappings' keywords - find the longest/most specific match
     for (const mapping of allMappings) {
       if (mapping.keywords) {
         const keywords = mapping.keywords.toLowerCase().split(',').map(k => k.trim());
         for (const keyword of keywords) {
-          if (name.includes(keyword)) {
-            return mapping.id;
+          if (name.includes(keyword) && keyword.length > bestMatchLength) {
+            bestMatch = mapping.id;
+            bestMatchLength = keyword.length;
           }
         }
       }
     }
     
-    return null;
+    return bestMatch;
   };
 
   useEffect(() => {
