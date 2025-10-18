@@ -116,8 +116,18 @@ const PantryPage = ({ sessionId }) => {
 
   return (
     <div className="space-y-6 fade-in" data-testid="pantry-page">
-      <div className="flex items-center justify-between">
-        <div>
+      {!user ? (
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <UpgradeModal 
+            isOpen={showUpgradeModal}
+            onClose={() => window.location.href = '/'}
+            reason="general"
+          />
+        </div>
+      ) : (
+        <>
+          <div className="flex items-center justify-between">
+            <div>
           <h1 className="text-4xl font-bold mb-2">Mine ingredienser</h1>
           <p className="text-gray-600">Administrer dine ingredienser</p>
         </div>
