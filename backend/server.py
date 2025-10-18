@@ -1303,6 +1303,41 @@ async def get_recipe(recipe_id: str, session_id: Optional[str] = None):
     
     return recipe
 
+@api_router.delete("/recipes/{recipe_id}")
+async def delete_recipe(recipe_id: str, request: Request):
+    """Delete a recipe (admin only)"""
+    # Get current user
+    user = await get_current_user(request, None, db)
+    
+    # Check if user is admin
+    if not user or user.role != "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Kun administratorer kan slette opskrifter"
+        )
+    
+    # Delete recipe from main recipes collection
+    result = await db.recipes.delete_one({"id": recipe_id})
+    
+    # Also try to delete from user_recipes if it exists there
+    if result.deleted_count == 0:
+        result = await db.user_recipes.delete_one({"id": recipe_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(
+            status_code=404,
+            detail="Opskrift ikke fundet"
+        )
+    
+    # Clean up related data
+    await db.favorites.delete_many({"recipe_id": recipe_id})
+    await db.ratings.delete_many({"recipe_id": recipe_id})
+    
+    return {
+        "message": "Opskrift slettet",
+        "recipe_id": recipe_id
+    }
+
 @api_router.post("/recipes", response_model=Recipe)
 async def create_recipe(recipe_data: RecipeCreate, request: Request):
     # Get current user
