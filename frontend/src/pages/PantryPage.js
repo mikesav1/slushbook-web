@@ -260,6 +260,8 @@ const PantryPage = ({ sessionId }) => {
           ))}
         </div>
       )}
+      </>
+      )}
     </div>
   );
 };
