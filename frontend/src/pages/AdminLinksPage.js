@@ -105,18 +105,45 @@ const AdminLinksPage = () => {
     }
   };
 
-  const updateOptionUrl = async (optionId, newUrl) => {
+  const updateOption = async (optionId, updates) => {
     try {
+      setSaving(true);
       await axios.patch(
         `${REDIRECT_API}/admin/option/${optionId}`,
-        { url: newUrl },
+        updates,
         { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
       );
       toast.success('Link opdateret!');
       fetchMappings();
+      setEditingOption(null);
     } catch (error) {
-      console.error('Error updating URL:', error);
+      console.error('Error updating option:', error);
       toast.error('Kunne ikke opdatere link');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const deleteOption = async (optionId, mappingName) => {
+    if (!window.confirm(`Er du sikker på at du vil slette denne leverandør link fra "${mappingName}"?`)) {
+      return;
+    }
+    
+    try {
+      setSaving(true);
+      // Since there's no DELETE endpoint, we'll deactivate it
+      await axios.patch(
+        `${REDIRECT_API}/admin/option/${optionId}`,
+        { status: 'deleted' },
+        { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
+      );
+      toast.success('Link slettet!');
+      fetchMappings();
+    } catch (error) {
+      console.error('Error deleting option:', error);
+      toast.error('Kunne ikke slette link');
+    } finally {
+      setSaving(false);
     }
   };
 
