@@ -68,6 +68,66 @@ const RecipeDetailPage = ({ sessionId }) => {
     }
   };
 
+  const [allMappings, setAllMappings] = useState([]);
+  const [supplierCache, setSupplierCache] = useState({});
+  
+  const REDIRECT_API = `${API}/redirect-proxy/go`;
+  const ADMIN_REDIRECT_API = `${API}/redirect-proxy/admin`;
+  const ADMIN_TOKEN = 'dev-token-change-in-production';
+
+  useEffect(() => {
+    fetchRecipe();
+    fetchMachines();
+    fetchMappings();
+  }, [id, sessionId]);
+
+  const fetchMappings = async () => {
+    try {
+      const response = await axios.get(`${ADMIN_REDIRECT_API}/mappings`, {
+        headers: { Authorization: `Bearer ${ADMIN_TOKEN}` }
+      });
+      setAllMappings(response.data);
+    } catch (error) {
+      console.error('Error fetching mappings:', error);
+    }
+  };
+
+  const getMappingForIngredient = (ingredientName) => {
+    const name = ingredientName.toLowerCase().trim();
+    
+    let bestMatch = null;
+    let bestMatchLength = 0;
+    
+    // Check against all mappings' keywords - find the longest/most specific match
+    for (const mapping of allMappings) {
+      if (mapping.keywords) {
+        const keywords = mapping.keywords.toLowerCase().split(',').map(k => k.trim());
+        for (const keyword of keywords) {
+          if (name.includes(keyword) && keyword.length > bestMatchLength) {
+            bestMatch = mapping.id;
+            bestMatchLength = keyword.length;
+          }
+        }
+      }
+    }
+    
+    return bestMatch;
+  };
+
+  const getSupplierDisplayName = (supplier) => {
+    const names = {
+      'power': 'Power',
+      'barshopen': 'Barshopen',
+      'bilka': 'Bilka',
+      'foetex': 'Føtex',
+      'matas': 'Matas',
+      'nemlig': 'Nemlig.com',
+      'amazon': 'Amazon',
+      'other': 'Leverandør'
+    };
+    return names[supplier] || supplier.charAt(0).toUpperCase() + supplier.slice(1);
+  };
+
   const getProductForIngredient = (categoryKey) => {
     return products.find(p => p.category_key === categoryKey);
   };
