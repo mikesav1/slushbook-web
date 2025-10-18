@@ -522,6 +522,194 @@ class BackendTester:
         self.log("✅ Complete machine CRUD flow successful")
         return True
         
+    def test_redirect_service_health_direct(self):
+        """Test redirect service health check (direct)"""
+        self.log("Testing redirect service health check (direct)...")
+        
+        try:
+            response = self.session.get("http://localhost:3001/health")
+            
+            if response.status_code == 200:
+                data = response.json()
+                self.log(f"✅ Redirect service health check successful: {data}")
+                
+                # Verify expected response structure
+                if data.get("ok") is True and data.get("db") is True:
+                    self.log("✅ Health check response structure is correct")
+                else:
+                    self.log(f"❌ Unexpected health check response: {data}")
+                    return False
+                    
+            else:
+                self.log(f"❌ Redirect service health check failed: {response.status_code} - {response.text}")
+                return False
+                
+        except Exception as e:
+            self.log(f"❌ Redirect service health check failed with exception: {str(e)}")
+            return False
+            
+        return True
+        
+    def test_redirect_admin_get_mapping(self):
+        """Test admin API - Get mapping via proxy"""
+        self.log("Testing admin API - Get mapping via proxy...")
+        
+        headers = {"Authorization": "Bearer dev-token-change-in-production"}
+        
+        try:
+            response = self.session.get(
+                f"{BASE_URL}/redirect-proxy/admin/mapping/sodastream-pepsi-440ml",
+                headers=headers
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                self.log(f"✅ Admin get mapping successful")
+                
+                # Verify response contains options array with Power.dk link
+                if "options" in data and isinstance(data["options"], list):
+                    self.log("✅ Response contains options array")
+                    
+                    # Check if any option contains Power.dk URL
+                    power_link_found = False
+                    for option in data["options"]:
+                        if isinstance(option, dict) and "url" in option:
+                            if "power.dk" in option["url"].lower():
+                                power_link_found = True
+                                self.log(f"✅ Found Power.dk link: {option['url']}")
+                                break
+                    
+                    if not power_link_found:
+                        self.log("❌ No Power.dk link found in options")
+                        return False
+                        
+                else:
+                    self.log(f"❌ Response missing options array: {data}")
+                    return False
+                    
+            else:
+                self.log(f"❌ Admin get mapping failed: {response.status_code} - {response.text}")
+                return False
+                
+        except Exception as e:
+            self.log(f"❌ Admin get mapping failed with exception: {str(e)}")
+            return False
+            
+        return True
+        
+    def test_redirect_public_redirect(self):
+        """Test public redirect via proxy"""
+        self.log("Testing public redirect via proxy...")
+        
+        try:
+            # Use allow_redirects=False to capture the 302 response
+            response = self.session.get(
+                f"{BASE_URL}/redirect-proxy/go/sodastream-pepsi-440ml",
+                allow_redirects=False
+            )
+            
+            if response.status_code == 302:
+                self.log("✅ Public redirect returned 302 status code")
+                
+                # Check for Location header
+                location = response.headers.get("Location")
+                if location:
+                    self.log(f"✅ Location header found: {location}")
+                    
+                    # Verify it's a Power.dk URL
+                    if "power.dk" in location.lower():
+                        self.log("✅ Redirect points to Power.dk")
+                    else:
+                        self.log(f"❌ Redirect does not point to Power.dk: {location}")
+                        return False
+                        
+                else:
+                    self.log("❌ No Location header in 302 response")
+                    return False
+                    
+            else:
+                self.log(f"❌ Public redirect failed: expected 302, got {response.status_code} - {response.text}")
+                return False
+                
+        except Exception as e:
+            self.log(f"❌ Public redirect failed with exception: {str(e)}")
+            return False
+            
+        return True
+        
+    def test_redirect_admin_link_health(self):
+        """Test admin API - Link health check via proxy"""
+        self.log("Testing admin API - Link health check via proxy...")
+        
+        headers = {
+            "Authorization": "Bearer dev-token-change-in-production",
+            "Content-Type": "application/json"
+        }
+        
+        body = {
+            "urls": ["https://www.power.dk/koekken-og-madlavning/vand-og-juice/smagsekstrakter/sodastream-pepsi-440-ml/p-1168002/"]
+        }
+        
+        try:
+            response = self.session.post(
+                f"{BASE_URL}/redirect-proxy/admin/link-health",
+                headers=headers,
+                json=body
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                self.log(f"✅ Admin link health check successful")
+                
+                # Verify response contains health status for the URL
+                if isinstance(data, dict) or isinstance(data, list):
+                    self.log(f"✅ Link health response received: {data}")
+                else:
+                    self.log(f"❌ Unexpected link health response format: {data}")
+                    return False
+                    
+            else:
+                self.log(f"❌ Admin link health check failed: {response.status_code} - {response.text}")
+                return False
+                
+        except Exception as e:
+            self.log(f"❌ Admin link health check failed with exception: {str(e)}")
+            return False
+            
+        return True
+        
+    def test_redirect_non_existent_mapping(self):
+        """Test redirect with non-existent mapping"""
+        self.log("Testing redirect with non-existent mapping...")
+        
+        try:
+            response = self.session.get(
+                f"{BASE_URL}/redirect-proxy/go/non-existent-product",
+                allow_redirects=False
+            )
+            
+            # Should handle gracefully - either 404 or fallback redirect
+            if response.status_code in [404, 302]:
+                self.log(f"✅ Non-existent mapping handled gracefully: {response.status_code}")
+                
+                if response.status_code == 302:
+                    location = response.headers.get("Location")
+                    if location:
+                        self.log(f"✅ Fallback redirect to: {location}")
+                    else:
+                        self.log("❌ 302 response missing Location header")
+                        return False
+                        
+            else:
+                self.log(f"❌ Non-existent mapping not handled properly: {response.status_code} - {response.text}")
+                return False
+                
+        except Exception as e:
+            self.log(f"❌ Non-existent mapping test failed with exception: {str(e)}")
+            return False
+            
+        return True
+        
     def run_all_tests(self):
         """Run all backend tests"""
         self.log("Starting SLUSHBOOK Backend System Tests")
