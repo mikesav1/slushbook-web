@@ -490,6 +490,91 @@ const AdminLinksPage = () => {
         </div>
       )}
 
+      {/* Edit Mapping Dialog */}
+      {editingMapping && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl p-6 max-w-2xl w-full">
+            <h2 className="text-2xl font-bold mb-4">Rediger Mapping</h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                updateMapping({
+                  id: editingMapping.id, // ID kan ikke ændres
+                  name: formData.get('name'),
+                  ean: formData.get('ean') || null,
+                  keywords: formData.get('keywords')
+                });
+              }}
+              className="space-y-4"
+            >
+              <div>
+                <label className="block text-sm font-medium mb-1">Mapping ID (kan ikke ændres)</label>
+                <input
+                  value={editingMapping.id}
+                  disabled
+                  className="w-full px-4 py-2 border rounded-lg bg-gray-100 text-gray-600"
+                />
+                <p className="text-xs text-gray-500 mt-1">ID kan ikke ændres efter oprettelse</p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Produkt Navn</label>
+                <input
+                  name="name"
+                  required
+                  defaultValue={editingMapping.name}
+                  placeholder="SodaStream Cola 440 ml"
+                  className="w-full px-4 py-2 border rounded-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">EAN (valgfrit)</label>
+                <input
+                  name="ean"
+                  defaultValue={editingMapping.ean || ''}
+                  placeholder="1234567890123"
+                  className="w-full px-4 py-2 border rounded-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Søgeord / Nøgleord <span className="text-red-500">*</span>
+                </label>
+                <input
+                  name="keywords"
+                  required
+                  defaultValue={editingMapping.keywords || ''}
+                  placeholder="pepsi,cola,sodastream pepsi"
+                  className="w-full px-4 py-2 border rounded-lg"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Kommasepareret liste. Fx: "7up,7-up,seven up,lemon"
+                </p>
+              </div>
+
+              <div className="flex gap-3 mt-6">
+                <Button 
+                  type="submit" 
+                  className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500"
+                  disabled={saving}
+                >
+                  {saving ? 'Gemmer...' : 'Gem Ændringer'}
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => setEditingMapping(null)}
+                  variant="outline"
+                  className="flex-1"
+                  disabled={saving}
+                >
+                  Annuller
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* Edit Option Dialog */}
       {editingOption && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
