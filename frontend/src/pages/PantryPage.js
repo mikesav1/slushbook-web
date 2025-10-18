@@ -7,11 +7,15 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
+import { useAuth } from '../context/AuthContext';
+import UpgradeModal from '../components/UpgradeModal';
 
 const PantryPage = ({ sessionId }) => {
+  const { user } = useAuth();
   const [pantryItems, setPantryItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [newItem, setNewItem] = useState({
     ingredient_name: '',
     category_key: '',
@@ -21,8 +25,13 @@ const PantryPage = ({ sessionId }) => {
   });
 
   useEffect(() => {
+    if (!user) {
+      setShowUpgradeModal(true);
+      setLoading(false);
+      return;
+    }
     fetchPantry();
-  }, [sessionId]);
+  }, [sessionId, user]);
 
   const fetchPantry = async () => {
     try {
