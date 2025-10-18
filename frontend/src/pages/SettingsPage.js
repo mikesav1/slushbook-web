@@ -379,6 +379,18 @@ const SettingsPage = ({ sessionId }) => {
           <h2 className="text-2xl font-bold mb-4 text-red-700">⚙️ Administrator</h2>
           <div className="space-y-3">
             <Link
+              to="/admin"
+              className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-red-100"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-bold text-gray-800">Admin Panel</h3>
+                  <p className="text-sm text-gray-600">CSV import og vendor management</p>
+                </div>
+                <span className="text-red-600">→</span>
+              </div>
+            </Link>
+            <Link
               to="/members"
               className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-red-100"
             >
