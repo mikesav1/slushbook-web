@@ -84,7 +84,7 @@ const ShoppingListPage = ({ sessionId }) => {
     }
 
     try {
-      const response = await axios.get(`${ADMIN_REDIRECT_API}/${mappingId}`, {
+      const response = await axios.get(`${ADMIN_REDIRECT_API}/mapping/${mappingId}`, {
         headers: { Authorization: `Bearer ${ADMIN_TOKEN}` }
       });
       
