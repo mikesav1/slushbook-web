@@ -11,7 +11,7 @@ import { useAuth } from '../context/AuthContext';
 const RecipeDetailPage = ({ sessionId }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [scaledData, setScaledData] = useState(null);
