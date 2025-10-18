@@ -524,7 +524,8 @@ const RecipeDetailPage = ({ sessionId }) => {
         </div>
         <div className="space-y-3">
           {ingredientsToShow.map((ingredient, index) => {
-            const product = getProductForIngredient(ingredient.category_key);
+            const mappingId = getMappingForIngredient(ingredient.name);
+            
             return (
               <div
                 key={index}
@@ -542,16 +543,15 @@ const RecipeDetailPage = ({ sessionId }) => {
                     {ingredient.quantity} {ingredient.unit}
                   </span>
                 </div>
-                {/* Show product links ONLY for guests (not logged in users) */}
-                {!user && product && (
+                {/* Show redirect links ONLY for guests (not logged in users) */}
+                {!user && mappingId && (
                   <a
-                    href={product.product_url}
+                    href={`${REDIRECT_API}/${mappingId}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() => trackClick(product.id)}
-                    className="flex items-center gap-2 text-sm text-emerald-600 hover:text-emerald-700 font-medium"
+                    className="flex items-center gap-2 text-sm text-emerald-600 hover:text-emerald-700 font-medium hover:underline"
                   >
-                    🛒 Køb hos {product.brand?.name || 'leverandør'}
+                    🛒 Køb her
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
