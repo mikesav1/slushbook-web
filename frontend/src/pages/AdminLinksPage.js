@@ -371,12 +371,21 @@ const AdminLinksPage = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Leverandør</label>
-                <input
+                <select
                   name="supplier"
                   required
-                  placeholder="power"
                   className="w-full px-4 py-2 border rounded-lg"
-                />
+                >
+                  <option value="power">Power</option>
+                  <option value="barshopen">Barshopen</option>
+                  <option value="bilka">Bilka</option>
+                  <option value="foetex">Føtex</option>
+                  <option value="matas">Matas</option>
+                  <option value="nemlig">Nemlig.com</option>
+                  <option value="amazon">Amazon</option>
+                  <option value="other">Andet</option>
+                </select>
+                <p className="text-xs text-gray-500 mt-1">Vælg hvor produktet kan købes</p>
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Produkt Titel</label>
