@@ -24,27 +24,26 @@ const AdminLinksPage = () => {
   const fetchMappings = async () => {
     try {
       setLoading(true);
-      // Try to get all mappings - since we don't have a list endpoint, 
-      // we'll fetch the seeded ones we know exist
-      const seedMappings = [
-        'sodastream-pepsi-440ml', 
-        'sodastream-7up-free-440ml', 
-        'power-flavours-category',
-        'blaa-curacao-sirup'
-      ];
-      const allData = [];
       
-      for (const id of seedMappings) {
+      // Fetch all mappings using the new endpoint
+      const response = await axios.get(
+        `${REDIRECT_API}/admin/mappings`,
+        { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
+      );
+      
+      // For each mapping, fetch its options
+      const allData = [];
+      for (const mapping of response.data) {
         try {
-          const response = await axios.get(
-            `${REDIRECT_API}/admin/mapping/${id}`,
+          const optionsResponse = await axios.get(
+            `${REDIRECT_API}/admin/mapping/${mapping.id}`,
             { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
           );
-          if (response.data) {
-            allData.push(response.data);
+          if (optionsResponse.data) {
+            allData.push(optionsResponse.data);
           }
         } catch (error) {
-          console.log(`Mapping ${id} not found or error:`, error.message);
+          console.log(`Error fetching options for ${mapping.id}:`, error.message);
         }
       }
       
