@@ -192,7 +192,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Machine CRUD Operations on SettingsPage"
+    - "Redirect Service Integration"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
