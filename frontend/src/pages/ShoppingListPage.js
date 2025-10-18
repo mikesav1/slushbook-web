@@ -9,7 +9,8 @@ const ShoppingListPage = ({ sessionId }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const REDIRECT_SERVICE = 'http://localhost:3001';
+  // Use backend proxy instead of direct localhost
+  const REDIRECT_API = `${API}/redirect-proxy/go`;
   
   // Mapping af almindelige ingredienser til redirect service IDs
   // Kun ingredienser der kan købes får et mapping
