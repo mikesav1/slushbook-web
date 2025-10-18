@@ -726,7 +726,12 @@ class BackendTester:
             ("Machine Get", self.test_machine_get),
             ("Machine Update", self.test_machine_update),
             ("Machine Delete", self.test_machine_delete),
-            ("Complete Machine CRUD Flow", self.test_machine_crud_complete_flow)
+            ("Complete Machine CRUD Flow", self.test_machine_crud_complete_flow),
+            ("Redirect Service Health (Direct)", self.test_redirect_service_health_direct),
+            ("Redirect Admin Get Mapping", self.test_redirect_admin_get_mapping),
+            ("Redirect Public Redirect", self.test_redirect_public_redirect),
+            ("Redirect Admin Link Health", self.test_redirect_admin_link_health),
+            ("Redirect Non-Existent Mapping", self.test_redirect_non_existent_mapping)
         ]
         
         results = {}
