@@ -79,7 +79,7 @@ const ShoppingListPage = ({ sessionId }) => {
   };
 
   useEffect(() => {
-    fetchShoppingList();
+    fetchMappingsAndShoppingList();
   }, [sessionId]);
 
   const fetchSupplierInfo = async (mappingId) => {
