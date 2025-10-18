@@ -333,7 +333,7 @@ const SettingsPage = ({ sessionId }) => {
                       </span>
                     )}
                   </div>
-                  {!machine.is_system && (
+                  {!machine.is_system && user && (
                     <div className="flex space-x-2 ml-4">
                       <Button
                         variant="outline"
