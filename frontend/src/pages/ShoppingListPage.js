@@ -125,6 +125,22 @@ const ShoppingListPage = ({ sessionId }) => {
     return names[supplier] || supplier.charAt(0).toUpperCase() + supplier.slice(1);
   };
 
+  const fetchMappingsAndShoppingList = async () => {
+    try {
+      // Fetch all mappings with keywords
+      const mappingsResponse = await axios.get(`${ADMIN_REDIRECT_API}/mappings`, {
+        headers: { Authorization: `Bearer ${ADMIN_TOKEN}` }
+      });
+      setAllMappings(mappingsResponse.data);
+      
+      // Fetch shopping list
+      await fetchShoppingList();
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setLoading(false);
+    }
+  };
+
   const fetchShoppingList = async () => {
     try {
       const response = await axios.get(`${API}/shopping-list/${sessionId}`);
