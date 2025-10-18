@@ -63,30 +63,40 @@ const ShoppingListPage = ({ sessionId }) => {
   const fetchSupplierInfo = async (mappingId) => {
     // Check cache first
     if (supplierCache[mappingId]) {
+      console.log(`Using cached supplier for ${mappingId}:`, supplierCache[mappingId]);
       return supplierCache[mappingId];
     }
 
     try {
+      console.log(`Fetching supplier info for mapping: ${mappingId}`);
       const response = await axios.get(`${ADMIN_REDIRECT_API}/mapping/${mappingId}`, {
         headers: { Authorization: `Bearer ${ADMIN_TOKEN}` }
       });
       
+      console.log(`Response for ${mappingId}:`, response.data);
+      
       if (response.data && response.data.options && response.data.options.length > 0) {
         const activeOption = response.data.options.find(opt => opt.status === 'active') || response.data.options[0];
+        console.log(`Active option for ${mappingId}:`, activeOption);
+        
         const supplierInfo = {
           supplier: activeOption.supplier,
           displayName: getSupplierDisplayName(activeOption.supplier)
         };
+        
+        console.log(`Supplier info for ${mappingId}:`, supplierInfo);
         
         // Cache it
         setSupplierCache(prev => ({ ...prev, [mappingId]: supplierInfo }));
         return supplierInfo;
       }
     } catch (error) {
-      console.error('Error fetching supplier info:', error);
+      console.error(`Error fetching supplier info for ${mappingId}:`, error);
     }
     
-    return { supplier: 'power', displayName: 'Power' }; // Default
+    // Return null instead of default fallback
+    console.warn(`No supplier found for ${mappingId}, returning null`);
+    return null;
   };
 
   const getSupplierDisplayName = (supplier) => {
