@@ -258,16 +258,18 @@ const AdminLinksPage = () => {
                           {option.status === 'active' ? <FaToggleOn size={24} /> : <FaToggleOff size={24} />}
                         </button>
                         <button
-                          onClick={() => {
-                            const newUrl = prompt('Ny URL:', option.url);
-                            if (newUrl && newUrl !== option.url) {
-                              updateOptionUrl(option.id, newUrl);
-                            }
-                          }}
+                          onClick={() => setEditingOption(option)}
                           className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                          title="Rediger URL"
+                          title="Rediger"
                         >
                           <FaEdit />
+                        </button>
+                        <button
+                          onClick={() => deleteOption(option.id, mapping.mapping.name)}
+                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          title="Slet"
+                        >
+                          <FaTrash />
                         </button>
                       </div>
                     </div>
