@@ -39,6 +39,16 @@ router.post('/mapping', requireAuth, (req: Request, res: Response) => {
   }
 });
 
+// GET /admin/mappings - Get all mappings (plural endpoint)
+router.get('/mappings', requireAuth, (req: Request, res: Response) => {
+  try {
+    const mappings = dbService.getAllMappings();
+    res.json(mappings);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // GET /admin/mapping/:id
 router.get('/mapping/:id', requireAuth, (req: Request, res: Response) => {
   try {
