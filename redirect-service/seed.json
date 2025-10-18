@@ -1,9 +1,9 @@
 {
   "mapping": [
-    { "id": "sodastream-pepsi-440ml", "name": "SodaStream Pepsi 440 ml" },
-    { "id": "sodastream-7up-free-440ml", "name": "SodaStream 7UP Free 440 ml" },
-    { "id": "power-flavours-category", "name": "Power Smagsekstrakter (kategori)" },
-    { "id": "blaa-curacao-sirup", "name": "Blå curaçao sirup" }
+    { "id": "sodastream-pepsi-440ml", "name": "SodaStream Pepsi 440 ml", "keywords": "pepsi,cola,sodastream pepsi" },
+    { "id": "sodastream-7up-free-440ml", "name": "SodaStream 7UP Free 440 ml", "keywords": "7up,7-up,seven up,lemon,lime,sodastream 7up" },
+    { "id": "power-flavours-category", "name": "Power Smagsekstrakter (kategori)", "keywords": "sirup,syrup,smagsekstrakt,flavour,smag" },
+    { "id": "blaa-curacao-sirup", "name": "Blå curaçao sirup", "keywords": "curaçao,curacao,blå,blue,blå curaçao,blue curacao" }
   ],
   "options": [
     { "id": "opt_pepsi_power", "mappingId": "sodastream-pepsi-440ml", "supplier": "power", "title": "SodaStream Pepsi 440 ml", "url": "https://www.power.dk/koekken-og-madlavning/vand-og-juice/smagsekstrakter/sodastream-pepsi-440-ml/p-1168002/", "status": "active" },
