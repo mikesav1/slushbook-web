@@ -356,6 +356,20 @@ const AdminLinksPage = () => {
                   className="w-full px-4 py-2 border rounded-lg"
                 />
               </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Søgeord / Nøgleord <span className="text-red-500">*</span>
+                </label>
+                <input
+                  name="keywords"
+                  required
+                  placeholder="pepsi,cola,sodastream pepsi"
+                  className="w-full px-4 py-2 border rounded-lg"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Kommasepareret liste. Fx: "7up,7-up,seven up,lemon". Bruges til at matche ingredienser automatisk.
+                </p>
+              </div>
               
               <hr className="my-4" />
               <h3 className="font-bold text-lg">Første Leverandør-Link</h3>
