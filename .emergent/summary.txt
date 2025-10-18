@@ -1,90 +1,143 @@
 <analysis>
-The AI engineer significantly enhanced the Slushice application, moving from an MVP to a feature-rich product. Key achievements include a comprehensive machine management system (CRUD, mobile fixes, cancel functionality) and robust user authentication fixes (bcrypt compatibility, database name issues, logout redirect). The homepage was dynamically updated to display the latest and most popular recipes with a toggle, and the UI was dramatically revamped with a video background, custom logos, and precise color/gradient adjustments as per user mockups. A major effort was dedicated to populating the database with 78 recipes, ensuring all had professional, legally compliant images and accurate Brix values. Design inconsistencies and frontend errors were systematically debugged and resolved, leading to a highly polished user experience.
+The trajectory details the evolution of the Slushice application, initially focusing on restoring functionality post-rollback and then iteratively building new features. The AI engineer successfully restored the critical Power-flavours redirect service and its admin UI, including fixing CORS via a backend proxy. Key feature additions included enhancing the admin link management with edit/delete options and keyword-based multi-supplier linking. Significant effort was then dedicated to implementing comprehensive Guest vs. Pro access control, involving database schema updates, conditional UI rendering, and restricted access to features like shopping lists, pantry, and recipe publishing. Finally, the AI began implementing a CSV recipe import function for administrators, parsing user requirements for file structure, roles, and a preview mechanism. The development was characterized by iterative debugging, especially around UI display and logical inconsistencies in matching and access control.
 </analysis>
 
 <product_requirements>
-The Slushice app aims to provide a comprehensive recipe platform with several features. Users should be able to browse a recipe catalog with filtering (type, alcohol) and auto-scaling. Core functionalities include pantry management, match suggestions, favorites, and shopping lists. Users/brands can add/edit recipes with photos, allergens, Brix/dilution, and machine type, with role-based access (Guest, Pro, Editor, Admin). The app implements a freemium model and SLUSHBOOK branding with specific logo usage. Critical Slushice Rules for Brix/alcohol warnings are required. A key pending feature is user-managed slushice machines (add, edit, delete). The application supports DA (default) and other languages. The recent development focused on implementing full CRUD for machine management, resolving persistent login/signup issues, refining the homepage UI with dynamic content and a video background, and populating the database with a large set of recipes with legally sourced images and Brix values.
+The Slushice app aims to be a comprehensive recipe platform with role-based access (Guest, Pro, Editor, Admin). The goal is to allow users to browse, filter, manage recipes, and eventually integrate affiliate links.
+**Implemented features include:**
+1.  **Brix Information Page:** A dedicated page explaining Brix values, accessible via clickable badges.
+2.  **Affiliate Redirect Service (Power-flavours):** A Node.js/Express backend service for managing external product links with admin APIs, public redirect endpoints, and affiliate wrapping (e.g., Skimlinks).
+3.  **Admin UI for Affiliate Links:** A frontend interface for administrators to manage product mappings, now including dynamic supplier selection, keyword-based matching, and full CRUD operations (add, edit, delete) for mappings and their options.
+4.  **Shopping List Integration:** Køb hos [Supplier] buttons for ingredients, dynamically linking via the redirect service, with links visible only to guests.
+5.  **Homepage UI:** Displaying up to 8 featured recipes, with video placement restored to default.
+6.  **Recipe Scaling:** A Half portion checkbox on recipe detail pages to automatically scale target volume and ingredients.
+7.  **Guest vs. Pro Access Control:**
+    *   **Guests:** Can view 15 free recipes (with locked placeholders for others), create max 2 private recipes, cannot publish, cannot access shopping list, pantry, or favorites. See affiliate links.
+    *   **Pro Users:** Unlimited access to recipes, unlimited recipe creation, can publish, full access to shopping list, pantry, and favorites. Do not see affiliate links.
+8.  **Admin Login:** Admin user  with password  verified.
+9.  **CSV Recipe Import (WIP):** Admin-only function to import recipes from CSV, auto-filling details like name, description, ingredients (with roles), and steps, with a preview function.
 </product_requirements>
 
 <key_technical_concepts>
--   **React.js (Frontend):** UI, Context API, Routing.
--   **FastAPI (Backend):** API endpoints, MongoDB, RBAC, JWT.
--   **MongoDB (Database):** NoSQL, UUIDs for IDs.
--   **Shadcn UI & Tailwind CSS:** Responsive styling.
--   **Environment Variables:** Strict usage for configuration.
--   **Bcrypt:** Password hashing (version compatibility critical).
--   **Unsplash/Pexels:** Free stock photo APIs.
--   **Supervisor:** Process management.
+-   **React.js (Frontend):** UI, Context API (AuthContext), React Router,  for reliable navigation, , .
+-   **FastAPI (Backend):** API endpoints, MongoDB, HTTPX for proxying,  for file uploads.
+-   **MongoDB:** Main app data persistence.
+-   **Node.js/Express (Redirect Service):** Standalone service for affiliate links.
+-   **SQLite:** Database for the redirect service.
+-   **TypeScript:** Type safety for Node.js service.
+-   **Tailwind CSS & Shadcn UI:** Responsive styling, components.
+-   **Environment Variables:** Strict usage (REACT\_APP\_BACKEND\_URL, MONGO\_URL, ADMIN\_TOKEN).
+-   **CORS & Backend Proxying:** Crucial for inter-service communication.
+-   **Access Control:** Role-based conditional rendering and API guarding.
 </key_technical_concepts>
 
 <code_architecture>
 
 
-**Key File Summaries and Changes:**
-
-*   :
-    *   **Importance:** Core backend logic, API definitions, DB interaction.
-    *   **Changes:**
-        *   Added  endpoint for user machine management.
-        *   Added  to  Pydantic model.
-        *   Added  for admin to delete users and their associated data (recipes, machines).
-        *   Modified  to retrieve all recipes (not just ), achieved by updating existing user recipes to system author in DB.
-        *   Debug logging added to  to diagnose issues.
-*   :
-    *   **Importance:** Main layout, global navigation, and routing.
-    *   **Changes:**
-        *   Updated logout functionality to .
-        *   Changed top navigation bar color to  with white text/icons.
-        *   Removed logo from top navigation on desktop, added SLUSHBOOK text to mobile navigation header.
-        *   Cleaned up duplicate/orphan code related to mobile navigation.
-        *   Implemented a separate mobile bottom navigation bar.
-        *   Adjusted  scope for  component.
-*   :
-    *   **Importance:** User settings and machine management UI.
-    *   **Changes:** Implemented UI for editing and deleting user-added machines, including buttons and a cancel option for the add/edit form.
-*   :
-    *   **Importance:** Landing page, hero section, and featured recipes.
-    *   **Changes:**
-        *   Removed Hurtig Adgang section.
-        *   Implemented dynamic display of 8 latest or popular recipes with a toggle.
-        *   Completely revamped hero section: added  video background (edge-to-edge), blue gradient overlay (reduced to 20%), shimmer effect, large  centered logo, left-aligned Find Den perfekte (black text with shadow), gradient Slushice Opskrifter (fading yellow gradient with shadow), description text with white shadow, and teal/white action buttons (left-aligned).
-        *   The large  was initially used and later replaced based on user feedback.
-*   :
-    *   **Importance:** Admin interface for user management.
-    *   **Changes:** Added a delete (trash icon) button for each member, integrating with the new backend DELETE endpoint.
-*   :
-    *   **Importance:** Handles user password reset requests.
-    *   **Changes:** Discussions around the TEST MODE - Reset Token display for development purposes.
-
-**Newly Created Files/Assets (in trajectory):**
-*   , , , : Python scripts for database operations (adding recipes, admin users, image management).
-*   : Video asset for homepage hero background.
-*   , , : Image assets for various logo placements.
+-   :
+    -   **Importance:** Main FastAPI application.
+    -   **Changes:**
+        -   Added proxy endpoint () using  to forward requests to the .
+        -   Modified  model to include  and  for access control.
+        -   Added new POST endpoint  for CSV recipe import, using .
+-    (NEW FILE):
+    -   **Importance:** Script for initializing recipe access control.
+    -   **Changes:** Created to mark the first 15 recipes as , the rest as , and existing recipes as  (or ).
+-   :
+    -   **Importance:** Global routing, layout, navigation.
+    -   **Changes:**
+        -   Routes for  and  added.
+        -    functionality updated to use  for full page reload.
+        -   Conditional rendering for mobile navigation items (e.g., Liste, Ingredienser, Favoritter) to hide them for guest users.
+-   :
+    -   **Importance:** Displays individual recipe cards.
+    -   **Changes:**
+        -   Brix badges aligned at the bottom using Flexbox.
+        -   Added conditional display for 🔒 Kun for Pro-brugere badge for non-free recipes and  handler to trigger .
+-    (NEW FILE):
+    -   **Importance:** Informs guest users about Pro features and collects emails for a waitlist.
+    -   **Changes:** Created with static content for Pro benefits and an email input.
+-   :
+    -   **Importance:** Displays detailed recipe info.
+    -   **Changes:**
+        -   Brix badges link to  using .
+        -   Added a Halv portion checkbox to dynamically scale recipe volume and ingredients.
+        -   Tilføj til liste button is disabled for guest users.
+        -   Supplier links are conditionally displayed, visible ONLY to guest users (for affiliate revenue).
+        -    function updated to use keyword-based matching from the .
+        -   Imported  to resolve user is not defined error.
+-   :
+    -   **Importance:** Provides detailed Brix explanations.
+    -   **Changes:** Created with static content and refined styling.
+-   :
+    -   **Importance:** Admin interface for managing affiliate product links.
+    -   **Changes:**
+        -   Integrated to use the backend proxy .
+        -   Enhanced with Add New Link dialog, Edit (all fields except ID), Delete, and Toggle Status functionalities.
+        -   Supplier selection implemented as a dropdown.
+        -   Added a  input field for flexible ingredient matching and displays keywords as badges.
+        -   Fetching logic updated to retrieve *all* mappings from the .
+        -   Corrected  to .
+-   :
+    -   **Importance:** Main admin dashboard.
+    -   **Changes:** Work-in-progress to add a Importer fra CSV section with file upload, preview, and import functionality.
+-   :
+    -   **Importance:** Landing page.
+    -   **Changes:**
+        -   Video background restored to default styling (removed centering attempts).
+        -   Displays a maximum of 8 featured recipes.
+        -   Filters recipes to show only  recipes for guest users.
+        -   Integrated  prop to  to show  for locked recipes.
+-   :
+    -   **Importance:** User's pantry/machine management.
+    -   **Changes:** Displays  and hides content if the user is a guest.
+-   :
+    -   **Importance:** Lists all recipes.
+    -   **Changes:** Integrated  prop to  to show  for locked recipes.
+-   :
+    -   **Importance:** User settings, machine management, admin links access.
+    -   **Changes:**
+        -   Produkt-Links card links to .
+        -   + Tilføj Maskine button is disabled for guests with an Kun Pro message.
+        -   Edit/delete buttons for existing machines are disabled for guests.
+-   :
+    -   **Importance:** Manages user's shopping list.
+    -   **Changes:**
+        -   Updated Køb hos buttons to use the  via the backend proxy.
+        -   Removed hardcoded ingredient mappings, now uses dynamic keyword-based matching.
+        -   Added  clearing.
+        -   Modified  to prioritize longer/more specific keyword matches.
+        -   Introduced  component for dynamic supplier display.
+-   :
+    -   **Importance:** SQLite database schema.
+    -   **Changes:** Added  column to the  table.
+-   :
+    -   **Importance:** Database interaction logic.
+    -   **Changes:** Updated to support  in mappings.
+-   :
+    -   **Importance:** Admin API endpoints for redirect service.
+    -   **Changes:** Added new GET endpoint  to fetch all mappings.
+-   :
+    -   **Importance:** Initial data for the redirect service.
+    -   **Changes:** Updated with  for existing mappings and added a Blå curaçao sirup mapping for Barshopen.
 </code_architecture>
 
 <pending_tasks>
+-   **CSV Recipe Import UI (Frontend):** The UI for CSV import on  needs to be fully implemented and debugged (currently showing a blank page).
 -   **Full Google OAuth Integration:** Only a placeholder is present for Google login.
 -   **Pro-User Sharing Feature:** Pro users can create unlimited recipes, but the ability to share with other users is not yet implemented.
--   **Full Vendor Admin UI:** The  remains a placeholder. Functionality for managing brands, products, mappings, and click statistics is pending.
+-   **Full Vendor Admin UI:** The  remains a placeholder for broader vendor management beyond the .
 -   **Slushice Rules Validation:** Automatic BRIX/alcohol percentage calculation with warnings and suggestions during recipe creation is still pending.
--   **ForgotPasswordPage TEST MODE clarity:** The user raised a concern about the clarity of the TEST MODE - Reset Token display.
+-   **ForgotPasswordPage TEST MODE clarity:** User raised a concern about the clarity of the TEST MODE - Reset Token display.
 -   **Ingredienser Afsnit Changes:** User mentioned upcoming changes to the ingredienser afsnittet section.
+-   **App Store & Google Play Preparation:** Building production builds, app icons, splash screens, permissions, store listings, code signing, and device testing.
+-   **Image & Video Rights:** Acquiring commercial licenses for existing media.
 </pending_tasks>
 
 <current_work>
-Immediately before this summary request, the AI engineer successfully addressed several complex issues and implemented significant UI/UX improvements.
-The primary focus was on rectifying authentication problems, specifically a persistent login failure due to bcrypt library version incompatibility and a database name mismatch that prevented user retrieval. The engineer debugged these by inspecting backend logs, checking database contents, and systematically adjusting  versions in  and moving user data to the correct MongoDB database (). A robust admin user () was created and verified. Logout redirect functionality was also fixed.
-
-Concurrently, a major UI redesign of the homepage was completed, meticulously aligning with user-provided mockups. This involved:
-1.  **Dynamic Recipe Display:** Changing the homepage to display 8 latest/popular recipes with a toggle.
-2.  **Hero Section Overhaul:** Implementing a  video background (edge-to-edge), a custom  (centered), left-aligned text (Find Den perfekte with shadow, Slushice Opskrifter with fading yellow gradient and shadow), and teal/white action buttons. The video overlay brightness was adjusted for optimal visibility.
-3.  **Navigation Bar Refinements:** Setting the top navigation to  blue with white elements, removing the logo from desktop navigation, and displaying SLUSHBOOK text in the mobile header instead of an empty bar or a logo.
-4.  **Mobile UI:** Ensuring content (logo, text, buttons) is centered in the hero section on mobile, and adding a functional bottom navigation bar.
-
-Finally, the AI engineer inserted 53 new slushice recipes (totaling 78 recipes) into the database, ensuring each had accurate Brix values, detailed instructions, and professional, legally compliant images sourced from Pexels, Pixabay, and Unsplash. A bug where only 25 recipes were visible was resolved by updating the  field of new recipes to system.
-The last completed task was ensuring all images were 100% legally compliant by using a mix of Pexels, Pixabay, and Unsplash, and confirming their visibility.
+Immediately before this summary request, the AI engineer was implementing the frontend UI for the new CSV recipe import feature on . This involved adding state variables for , , and , and defining  and  functions. The UI elements (file input, Importer fra CSV button, and a preview area) were being added to the  component. The last action was an attempt to take a screenshot of the  page, but it displayed a blank screen, suggesting the UI for the CSV import feature was not yet rendering correctly or completely, leading to the AI's intent to scroll down to check.
 </current_work>
 
 <optional_next_step>
-Address the user's pending request for changes to the ingredienser afsnittet section.
+Continue implementing and debugging the frontend UI for the CSV recipe import on .
 </optional_next_step>
