@@ -140,7 +140,7 @@ const Navigation = () => {
                       onClick={async () => {
                         setIsUserMenuOpen(false);
                         await logout();
-                        navigate('/login');
+                        window.location.href = '/login';
                       }}
                       className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                     >
