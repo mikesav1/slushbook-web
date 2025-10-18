@@ -105,6 +105,9 @@ const ShoppingListPage = ({ sessionId }) => {
 
   const fetchMappingsAndShoppingList = async () => {
     try {
+      // Clear supplier cache when fetching new mappings
+      setSupplierCache({});
+      
       // Fetch all mappings with keywords
       const mappingsResponse = await axios.get(`${ADMIN_REDIRECT_API}/mappings`, {
         headers: { Authorization: `Bearer ${ADMIN_TOKEN}` }
