@@ -14,6 +14,8 @@ const RecipeDetailPage = ({ sessionId }) => {
   const [loading, setLoading] = useState(true);
   const [scaledData, setScaledData] = useState(null);
   const [targetVolume, setTargetVolume] = useState(12000);
+  const [fullMachineVolume, setFullMachineVolume] = useState(12000);
+  const [useHalfPortion, setUseHalfPortion] = useState(false);
   const [machines, setMachines] = useState([]);
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
