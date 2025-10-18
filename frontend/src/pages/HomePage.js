@@ -34,17 +34,20 @@ const HomePage = ({ sessionId }) => {
     try {
       const response = await axios.get(`${API}/recipes?session_id=${sessionId}`);
       
+      // Filter to only show FREE recipes on homepage (accessible to guests)
+      const freeRecipes = response.data.filter(recipe => recipe.is_free === true);
+      
       let sortedRecipes;
       if (sortBy === 'latest') {
         // Sort by created_at (newest first)
-        sortedRecipes = response.data.sort((a, b) => {
+        sortedRecipes = freeRecipes.sort((a, b) => {
           const dateA = new Date(a.created_at || 0);
           const dateB = new Date(b.created_at || 0);
           return dateB - dateA; // Newest first
         });
       } else {
         // Sort by popularity (rating, then favorites count)
-        sortedRecipes = response.data.sort((a, b) => {
+        sortedRecipes = freeRecipes.sort((a, b) => {
           const ratingA = a.average_rating || 0;
           const ratingB = b.average_rating || 0;
           if (ratingB !== ratingA) {
