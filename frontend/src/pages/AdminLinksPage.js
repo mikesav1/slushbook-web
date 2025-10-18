@@ -10,6 +10,7 @@ const AdminLinksPage = () => {
   const [loading, setLoading] = useState(true);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingMapping, setEditingMapping] = useState(null);
+  const [editingOption, setEditingOption] = useState(null);
   const [saving, setSaving] = useState(false);
   
   // Use proxy through backend instead of direct localhost
