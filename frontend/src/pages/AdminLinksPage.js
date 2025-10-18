@@ -35,7 +35,7 @@ const AdminLinksPage = () => {
       for (const id of seedMappings) {
         try {
           const response = await axios.get(
-            `${REDIRECT_SERVICE}/admin/mapping/${id}`,
+            `${REDIRECT_API}/admin/mapping/${id}`,
             { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
           );
           if (response.data) {
@@ -65,7 +65,7 @@ const AdminLinksPage = () => {
       console.log('Creating mapping with data:', data);
       
       const response = await axios.post(
-        `${REDIRECT_SERVICE}/admin/mapping`,
+        `${REDIRECT_API}/admin/mapping`,
         data,
         { 
           headers: { 
@@ -92,7 +92,7 @@ const AdminLinksPage = () => {
     try {
       const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
       await axios.patch(
-        `${REDIRECT_SERVICE}/admin/option/${optionId}`,
+        `${REDIRECT_API}/admin/option/${optionId}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
       );
@@ -107,7 +107,7 @@ const AdminLinksPage = () => {
   const updateOptionUrl = async (optionId, newUrl) => {
     try {
       await axios.patch(
-        `${REDIRECT_SERVICE}/admin/option/${optionId}`,
+        `${REDIRECT_API}/admin/option/${optionId}`,
         { url: newUrl },
         { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
       );
