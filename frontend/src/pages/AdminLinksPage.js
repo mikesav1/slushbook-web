@@ -58,17 +58,27 @@ const AdminLinksPage = () => {
 
   const createMapping = async (data) => {
     try {
-      await axios.post(
+      console.log('Creating mapping with data:', data);
+      
+      const response = await axios.post(
         `${REDIRECT_SERVICE}/admin/mapping`,
         data,
-        { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
+        { 
+          headers: { 
+            Authorization: `Bearer ${ADMIN_TOKEN}`,
+            'Content-Type': 'application/json'
+          } 
+        }
       );
+      
+      console.log('Response:', response.data);
       toast.success('Mapping oprettet!');
       fetchMappings();
       setShowAddDialog(false);
     } catch (error) {
       console.error('Error creating mapping:', error);
-      toast.error('Kunne ikke oprette mapping');
+      console.error('Error response:', error.response?.data);
+      toast.error(`Kunne ikke oprette mapping: ${error.response?.data?.error || error.message}`);
     }
   };
 
