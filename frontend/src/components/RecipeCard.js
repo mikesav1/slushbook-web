@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaHeart, FaRegHeart, FaStar, FaWineBottle } from 'react-icons/fa';
+import { FaHeart, FaRegHeart, FaStar, FaWineBottle, FaLock } from 'react-icons/fa';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { API } from '../App';
+import { useAuth } from '../context/AuthContext';
 
-const RecipeCard = ({ recipe, sessionId, showMatchInfo }) => {
+const RecipeCard = ({ recipe, sessionId, showMatchInfo, onLockedClick }) => {
   const [isFavorite, setIsFavorite] = useState(recipe.is_favorite || false);
+  const { user } = useAuth();
+  
+  // Check if recipe is locked for current user
+  const isLocked = !recipe.is_free && (!user || user.role === 'guest');
 
   const toggleFavorite = async (e) => {
     e.preventDefault();
@@ -22,6 +27,15 @@ const RecipeCard = ({ recipe, sessionId, showMatchInfo }) => {
     } catch (error) {
       console.error('Error toggling favorite:', error);
       toast.error('Kunne ikke opdatere favorit');
+    }
+  };
+
+  const handleClick = (e) => {
+    if (isLocked) {
+      e.preventDefault();
+      if (onLockedClick) {
+        onLockedClick();
+      }
     }
   };
 
