@@ -482,7 +482,8 @@ const RecipeDetailPage = ({ sessionId }) => {
                     {ingredient.quantity} {ingredient.unit}
                   </span>
                 </div>
-                {product && (
+                {/* Show product links ONLY for guests (not logged in users) */}
+                {!user && product && (
                   <a
                     href={product.product_url}
                     target="_blank"
