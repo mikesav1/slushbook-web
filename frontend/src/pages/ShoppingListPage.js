@@ -191,7 +191,7 @@ const ShoppingListPage = ({ sessionId }) => {
                       </div>
                       {mappingId && !item.checked && (
                         <button
-                          onClick={() => window.open(`${REDIRECT_SERVICE}/go/${mappingId}`, '_blank')}
+                          onClick={() => window.open(`${REDIRECT_API}/${mappingId}`, '_blank')}
                           className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium ml-10 hover:underline transition-colors"
                         >
                           🛒 Køb hos Power →
