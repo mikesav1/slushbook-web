@@ -104,6 +104,53 @@ const AdminPage = ({ sessionId }) => {
     }
   };
 
+  const handleCSVUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    setCsvFile(file);
+    setImporting(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await axios.post(`${API}/admin/import-csv`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      setCsvPreview(response.data);
+      toast.success(`${response.data.count} opskrifter klar til import`);
+    } catch (error) {
+      console.error('CSV parse error:', error);
+      toast.error('Kunne ikke læse CSV fil: ' + (error.response?.data?.detail || error.message));
+      setCsvFile(null);
+    } finally {
+      setImporting(false);
+    }
+  };
+
+  const confirmImport = async () => {
+    if (!csvPreview || !csvPreview.recipes) return;
+
+    setImporting(true);
+    try {
+      const response = await axios.post(`${API}/admin/confirm-import`, csvPreview.recipes);
+      
+      toast.success(`✅ ${response.data.count} opskrifter importeret!`);
+      setIsImportOpen(false);
+      setCsvFile(null);
+      setCsvPreview(null);
+    } catch (error) {
+      console.error('Import error:', error);
+      toast.error('Import fejlede: ' + (error.response?.data?.detail || error.message));
+    } finally {
+      setImporting(false);
+    }
+  };
+
   const commonCategories = [
     'sirup.baer.jordbaer',
     'sirup.citrus.citron',
