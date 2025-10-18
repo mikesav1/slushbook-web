@@ -289,16 +289,18 @@ const AppContent = ({ sessionId }) => {
               <span className="text-xs font-medium">Opskrifter</span>
             </Link>
             
-            {/* Liste (Shopping) */}
-            <Link
-              to="/shopping"
-              className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
-                location.pathname === '/shopping' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
-              }`}
-            >
-              <FaShoppingCart size={20} />
-              <span className="text-xs font-medium">Liste</span>
-            </Link>
+            {/* Liste (Shopping) - ONLY for logged in users or Pro */}
+            {user && (
+              <Link
+                to="/shopping"
+                className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
+                  location.pathname === '/shopping' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
+                }`}
+              >
+                <FaShoppingCart size={20} />
+                <span className="text-xs font-medium">Liste</span>
+              </Link>
+            )}
             
             {/* Match */}
             <Link
