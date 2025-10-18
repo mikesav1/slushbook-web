@@ -48,7 +48,9 @@ const RecipeDetailPage = ({ sessionId }) => {
       setMachines(response.data);
       if (response.data.length > 0) {
         const defaultMachine = response.data.find(m => m.is_default) || response.data[0];
-        setTargetVolume(defaultMachine.tank_volumes_ml[0]);
+        const machineVolume = defaultMachine.tank_volumes_ml[0];
+        setFullMachineVolume(machineVolume);
+        setTargetVolume(machineVolume);
       }
     } catch (error) {
       console.error('Error fetching machines:', error);
