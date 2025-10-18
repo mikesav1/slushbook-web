@@ -10,7 +10,7 @@ const AdminLinksPage = () => {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingMapping, setEditingMapping] = useState(null);
   
-  const REDIRECT_SERVICE = 'http://localhost:3002';
+  const REDIRECT_SERVICE = 'http://localhost:3001';
   const ADMIN_TOKEN = 'dev-token-change-in-production';
 
   useEffect(() => {
