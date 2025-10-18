@@ -319,10 +319,12 @@ const AppContent = ({ sessionId }) => {
                     await axios.post(`${API}/auth/logout`);
                     localStorage.removeItem('session_token');
                     setUser(null);
-                    navigate('/login');
-                    toast.success('Du er nu logget ud');
+                    window.location.href = '/login';
                   } catch (error) {
                     console.error('Logout error:', error);
+                    // Force logout even if API call fails
+                    localStorage.removeItem('session_token');
+                    window.location.href = '/login';
                   }
                 }
               }}
