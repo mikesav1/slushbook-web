@@ -148,14 +148,43 @@ const RecipeDetailPage = ({ sessionId }) => {
     }
   };
 
-  const toggleHalfPortion = (checked) => {
+  const toggleHalfPortion = async (checked) => {
     setUseHalfPortion(checked);
     if (checked) {
       // Halvér maskine volumen
-      setTargetVolume(Math.round(fullMachineVolume / 2));
+      const halfVolume = Math.round(fullMachineVolume / 2);
+      setTargetVolume(halfVolume);
+      
+      // Skalér opskriften automatisk til halv portion
+      try {
+        const response = await axios.post(`${API}/scale`, {
+          recipe_id: id,
+          target_volume_ml: halfVolume,
+          margin_pct: 5
+        });
+        setScaledData(response.data);
+        toast.success('Opskrift skaleret til halv portion!');
+      } catch (error) {
+        console.error('Error scaling recipe:', error);
+        toast.error('Kunne ikke skalere opskrift');
+      }
     } else {
       // Gendan fuld maskine volumen
       setTargetVolume(fullMachineVolume);
+      
+      // Skalér tilbage til fuld portion
+      try {
+        const response = await axios.post(`${API}/scale`, {
+          recipe_id: id,
+          target_volume_ml: fullMachineVolume,
+          margin_pct: 5
+        });
+        setScaledData(response.data);
+        toast.success('Opskrift gendannet til fuld portion!');
+      } catch (error) {
+        console.error('Error scaling recipe:', error);
+        toast.error('Kunne ikke skalere opskrift');
+      }
     }
   };
 
