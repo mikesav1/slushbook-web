@@ -771,6 +771,8 @@ async def login(request: LoginRequest, response: Response):
         )
     
     logger.info(f"User found: {request.email}, verifying password...")
+    logger.info(f"Password from request: {request.password}")
+    logger.info(f"Hashed password from DB (first 30): {user_doc['hashed_password'][:30]}")
     
     # Verify password
     password_valid = verify_password(request.password, user_doc["hashed_password"])
