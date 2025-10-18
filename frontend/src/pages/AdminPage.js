@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
-import { FaPlus, FaTrash, FaEye } from 'react-icons/fa';
+import { FaPlus, FaTrash, FaEye, FaUpload, FaFileImport } from 'react-icons/fa';
 import { API } from '../App';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -14,6 +14,10 @@ const AdminPage = ({ sessionId }) => {
   const [loading, setLoading] = useState(true);
   const [isAddBrandOpen, setIsAddBrandOpen] = useState(false);
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
+  const [isImportOpen, setIsImportOpen] = useState(false);
+  const [csvFile, setCsvFile] = useState(null);
+  const [csvPreview, setCsvPreview] = useState(null);
+  const [importing, setImporting] = useState(false);
 
   const [newBrand, setNewBrand] = useState({
     name: '',
