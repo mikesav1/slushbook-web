@@ -267,33 +267,70 @@ const AppContent = ({ sessionId }) => {
       {!isAuthPage && (
         <div className="md:hidden border-t border-gray-200 bg-white fixed bottom-0 left-0 right-0 z-50 shadow-lg">
           <div className="grid grid-cols-5 gap-1 p-2">
-            {navItems.slice(0, 4).map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname === item.path;
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
-                    isActive ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
-                  }`}
-                >
-                  <Icon size={20} />
-                  <span className="text-xs font-medium">{item.label}</span>
-                </Link>
-              );
-            })}
-            
-            {/* Settings/Profile Button */}
+            {/* Hjem */}
             <Link
-              to="/settings"
+              to="/"
               className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
-                location.pathname === '/settings' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
+                location.pathname === '/' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
               }`}
             >
-              <FaCog size={20} />
-              <span className="text-xs font-medium">Indstillinger</span>
+              <FaHome size={20} />
+              <span className="text-xs font-medium">Hjem</span>
             </Link>
+            
+            {/* Opskrifter */}
+            <Link
+              to="/recipes"
+              className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
+                location.pathname === '/recipes' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
+              }`}
+            >
+              <FaBook size={20} />
+              <span className="text-xs font-medium">Opskrifter</span>
+            </Link>
+            
+            {/* Liste (Shopping) */}
+            <Link
+              to="/shopping"
+              className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
+                location.pathname === '/shopping' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
+              }`}
+            >
+              <FaShoppingCart size={20} />
+              <span className="text-xs font-medium">Liste</span>
+            </Link>
+            
+            {/* Match */}
+            <Link
+              to="/match"
+              className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
+                location.pathname === '/match' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
+              }`}
+            >
+              <FaMagic size={20} />
+              <span className="text-xs font-medium">Match</span>
+            </Link>
+            
+            {/* Settings/Profile with Logout */}
+            <button
+              onClick={async () => {
+                if (window.confirm('Er du sikker på at du vil logge ud?')) {
+                  try {
+                    await axios.post(`${API}/auth/logout`);
+                    localStorage.removeItem('session_token');
+                    setUser(null);
+                    navigate('/login');
+                    toast.success('Du er nu logget ud');
+                  } catch (error) {
+                    console.error('Logout error:', error);
+                  }
+                }
+              }}
+              className="flex flex-col items-center gap-1 p-2 rounded-lg transition-colors text-red-600"
+            >
+              <FaSignOutAlt size={20} />
+              <span className="text-xs font-medium">Log ud</span>
+            </button>
           </div>
         </div>
       )}
