@@ -29,14 +29,15 @@ export interface Click {
 
 export const upsertMapping = (mapping: Mapping): Mapping => {
   const stmt = db.prepare(`
-    INSERT INTO mapping (id, name, ean)
-    VALUES (?, ?, ?)
+    INSERT INTO mapping (id, name, ean, keywords)
+    VALUES (?, ?, ?, ?)
     ON CONFLICT(id) DO UPDATE SET
       name = excluded.name,
-      ean = excluded.ean
+      ean = excluded.ean,
+      keywords = excluded.keywords
   `);
   
-  stmt.run(mapping.id, mapping.name, mapping.ean || null);
+  stmt.run(mapping.id, mapping.name, mapping.ean || null, mapping.keywords || null);
   return mapping;
 };
 
