@@ -317,7 +317,8 @@ const AdminLinksPage = () => {
                   mapping: {
                     id: formData.get('mappingId'),
                     name: formData.get('name'),
-                    ean: formData.get('ean') || null
+                    ean: formData.get('ean') || null,
+                    keywords: formData.get('keywords')
                   },
                   options: [{
                     id: formData.get('optionId'),
