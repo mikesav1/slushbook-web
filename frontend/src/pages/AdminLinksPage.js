@@ -29,7 +29,8 @@ const AdminLinksPage = () => {
       const seedMappings = [
         'sodastream-pepsi-440ml', 
         'sodastream-7up-free-440ml', 
-        'power-flavours-category'
+        'power-flavours-category',
+        'blaa-curacao-sirup'
       ];
       const allData = [];
       
