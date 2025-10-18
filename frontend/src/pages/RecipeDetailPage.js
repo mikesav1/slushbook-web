@@ -343,6 +343,12 @@ const RecipeDetailPage = ({ sessionId }) => {
             </div>
             <div className="flex gap-2 mt-2">
               <button
+                onClick={() => setTargetVolume(Math.max(100, Math.round(targetVolume / 2)))}
+                className="px-3 py-1 bg-orange-100 text-orange-700 rounded-lg text-sm hover:bg-orange-200 font-medium"
+              >
+                ÷2 Halver
+              </button>
+              <button
                 onClick={() => setTargetVolume(6000)}
                 className="px-3 py-1 bg-gray-100 rounded-lg text-sm hover:bg-gray-200"
               >
