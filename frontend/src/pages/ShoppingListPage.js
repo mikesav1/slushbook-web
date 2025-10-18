@@ -56,6 +56,49 @@ const ShoppingListPage = ({ sessionId }) => {
     fetchShoppingList();
   }, [sessionId]);
 
+  const fetchSupplierInfo = async (mappingId) => {
+    // Check cache first
+    if (supplierCache[mappingId]) {
+      return supplierCache[mappingId];
+    }
+
+    try {
+      const response = await axios.get(`${ADMIN_REDIRECT_API}/${mappingId}`, {
+        headers: { Authorization: `Bearer ${ADMIN_TOKEN}` }
+      });
+      
+      if (response.data && response.data.options && response.data.options.length > 0) {
+        const activeOption = response.data.options.find(opt => opt.status === 'active') || response.data.options[0];
+        const supplierInfo = {
+          supplier: activeOption.supplier,
+          displayName: getSupplierDisplayName(activeOption.supplier)
+        };
+        
+        // Cache it
+        setSupplierCache(prev => ({ ...prev, [mappingId]: supplierInfo }));
+        return supplierInfo;
+      }
+    } catch (error) {
+      console.error('Error fetching supplier info:', error);
+    }
+    
+    return { supplier: 'power', displayName: 'Power' }; // Default
+  };
+
+  const getSupplierDisplayName = (supplier) => {
+    const names = {
+      'power': 'Power',
+      'barshopen': 'Barshopen',
+      'bilka': 'Bilka',
+      'foetex': 'Føtex',
+      'matas': 'Matas',
+      'nemlig': 'Nemlig.com',
+      'amazon': 'Amazon',
+      'other': 'Leverandør'
+    };
+    return names[supplier] || supplier.charAt(0).toUpperCase() + supplier.slice(1);
+  };
+
   const fetchShoppingList = async () => {
     try {
       const response = await axios.get(`${API}/shopping-list/${sessionId}`);
