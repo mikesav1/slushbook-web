@@ -38,23 +38,6 @@ const ShoppingListPage = ({ sessionId }) => {
   const ADMIN_REDIRECT_API = `${API}/redirect-proxy/admin`;
   const ADMIN_TOKEN = 'dev-token-change-in-production';
   
-  // Mapping af almindelige ingredienser til redirect service IDs
-  // Kun ingredienser der kan købes får et mapping
-  const ingredientMappings = {
-    'blå curaçao': 'blaa-curacao-sirup',
-    'blue curacao': 'blaa-curacao-sirup',
-    'blå curacao': 'blaa-curacao-sirup',
-    'sodastream pepsi': 'sodastream-pepsi-440ml',
-    'sodastream 7up': 'sodastream-7up-free-440ml',
-    'pepsi sirup': 'sodastream-pepsi-440ml',
-    '7up sirup': 'sodastream-7up-free-440ml',
-    'mirinda sirup': 'sodastream-mirinda-440ml',
-    // Tilføj flere mappings her efter behov
-  };
-  
-  // Ingredienser der IKKE skal have køb-knap
-  const excludedIngredients = ['vand', 'is', 'isterninger', 'koldt vand', 'vand (koldt)'];
-  
   const getMappingId = (ingredientName) => {
     const name = ingredientName.toLowerCase().trim();
     
