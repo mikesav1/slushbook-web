@@ -1866,6 +1866,44 @@ async def update_recipe_images():
     
     return {"message": f"Updated {updated_count} recipes with images", "total_mapped": len(image_mappings)}
 
+# Proxy endpoints for redirect service
+REDIRECT_SERVICE_URL = "http://localhost:3001"
+
+@api_router.api_route("/redirect-proxy/{path:path}", methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"])
+async def redirect_proxy(path: str, request: Request):
+    """Proxy requests to redirect service to avoid CORS issues"""
+    try:
+        async with httpx.AsyncClient() as client:
+            # Get request body if present
+            body = None
+            if request.method in ["POST", "PATCH"]:
+                body = await request.body()
+            
+            # Forward headers
+            headers = dict(request.headers)
+            # Remove host header as it will be set by httpx
+            headers.pop('host', None)
+            
+            # Make request to redirect service
+            url = f"{REDIRECT_SERVICE_URL}/{path}"
+            response = await client.request(
+                method=request.method,
+                url=url,
+                headers=headers,
+                content=body,
+                params=dict(request.query_params)
+            )
+            
+            # Return response
+            return Response(
+                content=response.content,
+                status_code=response.status_code,
+                headers=dict(response.headers)
+            )
+    except Exception as e:
+        logger.error(f"Proxy error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 # Include router
 app.include_router(api_router)
 
