@@ -1868,6 +1868,113 @@ async def update_recipe_images():
     
     return {"message": f"Updated {updated_count} recipes with images", "total_mapped": len(image_mappings)}
 
+# CSV Import for Admin
+import csv
+import io
+
+@api_router.post("/admin/import-csv")
+async def import_recipe_from_csv(file: UploadFile = File(...)):
+    """
+    Import recipe from CSV file (Admin only)
+    CSV format: Navn,Beskrivelse,Type,Farve,Brix,Volumen,Alkohol,Tags,Ingredienser,Fremgangsmåde
+    Ingredienser format: Navn:Mængde:Enhed:Brix:Rolle (separated by ;)
+    Fremgangsmåde format: Step 1|Step 2|Step 3
+    """
+    try:
+        # Read CSV file
+        contents = await file.read()
+        csv_text = contents.decode('utf-8')
+        
+        # Parse CSV
+        csv_reader = csv.DictReader(io.StringIO(csv_text))
+        recipes_preview = []
+        
+        for row in csv_reader:
+            # Parse ingredients
+            ingredients = []
+            if row.get('Ingredienser'):
+                for ing_str in row['Ingredienser'].split(';'):
+                    parts = ing_str.strip().split(':')
+                    if len(parts) >= 4:
+                        ingredient = {
+                            'name': parts[0],
+                            'quantity': float(parts[1]),
+                            'unit': parts[2],
+                            'brix': float(parts[3]) if parts[3] else None,
+                            'role': parts[4].lower() if len(parts) > 4 else 'required',
+                            'category_key': ''
+                        }
+                        ingredients.append(ingredient)
+            
+            # Parse steps
+            steps = []
+            if row.get('Fremgangsmåde'):
+                steps = [s.strip() for s in row['Fremgangsmåde'].split('|') if s.strip()]
+            
+            # Parse tags
+            tags = []
+            if row.get('Tags'):
+                tags = [t.strip() for t in row['Tags'].split(';') if t.strip()]
+            
+            # Create recipe preview
+            recipe_preview = {
+                'name': row.get('Navn', ''),
+                'description': row.get('Beskrivelse', ''),
+                'type': row.get('Type', 'klassisk').lower(),
+                'color': row.get('Farve', 'red').lower(),
+                'target_brix': float(row.get('Brix', 14.0)),
+                'base_volume_ml': int(row.get('Volumen', 1000)),
+                'alcohol_flag': row.get('Alkohol', 'Nej').lower() in ['ja', 'yes', 'true', '1'],
+                'tags': tags,
+                'ingredients': ingredients,
+                'steps': steps,
+                'image_url': '/api/images/placeholder.jpg',
+                'author': 'system',
+                'author_name': 'SLUSHBOOK'
+            }
+            
+            recipes_preview.append(recipe_preview)
+        
+        return {
+            'success': True,
+            'count': len(recipes_preview),
+            'recipes': recipes_preview
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"CSV parsing error: {str(e)}")
+
+@api_router.post("/admin/confirm-import")
+async def confirm_recipe_import(recipes: List[dict]):
+    """
+    Confirm and create recipes from CSV import (Admin only)
+    """
+    try:
+        created_count = 0
+        
+        for recipe_data in recipes:
+            # Add required fields
+            recipe_data['id'] = str(uuid.uuid4())
+            recipe_data['created_at'] = datetime.now(timezone.utc)
+            recipe_data['rating_avg'] = 0.0
+            recipe_data['rating_count'] = 0
+            recipe_data['view_count'] = 0
+            recipe_data['is_free'] = False  # Admin can manually set to True later
+            recipe_data['is_published'] = True
+            
+            # Insert into database
+            await db.recipes.insert_one(recipe_data)
+            created_count += 1
+        
+        return {
+            'success': True,
+            'message': f'Successfully imported {created_count} recipes',
+            'count': created_count
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Import error: {str(e)}")
+
 # Proxy endpoints for redirect service
 REDIRECT_SERVICE_URL = "http://localhost:3001"
 
