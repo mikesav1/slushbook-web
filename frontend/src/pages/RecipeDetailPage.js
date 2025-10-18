@@ -171,6 +171,23 @@ const RecipeDetailPage = ({ sessionId }) => {
     }
   };
 
+  const deleteRecipe = async () => {
+    if (!window.confirm(`Er du sikker på, at du vil slette "${recipe.name}"? Dette kan ikke fortrydes.`)) {
+      return;
+    }
+
+    try {
+      await axios.delete(`${API}/recipes/${id}`, {
+        withCredentials: true
+      });
+      toast.success('Opskrift slettet');
+      navigate('/recipes');
+    } catch (error) {
+      console.error('Error deleting recipe:', error);
+      toast.error(error.response?.data?.detail || 'Kunne ikke slette opskrift');
+    }
+  };
+
   const rateRecipe = async (stars) => {
     try {
       await axios.post(`${API}/ratings`, {
