@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Implement machine management CRUD operations (edit, delete) and fix mobile scrolling issue on SettingsPage"
+user_problem_statement: "Test the complete redirect service integration with Node.js redirect service and FastAPI proxy endpoint"
 
 backend:
   - task: "Authentication System Testing"
