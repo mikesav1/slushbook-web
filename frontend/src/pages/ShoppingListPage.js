@@ -9,7 +9,7 @@ const ShoppingListPage = ({ sessionId }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const REDIRECT_SERVICE = 'http://localhost:3002';
+  const REDIRECT_SERVICE = 'http://localhost:3001';
   
   // Mapping af almindelige ingredienser til redirect service IDs
   // Kun ingredienser der kan købes får et mapping
