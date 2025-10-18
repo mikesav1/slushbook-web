@@ -9,7 +9,8 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS mapping (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
-    ean TEXT
+    ean TEXT,
+    keywords TEXT
   );
 
   CREATE TABLE IF NOT EXISTS option (
