@@ -56,23 +56,18 @@ const ShoppingListPage = ({ sessionId }) => {
   const excludedIngredients = ['vand', 'is', 'isterninger', 'koldt vand', 'vand (koldt)'];
   
   const getMappingId = (ingredientName) => {
-    const nameLower = ingredientName.toLowerCase().trim();
+    const name = ingredientName.toLowerCase().trim();
     
-    // Check hvis den er excluded
-    if (excludedIngredients.some(excluded => nameLower.includes(excluded))) {
-      return null;
-    }
-    
-    // Check direct mapping
-    for (const [key, mappingId] of Object.entries(ingredientMappings)) {
-      if (nameLower.includes(key)) {
-        return mappingId;
+    // Check against all mappings' keywords
+    for (const mapping of allMappings) {
+      if (mapping.keywords) {
+        const keywords = mapping.keywords.toLowerCase().split(',').map(k => k.trim());
+        for (const keyword of keywords) {
+          if (name.includes(keyword)) {
+            return mapping.id;
+          }
+        }
       }
-    }
-    
-    // Default: hvis det indeholder "sirup", "smag", eller "ekstrakt" - vis kategori link
-    if (nameLower.includes('sirup') || nameLower.includes('smag') || nameLower.includes('ekstrakt')) {
-      return 'power-flavours-category';
     }
     
     return null;
