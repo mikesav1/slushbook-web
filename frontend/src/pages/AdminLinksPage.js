@@ -9,6 +9,7 @@ const AdminLinksPage = () => {
   const [loading, setLoading] = useState(true);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingMapping, setEditingMapping] = useState(null);
+  const [saving, setSaving] = useState(false);
   
   const REDIRECT_SERVICE = 'http://localhost:3001';
   const ADMIN_TOKEN = 'dev-token-change-in-production';
