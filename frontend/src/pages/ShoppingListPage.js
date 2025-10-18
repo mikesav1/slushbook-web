@@ -8,9 +8,12 @@ import { Button } from '../components/ui/button';
 const ShoppingListPage = ({ sessionId }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [supplierCache, setSupplierCache] = useState({});
 
   // Use backend proxy instead of direct localhost
   const REDIRECT_API = `${API}/redirect-proxy/go`;
+  const ADMIN_REDIRECT_API = `${API}/redirect-proxy/admin/mapping`;
+  const ADMIN_TOKEN = 'dev-token-change-in-production';
   
   // Mapping af almindelige ingredienser til redirect service IDs
   // Kun ingredienser der kan købes får et mapping
