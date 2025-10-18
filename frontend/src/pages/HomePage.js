@@ -181,8 +181,10 @@ const HomePage = ({ sessionId }) => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {(isMobile ? featuredRecipes.slice(0, 1) : featuredRecipes).map((recipe) => (
-              <RecipeCard key={recipe.id} recipe={recipe} sessionId={sessionId} />
+            {featuredRecipes.map((recipe, index) => (
+              <div key={recipe.id} className={index > 0 ? 'hidden md:block' : ''}>
+                <RecipeCard recipe={recipe} sessionId={sessionId} />
+              </div>
             ))}
           </div>
         )}
