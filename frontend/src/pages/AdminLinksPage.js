@@ -367,14 +367,19 @@ const AdminLinksPage = () => {
               </div>
 
               <div className="flex gap-3 mt-6">
-                <Button type="submit" className="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500">
-                  Opret
+                <Button 
+                  type="submit" 
+                  className="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500"
+                  disabled={saving}
+                >
+                  {saving ? 'Opretter...' : 'Opret'}
                 </Button>
                 <Button
                   type="button"
                   onClick={() => setShowAddDialog(false)}
                   variant="outline"
                   className="flex-1"
+                  disabled={saving}
                 >
                   Annuller
                 </Button>
