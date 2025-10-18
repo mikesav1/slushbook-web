@@ -184,11 +184,22 @@ const HomePage = ({ sessionId }) => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {featuredRecipes.slice(0, 8).map((recipe) => (
-              <RecipeCard key={recipe.id} recipe={recipe} sessionId={sessionId} />
+              <RecipeCard 
+                key={recipe.id} 
+                recipe={recipe} 
+                sessionId={sessionId}
+                onLockedClick={() => setShowUpgradeModal(true)}
+              />
             ))}
           </div>
         )}
       </div>
+
+      <UpgradeModal 
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        reason="recipe_locked"
+      />
 
       {/* Info Cards */}
       <div className="grid md:grid-cols-2 gap-6">
