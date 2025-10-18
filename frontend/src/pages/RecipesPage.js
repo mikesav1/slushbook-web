@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FaSearch, FaFilter, FaTimes } from 'react-icons/fa';
 import { API } from '../App';
 import RecipeCard from '../components/RecipeCard';
+import UpgradeModal from '../components/UpgradeModal';
 
 const RecipesPage = ({ sessionId }) => {
   const [recipes, setRecipes] = useState([]);
@@ -11,6 +12,7 @@ const RecipesPage = ({ sessionId }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [alcoholFilter, setAlcoholFilter] = useState('none');
   const [typeFilter, setTypeFilter] = useState('');
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   useEffect(() => {
     fetchRecipes();
