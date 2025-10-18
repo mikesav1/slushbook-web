@@ -199,7 +199,7 @@ const AdminLinksPage = () => {
                 </div>
                 <div className="flex gap-2">
                   <button
-                    onClick={() => window.open(`${REDIRECT_SERVICE}/go/${mapping.mapping.id}`, '_blank')}
+                    onClick={() => window.open(`${REDIRECT_API}/go/${mapping.mapping.id}`, '_blank')}
                     className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                     title="Test redirect"
                   >
