@@ -199,6 +199,13 @@ const AdminLinksPage = () => {
                 </div>
                 <div className="flex gap-2">
                   <button
+                    onClick={() => setEditingMapping(mapping.mapping)}
+                    className="p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+                    title="Rediger mapping (ID, navn, søgeord)"
+                  >
+                    <FaEdit />
+                  </button>
+                  <button
                     onClick={() => window.open(`${REDIRECT_API}/go/${mapping.mapping.id}`, '_blank')}
                     className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                     title="Test redirect"
