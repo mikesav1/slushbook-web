@@ -2,11 +2,13 @@
   "mapping": [
     { "id": "sodastream-pepsi-440ml", "name": "SodaStream Pepsi 440 ml" },
     { "id": "sodastream-7up-free-440ml", "name": "SodaStream 7UP Free 440 ml" },
-    { "id": "power-flavours-category", "name": "Power Smagsekstrakter (kategori)" }
+    { "id": "power-flavours-category", "name": "Power Smagsekstrakter (kategori)" },
+    { "id": "blaa-curacao-sirup", "name": "Blå curaçao sirup" }
   ],
   "options": [
     { "id": "opt_pepsi_power", "mappingId": "sodastream-pepsi-440ml", "supplier": "power", "title": "SodaStream Pepsi 440 ml", "url": "https://www.power.dk/koekken-og-madlavning/vand-og-juice/smagsekstrakter/sodastream-pepsi-440-ml/p-1168002/", "status": "active" },
     { "id": "opt_7up_power", "mappingId": "sodastream-7up-free-440ml", "supplier": "power", "title": "SodaStream 7UP Free 440 ml", "url": "https://www.power.dk/koekken-og-madlavning/vand-og-juice/smagsekstrakter/sodastream-7up-free-440-ml/p-1168005/", "status": "active" },
-    { "id": "opt_category_power", "mappingId": "power-flavours-category", "supplier": "power", "title": "Smagsekstrakter (kategori)", "url": "https://www.power.dk/c/7806/koekken-og-madlavning/vand-og-juice/smagsekstrakter/", "status": "active" }
+    { "id": "opt_category_power", "mappingId": "power-flavours-category", "supplier": "power", "title": "Smagsekstrakter (kategori)", "url": "https://www.power.dk/c/7806/koekken-og-madlavning/vand-og-juice/smagsekstrakter/", "status": "active" },
+    { "id": "opt_curacao_barshopen", "mappingId": "blaa-curacao-sirup", "supplier": "barshopen", "title": "Monin Blue Curaçao Sirup 70 cl", "url": "https://barshopen.dk/da/barudstyr/mixers-og-sirup/monin-blue-curacao-70-cl/", "status": "active" }
   ]
 }
