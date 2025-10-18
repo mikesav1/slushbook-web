@@ -293,6 +293,16 @@ const SettingsPage = ({ sessionId }) => {
               </form>
             </DialogContent>
           </Dialog>
+          ) : (
+            <Button 
+              onClick={() => toast.info('Log ind for at tilføje maskiner')}
+              variant="outline"
+              className="opacity-50 cursor-not-allowed"
+              disabled
+            >
+              <FaPlus className="mr-2" /> Tilføj Maskine (Kun Pro)
+            </Button>
+          )}
         </div>
 
         {loading ? (
