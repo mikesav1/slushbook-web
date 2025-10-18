@@ -89,6 +89,32 @@ const AdminLinksPage = () => {
     }
   };
 
+  const updateMapping = async (mappingData) => {
+    try {
+      setSaving(true);
+      
+      const response = await axios.post(
+        `${REDIRECT_API}/admin/mapping`,
+        { mapping: mappingData },
+        { 
+          headers: { 
+            Authorization: `Bearer ${ADMIN_TOKEN}`,
+            'Content-Type': 'application/json'
+          } 
+        }
+      );
+      
+      toast.success('Mapping opdateret!');
+      fetchMappings();
+      setEditingMapping(null);
+    } catch (error) {
+      console.error('Error updating mapping:', error);
+      toast.error(`Kunne ikke opdatere mapping: ${error.response?.data?.error || error.message}`);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const toggleOptionStatus = async (optionId, currentStatus) => {
     try {
       const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
