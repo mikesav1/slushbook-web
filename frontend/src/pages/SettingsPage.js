@@ -208,12 +208,13 @@ const SettingsPage = ({ sessionId }) => {
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold">Mine Maskiner</h2>
-          <Dialog open={isAddMachineOpen} onOpenChange={setIsAddMachineOpen}>
-            <DialogTrigger asChild>
-              <Button data-testid="add-machine-button" variant="outline">
-                <FaPlus className="mr-2" /> Tilføj Maskine
-              </Button>
-            </DialogTrigger>
+          {user ? (
+            <Dialog open={isAddMachineOpen} onOpenChange={setIsAddMachineOpen}>
+              <DialogTrigger asChild>
+                <Button data-testid="add-machine-button" variant="outline">
+                  <FaPlus className="mr-2" /> Tilføj Maskine
+                </Button>
+              </DialogTrigger>
             <DialogContent className="max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>{isEditMode ? 'Redigér Maskine' : 'Tilføj Maskine'}</DialogTitle>
