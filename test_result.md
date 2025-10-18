@@ -131,6 +131,18 @@ backend:
       - working: true
         agent: "testing"
         comment: "Comprehensive machine CRUD testing completed successfully. All endpoints working correctly: ✅ POST /api/machines (creates machines with proper data validation) ✅ GET /api/machines/{session_id} (retrieves machines for session) ✅ PUT /api/machines/{machine_id} (updates machine data correctly) ✅ DELETE /api/machines/{machine_id} (deletes machines and removes from database) ✅ Complete CRUD flow test (create → get → update → delete → verify deletion). All operations handle session_id ownership verification properly. Machine data structure includes id, session_id, name, tank_volumes_ml, loss_margin_pct fields. Database persistence working correctly."
+  
+  - task: "Redirect Service Integration"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Comprehensive redirect service integration testing completed successfully. All test cases passed: ✅ Direct Health Check (localhost:3001/health returns {ok: true, db: true}) ✅ Admin Get Mapping via Proxy (GET /api/redirect-proxy/admin/mapping/sodastream-pepsi-440ml with Bearer token returns mapping with Power.dk options) ✅ Public Redirect via Proxy (GET /api/redirect-proxy/go/sodastream-pepsi-440ml returns 302 redirect to Power.dk with UTM parameters) ✅ Admin Link Health Check via Proxy (POST /api/redirect-proxy/admin/link-health with Bearer token and URL array returns health status) ✅ Non-Existent Mapping Handling (GET /api/redirect-proxy/go/non-existent-product returns 302 fallback redirect to Power.dk category page). All 3 seeded product mappings verified: sodastream-pepsi-440ml, sodastream-7up-free-440ml, and power-flavours-category. Proxy endpoint correctly forwards requests to Node.js redirect service on localhost:3001, handles authentication with Bearer tokens, and manages CORS properly. Integration fully functional."
 
 frontend:
   - task: "Display recipe images on cards and detail pages"
