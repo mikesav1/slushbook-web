@@ -31,10 +31,11 @@ const ShoppingListPage = ({ sessionId }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [supplierCache, setSupplierCache] = useState({});
+  const [allMappings, setAllMappings] = useState([]);
 
   // Use backend proxy instead of direct localhost
   const REDIRECT_API = `${API}/redirect-proxy/go`;
-  const ADMIN_REDIRECT_API = `${API}/redirect-proxy/admin/mapping`;
+  const ADMIN_REDIRECT_API = `${API}/redirect-proxy/admin`;
   const ADMIN_TOKEN = 'dev-token-change-in-production';
   
   // Mapping af almindelige ingredienser til redirect service IDs
