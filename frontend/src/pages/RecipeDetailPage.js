@@ -148,6 +148,17 @@ const RecipeDetailPage = ({ sessionId }) => {
     }
   };
 
+  const toggleHalfPortion = (checked) => {
+    setUseHalfPortion(checked);
+    if (checked) {
+      // Halvér maskine volumen
+      setTargetVolume(Math.round(fullMachineVolume / 2));
+    } else {
+      // Gendan fuld maskine volumen
+      setTargetVolume(fullMachineVolume);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center py-12">
