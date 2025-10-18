@@ -171,7 +171,130 @@ const AdminPage = ({ sessionId }) => {
   return (
     <div className="max-w-6xl mx-auto space-y-6 fade-in" data-testid="admin-page">
       <div>
-        <h1 className="text-4xl font-bold mb-2">Admin - Leverandører</h1>
+        <h1 className="text-4xl font-bold mb-2">Admin Panel</h1>
+        <p className="text-gray-600">Administrer opskrifter, brands og produkter</p>
+      </div>
+
+      {/* CSV Import Section */}
+      <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-6 shadow-sm border border-purple-200">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-2xl font-bold text-purple-900 flex items-center gap-2">
+              <FaFileImport className="text-purple-600" />
+              Importer Opskrifter fra CSV
+            </h2>
+            <p className="text-purple-700 text-sm mt-1">
+              Upload en CSV fil for at importere opskrifter automatisk
+            </p>
+          </div>
+          <Dialog open={isImportOpen} onOpenChange={setIsImportOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-purple-600 hover:bg-purple-700">
+                <FaUpload className="mr-2" /> Importer fra CSV
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Importer Opskrifter fra CSV</DialogTitle>
+              </DialogHeader>
+              
+              {!csvPreview ? (
+                <div className="space-y-4">
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                    <FaUpload className="mx-auto text-4xl text-gray-400 mb-4" />
+                    <Label htmlFor="csv-upload" className="cursor-pointer">
+                      <span className="text-blue-600 hover:text-blue-700 font-medium">
+                        Vælg CSV fil
+                      </span>
+                      <span className="text-gray-600"> eller træk og slip her</span>
+                    </Label>
+                    <Input
+                      id="csv-upload"
+                      type="file"
+                      accept=".csv"
+                      onChange={handleCSVUpload}
+                      className="hidden"
+                    />
+                  </div>
+                  
+                  <div className="bg-gray-50 rounded-lg p-4 text-sm">
+                    <h3 className="font-bold mb-2">CSV Format:</h3>
+                    <code className="text-xs block bg-white p-2 rounded">
+                      Navn,Beskrivelse,Type,Farve,Brix,Volumen,Alkohol,Tags,Ingredienser,Fremgangsmåde
+                    </code>
+                    <p className="mt-2 text-gray-600">
+                      <strong>Ingredienser:</strong> Navn:Mængde:Enhed:Brix:Rolle (adskilt med ;)<br/>
+                      <strong>Fremgangsmåde:</strong> Step 1|Step 2|Step 3
+                    </p>
+                  </div>
+                  
+                  {importing && <p className="text-center text-gray-600">Parser CSV...</p>}
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <p className="text-green-800 font-medium">
+                      ✅ {csvPreview.count} opskrifter klar til import
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-4 max-h-96 overflow-y-auto">
+                    {csvPreview.recipes.map((recipe, idx) => (
+                      <div key={idx} className="bg-white border rounded-lg p-4">
+                        <h3 className="font-bold text-lg">{recipe.name}</h3>
+                        <p className="text-sm text-gray-600">{recipe.description}</p>
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded">
+                            {recipe.type}
+                          </span>
+                          <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
+                            {recipe.base_volume_ml}ml
+                          </span>
+                          <span className="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded">
+                            {recipe.target_brix}°Bx
+                          </span>
+                          {recipe.alcohol_flag && (
+                            <span className="px-2 py-1 bg-red-100 text-red-700 text-xs rounded">
+                              Alkohol
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-gray-500 mt-2">
+                          {recipe.ingredients.length} ingredienser, {recipe.steps.length} trin
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="flex gap-3">
+                    <Button 
+                      onClick={confirmImport}
+                      disabled={importing}
+                      className="flex-1 bg-green-600 hover:bg-green-700"
+                    >
+                      {importing ? 'Importerer...' : '✓ Bekræft Import'}
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setCsvPreview(null);
+                        setCsvFile(null);
+                      }}
+                      variant="outline"
+                      className="flex-1"
+                      disabled={importing}
+                    >
+                      Annuller
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </DialogContent>
+          </Dialog>
+        </div>
+      </div>
+
+      <div>
+        <h2 className="text-3xl font-bold mb-2">Leverandører & Produkter</h2>
         <p className="text-gray-600">Administrer brands og produkter</p>
       </div>
 
