@@ -4,12 +4,14 @@ import axios from 'axios';
 import { FaMagic, FaBook, FaFire } from 'react-icons/fa';
 import { API } from '../App';
 import RecipeCard from '../components/RecipeCard';
+import UpgradeModal from '../components/UpgradeModal';
 
 const HomePage = ({ sessionId }) => {
   const [featuredRecipes, setFeaturedRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState('latest'); // 'latest' or 'popular'
   const [isMobile, setIsMobile] = useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   useEffect(() => {
     // Check if mobile
