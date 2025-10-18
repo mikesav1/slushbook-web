@@ -46,6 +46,12 @@ export const getMapping = (id: string): Mapping | null => {
   return stmt.get(id) as Mapping | null;
 };
 
+export const getAllMappings = (): Mapping[] => {
+  const stmt = db.prepare('SELECT * FROM mapping');
+  return stmt.all() as Mapping[];
+};
+
+
 export const upsertOption = (option: Omit<Option, 'updatedAt'> & { updatedAt?: string }): Option => {
   const updatedAt = option.updatedAt || new Date().toISOString();
   
