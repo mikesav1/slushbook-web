@@ -441,13 +441,24 @@ const RecipeDetailPage = ({ sessionId }) => {
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold">Ingredienser</h2>
-          <Button
-            onClick={() => addMissingToShoppingList(recipe.ingredients)}
-            data-testid="add-to-shopping-list"
-            variant="outline"
-          >
-            <FaShoppingCart className="mr-2" /> Tilføj til Liste
-          </Button>
+          {user ? (
+            <Button
+              onClick={() => addMissingToShoppingList(recipe.ingredients)}
+              data-testid="add-to-shopping-list"
+              variant="outline"
+            >
+              <FaShoppingCart className="mr-2" /> Tilføj til Liste
+            </Button>
+          ) : (
+            <Button
+              onClick={() => toast.info('Log ind for at bruge indkøbsliste')}
+              variant="outline"
+              className="opacity-50 cursor-not-allowed"
+              disabled
+            >
+              <FaShoppingCart className="mr-2" /> Tilføj til Liste (Kun Pro)
+            </Button>
+          )}
         </div>
         <div className="space-y-3">
           {ingredientsToShow.map((ingredient, index) => {
