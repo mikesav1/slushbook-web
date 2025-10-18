@@ -5,6 +5,28 @@ import { FaTrash, FaShoppingCart, FaCheck } from 'react-icons/fa';
 import { API } from '../App';
 import { Button } from '../components/ui/button';
 
+// BuyButton component to display dynamic supplier
+const BuyButton = ({ mappingId, redirectApi, fetchSupplier }) => {
+  const [supplierInfo, setSupplierInfo] = useState(null);
+
+  useEffect(() => {
+    fetchSupplier(mappingId).then(info => {
+      setSupplierInfo(info);
+    });
+  }, [mappingId, fetchSupplier]);
+
+  if (!supplierInfo) return null;
+
+  return (
+    <button
+      onClick={() => window.open(`${redirectApi}/${mappingId}`, '_blank')}
+      className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium ml-10 hover:underline transition-colors"
+    >
+      🛒 Køb hos {supplierInfo.displayName} →
+    </button>
+  );
+};
+
 const ShoppingListPage = ({ sessionId }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
