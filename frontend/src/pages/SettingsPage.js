@@ -361,6 +361,39 @@ const SettingsPage = ({ sessionId }) => {
           Version 1.0.0 • Made with ❤️ for slushice entusiaster
         </p>
       </div>
+
+      {/* Admin Section */}
+      {isAdmin() && (
+        <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-6 shadow-sm border-2 border-red-200">
+          <h2 className="text-2xl font-bold mb-4 text-red-700">⚙️ Administrator</h2>
+          <div className="space-y-3">
+            <Link
+              to="/members"
+              className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-red-100"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-bold text-gray-800">Medlemmer</h3>
+                  <p className="text-sm text-gray-600">Administrer brugere og adgang</p>
+                </div>
+                <span className="text-red-600">→</span>
+              </div>
+            </Link>
+            <Link
+              to="/admin/links"
+              className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-red-100"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-bold text-gray-800">Produkt-Links</h3>
+                  <p className="text-sm text-gray-600">Administrer links til leverandører</p>
+                </div>
+                <span className="text-red-600">→</span>
+              </div>
+            </Link>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
