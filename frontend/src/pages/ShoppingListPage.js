@@ -149,7 +149,7 @@ const ShoppingListPage = ({ sessionId }) => {
               <h3 className="font-bold text-lg mb-4 text-cyan-600">{recipeName}</h3>
               <div className="space-y-2">
                 {recipeItems.map((item) => {
-                  const product = getProductForIngredient(item.category_key);
+                  const mappingId = getMappingId(item.ingredient_name);
                   return (
                     <div
                       key={item.id}
@@ -188,16 +188,13 @@ const ShoppingListPage = ({ sessionId }) => {
                           <FaTrash />
                         </button>
                       </div>
-                      {product && !item.checked && (
-                        <a
-                          href={product.product_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={() => trackClick(product.id)}
-                          className="flex items-center gap-2 text-sm text-emerald-600 hover:text-emerald-700 font-medium ml-10"
+                      {mappingId && !item.checked && (
+                        <button
+                          onClick={() => window.open(`${REDIRECT_SERVICE}/go/${mappingId}`, '_blank')}
+                          className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium ml-10 hover:underline transition-colors"
                         >
-                          🛒 Køb hos {product.brand?.name || 'leverandør'} →
-                        </a>
+                          🛒 Køb hos Power →
+                        </button>
                       )}
                     </div>
                   );
