@@ -59,6 +59,7 @@ const AdminLinksPage = () => {
 
   const createMapping = async (data) => {
     try {
+      setSaving(true);
       console.log('Creating mapping with data:', data);
       
       const response = await axios.post(
@@ -80,6 +81,8 @@ const AdminLinksPage = () => {
       console.error('Error creating mapping:', error);
       console.error('Error response:', error.response?.data);
       toast.error(`Kunne ikke oprette mapping: ${error.response?.data?.error || error.message}`);
+    } finally {
+      setSaving(false);
     }
   };
 
