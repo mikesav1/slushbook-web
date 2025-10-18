@@ -12,6 +12,7 @@ from typing import List, Optional, Dict, Any
 import uuid
 from datetime import datetime, timezone, timedelta
 import shutil
+import httpx
 
 # Import auth module
 from auth import (
