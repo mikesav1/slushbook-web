@@ -184,6 +184,18 @@ const AdminLinksPage = () => {
                   {mapping.mapping.ean && (
                     <p className="text-sm text-gray-500 mt-1">EAN: {mapping.mapping.ean}</p>
                   )}
+                  {mapping.mapping.keywords && (
+                    <div className="mt-2">
+                      <p className="text-xs text-gray-600 font-semibold mb-1">Søgeord:</p>
+                      <div className="flex flex-wrap gap-1">
+                        {mapping.mapping.keywords.split(',').map((keyword, idx) => (
+                          <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
+                            {keyword.trim()}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div className="flex gap-2">
                   <button
