@@ -68,6 +68,8 @@ class Recipe(BaseModel):
     rating_avg: float = 0.0
     rating_count: int = 0
     view_count: int = 0
+    is_free: bool = False  # True = accessible to guests
+    is_published: bool = False  # True = visible to all, False = only to creator
 
 class RecipeCreate(BaseModel):
     name: str
