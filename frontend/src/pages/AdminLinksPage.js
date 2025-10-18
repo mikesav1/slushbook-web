@@ -420,6 +420,91 @@ const AdminLinksPage = () => {
           </div>
         </div>
       )}
+
+      {/* Edit Option Dialog */}
+      {editingOption && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl p-6 max-w-2xl w-full">
+            <h2 className="text-2xl font-bold mb-4">Rediger Leverandør-Link</h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                updateOption(editingOption.id, {
+                  supplier: formData.get('supplier'),
+                  title: formData.get('title'),
+                  url: formData.get('url'),
+                  status: formData.get('status')
+                });
+              }}
+              className="space-y-4"
+            >
+              <div>
+                <label className="block text-sm font-medium mb-1">Leverandør</label>
+                <input
+                  name="supplier"
+                  required
+                  defaultValue={editingOption.supplier}
+                  placeholder="power"
+                  className="w-full px-4 py-2 border rounded-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Produkt Titel</label>
+                <input
+                  name="title"
+                  required
+                  defaultValue={editingOption.title}
+                  placeholder="SodaStream Cola 440 ml"
+                  className="w-full px-4 py-2 border rounded-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Produkt URL</label>
+                <input
+                  name="url"
+                  type="url"
+                  required
+                  defaultValue={editingOption.url}
+                  placeholder="https://www.power.dk/..."
+                  className="w-full px-4 py-2 border rounded-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Status</label>
+                <select
+                  name="status"
+                  required
+                  defaultValue={editingOption.status}
+                  className="w-full px-4 py-2 border rounded-lg"
+                >
+                  <option value="active">Aktiv</option>
+                  <option value="inactive">Inaktiv</option>
+                </select>
+              </div>
+
+              <div className="flex gap-3 mt-6">
+                <Button 
+                  type="submit" 
+                  className="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500"
+                  disabled={saving}
+                >
+                  {saving ? 'Gemmer...' : 'Gem Ændringer'}
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => setEditingOption(null)}
+                  variant="outline"
+                  className="flex-1"
+                  disabled={saving}
+                >
+                  Annuller
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
