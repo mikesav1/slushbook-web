@@ -20,8 +20,13 @@ const AdminLinksPage = () => {
   const fetchMappings = async () => {
     try {
       setLoading(true);
-      // Get all mappings by fetching seeded ones
-      const seedMappings = ['sodastream-pepsi-440ml', 'sodastream-7up-free-440ml', 'power-flavours-category'];
+      // Try to get all mappings - since we don't have a list endpoint, 
+      // we'll fetch the seeded ones we know exist
+      const seedMappings = [
+        'sodastream-pepsi-440ml', 
+        'sodastream-7up-free-440ml', 
+        'power-flavours-category'
+      ];
       const allData = [];
       
       for (const id of seedMappings) {
@@ -30,13 +35,19 @@ const AdminLinksPage = () => {
             `${REDIRECT_SERVICE}/admin/mapping/${id}`,
             { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
           );
-          allData.push(response.data);
+          if (response.data) {
+            allData.push(response.data);
+          }
         } catch (error) {
-          console.log(`Mapping ${id} not found`);
+          console.log(`Mapping ${id} not found or error:`, error.message);
         }
       }
       
       setMappings(allData);
+      
+      if (allData.length === 0) {
+        toast.info('Ingen mappings fundet. Tilføj din første!');
+      }
     } catch (error) {
       console.error('Error fetching mappings:', error);
       toast.error('Kunne ikke hente produkt-links');
