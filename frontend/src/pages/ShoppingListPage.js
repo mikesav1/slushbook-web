@@ -8,11 +8,48 @@ import { Button } from '../components/ui/button';
 const ShoppingListPage = ({ sessionId }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [products, setProducts] = useState([]);
+
+  const REDIRECT_SERVICE = 'http://localhost:3002';
+  
+  // Mapping af almindelige ingredienser til redirect service IDs
+  // Kun ingredienser der kan købes får et mapping
+  const ingredientMappings = {
+    'sodastream pepsi': 'sodastream-pepsi-440ml',
+    'sodastream 7up': 'sodastream-7up-free-440ml',
+    'pepsi sirup': 'sodastream-pepsi-440ml',
+    '7up sirup': 'sodastream-7up-free-440ml',
+    'mirinda sirup': 'sodastream-mirinda-440ml',
+    // Tilføj flere mappings her efter behov
+  };
+  
+  // Ingredienser der IKKE skal have køb-knap
+  const excludedIngredients = ['vand', 'is', 'isterninger', 'koldt vand', 'vand (koldt)'];
+  
+  const getMappingId = (ingredientName) => {
+    const nameLower = ingredientName.toLowerCase().trim();
+    
+    // Check hvis den er excluded
+    if (excludedIngredients.some(excluded => nameLower.includes(excluded))) {
+      return null;
+    }
+    
+    // Check direct mapping
+    for (const [key, mappingId] of Object.entries(ingredientMappings)) {
+      if (nameLower.includes(key)) {
+        return mappingId;
+      }
+    }
+    
+    // Default: hvis det indeholder "sirup", "smag", eller "ekstrakt" - vis kategori link
+    if (nameLower.includes('sirup') || nameLower.includes('smag') || nameLower.includes('ekstrakt')) {
+      return 'power-flavours-category';
+    }
+    
+    return null;
+  };
 
   useEffect(() => {
     fetchShoppingList();
-    fetchProducts();
   }, [sessionId]);
 
   const fetchShoppingList = async () => {
