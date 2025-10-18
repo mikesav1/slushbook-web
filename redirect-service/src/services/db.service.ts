@@ -5,6 +5,7 @@ export interface Mapping {
   id: string;
   name: string;
   ean?: string | null;
+  keywords?: string | null;
 }
 
 export interface Option {
