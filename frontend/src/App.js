@@ -50,10 +50,10 @@ const Navigation = () => {
   const navItems = [
     { path: "/", icon: FaHome, label: "Hjem" },
     { path: "/recipes", icon: FaBook, label: "Opskrifter" },
-    { path: "/pantry", icon: FaBoxOpen, label: "Ingredienser" },
+    ...(user ? [{ path: "/pantry", icon: FaBoxOpen, label: "Ingredienser" }] : []),
     { path: "/match", icon: FaMagic, label: "Match" },
-    { path: "/shopping", icon: FaShoppingCart, label: "Liste" },
-    { path: "/favorites", icon: FaHeart, label: "Favoritter" },
+    ...(user ? [{ path: "/shopping", icon: FaShoppingCart, label: "Liste" }] : []),
+    ...(user ? [{ path: "/favorites", icon: FaHeart, label: "Favoritter" }] : []),
     { path: "/settings", icon: FaCog, label: "Indstillinger" },
   ];
 
