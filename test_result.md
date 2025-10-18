@@ -102,9 +102,21 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Test the complete redirect service integration with Node.js redirect service and FastAPI proxy endpoint"
+user_problem_statement: "Implement CSV recipe import feature for admin users with preview functionality"
 
 backend:
+  - task: "CSV Recipe Import Endpoints"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Implemented CSV recipe import feature with two endpoints: /api/admin/import-csv (parses CSV and returns preview) and /api/admin/confirm-import (creates recipes in database). CSV format: Navn,Beskrivelse,Type,Farve,Brix,Volumen,Alkohol,Tags,Ingredienser,Fremgangsmåde. Ingredients format: Navn:Mængde:Enhed:Brix:Rolle (separated by ;). Steps format: Step 1|Step 2|Step 3. Tested successfully with 3 recipes - all imported correctly with proper field mapping."
+
   - task: "Authentication System Testing"
     implemented: true
     working: true
