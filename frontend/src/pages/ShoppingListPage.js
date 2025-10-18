@@ -40,6 +40,9 @@ const ShoppingListPage = ({ sessionId }) => {
   // Mapping af almindelige ingredienser til redirect service IDs
   // Kun ingredienser der kan købes får et mapping
   const ingredientMappings = {
+    'blå curaçao': 'blaa-curacao-sirup',
+    'blue curacao': 'blaa-curacao-sirup',
+    'blå curacao': 'blaa-curacao-sirup',
     'sodastream pepsi': 'sodastream-pepsi-440ml',
     'sodastream 7up': 'sodastream-7up-free-440ml',
     'pepsi sirup': 'sodastream-pepsi-440ml',
