@@ -50,12 +50,12 @@ const LoginPage = ({ onLogin }) => {
       </video>
 
       <div className="w-full max-w-md px-6 py-8">
-        {/* Logo - Reduced height by 50% */}
+        {/* Logo - 70% larger */}
         <div className="text-center mb-6">
           <img 
             src="/assets/slushbook.png" 
             alt="SLUSHBOOK" 
-            className="w-40 mx-auto mb-2"
+            className="w-72 mx-auto mb-2"
           />
         </div>
 
