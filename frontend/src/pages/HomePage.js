@@ -71,14 +71,14 @@ const HomePage = ({ sessionId }) => {
   return (
     <div className="space-y-0 fade-in -mt-6">
       {/* Hero Section with Video Background - Full Width, no top margin */}
-      <div className="relative w-screen -mx-4 md:-mx-0 overflow-hidden" style={{minHeight: '700px'}}>
-        {/* Video Background - Full brightness, no filter */}
+      <div className="relative w-full overflow-hidden" style={{minHeight: '700px'}}>
+        {/* Video Background - Full viewport coverage */}
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover"
+          className="fixed top-0 left-0 w-screen h-screen object-cover -z-10"
         >
           <source src="/slush-bg-video.mp4" type="video/mp4" />
         </video>
