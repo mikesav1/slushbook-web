@@ -84,7 +84,7 @@ const HomePage = ({ sessionId }) => {
         </video>
         
         {/* Very light overlay for text readability - reduced opacity */}
-        <div className="absolute inset-0 bg-white/20"></div>
+        <div className="fixed top-0 left-0 w-screen h-screen bg-white/20 -z-10" style={{zIndex: -9}}></div>
         
         {/* Content - Logo centered, text left aligned */}
         <div className="relative z-10 container mx-auto px-8 md:px-12 py-12" style={{minHeight: '700px'}}>
