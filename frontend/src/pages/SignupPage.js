@@ -56,19 +56,31 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#F5E6D3' }}>
-      <div className="w-full max-w-md px-6">
-        {/* Logo */}
-        <div className="text-center mb-8">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      {/* Video Background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="fixed top-0 left-0 w-screen h-screen object-cover"
+        style={{zIndex: -1}}
+      >
+        <source src="/assets/slush-loop.mp4" type="video/mp4" />
+      </video>
+
+      <div className="w-full max-w-md px-6 py-8">
+        {/* Logo - Reduced height by 50% */}
+        <div className="text-center mb-6">
           <img 
-            src="/logo-samlet.png" 
+            src="/assets/slushbook.png" 
             alt="SLUSHBOOK" 
-            className="w-64 mx-auto mb-2"
+            className="w-32 mx-auto mb-2"
           />
         </div>
 
-        {/* Signup Form */}
-        <div className="bg-white rounded-3xl shadow-xl p-8">
+        {/* Signup Form - Semi-transparent background */}
+        <div className="rounded-3xl shadow-xl p-6 sm:p-8" style={{backgroundColor: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(10px)'}}>
           <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Opret konto</h2>
 
           <form onSubmit={handleSignup} className="space-y-4">
