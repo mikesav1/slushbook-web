@@ -26,7 +26,8 @@ const AddRecipePage = ({ sessionId }) => {
       { name: '', category_key: '', quantity: '', unit: 'ml', role: 'required', brix: null }
     ],
     steps: [''],
-    image_url: '/api/images/placeholder.jpg'
+    image_url: '/api/images/placeholder.jpg',
+    is_published: false
   });
   const [tagInput, setTagInput] = useState('');
   const [imageFile, setImageFile] = useState(null);
