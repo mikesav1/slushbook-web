@@ -570,8 +570,8 @@ const RecipeDetailPage = ({ sessionId }) => {
                     {ingredient.quantity} {ingredient.unit}
                   </span>
                 </div>
-                {/* Show redirect links ONLY for guests (not logged in users) */}
-                {!user && mappingId && (
+                {/* Show redirect links for ALL users */}
+                {mappingId && (
                   <a
                     href={`${REDIRECT_API}/${mappingId}`}
                     target="_blank"
