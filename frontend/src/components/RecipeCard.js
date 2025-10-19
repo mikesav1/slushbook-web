@@ -85,6 +85,11 @@ const RecipeCard = ({ recipe, sessionId, showMatchInfo, onLockedClick }) => {
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
         <div className="absolute top-4 right-4 flex gap-2">
+          {recipe.is_published && recipe.author !== 'system' && (
+            <span className="bg-green-600 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+              🌍 Offentlig
+            </span>
+          )}
           {recipe.alcohol_flag && (
             <span className="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
               <FaWineBottle size={12} /> 18+
