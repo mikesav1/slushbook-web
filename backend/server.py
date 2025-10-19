@@ -1204,12 +1204,16 @@ async def get_user_limits(session_id: str, request: Request):
 # Recipes
 @api_router.get("/recipes")
 async def get_recipes(
+    request: Request,
     alcohol: str = "both",
     color: Optional[str] = None,
     type: Optional[str] = None,
     search: Optional[str] = None,
     session_id: Optional[str] = None
 ):
+    # Get current user (can be None for guests)
+    user = await get_current_user(request, None, db)
+    
     query = {}
     
     if alcohol == "none":
@@ -1230,16 +1234,24 @@ async def get_recipes(
             {"tags": {"$regex": search, "$options": "i"}}
         ]
     
-    # Get system recipes
+    # Get system recipes (always published)
     system_recipes = await db.recipes.find({**query, "author": "system"}, {"_id": 0}).to_list(1000)
     
-    # Get user recipes if session_id provided
-    user_recipes = []
-    if session_id:
-        user_query = {**query, "session_id": session_id}
-        user_recipes = await db.user_recipes.find(user_query, {"_id": 0}).to_list(1000)
+    # Get published user recipes (is_published = true)
+    published_user_recipes = await db.user_recipes.find(
+        {**query, "is_published": True},
+        {"_id": 0}
+    ).to_list(1000)
     
-    all_recipes = system_recipes + user_recipes
+    # Get current user's private recipes if logged in
+    private_user_recipes = []
+    if session_id:
+        private_user_recipes = await db.user_recipes.find(
+            {**query, "session_id": session_id, "is_published": {"$ne": True}},
+            {"_id": 0}
+        ).to_list(1000)
+    
+    all_recipes = system_recipes + published_user_recipes + private_user_recipes
     
     # Parse datetime
     for recipe in all_recipes:
