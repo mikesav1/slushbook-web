@@ -539,6 +539,35 @@ const EditRecipePage = ({ sessionId }) => {
           ))}
         </div>
 
+        {/* Publish Toggle */}
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              <h3 className="text-lg font-bold text-gray-800 mb-1">
+                {recipe.is_published ? '🌍 Offentlig opskrift' : '🔒 Privat opskrift'}
+              </h3>
+              <p className="text-sm text-gray-600">
+                {recipe.is_published 
+                  ? 'Denne opskrift er synlig for alle brugere' 
+                  : 'Kun du kan se denne opskrift'}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setRecipe({...recipe, is_published: !recipe.is_published})}
+              className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors ${
+                recipe.is_published ? 'bg-green-500' : 'bg-gray-300'
+              }`}
+            >
+              <span
+                className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform ${
+                  recipe.is_published ? 'translate-x-7' : 'translate-x-1'
+                }`}
+              />
+            </button>
+          </div>
+        </div>
+
         {/* Submit */}
         <div className="flex justify-end gap-3">
           <Button
