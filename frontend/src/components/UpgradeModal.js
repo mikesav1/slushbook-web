@@ -1,43 +1,32 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FaCrown, FaTimes, FaCheck } from 'react-icons/fa';
 
 const UpgradeModal = ({ isOpen, onClose, reason = 'general' }) => {
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-
   if (!isOpen) return null;
 
   const messages = {
     'recipe_locked': {
       title: 'Denne opskrift er kun tilgængelig for Pro-brugere',
-      description: 'Få adgang til alle 78+ opskrifter og ubegrænsede muligheder.'
+      description: 'Få ubegrænset adgang til alle opskrifter og funktioner i Slush Book Pro.'
     },
     'recipe_limit': {
       title: 'Du har nået grænsen for gratis opskrifter',
-      description: 'Opgradér til Pro for at oprette ubegrænset antal opskrifter.'
+      description: 'Få ubegrænset adgang til alle opskrifter og funktioner i Slush Book Pro.'
     },
     'publish': {
       title: 'Deling kræver Pro-adgang',
-      description: 'Udgiv dine opskrifter og del dem med hele SLUSHBOOK fællesskabet.'
+      description: 'Få ubegrænset adgang til alle opskrifter og funktioner i Slush Book Pro.'
     },
     'general': {
       title: 'Opgradér til SLUSHBOOK Pro',
-      description: 'Få fuld adgang til alle funktioner og ubegrænsede muligheder.'
+      description: 'Få ubegrænset adgang til alle opskrifter og funktioner i Slush Book Pro.'
     }
   };
 
   const message = messages[reason] || messages.general;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // TODO: Send email til waitlist
-    console.log('Email submitted:', email);
-    setSubmitted(true);
-    setTimeout(() => {
-      setEmail('');
-      setSubmitted(false);
-      onClose();
-    }, 2000);
+  const handleUpgrade = () => {
+    window.open('https://slushbook.dk/upgrade', '_blank');
   };
 
   return (
@@ -65,52 +54,28 @@ const UpgradeModal = ({ isOpen, onClose, reason = 'general' }) => {
         <div className="space-y-3 mb-6">
           <div className="flex items-start gap-3">
             <FaCheck className="text-green-500 mt-1 flex-shrink-0" />
-            <span className="text-sm text-gray-700">Adgang til alle 78+ opskrifter</span>
+            <span className="text-sm text-gray-700">Ubegrænset adgang til alle opskrifter</span>
           </div>
           <div className="flex items-start gap-3">
             <FaCheck className="text-green-500 mt-1 flex-shrink-0" />
-            <span className="text-sm text-gray-700">Ubegrænset antal egne opskrifter</span>
-          </div>
-          <div className="flex items-start gap-3">
-            <FaCheck className="text-green-500 mt-1 flex-shrink-0" />
-            <span className="text-sm text-gray-700">Udgiv og del dine opskrifter</span>
+            <span className="text-sm text-gray-700">Opret og udgiv dine egne opskrifter</span>
           </div>
           <div className="flex items-start gap-3">
             <FaCheck className="text-green-500 mt-1 flex-shrink-0" />
             <span className="text-sm text-gray-700">Prioriteret support</span>
           </div>
+          <div className="flex items-start gap-3">
+            <FaCheck className="text-green-500 mt-1 flex-shrink-0" />
+            <span className="text-sm text-gray-700">Eksklusive Pro-funktioner</span>
+          </div>
         </div>
 
-        {!submitted ? (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Pro-adgang er på vej! Få besked når det er klar:
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="din@email.dk"
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold py-3 rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all"
-            >
-              Ja tak, informer mig!
-            </button>
-          </form>
-        ) : (
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
-            <FaCheck className="text-green-500 text-2xl mx-auto mb-2" />
-            <p className="text-green-700 font-medium">
-              Tak! Vi sender dig besked når Pro er klar 🎉
-            </p>
-          </div>
-        )}
+        <button
+          onClick={handleUpgrade}
+          className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold py-3 rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all shadow-lg"
+        >
+          Køb Pro-adgang
+        </button>
 
         <button
           onClick={onClose}
