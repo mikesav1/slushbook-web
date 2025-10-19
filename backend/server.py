@@ -84,6 +84,7 @@ class RecipeCreate(BaseModel):
     ingredients: List[Ingredient]
     steps: List[str]
     session_id: str
+    is_published: bool = False  # Default to private
 
 class PantryItem(BaseModel):
     model_config = ConfigDict(extra="ignore")
