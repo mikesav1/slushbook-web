@@ -70,23 +70,22 @@ const HomePage = ({ sessionId }) => {
 
   return (
     <div className="space-y-0 fade-in -mt-6">
-      {/* Hero Section with Video Background */}
+      {/* Video Background - Fixed full screen */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="fixed top-0 left-0 w-screen h-screen object-cover -z-10"
+      >
+        <source src="/slush-bg-video.mp4" type="video/mp4" />
+      </video>
+      
+      {/* Very light overlay for text readability */}
+      <div className="fixed top-0 left-0 w-screen h-screen bg-white/20 -z-10" style={{zIndex: -9}}></div>
+
+      {/* Hero Section */}
       <div className="relative w-full overflow-hidden" style={{minHeight: '700px'}}>
-        {/* Video Background - Full viewport coverage */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute top-0 left-0 w-screen h-full object-cover"
-          style={{minHeight: '700px'}}
-        >
-          <source src="/slush-bg-video.mp4" type="video/mp4" />
-        </video>
-        
-        {/* Very light overlay for text readability */}
-        <div className="absolute inset-0 bg-white/20"></div>
-        
         {/* Content - Logo centered, text left aligned */}
         <div className="relative z-10 container mx-auto px-8 md:px-12 py-12" style={{minHeight: '700px'}}>
           <div className="flex flex-col items-center justify-center h-full">
