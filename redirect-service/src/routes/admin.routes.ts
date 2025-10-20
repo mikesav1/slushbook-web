@@ -93,6 +93,47 @@ router.patch('/option/:id', requireAuth, (req: Request, res: Response) => {
   }
 });
 
+// DELETE /admin/mapping/:id - Delete a mapping and all its options
+router.delete('/mapping/:id', requireAuth, (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    
+    // Delete all options for this mapping first
+    const options = dbService.getOptions(id);
+    for (const option of options) {
+      dbService.deleteOption(option.id);
+    }
+    
+    // Delete the mapping
+    const deleted = dbService.deleteMapping(id);
+    
+    if (!deleted) {
+      return res.status(404).json({ error: 'Mapping not found' });
+    }
+    
+    res.json({ message: 'Mapping and all options deleted' });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// DELETE /admin/option/:id - Delete an option
+router.delete('/option/:id', requireAuth, (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    
+    const deleted = dbService.deleteOption(id);
+    
+    if (!deleted) {
+      return res.status(404).json({ error: 'Option not found' });
+    }
+    
+    res.json({ message: 'Option deleted' });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // POST /admin/link-health
 router.post('/link-health', requireAuth, async (req: Request, res: Response) => {
   try {
