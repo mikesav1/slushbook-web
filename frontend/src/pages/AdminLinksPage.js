@@ -629,56 +629,7 @@ const AdminLinksPage = () => {
                   Kommasepareret liste. Fx: "7up,7-up,seven up,lemon". Bruges til at matche ingredienser automatisk.
                 </p>
               </div>
-              
-              <hr className="my-4" />
-              <h3 className="font-bold text-lg">Første Leverandør-Link</h3>
-              
-              <div>
-                <label className="block text-sm font-medium mb-1">Option ID</label>
-                <input
-                  name="optionId"
-                  required
-                  placeholder="opt_power_cola_123"
-                  className="w-full px-4 py-2 border rounded-lg"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Leverandør</label>
-                <select
-                  name="supplier"
-                  required
-                  className="w-full px-4 py-2 border rounded-lg"
-                >
-                  <option value="power">Power</option>
-                  <option value="barshopen">Barshopen</option>
-                  <option value="bilka">Bilka</option>
-                  <option value="foetex">Føtex</option>
-                  <option value="matas">Matas</option>
-                  <option value="nemlig">Nemlig.com</option>
-                  <option value="amazon">Amazon</option>
-                  <option value="other">Andet</option>
-                </select>
-                <p className="text-xs text-gray-500 mt-1">Vælg hvor produktet kan købes</p>
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Produkt Titel</label>
-                <input
-                  name="title"
-                  required
-                  placeholder="SodaStream Cola 440 ml"
-                  className="w-full px-4 py-2 border rounded-lg"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Produkt URL</label>
-                <input
-                  name="url"
-                  type="url"
-                  required
-                  placeholder="https://www.power.dk/..."
-                  className="w-full px-4 py-2 border rounded-lg"
-                />
-              </div>
+              {/* Leverandør-links tilføjes efter oprettelse af produkt-link */}
 
               <div className="flex gap-3 mt-6">
                 <Button 
