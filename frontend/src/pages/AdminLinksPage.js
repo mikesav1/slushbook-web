@@ -373,13 +373,13 @@ const AdminLinksPage = () => {
               className="bg-gradient-to-r from-blue-500 to-cyan-500"
             >
               <FaPlus className="mr-2" />
-              Tilføj Nyt Link
+              Tilföj Nyt Link
             </Button>
           </div>
 
-      {loading ? (
-        <div className="flex justify-center py-12">
-          <div className="loading-spinner"></div>
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <div className="loading-spinner"></div>
         </div>
       ) : mappings.length === 0 ? (
         <div className="empty-state">
