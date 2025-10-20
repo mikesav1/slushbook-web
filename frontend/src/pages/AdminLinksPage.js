@@ -730,40 +730,52 @@ const AdminLinksPage = () => {
         </div>
       )}
 
-      {/* Edit Option Dialog */}
+      {/* Edit/Add Option Dialog */}
       {editingOption && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-2xl p-6 max-w-2xl w-full">
-            <h2 className="text-2xl font-bold mb-4">Rediger Leverandør-Link</h2>
+            <h2 className="text-2xl font-bold mb-4">
+              {editingOption.isNew ? 'Tilføj Leverandør-Link' : 'Rediger Leverandør-Link'}
+            </h2>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 const formData = new FormData(e.target);
-                updateOption(editingOption.id, {
-                  supplier: formData.get('supplier'),
-                  title: formData.get('title'),
-                  url: formData.get('url'),
-                  status: formData.get('status')
-                });
+                
+                if (editingOption.isNew) {
+                  // Create new option
+                  createOption(editingOption.mappingId, {
+                    supplier: formData.get('supplier'),
+                    title: formData.get('title'),
+                    url: formData.get('url'),
+                    status: 'active'
+                  });
+                } else {
+                  // Update existing option
+                  updateOption(editingOption.id, {
+                    supplier: formData.get('supplier'),
+                    title: formData.get('title'),
+                    url: formData.get('url'),
+                    status: formData.get('status')
+                  });
+                }
               }}
               className="space-y-4"
             >
               <div>
-                <label className="block text-sm font-medium mb-1">Leverandør</label>
+                <label className="block text-sm font-medium mb-1">Leverandør *</label>
                 <select
                   name="supplier"
                   required
-                  defaultValue={editingOption.supplier}
+                  defaultValue={editingOption.supplier || ''}
                   className="w-full px-4 py-2 border rounded-lg"
                 >
-                  <option value="power">Power</option>
-                  <option value="barshopen">Barshopen</option>
-                  <option value="bilka">Bilka</option>
-                  <option value="foetex">Føtex</option>
-                  <option value="matas">Matas</option>
-                  <option value="nemlig">Nemlig.com</option>
-                  <option value="amazon">Amazon</option>
-                  <option value="other">Andet</option>
+                  <option value="">Vælg leverandør...</option>
+                  {suppliers.filter(s => s.active).map(supplier => (
+                    <option key={supplier.id} value={supplier.id}>
+                      {supplier.name}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
