@@ -125,6 +125,40 @@ const AdminLinksPage = () => {
     setShowDeleteConfirm(true);
   };
 
+  const confirmDelete = async () => {
+    if (!deleteTarget) return;
+    
+    try {
+      if (deleteTarget.type === 'mapping') {
+        await axios.delete(
+          `${REDIRECT_API}/admin/mapping/${deleteTarget.id}`,
+          { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
+        );
+        toast.success('Produkt-link slettet!');
+        fetchMappings();
+      } else if (deleteTarget.type === 'option') {
+        await axios.delete(
+          `${REDIRECT_API}/admin/option/${deleteTarget.id}`,
+          { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
+        );
+        toast.success('Leverandør-link slettet!');
+        fetchMappings();
+      } else if (deleteTarget.type === 'supplier') {
+        await axios.delete(
+          `${REDIRECT_API}/admin/suppliers/${deleteTarget.id}`,
+          { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
+        );
+        toast.success('Leverandør slettet!');
+        fetchSuppliers();
+      }
+    } catch (error) {
+      console.error('Error deleting:', error);
+      toast.error('Kunne ikke slette');
+    } finally {
+      setShowDeleteConfirm(false);
+      setDeleteTarget(null);
+    }
+  };
   const createMapping = async (data) => {
     try {
       setSaving(true);
