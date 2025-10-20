@@ -153,3 +153,58 @@ export const logClick = (click: Omit<Click, 'id' | 'ts'>): Click => {
   
   return { id, ...click, ts };
 };
+
+// ===== SUPPLIER FUNCTIONS =====
+
+export const getAllSuppliers = (): Supplier[] => {
+  const stmt = db.prepare('SELECT * FROM supplier ORDER BY name');
+  return stmt.all() as Supplier[];
+};
+
+export const getActiveSuppliers = (): Supplier[] => {
+  const stmt = db.prepare('SELECT * FROM supplier WHERE active = 1 ORDER BY name');
+  return stmt.all() as Supplier[];
+};
+
+export const getSupplier = (id: string): Supplier | null => {
+  const stmt = db.prepare('SELECT * FROM supplier WHERE id = ?');
+  return stmt.get(id) as Supplier | null;
+};
+
+export const createSupplier = (supplier: Supplier): Supplier => {
+  const stmt = db.prepare(`
+    INSERT INTO supplier (id, name, url, active, createdAt)
+    VALUES (?, ?, ?, ?, ?)
+  `);
+  
+  stmt.run(supplier.id, supplier.name, supplier.url, supplier.active, supplier.createdAt);
+  return supplier;
+};
+
+export const updateSupplier = (id: string, updates: Partial<Pick<Supplier, 'name' | 'url' | 'active'>>): Supplier | null => {
+  const supplier = getSupplier(id);
+  if (!supplier) return null;
+  
+  const stmt = db.prepare(`
+    UPDATE supplier SET
+      name = COALESCE(?, name),
+      url = COALESCE(?, url),
+      active = COALESCE(?, active)
+    WHERE id = ?
+  `);
+  
+  stmt.run(
+    updates.name || null,
+    updates.url !== undefined ? updates.url : null,
+    updates.active !== undefined ? updates.active : null,
+    id
+  );
+  
+  return getSupplier(id);
+};
+
+export const deleteSupplier = (id: string): boolean => {
+  const stmt = db.prepare('DELETE FROM supplier WHERE id = ?');
+  const result = stmt.run(id);
+  return result.changes > 0;
+};
