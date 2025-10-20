@@ -59,6 +59,33 @@ export const getAllMappings = (): Mapping[] => {
   return stmt.all() as Mapping[];
 };
 
+export const updateMapping = (id: string, updates: Partial<Pick<Mapping, 'name' | 'ean' | 'keywords'>>): Mapping | null => {
+  const mapping = getMapping(id);
+  if (!mapping) return null;
+  
+  const stmt = db.prepare(`
+    UPDATE mapping SET
+      name = COALESCE(?, name),
+      ean = COALESCE(?, ean),
+      keywords = COALESCE(?, keywords)
+    WHERE id = ?
+  `);
+  
+  stmt.run(
+    updates.name || null,
+    updates.ean !== undefined ? updates.ean : null,
+    updates.keywords !== undefined ? updates.keywords : null,
+    id
+  );
+  
+  return getMapping(id);
+};
+
+export const deleteMapping = (id: string): boolean => {
+  const stmt = db.prepare('DELETE FROM mapping WHERE id = ?');
+  const result = stmt.run(id);
+  return result.changes > 0;
+};
 
 export const upsertOption = (option: Omit<Option, 'updatedAt'> & { updatedAt?: string }): Option => {
   const updatedAt = option.updatedAt || new Date().toISOString();
