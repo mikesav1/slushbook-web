@@ -855,6 +855,76 @@ const AdminLinksPage = () => {
           </div>
         </div>
       )}
+
+      {/* Add/Edit Supplier Dialog */}
+      {(showSupplierDialog || editingSupplier) && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl p-6 max-w-md w-full">
+            <h2 className="text-2xl font-bold mb-4">
+              {editingSupplier ? 'Rediger Leverandør' : 'Tilføj Leverandør'}
+            </h2>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.target);
+              const data = {
+                name: formData.get('name'),
+                url: formData.get('url')
+              };
+              
+              if (editingSupplier) {
+                updateSupplier(editingSupplier.id, data);
+              } else {
+                createSupplier(data);
+              }
+            }} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Navn *</label>
+                <input
+                  name="name"
+                  type="text"
+                  required
+                  defaultValue={editingSupplier?.name || ''}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="f.eks. Dorita"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">URL (valgfri)</label>
+                <input
+                  name="url"
+                  type="url"
+                  defaultValue={editingSupplier?.url || ''}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="https://www.dorita.dk"
+                />
+              </div>
+
+              <div className="flex gap-3 justify-end">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setShowSupplierDialog(false);
+                    setEditingSupplier(null);
+                  }}
+                >
+                  Annuller
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={saving}
+                  className="bg-gradient-to-r from-green-500 to-emerald-500"
+                >
+                  {saving ? 'Gemmer...' : (editingSupplier ? 'Gem Ændringer' : 'Opret')}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+        </div>
+      )}
     </div>
   );
 };
