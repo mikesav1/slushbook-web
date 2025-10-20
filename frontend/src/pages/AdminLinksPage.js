@@ -461,6 +461,13 @@ const AdminLinksPage = () => {
                   >
                     <FaExternalLinkAlt />
                   </button>
+                  <button
+                    onClick={() => deleteMapping(mapping.mapping.id)}
+                    className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    title="Slet produkt-link"
+                  >
+                    <FaTrash />
+                  </button>
                 </div>
               </div>
 
