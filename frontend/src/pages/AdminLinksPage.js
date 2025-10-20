@@ -799,18 +799,20 @@ const AdminLinksPage = () => {
                   className="w-full px-4 py-2 border rounded-lg"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Status</label>
-                <select
-                  name="status"
-                  required
-                  defaultValue={editingOption.status}
-                  className="w-full px-4 py-2 border rounded-lg"
-                >
-                  <option value="active">Aktiv</option>
-                  <option value="inactive">Inaktiv</option>
-                </select>
-              </div>
+              {!editingOption.isNew && (
+                <div>
+                  <label className="block text-sm font-medium mb-1">Status</label>
+                  <select
+                    name="status"
+                    required
+                    defaultValue={editingOption.status}
+                    className="w-full px-4 py-2 border rounded-lg"
+                  >
+                    <option value="active">Aktiv</option>
+                    <option value="inactive">Inaktiv</option>
+                  </select>
+                </div>
+              )}
 
               <div className="flex gap-3 mt-6">
                 <Button 
@@ -818,7 +820,7 @@ const AdminLinksPage = () => {
                   className="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500"
                   disabled={saving}
                 >
-                  {saving ? 'Gemmer...' : 'Gem Ændringer'}
+                  {saving ? 'Gemmer...' : (editingOption.isNew ? 'Opret Link' : 'Gem Ændringer')}
                 </Button>
                 <Button
                   type="button"
