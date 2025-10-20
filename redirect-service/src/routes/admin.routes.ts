@@ -136,4 +136,82 @@ router.post('/link-health', requireAuth, async (req: Request, res: Response) => 
   }
 });
 
+// ===== SUPPLIER ROUTES =====
+
+// GET /admin/suppliers - Get all suppliers
+router.get('/suppliers', (req: Request, res: Response) => {
+  try {
+    const suppliers = dbService.getAllSuppliers();
+    res.json(suppliers);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST /admin/suppliers - Create new supplier
+router.post('/suppliers', requireAuth, (req: Request, res: Response) => {
+  try {
+    const { name, url } = req.body;
+    
+    if (!name) {
+      return res.status(400).json({ error: 'Name is required' });
+    }
+    
+    // Generate slug from name
+    const id = name.toLowerCase().replace(/[^a-z0-9]/g, '');
+    
+    const supplier = dbService.createSupplier({
+      id,
+      name,
+      url: url || '',
+      active: 1,
+      createdAt: new Date().toISOString()
+    });
+    
+    res.json(supplier);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// PATCH /admin/suppliers/:id - Update supplier
+router.patch('/suppliers/:id', requireAuth, (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { name, url, active } = req.body;
+    
+    const updates: any = {};
+    if (name !== undefined) updates.name = name;
+    if (url !== undefined) updates.url = url;
+    if (active !== undefined) updates.active = active ? 1 : 0;
+    
+    const supplier = dbService.updateSupplier(id, updates);
+    
+    if (!supplier) {
+      return res.status(404).json({ error: 'Supplier not found' });
+    }
+    
+    res.json(supplier);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// DELETE /admin/suppliers/:id - Delete supplier
+router.delete('/suppliers/:id', requireAuth, (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    
+    const deleted = dbService.deleteSupplier(id);
+    
+    if (!deleted) {
+      return res.status(404).json({ error: 'Supplier not found' });
+    }
+    
+    res.json({ message: 'Supplier deleted' });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 export default router;
