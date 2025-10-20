@@ -120,21 +120,9 @@ const AdminLinksPage = () => {
   };
 
   const deleteSupplier = async (id) => {
-    if (!window.confirm('Er du sikker på at du vil slette denne leverandør?')) {
-      return;
-    }
-    
-    try {
-      await axios.delete(
-        `${REDIRECT_API}/admin/suppliers/${id}`,
-        { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
-      );
-      toast.success('Leverandør slettet!');
-      fetchSuppliers();
-    } catch (error) {
-      console.error('Error deleting supplier:', error);
-      toast.error('Kunne ikke slette leverandør');
-    }
+    const supplier = suppliers.find(s => s.id === id);
+    setDeleteTarget({ type: 'supplier', id, name: supplier?.name || id });
+    setShowDeleteConfirm(true);
   };
 
   const createMapping = async (data) => {
