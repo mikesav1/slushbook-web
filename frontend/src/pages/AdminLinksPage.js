@@ -184,21 +184,8 @@ const AdminLinksPage = () => {
   };
 
   const deleteMapping = async (id) => {
-    if (!window.confirm('Er du sikker på at du vil slette dette produkt-link og alle dets leverandør-links?')) {
-      return;
-    }
-    
-    try {
-      await axios.delete(
-        `${REDIRECT_API}/admin/mapping/${id}`,
-        { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
-      );
-      toast.success('Produkt-link slettet!');
-      fetchMappings();
-    } catch (error) {
-      console.error('Error deleting mapping:', error);
-      toast.error('Kunne ikke slette produkt-link');
-    }
+    setDeleteTarget({ type: 'mapping', id, name: id });
+    setShowDeleteConfirm(true);
   };
 
   const updateMapping = async (mappingData) => {
