@@ -212,6 +212,46 @@ const AdminLinksPage = () => {
     }
   };
 
+  const createOption = async (mappingId, data) => {
+    try {
+      setSaving(true);
+      
+      // Auto-generate option ID
+      const optionId = `opt_${data.supplier}_${Date.now()}`;
+      
+      const optionData = {
+        option: {
+          id: optionId,
+          mappingId: mappingId,
+          supplier: data.supplier,
+          title: data.title,
+          url: data.url,
+          status: 'active'
+        }
+      };
+      
+      await axios.post(
+        `${REDIRECT_API}/admin/option`,
+        optionData,
+        { 
+          headers: { 
+            Authorization: `Bearer ${ADMIN_TOKEN}`,
+            'Content-Type': 'application/json'
+          } 
+        }
+      );
+      
+      toast.success('Leverandør-link oprettet!');
+      fetchMappings();
+      setEditingOption(null);
+    } catch (error) {
+      console.error('Error creating option:', error);
+      toast.error(error.response?.data?.error || 'Kunne ikke oprette leverandør-link');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const deleteMapping = async (id) => {
     setDeleteTarget({ type: 'mapping', id, name: id });
     setShowDeleteConfirm(true);
