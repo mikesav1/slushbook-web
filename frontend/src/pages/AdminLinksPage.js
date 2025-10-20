@@ -250,26 +250,8 @@ const AdminLinksPage = () => {
   };
 
   const deleteOption = async (optionId, mappingName) => {
-    if (!window.confirm(`Er du sikker på at du vil slette denne leverandør link fra "${mappingName}"?`)) {
-      return;
-    }
-    
-    try {
-      setSaving(true);
-      // Since there's no DELETE endpoint, we'll deactivate it
-      await axios.patch(
-        `${REDIRECT_API}/admin/option/${optionId}`,
-        { status: 'deleted' },
-        { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
-      );
-      toast.success('Link slettet!');
-      fetchMappings();
-    } catch (error) {
-      console.error('Error deleting option:', error);
-      toast.error('Kunne ikke slette link');
-    } finally {
-      setSaving(false);
-    }
+    setDeleteTarget({ type: 'option', id: optionId, name: mappingName });
+    setShowDeleteConfirm(true);
   };
 
   return (
