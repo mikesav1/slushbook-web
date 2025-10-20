@@ -12,6 +12,8 @@ const AdminLinksPage = () => {
   const [loadingSuppliers, setLoadingSuppliers] = useState(true);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [showSupplierDialog, setShowSupplierDialog] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null); // {type: 'mapping'|'option'|'supplier', id, name}
   const [editingMapping, setEditingMapping] = useState(null);
   const [editingOption, setEditingOption] = useState(null);
   const [editingSupplier, setEditingSupplier] = useState(null);
