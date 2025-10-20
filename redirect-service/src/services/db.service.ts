@@ -127,29 +127,40 @@ export const getOption = (id: string): Option | null => {
   return stmt.get(id) as Option | null;
 };
 
-export const updateOption = (id: string, updates: Partial<Pick<Option, 'status' | 'url' | 'priceLastSeen'>>): Option | null => {
+export const updateOption = (id: string, updates: Partial<Pick<Option, 'supplier' | 'title' | 'url' | 'status' | 'priceLastSeen'>>): Option | null => {
   const option = getOption(id);
   if (!option) return null;
   
   const updatedAt = new Date().toISOString();
+  
   const stmt = db.prepare(`
     UPDATE option SET
-      status = COALESCE(?, status),
+      supplier = COALESCE(?, supplier),
+      title = COALESCE(?, title),
       url = COALESCE(?, url),
+      status = COALESCE(?, status),
       priceLastSeen = COALESCE(?, priceLastSeen),
       updatedAt = ?
     WHERE id = ?
   `);
   
   stmt.run(
-    updates.status || null,
+    updates.supplier || null,
+    updates.title || null,
     updates.url || null,
+    updates.status || null,
     updates.priceLastSeen !== undefined ? updates.priceLastSeen : null,
     updatedAt,
     id
   );
   
   return getOption(id);
+};
+
+export const deleteOption = (id: string): boolean => {
+  const stmt = db.prepare('DELETE FROM option WHERE id = ?');
+  const result = stmt.run(id);
+  return result.changes > 0;
 };
 
 export const getActiveOption = (mappingId: string): Option | null => {
