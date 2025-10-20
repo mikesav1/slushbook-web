@@ -27,6 +27,14 @@ export interface Click {
   referer?: string;
 }
 
+export interface Supplier {
+  id: string;
+  name: string;
+  url: string;
+  active: number;
+  createdAt: string;
+}
+
 export const upsertMapping = (mapping: Mapping): Mapping => {
   const stmt = db.prepare(`
     INSERT INTO mapping (id, name, ean, keywords)
