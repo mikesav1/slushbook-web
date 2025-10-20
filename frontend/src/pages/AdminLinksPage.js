@@ -39,10 +39,16 @@ const AdminLinksPage = () => {
         { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
       );
       
-      // For each mapping, fetch its options
+      // For each mapping, fetch its options with delay to avoid rate limiting
       const allData = [];
-      for (const mapping of response.data) {
+      for (let i = 0; i < response.data.length; i++) {
+        const mapping = response.data[i];
         try {
+          // Add small delay between requests to avoid 429
+          if (i > 0) {
+            await new Promise(resolve => setTimeout(resolve, 200));
+          }
+          
           const optionsResponse = await axios.get(
             `${REDIRECT_API}/admin/mapping/${mapping.id}`,
             { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
@@ -51,7 +57,7 @@ const AdminLinksPage = () => {
             allData.push(optionsResponse.data);
           }
         } catch (error) {
-          console.log(`Error fetching options for ${mapping.id}:`, error.message);
+          console.log(`Error fetching options for ${mapping.name}:`, error.message);
         }
       }
       
