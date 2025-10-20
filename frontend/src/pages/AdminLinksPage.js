@@ -592,15 +592,6 @@ const AdminLinksPage = () => {
               className="space-y-4"
             >
               <div>
-                <label className="block text-sm font-medium mb-1">Mapping ID (slug)</label>
-                <input
-                  name="mappingId"
-                  required
-                  placeholder="sodastream-cola-440ml"
-                  className="w-full px-4 py-2 border rounded-lg"
-                />
-              </div>
-              <div>
                 <label className="block text-sm font-medium mb-1">Produkt Navn</label>
                 <input
                   name="name"
