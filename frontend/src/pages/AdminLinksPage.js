@@ -138,11 +138,30 @@ const AdminLinksPage = () => {
   const createMapping = async (data) => {
     try {
       setSaving(true);
-      console.log('Creating mapping with data:', data);
+      
+      // Auto-generate ID from name (slug format)
+      const id = data.name.toLowerCase()
+        .replace(/æ/g, 'ae')
+        .replace(/ø/g, 'oe')
+        .replace(/å/g, 'aa')
+        .replace(/[^a-z0-9]/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+      
+      const mappingData = {
+        mapping: {
+          id: id,
+          name: data.name,
+          ean: data.ean || null,
+          keywords: data.keywords || ''
+        }
+      };
+      
+      console.log('Creating mapping with data:', mappingData);
       
       const response = await axios.post(
         `${REDIRECT_API}/admin/mapping`,
-        data,
+        mappingData,
         { 
           headers: { 
             Authorization: `Bearer ${ADMIN_TOKEN}`,
@@ -151,16 +170,32 @@ const AdminLinksPage = () => {
         }
       );
       
-      console.log('Response:', response.data);
-      toast.success('Mapping oprettet!');
+      toast.success('Produkt-link oprettet!');
       fetchMappings();
       setShowAddDialog(false);
     } catch (error) {
       console.error('Error creating mapping:', error);
-      console.error('Error response:', error.response?.data);
-      toast.error(`Kunne ikke oprette mapping: ${error.response?.data?.error || error.message}`);
+      toast.error(error.response?.data?.error || 'Kunne ikke oprette produkt-link');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const deleteMapping = async (id) => {
+    if (!window.confirm('Er du sikker på at du vil slette dette produkt-link og alle dets leverandør-links?')) {
+      return;
+    }
+    
+    try {
+      await axios.delete(
+        `${REDIRECT_API}/admin/mapping/${id}`,
+        { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
+      );
+      toast.success('Produkt-link slettet!');
+      fetchMappings();
+    } catch (error) {
+      console.error('Error deleting mapping:', error);
+      toast.error('Kunne ikke slette produkt-link');
     }
   };
 
