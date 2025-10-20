@@ -66,6 +66,75 @@ const AdminLinksPage = () => {
     }
   };
 
+  const fetchSuppliers = async () => {
+    try {
+      setLoadingSuppliers(true);
+      const response = await axios.get(`${REDIRECT_API}/admin/suppliers`);
+      setSuppliers(response.data);
+    } catch (error) {
+      console.error('Error fetching suppliers:', error);
+      toast.error('Kunne ikke hente leverandører');
+    } finally {
+      setLoadingSuppliers(false);
+    }
+  };
+
+  const createSupplier = async (data) => {
+    try {
+      setSaving(true);
+      await axios.post(
+        `${REDIRECT_API}/admin/suppliers`,
+        data,
+        { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
+      );
+      toast.success('Leverandør oprettet!');
+      fetchSuppliers();
+      setShowSupplierDialog(false);
+    } catch (error) {
+      console.error('Error creating supplier:', error);
+      toast.error('Kunne ikke oprette leverandør');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const updateSupplier = async (id, data) => {
+    try {
+      setSaving(true);
+      await axios.patch(
+        `${REDIRECT_API}/admin/suppliers/${id}`,
+        data,
+        { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
+      );
+      toast.success('Leverandør opdateret!');
+      fetchSuppliers();
+      setEditingSupplier(null);
+    } catch (error) {
+      console.error('Error updating supplier:', error);
+      toast.error('Kunne ikke opdatere leverandør');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const deleteSupplier = async (id) => {
+    if (!window.confirm('Er du sikker på at du vil slette denne leverandør?')) {
+      return;
+    }
+    
+    try {
+      await axios.delete(
+        `${REDIRECT_API}/admin/suppliers/${id}`,
+        { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
+      );
+      toast.success('Leverandør slettet!');
+      fetchSuppliers();
+    } catch (error) {
+      console.error('Error deleting supplier:', error);
+      toast.error('Kunne ikke slette leverandør');
+    }
+  };
+
   const createMapping = async (data) => {
     try {
       setSaving(true);
