@@ -7,11 +7,16 @@ import { API } from '../App';
 
 const AdminLinksPage = () => {
   const [mappings, setMappings] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingSuppliers, setLoadingSuppliers] = useState(true);
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const [showSupplierDialog, setShowSupplierDialog] = useState(false);
   const [editingMapping, setEditingMapping] = useState(null);
   const [editingOption, setEditingOption] = useState(null);
+  const [editingSupplier, setEditingSupplier] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [activeTab, setActiveTab] = useState('mappings'); // 'mappings' or 'suppliers'
   
   // Use proxy through backend instead of direct localhost
   const REDIRECT_API = `${API}/redirect-proxy`;
@@ -19,6 +24,7 @@ const AdminLinksPage = () => {
 
   useEffect(() => {
     fetchMappings();
+    fetchSuppliers();
   }, []);
 
   const fetchMappings = async () => {
