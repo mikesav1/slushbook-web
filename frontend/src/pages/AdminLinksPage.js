@@ -250,19 +250,132 @@ const AdminLinksPage = () => {
 
   return (
     <div className="space-y-6 fade-in">
+      {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-4xl font-bold mb-2">Produkt-Links Administration</h1>
-          <p className="text-gray-600">Administrer links til eksterne leverandører</p>
+          <h1 className="text-4xl font-bold mb-2">Admin: Links & Leverandører</h1>
+          <p className="text-gray-600">Administrer produkt-links og leverandører</p>
         </div>
-        <Button
-          onClick={() => setShowAddDialog(true)}
-          className="bg-gradient-to-r from-blue-500 to-cyan-500"
-        >
-          <FaPlus className="mr-2" />
-          Tilføj Nyt Link
-        </Button>
       </div>
+
+      {/* Tabs */}
+      <div className="flex gap-2 border-b border-gray-200">
+        <button
+          onClick={() => setActiveTab('mappings')}
+          className={`px-6 py-3 font-semibold transition-colors ${
+            activeTab === 'mappings'
+              ? 'text-blue-600 border-b-2 border-blue-600'
+              : 'text-gray-600 hover:text-gray-800'
+          }`}
+        >
+          Produkt-Links
+        </button>
+        <button
+          onClick={() => setActiveTab('suppliers')}
+          className={`px-6 py-3 font-semibold transition-colors ${
+            activeTab === 'suppliers'
+              ? 'text-blue-600 border-b-2 border-blue-600'
+              : 'text-gray-600 hover:text-gray-800'
+          }`}
+        >
+          Leverandører
+        </button>
+      </div>
+
+      {/* Suppliers Tab */}
+      {activeTab === 'suppliers' && (
+        <div className="space-y-4">
+          <div className="flex justify-end">
+            <Button
+              onClick={() => setShowSupplierDialog(true)}
+              className="bg-gradient-to-r from-green-500 to-emerald-500"
+            >
+              <FaPlus className="mr-2" />
+              Tilføj Leverandør
+            </Button>
+          </div>
+
+          {loadingSuppliers ? (
+            <div className="flex justify-center py-12">
+              <div className="loading-spinner"></div>
+            </div>
+          ) : (
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+              <table className="w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Navn</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">URL</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Handlinger</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {suppliers.map((supplier) => (
+                    <tr key={supplier.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="font-medium text-gray-900">{supplier.name}</span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="text-sm text-gray-600">{supplier.url || '-'}</span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <button
+                          onClick={() => updateSupplier(supplier.id, { active: supplier.active ? 0 : 1 })}
+                          className="flex items-center gap-2"
+                        >
+                          {supplier.active ? (
+                            <>
+                              <FaToggleOn className="text-green-500 text-2xl" />
+                              <span className="text-sm text-green-600 font-medium">Aktiv</span>
+                            </>
+                          ) : (
+                            <>
+                              <FaToggleOff className="text-gray-400 text-2xl" />
+                              <span className="text-sm text-gray-500 font-medium">Inaktiv</span>
+                            </>
+                          )}
+                        </button>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right">
+                        <div className="flex justify-end gap-2">
+                          <button
+                            onClick={() => setEditingSupplier(supplier)}
+                            className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                            title="Rediger"
+                          >
+                            <FaEdit />
+                          </button>
+                          <button
+                            onClick={() => deleteSupplier(supplier.id)}
+                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            title="Slet"
+                          >
+                            <FaTrash />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Mappings Tab */}
+      {activeTab === 'mappings' && (
+        <div className="space-y-4">
+          <div className="flex justify-end">
+            <Button
+              onClick={() => setShowAddDialog(true)}
+              className="bg-gradient-to-r from-blue-500 to-cyan-500"
+            >
+              <FaPlus className="mr-2" />
+              Tilføj Nyt Link
+            </Button>
+          </div>
 
       {loading ? (
         <div className="flex justify-center py-12">
