@@ -153,7 +153,8 @@ const AdminLinksPage = () => {
       }
     } catch (error) {
       console.error('Error deleting:', error);
-      toast.error('Kunne ikke slette');
+      const errorMsg = error.response?.data?.error || error.response?.data?.message || error.message || 'Kunne ikke slette';
+      toast.error(`Fejl: ${errorMsg}`);
     } finally {
       setShowDeleteConfirm(false);
       setDeleteTarget(null);
