@@ -6,6 +6,14 @@ const db = new Database(dbPath);
 
 // Create tables
 db.exec(`
+  CREATE TABLE IF NOT EXISTS supplier (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL UNIQUE,
+    url TEXT,
+    active INTEGER NOT NULL DEFAULT 1,
+    createdAt TEXT NOT NULL
+  );
+
   CREATE TABLE IF NOT EXISTS mapping (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
