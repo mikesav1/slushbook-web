@@ -584,19 +584,9 @@ const AdminLinksPage = () => {
                 e.preventDefault();
                 const formData = new FormData(e.target);
                 createMapping({
-                  mapping: {
-                    id: formData.get('mappingId'),
-                    name: formData.get('name'),
-                    ean: formData.get('ean') || null,
-                    keywords: formData.get('keywords')
-                  },
-                  options: [{
-                    id: formData.get('optionId'),
-                    supplier: formData.get('supplier'),
-                    title: formData.get('title'),
-                    url: formData.get('url'),
-                    status: 'active'
-                  }]
+                  name: formData.get('name'),
+                  ean: formData.get('ean') || null,
+                  keywords: formData.get('keywords')
                 });
               }}
               className="space-y-4"
