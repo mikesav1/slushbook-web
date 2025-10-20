@@ -923,8 +923,6 @@ const AdminLinksPage = () => {
           </div>
         </div>
       )}
-        </div>
-      )}
     </div>
   );
 };
