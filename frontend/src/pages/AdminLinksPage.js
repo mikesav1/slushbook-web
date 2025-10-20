@@ -535,6 +535,7 @@ const AdminLinksPage = () => {
             </div>
           ))}
         </div>
+        </div>
       )}
 
       {/* Add Dialog */}
