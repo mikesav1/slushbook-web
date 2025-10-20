@@ -555,20 +555,11 @@ const AdminLinksPage = () => {
               {/* Add option button */}
               <button
                 onClick={() => {
-                  const optionId = prompt('Option ID (fx: opt_power_123):');
-                  const supplier = prompt('Leverandør (fx: power):');
-                  const title = prompt('Produkt titel:');
-                  const url = prompt('Produkt URL:');
-                  
-                  if (optionId && supplier && title && url) {
-                    createMapping({
-                      mapping: mapping.mapping,
-                      options: [
-                        ...mapping.options,
-                        { id: optionId, supplier, title, url, status: 'active' }
-                      ]
-                    });
-                  }
+                  setEditingOption({
+                    mappingId: mapping.mapping.id,
+                    mappingName: mapping.mapping.name,
+                    isNew: true
+                  });
                 }}
                 className="mt-4 w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-blue-400 hover:text-blue-600 transition-colors"
               >
