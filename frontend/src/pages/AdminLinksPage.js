@@ -892,6 +892,38 @@ const AdminLinksPage = () => {
           </div>
         </div>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl p-6 max-w-md w-full">
+            <h2 className="text-2xl font-bold mb-4 text-red-600">Bekræft Sletning</h2>
+            <p className="text-gray-700 mb-6">
+              Er du sikker på at du vil slette <strong>{deleteTarget?.name}</strong>?
+              {deleteTarget?.type === 'mapping' && ' Dette vil også slette alle tilknyttede leverandør-links.'}
+            </p>
+            <div className="flex gap-3 justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  setShowDeleteConfirm(false);
+                  setDeleteTarget(null);
+                }}
+              >
+                Annuller
+              </Button>
+              <Button
+                type="button"
+                onClick={confirmDelete}
+                className="bg-gradient-to-r from-red-500 to-red-600"
+              >
+                Ja, Slet
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
