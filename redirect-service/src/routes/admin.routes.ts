@@ -331,8 +331,8 @@ router.get('/export-csv', requireAuth, (req: Request, res: Response) => {
 });
 
 // POST /admin/import-csv - Import mappings and options from CSV
-router.post('/import-csv', requireAuth, (req: Request, res: Response, next) => {
-  upload.single('file')(req, res, (err) => {
+router.post('/import-csv', requireAuth, (req: any, res: any, next: any) => {
+  upload.single('file')(req, res, (err: any) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -343,7 +343,7 @@ router.post('/import-csv', requireAuth, (req: Request, res: Response, next) => {
       }
       
       const csvContent = req.file.buffer.toString('utf-8');
-      const lines = csvContent.split('\n').filter(line => line.trim());
+      const lines = csvContent.split('\n').filter((line: string) => line.trim());
       
       if (lines.length < 2) {
         return res.status(400).json({ error: 'CSV file is empty or invalid' });
