@@ -23,7 +23,7 @@ const addUTM = (url: string): string => {
 };
 
 // GET /go/:mappingId
-router.get('/:mappingId', (req: Request, res: Response) => {
+router.get('/:mappingId', async (req: Request, res: Response) => {
   try {
     const { mappingId } = req.params;
     

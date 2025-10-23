@@ -208,7 +208,7 @@ router.post('/link-health', requireAuth, async (req: Request, res: Response) => 
 // ===== SUPPLIER ROUTES =====
 
 // GET /admin/suppliers - Get all suppliers
-router.get('/suppliers', (req: Request, res: Response) => {
+router.get('/suppliers', async (req: Request, res: Response) => {
   try {
     const suppliers = dbService.getAllSuppliers();
     res.json(suppliers);
