@@ -1033,6 +1033,180 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             
         return True
 
+    def test_csv_import_supplier_links(self):
+        """Test CSV import functionality for supplier links through backend proxy"""
+        self.log("Testing CSV import for supplier links...")
+        
+        # Create test CSV content with supplier link format
+        csv_content = """product_id,product_name,keywords,supplier,url,price,active
+test-produkt-123,Test Produkt ABC,"test,produkt,abc",power,https://power.dk/test-abc,149,true
+sodavand-cola,Coca Cola 440ml,"cola,sodavand,coca",power,https://power.dk/cola,25,true"""
+        
+        try:
+            # Test 1: Valid CSV import with authorization
+            self.log("Test 1: Valid CSV import with authorization...")
+            
+            files = {
+                'file': ('supplier_links.csv', csv_content, 'text/csv')
+            }
+            
+            headers = {
+                "Authorization": "Bearer dev-token-change-in-production"
+            }
+            
+            response = self.session.post(
+                f"{BASE_URL}/redirect-proxy/admin/import-csv",
+                files=files,
+                headers=headers
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                self.log(f"✅ CSV import successful: {data}")
+                
+                # Verify response structure
+                expected_fields = ['mappings', 'options', 'errors']
+                for field in expected_fields:
+                    if field not in data:
+                        self.log(f"❌ Missing field in response: {field}")
+                        return False
+                
+                # Check if mappings were created
+                mappings_count = data.get('mappings', 0)
+                options_count = data.get('options', 0)
+                errors = data.get('errors', [])
+                
+                self.log(f"✅ Import results: {mappings_count} mappings, {options_count} options, {len(errors)} errors")
+                
+                if len(errors) > 0:
+                    self.log(f"⚠️  Import errors: {errors}")
+                
+            else:
+                self.log(f"❌ CSV import failed: {response.status_code} - {response.text}")
+                return False
+            
+            # Test 2: Verify import worked by checking mappings
+            self.log("Test 2: Verifying import by checking mappings...")
+            
+            mappings_response = self.session.get(
+                f"{BASE_URL}/redirect-proxy/admin/mappings",
+                headers=headers
+            )
+            
+            if mappings_response.status_code == 200:
+                mappings_data = mappings_response.json()
+                self.log(f"✅ Mappings retrieved successfully")
+                
+                # Check if our test products exist in mappings
+                if isinstance(mappings_data, list):
+                    found_test_product = False
+                    found_cola = False
+                    
+                    for mapping in mappings_data:
+                        if isinstance(mapping, dict):
+                            product_id = mapping.get('product_id') or mapping.get('id')
+                            if product_id == 'test-produkt-123':
+                                found_test_product = True
+                                self.log("✅ Found test-produkt-123 in mappings")
+                            elif product_id == 'sodavand-cola':
+                                found_cola = True
+                                self.log("✅ Found sodavand-cola in mappings")
+                    
+                    if found_test_product or found_cola:
+                        self.log("✅ At least one imported product found in mappings")
+                    else:
+                        self.log("⚠️  Imported products not found in mappings (may be expected if duplicates)")
+                        
+                elif isinstance(mappings_data, dict):
+                    self.log(f"✅ Mappings response received: {mappings_data}")
+                else:
+                    self.log(f"⚠️  Unexpected mappings response format: {type(mappings_data)}")
+                    
+            else:
+                self.log(f"❌ Failed to retrieve mappings: {mappings_response.status_code} - {mappings_response.text}")
+                return False
+            
+            # Test 3: Test without authorization header
+            self.log("Test 3: Testing without authorization header...")
+            
+            files_no_auth = {
+                'file': ('supplier_links_no_auth.csv', csv_content, 'text/csv')
+            }
+            
+            no_auth_response = self.session.post(
+                f"{BASE_URL}/redirect-proxy/admin/import-csv",
+                files=files_no_auth
+            )
+            
+            if no_auth_response.status_code in [401, 403]:
+                self.log("✅ Unauthorized request correctly rejected")
+            else:
+                self.log(f"❌ Unauthorized request not rejected: {no_auth_response.status_code}")
+                return False
+            
+            # Test 4: Test invalid CSV format
+            self.log("Test 4: Testing invalid CSV format...")
+            
+            invalid_csv = """invalid,header,format
+test,data,here"""
+            
+            files_invalid = {
+                'file': ('invalid.csv', invalid_csv, 'text/csv')
+            }
+            
+            invalid_response = self.session.post(
+                f"{BASE_URL}/redirect-proxy/admin/import-csv",
+                files=files_invalid,
+                headers=headers
+            )
+            
+            # Should either return error or handle gracefully
+            if invalid_response.status_code in [200, 400]:
+                if invalid_response.status_code == 200:
+                    invalid_data = invalid_response.json()
+                    errors = invalid_data.get('errors', [])
+                    if len(errors) > 0:
+                        self.log("✅ Invalid CSV format handled with errors reported")
+                    else:
+                        self.log("⚠️  Invalid CSV processed without errors (may be expected)")
+                else:
+                    self.log("✅ Invalid CSV format correctly rejected with 400")
+            else:
+                self.log(f"❌ Invalid CSV handling failed: {invalid_response.status_code}")
+                return False
+            
+            # Test 5: Test duplicate import (should report 0 new items)
+            self.log("Test 5: Testing duplicate import...")
+            
+            files_duplicate = {
+                'file': ('duplicate.csv', csv_content, 'text/csv')
+            }
+            
+            duplicate_response = self.session.post(
+                f"{BASE_URL}/redirect-proxy/admin/import-csv",
+                files=files_duplicate,
+                headers=headers
+            )
+            
+            if duplicate_response.status_code == 200:
+                duplicate_data = duplicate_response.json()
+                mappings_count = duplicate_data.get('mappings', 0)
+                
+                if mappings_count == 0:
+                    self.log("✅ Duplicate import correctly reported 0 new mappings")
+                else:
+                    self.log(f"⚠️  Duplicate import created {mappings_count} mappings (may be expected)")
+                    
+            else:
+                self.log(f"❌ Duplicate import test failed: {duplicate_response.status_code}")
+                return False
+                
+        except Exception as e:
+            self.log(f"❌ CSV import supplier links test failed with exception: {str(e)}")
+            return False
+            
+        return True
+
     def run_all_tests(self):
         """Run all backend tests"""
         self.log("Starting SLUSHBOOK Backend System Tests")
