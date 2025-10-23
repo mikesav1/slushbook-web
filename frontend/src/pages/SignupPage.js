@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'sonner';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { API } from '../App';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
@@ -13,6 +14,8 @@ const SignupPage = () => {
     password: '',
     confirmPassword: ''
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
