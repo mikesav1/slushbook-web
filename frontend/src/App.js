@@ -403,7 +403,7 @@ const AppContent = ({ sessionId }) => {
       <div className="relative z-10">
         {!isAuthPage && <Navigation />}
 
-        <main className={`container mx-auto px-4 py-6 ${!isAuthPage ? 'mb-20 md:mb-6' : ''}`}>
+        <main className={`container mx-auto px-4 py-6 ${!isAuthPage ? 'mb-20 lg:mb-6' : ''}`}>
           <Routes>
             {/* Auth Routes */}
             <Route path="/login" element={<LoginPage onLogin={login} />} />
