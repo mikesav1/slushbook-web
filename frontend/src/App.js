@@ -436,7 +436,7 @@ const AppContent = ({ sessionId }) => {
       {/* Mobile Bottom Navigation */}
       {!isAuthPage && (
         <div className="md:hidden border-t border-gray-200 bg-white fixed bottom-0 left-0 right-0 z-50 shadow-lg">
-          <div className={`grid ${user ? 'grid-cols-5' : 'grid-cols-4'} gap-1 p-2`}>
+          <div className="grid grid-cols-4 gap-1 p-2">
             {/* Hjem */}
             <Link
               to="/"
@@ -460,17 +460,15 @@ const AppContent = ({ sessionId }) => {
             </Link>
             
             {/* Liste (Shopping) - ONLY for logged in users or Pro */}
-            {user && (
-              <Link
-                to="/shopping"
-                className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
-                  location.pathname === '/shopping' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
-                }`}
-              >
-                <FaShoppingCart size={20} />
-                <span className="text-xs font-medium">Liste</span>
-              </Link>
-            )}
+            <Link
+              to="/shopping"
+              className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
+                location.pathname === '/shopping' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
+              }`}
+            >
+              <FaShoppingCart size={20} />
+              <span className="text-xs font-medium">Liste</span>
+            </Link>
             
             {/* Match */}
             <Link
@@ -482,29 +480,6 @@ const AppContent = ({ sessionId }) => {
               <FaMagic size={20} />
               <span className="text-xs font-medium">Match</span>
             </Link>
-            
-            {/* Settings/Profile with Logout */}
-            <button
-              onClick={async () => {
-                if (window.confirm('Er du sikker på at du vil logge ud?')) {
-                  try {
-                    await axios.post(`${API}/auth/logout`);
-                    localStorage.removeItem('session_token');
-                    setUser(null);
-                    window.location.href = '/login';
-                  } catch (error) {
-                    console.error('Logout error:', error);
-                    // Force logout even if API call fails
-                    localStorage.removeItem('session_token');
-                    window.location.href = '/login';
-                  }
-                }
-              }}
-              className="flex flex-col items-center gap-1 p-2 rounded-lg transition-colors text-red-600"
-            >
-              <FaSignOutAlt size={20} />
-              <span className="text-xs font-medium">Log ud</span>
-            </button>
           </div>
         </div>
       )}
