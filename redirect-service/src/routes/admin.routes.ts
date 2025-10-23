@@ -1,8 +1,10 @@
 import { Router, Request, Response } from 'express';
 import * as dbService from '../services/db.service';
 import { requireAuth } from '../middleware/auth';
+import multer from 'multer';
 
 const router = Router();
+const upload = multer({ storage: multer.memoryStorage() });
 
 // POST /admin/mapping
 router.post('/mapping', requireAuth, (req: Request, res: Response) => {
