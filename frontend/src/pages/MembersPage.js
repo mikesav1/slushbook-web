@@ -299,10 +299,11 @@ const MembersPage = () => {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => openDetailsModal(member)}
-                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+                        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 rounded-lg transition-colors"
                         title="Se detaljer"
                       >
                         <FaSearch />
+                        <span>Se Detaljer</span>
                       </button>
                       {member.id !== user?.id && (
                         <>
