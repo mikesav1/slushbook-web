@@ -1,7 +1,7 @@
 import Database from 'better-sqlite3';
 import * as path from 'path';
 
-const dbPath = path.join(__dirname, '../data.db');
+const dbPath = '/app/redirect-service/data.db';
 const db = new Database(dbPath);
 
 try {
