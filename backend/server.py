@@ -2065,12 +2065,16 @@ async def approve_recipe(recipe_id: str, request: Request):
     return {"success": True, "message": "Opskrift godkendt"}
 
 @api_router.post("/admin/reject-recipe/{recipe_id}")
-async def reject_recipe(recipe_id: str, reason: str, request: Request):
+async def reject_recipe(recipe_id: str, request: Request):
     """Reject a pending recipe with reason"""
     user = await get_current_user(request, None, db)
     
     if not user or user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
+    
+    # Get reason from body
+    body = await request.json()
+    reason = body.get('reason', 'Ingen grund angivet')
     
     # Update recipe status
     result = await db.user_recipes.update_one(
