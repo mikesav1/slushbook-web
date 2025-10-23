@@ -1008,6 +1008,53 @@ async def get_all_members(request: Request):
     return users
 
 
+@api_router.get("/admin/members/{user_id}/details")
+async def get_member_details(user_id: str, request: Request):
+    """Get detailed information about a specific member (admin only)"""
+    user = await get_current_user(request, None, db)
+    if not user or user.role != "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Kun admin har adgang"
+        )
+    
+    # Get user by id or email
+    target_user = await db.users.find_one({"$or": [{"id": user_id}, {"email": user_id}]})
+    
+    if not target_user:
+        raise HTTPException(status_code=404, detail="Bruger ikke fundet")
+    
+    # Remove password
+    target_user.pop("hashed_password", None)
+    target_user["_id"] = str(target_user.get("_id", ""))
+    
+    # Get user's recipes
+    recipes = await db.user_recipes.find({"author": target_user.get("email")}).to_list(length=None)
+    for recipe in recipes:
+        recipe["_id"] = str(recipe.get("_id", ""))
+    
+    # Get user's favorites
+    favorites = target_user.get("favorites", [])
+    
+    # Create activity log (based on recipes created)
+    activities = []
+    for recipe in recipes:
+        activities.append({
+            "action": f"Oprettet opskrift: {recipe['name']}",
+            "timestamp": recipe.get("created_at", datetime.now(timezone.utc).isoformat())
+        })
+    
+    # Sort activities by timestamp (newest first)
+    activities.sort(key=lambda x: x["timestamp"], reverse=True)
+    
+    return {
+        **target_user,
+        "recipes": recipes,
+        "favorites": favorites,
+        "activities": activities[:20]  # Limit to 20 most recent activities
+    }
+
+
 @api_router.put("/admin/members/{user_id}/role")
 async def update_member_role(user_id: str, role_data: dict, request: Request):
     """Update user role (admin only)"""
