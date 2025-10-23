@@ -1,26 +1,35 @@
 <analysis>
-The trajectory details the evolution of the Slushice application, initially focusing on restoring functionality post-rollback and then iteratively building new features. The AI engineer successfully restored the critical Power-flavours redirect service and its admin UI, including fixing CORS via a backend proxy. Key feature additions included enhancing the admin link management with edit/delete options and keyword-based multi-supplier linking. Significant effort was then dedicated to implementing comprehensive Guest vs. Pro access control, involving database schema updates, conditional UI rendering, and restricted access to features like shopping lists, pantry, and recipe publishing. Finally, the AI began implementing a CSV recipe import function for administrators, parsing user requirements for file structure, roles, and a preview mechanism. The development was characterized by iterative debugging, especially around UI display and logical inconsistencies in matching and access control.
+The previous AI engineer’s work primarily focused on iteratively enhancing the Slushice application. Initially, they debugged and fixed a crucial routing issue for the  page in  and resolved persistent login failures by identifying a database mismatch in  and rectifying  discrepancies for the admin user. Subsequently, the AI successfully implemented a comprehensive CSV recipe import feature, including frontend UI, backend API, and verification.
+
+Key developments included integrating a recipe deletion feature for administrators, updating the homepage video background (after initial struggles with  and positioning), and making the Add to list functionality more robust by ensuring the  runs persistently via . The Pro-adgang modal was redesigned with updated text and a Køb Pro-adgang button. The login/signup pages also received a significant UI overhaul with a video background, new logo, and responsive styling.
+
+A major undertaking was the implementation of the Udgiv opskriften til alle brugere feature, which involved updating backend recipe filtering logic () and adding a toggle switch in the frontend recipe editor, along with a visual indicator ( icon) in recipe cards.
+
+The engineer then embarked on creating an editable Leverandører (Suppliers) list within the admin panel. This involved extensive backend changes to the  (new  table schema, CRUD endpoints, and service functions) and significant frontend UI work on  to introduce tab-based navigation for Produkt-Links and Leverandører. This part of the development faced repeated syntax errors and debugging cycles, eventually resolved with the help of a troubleshoot agent. The deletion functionality for both suppliers and mappings was debugged, revealing missing backend DELETE endpoints and browser blocking  calls, which led to implementing a custom confirmation dialog. Finally, issues with  (due to frequent  calls) and incorrect mapping ID generation (due to non-slug IDs with Danish characters) were addressed.
+
+The most recent activity centered on fixing a  error for  when trying to add a supplier link, indicating a missing backend endpoint. Concurrently, the user was trying to set up a custom domain and was struggling with the Emergent platform's deployment and custom domain linking process, which required extensive guidance and interaction with a support agent, but remained unresolved. The AI offered to fix the missing  endpoint immediately or guide the user through a rollback.
 </analysis>
 
 <product_requirements>
-The Slushice app aims to be a comprehensive recipe platform with role-based access (Guest, Pro, Editor, Admin). The goal is to allow users to browse, filter, manage recipes, and eventually integrate affiliate links.
+The Slushice app aims to be a comprehensive recipe platform with role-based access (Guest, Pro, Editor, Admin).
 **Implemented features include:**
 1.  **Brix Information Page:** A dedicated page explaining Brix values, accessible via clickable badges.
-2.  **Affiliate Redirect Service (Power-flavours):** A Node.js/Express backend service for managing external product links with admin APIs, public redirect endpoints, and affiliate wrapping (e.g., Skimlinks).
-3.  **Admin UI for Affiliate Links:** A frontend interface for administrators to manage product mappings, now including dynamic supplier selection, keyword-based matching, and full CRUD operations (add, edit, delete) for mappings and their options.
-4.  **Shopping List Integration:** Køb hos [Supplier] buttons for ingredients, dynamically linking via the redirect service, with links visible only to guests.
-5.  **Homepage UI:** Displaying up to 8 featured recipes, with video placement restored to default.
+2.  **Affiliate Redirect Service (Power-flavours):** A Node.js/Express backend service for managing external product links with admin APIs, public redirect endpoints, and affiliate wrapping.
+3.  **Admin UI for Affiliate Links:** A frontend interface for administrators to manage product mappings, including dynamic supplier selection, keyword-based matching, and full CRUD operations (add, edit, delete) for mappings and their options. Supplier links are now visible to ALL users.
+4.  **Shopping List Integration:** Køb hos [Supplier] buttons for ingredients, dynamically linking via the redirect service.
+5.  **Homepage UI:** Displays up to 8 featured recipes, with a fullscreen, object-cover video background.
 6.  **Recipe Scaling:** A Half portion checkbox on recipe detail pages to automatically scale target volume and ingredients.
-7.  **Guest vs. Pro Access Control:**
-    *   **Guests:** Can view 15 free recipes (with locked placeholders for others), create max 2 private recipes, cannot publish, cannot access shopping list, pantry, or favorites. See affiliate links.
-    *   **Pro Users:** Unlimited access to recipes, unlimited recipe creation, can publish, full access to shopping list, pantry, and favorites. Do not see affiliate links.
-8.  **Admin Login:** Admin user  with password  verified.
-9.  **CSV Recipe Import (WIP):** Admin-only function to import recipes from CSV, auto-filling details like name, description, ingredients (with roles), and steps, with a preview function.
+7.  **Guest vs. Pro Access Control:** Guests view 15 free recipes (with locked placeholders for others), can create max 2 private recipes, cannot publish, cannot access shopping list, pantry, or favorites. Pro Users have unlimited access, can publish, and full access to features. The Pro-access modal now features a Køb Pro-adgang button.
+8.  **Admin Login:** Admin user  with password  is configured and working. Login page has a video background, redesigned logo, and semi-transparent login box.
+9.  **CSV Recipe Import (Complete):** Admin-only function to import recipes from CSV with preview and import confirmation.
+10. **Admin Recipe Delete:** Administrators can delete recipes from the Recipe Detail Page.
+11. **Public/Private Recipe Toggle:** Users can mark recipes as Udgiv opskriften til alle brugere (public) or Træk opskriften tilbage (private) with a toggle in the editor and a  icon in recipe cards for public ones. Guests only see public recipes.
+12. **Admin Editable Supplier List:** Admin UI to manage suppliers (add, edit, delete, activate/deactivate) with a dedicated tab on Admin Links Page.
 </product_requirements>
 
 <key_technical_concepts>
--   **React.js (Frontend):** UI, Context API (AuthContext), React Router,  for reliable navigation, , .
--   **FastAPI (Backend):** API endpoints, MongoDB, HTTPX for proxying,  for file uploads.
+-   **React.js (Frontend):** UI, Context API (AuthContext), React Router, , .
+-   **FastAPI (Backend):** API endpoints, MongoDB, HTTPX for proxying, .
 -   **MongoDB:** Main app data persistence.
 -   **Node.js/Express (Redirect Service):** Standalone service for affiliate links.
 -   **SQLite:** Database for the redirect service.
@@ -29,103 +38,99 @@ The Slushice app aims to be a comprehensive recipe platform with role-based acce
 -   **Environment Variables:** Strict usage (REACT\_APP\_BACKEND\_URL, MONGO\_URL, ADMIN\_TOKEN).
 -   **CORS & Backend Proxying:** Crucial for inter-service communication.
 -   **Access Control:** Role-based conditional rendering and API guarding.
+-   **Supervisor:** For persistent service management.
 </key_technical_concepts>
 
 <code_architecture>
 
 
 -   :
-    -   **Importance:** Main FastAPI application.
+    -   **Importance:** Main FastAPI application defining core APIs.
     -   **Changes:**
-        -   Added proxy endpoint () using  to forward requests to the .
-        -   Modified  model to include  and  for access control.
-        -   Added new POST endpoint  for CSV recipe import, using .
--    (NEW FILE):
-    -   **Importance:** Script for initializing recipe access control.
-    -   **Changes:** Created to mark the first 15 recipes as , the rest as , and existing recipes as  (or ).
+        -   Added proxy endpoint for .
+        -   Modified  model to include , .
+        -   Added  for CSV import.
+        -   Added  for admin recipe deletion.
+        -   Login endpoint logic was debugged;  logic updated for  to filter based on  and user roles.
+        -   Added debug logging to login endpoint, later removed.
 -   :
-    -   **Importance:** Global routing, layout, navigation.
-    -   **Changes:**
-        -   Routes for  and  added.
-        -    functionality updated to use  for full page reload.
-        -   Conditional rendering for mobile navigation items (e.g., Liste, Ingredienser, Favoritter) to hide them for guest users.
+    -   **Importance:** Authentication logic, including password hashing/verification.
+    -   **Changes:** Included  model with  field.
+-   :
+    -   **Importance:** Global routing and layout.
+    -   **Changes:** Added a route for  to correctly render .
+-   :
+    -   **Importance:** Landing page.
+    -   **Changes:** Video background  updated to  to ensure fullscreen coverage without white edges.
+-   :
+    -   **Importance:** User login interface.
+    -   **Changes:** Redesigned with a full-screen video background, a larger logo (increased  to ), reduced top margin to 20px, and a semi-transparent, blurred login box for improved aesthetics and readability over the video.
+-   :
+    -   **Importance:** User registration interface.
+    -   **Changes:** Updated to reflect the same design as  for consistency (video background, new logo, semi-transparent box).
+-   :
+    -   **Importance:** Password recovery interface.
+    -   **Changes:** Updated to reflect the same design as  for consistency (video background, new logo, semi-transparent box).
 -   :
     -   **Importance:** Displays individual recipe cards.
-    -   **Changes:**
-        -   Brix badges aligned at the bottom using Flexbox.
-        -   Added conditional display for 🔒 Kun for Pro-brugere badge for non-free recipes and  handler to trigger .
--    (NEW FILE):
-    -   **Importance:** Informs guest users about Pro features and collects emails for a waitlist.
-    -   **Changes:** Created with static content for Pro benefits and an email input.
+    -   **Changes:** Added a  (globe) icon badge to indicate  (public) recipes.
+-   :
+    -   **Importance:** Informs guest users about Pro features.
+    -   **Changes:** Content updated to remove Pro-adgang er på vej! and email input. Now features a Køb Pro-adgang button linking to an upgrade URL, and revised feature bullet points.
+-   :
+    -   **Importance:** Main admin dashboard.
+    -   **Changes:** UI for Importer fra CSV section with file upload, preview, and import functionality was implemented.
 -   :
     -   **Importance:** Displays detailed recipe info.
     -   **Changes:**
-        -   Brix badges link to  using .
-        -   Added a Halv portion checkbox to dynamically scale recipe volume and ingredients.
-        -   Tilføj til liste button is disabled for guest users.
-        -   Supplier links are conditionally displayed, visible ONLY to guest users (for affiliate revenue).
-        -    function updated to use keyword-based matching from the .
-        -   Imported  to resolve user is not defined error.
+        -    condition for supplier links was removed, making them visible to all users.
+        -   Added a Slet Opskrift button, visible only to admins and the recipe author, to delete recipes.
 -   :
-    -   **Importance:** Provides detailed Brix explanations.
-    -   **Changes:** Created with static content and refined styling.
+    -   **Importance:** User settings.
+    -   **Changes:** Added an Admin Panel card to the Administrator section for admins to navigate to .
 -   :
     -   **Importance:** Admin interface for managing affiliate product links.
     -   **Changes:**
-        -   Integrated to use the backend proxy .
-        -   Enhanced with Add New Link dialog, Edit (all fields except ID), Delete, and Toggle Status functionalities.
-        -   Supplier selection implemented as a dropdown.
-        -   Added a  input field for flexible ingredient matching and displays keywords as badges.
-        -   Fetching logic updated to retrieve *all* mappings from the .
-        -   Corrected  to .
+        -   Refactored to include two tabs: Produkt-Links (existing mappings) and a new Leverandører (Suppliers) section.
+        -   Implemented CRUD operations (add, edit, delete, toggle active status) for suppliers via dialogs.
+        -   Delete mapping/option functionality was debugged;  replaced with a custom confirmation dialog.
+        -   Mapping ID generation now uses slugs.
+        -   Added delays between  requests to mitigate  errors.
+        -   Refactored Add Link button to use a proper dialog and call .
 -   :
-    -   **Importance:** Main admin dashboard.
-    -   **Changes:** Work-in-progress to add a Importer fra CSV section with file upload, preview, and import functionality.
+    -   **Importance:** Allows users to add new recipes.
+    -   **Changes:** Added a toggle switch for Udgiv opskriften til alle brugere () functionality.
 -   :
-    -   **Importance:** Landing page.
+    -   **Importance:** Allows users to edit existing recipes.
+    -   **Changes:** Added a toggle switch for Udgiv opskriften til alle brugere () functionality.
+-   :
+    -   **Importance:** SQLite database schema for redirect service.
+    -   **Changes:** Added  table schema and initial seed data for suppliers (Power, Dorita, Bilka, etc.). Added  column to  table previously.
+-   :
+    -   **Importance:** Database interaction logic for redirect service.
     -   **Changes:**
-        -   Video background restored to default styling (removed centering attempts).
-        -   Displays a maximum of 8 featured recipes.
-        -   Filters recipes to show only  recipes for guest users.
-        -   Integrated  prop to  to show  for locked recipes.
--   :
-    -   **Importance:** User's pantry/machine management.
-    -   **Changes:** Displays  and hides content if the user is a guest.
--   :
-    -   **Importance:** Lists all recipes.
-    -   **Changes:** Integrated  prop to  to show  for locked recipes.
--   :
-    -   **Importance:** User settings, machine management, admin links access.
-    -   **Changes:**
-        -   Produkt-Links card links to .
-        -   + Tilføj Maskine button is disabled for guests with an Kun Pro message.
-        -   Edit/delete buttons for existing machines are disabled for guests.
--   :
-    -   **Importance:** Manages user's shopping list.
-    -   **Changes:**
-        -   Updated Køb hos buttons to use the  via the backend proxy.
-        -   Removed hardcoded ingredient mappings, now uses dynamic keyword-based matching.
-        -   Added  clearing.
-        -   Modified  to prioritize longer/more specific keyword matches.
-        -   Introduced  component for dynamic supplier display.
--   :
-    -   **Importance:** SQLite database schema.
-    -   **Changes:** Added  column to the  table.
--   :
-    -   **Importance:** Database interaction logic.
-    -   **Changes:** Updated to support  in mappings.
+        -   Updated to support  in mappings.
+        -   Added CRUD functions for suppliers (, , , ).
+        -   Added  and  functions.
 -   :
     -   **Importance:** Admin API endpoints for redirect service.
-    -   **Changes:** Added new GET endpoint  to fetch all mappings.
+    -   **Changes:**
+        -   Added , , ,  endpoints for supplier management.
+        -   Added  and  endpoints.
 -   :
     -   **Importance:** Initial data for the redirect service.
-    -   **Changes:** Updated with  for existing mappings and added a Blå curaçao sirup mapping for Barshopen.
+    -   **Changes:** Updated with  for existing mappings.
+-    (NEW FILE):
+    -   **Importance:** Documents UI changes to login/signup/forgot password pages.
+-    (NEW FILE):
+    -   **Importance:** Documents the public/private recipe feature.
 </code_architecture>
 
 <pending_tasks>
--   **CSV Recipe Import UI (Frontend):** The UI for CSV import on  needs to be fully implemented and debugged (currently showing a blank page).
+-   **Implement  endpoint:** The backend endpoint for creating new product options is missing, causing a 404 error on creation.
+-   **Custom Domain Setup:** Guide user through Emergent platform for  configuration (waiting for Emergent support to resolve SSL/connection issues).
 -   **Full Google OAuth Integration:** Only a placeholder is present for Google login.
--   **Pro-User Sharing Feature:** Pro users can create unlimited recipes, but the ability to share with other users is not yet implemented.
+-   **Pro-User Sharing Feature:** The ability for Pro users to share with other users is not yet implemented.
 -   **Full Vendor Admin UI:** The  remains a placeholder for broader vendor management beyond the .
 -   **Slushice Rules Validation:** Automatic BRIX/alcohol percentage calculation with warnings and suggestions during recipe creation is still pending.
 -   **ForgotPasswordPage TEST MODE clarity:** User raised a concern about the clarity of the TEST MODE - Reset Token display.
@@ -135,9 +140,10 @@ The Slushice app aims to be a comprehensive recipe platform with role-based acce
 </pending_tasks>
 
 <current_work>
-Immediately before this summary request, the AI engineer was implementing the frontend UI for the new CSV recipe import feature on . This involved adding state variables for , , and , and defining  and  functions. The UI elements (file input, Importer fra CSV button, and a preview area) were being added to the  component. The last action was an attempt to take a screenshot of the  page, but it displayed a blank screen, suggesting the UI for the CSV import feature was not yet rendering correctly or completely, leading to the AI's intent to scroll down to check.
+Immediately before this summary request, the AI engineer was addressing a critical bug where the user was unable to create new supplier links, receiving a  error for . This was identified as a missing backend endpoint in the . The  itself was also experiencing stability issues (port in use, requiring restarts). Concurrently, the user expressed significant frustration regarding the custom domain setup (), which was stalled due to an SSL certificate issue on the Emergent platform, despite repeated attempts to contact support via Discord and email. The user requested to potentially roll back to an older, working version of the application. The AI's last action was to present two immediate options: either fix the missing  endpoint (estimated 2 minutes) or guide the user through the platform's rollback feature.
 </current_work>
 
 <optional_next_step>
-Continue implementing and debugging the frontend UI for the CSV recipe import on .
+Fix the missing  endpoint in .
 </optional_next_step>
+
