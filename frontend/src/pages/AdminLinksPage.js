@@ -378,7 +378,12 @@ const AdminLinksPage = () => {
       );
       
       setImportResult(response.data);
-      toast.success(`Importeret! ${response.data.mappings} mappings, ${response.data.options} options`);
+      
+      if (response.data.errors && response.data.errors.length > 0) {
+        toast.warning(`Importeret med ${response.data.errors.length} fejl`);
+      } else {
+        toast.success(`Importeret! ${response.data.mappings} mappings, ${response.data.options} options`);
+      }
       
       // Refresh mappings
       fetchMappings();
@@ -390,7 +395,9 @@ const AdminLinksPage = () => {
       }
     } catch (error) {
       console.error('Error importing CSV:', error);
-      toast.error(error.response?.data?.error || 'Kunne ikke importere CSV');
+      console.error('Error response:', error.response?.data);
+      const errorMsg = error.response?.data?.error || error.response?.data?.detail || error.message || 'Kunne ikke importere CSV';
+      toast.error(errorMsg);
     } finally {
       setImporting(false);
     }
