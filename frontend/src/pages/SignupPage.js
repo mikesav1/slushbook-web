@@ -122,37 +122,53 @@ const SignupPage = () => {
             </div>
 
             {/* Password */}
-            <div>
+            <div className="relative">
               <Input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
+                onFocus={(e) => e.target.select()}
                 placeholder="Password (min. 6 tegn)"
                 required
-                className="w-full px-4 py-3 border-2 rounded-xl"
+                className="w-full px-4 py-3 pr-12 border-2 rounded-xl"
                 style={{ 
                   backgroundColor: '#D4E157',
                   borderColor: '#C0CA33'
                 }}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800"
+              >
+                {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+              </button>
             </div>
 
             {/* Confirm Password */}
-            <div>
+            <div className="relative">
               <Input
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
+                onFocus={(e) => e.target.select()}
                 placeholder="Bekræft password"
                 required
-                className="w-full px-4 py-3 border-2 rounded-xl"
+                className="w-full px-4 py-3 pr-12 border-2 rounded-xl"
                 style={{ 
                   backgroundColor: '#D4E157',
                   borderColor: '#C0CA33'
                 }}
               />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800"
+              >
+                {showConfirmPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+              </button>
             </div>
 
             {/* Sign Up Button */}
