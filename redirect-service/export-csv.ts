@@ -10,20 +10,20 @@ try {
       m.id, 
       m.name, 
       m.keywords, 
-      o.supplier_id, 
+      o.supplier, 
       o.url, 
       o.title 
     FROM mapping m 
-    LEFT JOIN option o ON m.id = o.mapping_id 
-    WHERE o.is_active = 1 
-    ORDER BY m.name, o.supplier_id
+    LEFT JOIN option o ON m.id = o.mappingId 
+    WHERE o.status = 'active' 
+    ORDER BY m.name, o.supplier
   `).all();
 
   console.log('produkt_navn,keywords,ean,leverandør,url,title');
   
   rows.forEach((row: any) => {
     const keywords = row.keywords ? row.keywords.replace(/,/g, ';') : '';
-    console.log(`${row.name},${keywords},,${row.supplier_id},${row.url},${row.title}`);
+    console.log(`${row.name},${keywords},,${row.supplier},${row.url},${row.title}`);
   });
 } catch (error) {
   console.error('Error:', error);
