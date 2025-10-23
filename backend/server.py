@@ -2008,13 +2008,19 @@ async def import_recipe_from_csv(file: UploadFile = File(...)):
                 for ing_str in row['Ingredienser'].split(';'):
                     parts = ing_str.strip().split(':')
                     if len(parts) >= 4:
+                        # Generate category_key from ingredient name
+                        ingredient_name = parts[0]
+                        category_key = ingredient_name.lower().replace(' ', '-').replace('æ', 'ae').replace('ø', 'oe').replace('å', 'aa')
+                        # Remove special characters except hyphens
+                        category_key = ''.join(c for c in category_key if c.isalnum() or c == '-')
+                        
                         ingredient = {
-                            'name': parts[0],
+                            'name': ingredient_name,
                             'quantity': float(parts[1]),
                             'unit': parts[2],
                             'brix': float(parts[3]) if parts[3] else None,
                             'role': parts[4].lower() if len(parts) > 4 else 'required',
-                            'category_key': ''
+                            'category_key': category_key
                         }
                         ingredients.append(ingredient)
             
