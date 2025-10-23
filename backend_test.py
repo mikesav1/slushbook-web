@@ -604,8 +604,9 @@ class BackendTester:
         
         try:
             # Use allow_redirects=False to capture the 302 response
+            # Try with our test product first, fallback to non-existent for fallback test
             response = self.session.get(
-                f"{BASE_URL}/redirect-proxy/go/sodastream-pepsi-440ml",
+                f"{BASE_URL}/redirect-proxy/go/test-produkt-123",
                 allow_redirects=False
             )
             
