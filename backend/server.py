@@ -2026,6 +2026,131 @@ async def confirm_recipe_import(recipes: List[dict]):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Import error: {str(e)}")
 
+# ===== RECIPE APPROVAL ADMIN ENDPOINTS =====
+
+@api_router.get("/admin/pending-recipes")
+async def get_pending_recipes(request: Request):
+    """Get all recipes pending approval"""
+    user = await get_current_user(request, None, db)
+    
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    # Get all pending recipes from user_recipes
+    cursor = db.user_recipes.find({"approval_status": "pending"})
+    recipes = await cursor.to_list(length=None)
+    
+    return recipes
+
+@api_router.post("/admin/approve-recipe/{recipe_id}")
+async def approve_recipe(recipe_id: str, request: Request):
+    """Approve a pending recipe"""
+    user = await get_current_user(request, None, db)
+    
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    # Update recipe status
+    result = await db.user_recipes.update_one(
+        {"id": recipe_id},
+        {"$set": {
+            "approval_status": "approved",
+            "rejection_reason": None
+        }}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Recipe not found")
+    
+    return {"success": True, "message": "Opskrift godkendt"}
+
+@api_router.post("/admin/reject-recipe/{recipe_id}")
+async def reject_recipe(recipe_id: str, reason: str, request: Request):
+    """Reject a pending recipe with reason"""
+    user = await get_current_user(request, None, db)
+    
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    # Update recipe status
+    result = await db.user_recipes.update_one(
+        {"id": recipe_id},
+        {"$set": {
+            "approval_status": "rejected",
+            "rejection_reason": reason,
+            "is_published": False  # Ensure rejected recipes are private
+        }}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Recipe not found")
+    
+    return {"success": True, "message": "Opskrift afvist"}
+
+@api_router.get("/admin/find-similar/{recipe_id}")
+async def find_similar_recipes(recipe_id: str, request: Request):
+    """Find similar recipes based on name and ingredients"""
+    user = await get_current_user(request, None, db)
+    
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    # Get the recipe
+    recipe = await db.user_recipes.find_one({"id": recipe_id})
+    if not recipe:
+        raise HTTPException(status_code=404, detail="Recipe not found")
+    
+    recipe_name = recipe['name'].lower()
+    recipe_ingredients = [ing['name'].lower() for ing in recipe.get('ingredients', [])]
+    
+    # Find similar recipes in both collections
+    similar = []
+    
+    # Search in user recipes
+    user_recipes = await db.user_recipes.find({
+        "id": {"$ne": recipe_id}
+    }).to_list(length=None)
+    
+    for r in user_recipes:
+        r_name = r['name'].lower()
+        r_ingredients = [ing['name'].lower() for ing in r.get('ingredients', [])]
+        
+        # Check name similarity
+        name_match = recipe_name in r_name or r_name in recipe_name
+        
+        # Check ingredient overlap
+        common_ingredients = set(recipe_ingredients) & set(r_ingredients)
+        ingredient_match = len(common_ingredients) >= 3
+        
+        if name_match or ingredient_match:
+            similar.append({
+                "id": r['id'],
+                "name": r['name'],
+                "author_name": r.get('author_name', 'Unknown'),
+                "match_reason": "Navn lignende" if name_match else f"{len(common_ingredients)} fælles ingredienser"
+            })
+    
+    # Search in system recipes
+    system_recipes = await db.recipes.find({}).to_list(length=None)
+    
+    for r in system_recipes:
+        r_name = r['name'].lower()
+        r_ingredients = [ing['name'].lower() for ing in r.get('ingredients', [])]
+        
+        name_match = recipe_name in r_name or r_name in recipe_name
+        common_ingredients = set(recipe_ingredients) & set(r_ingredients)
+        ingredient_match = len(common_ingredients) >= 3
+        
+        if name_match or ingredient_match:
+            similar.append({
+                "id": r['id'],
+                "name": r['name'],
+                "author_name": "SLUSHBOOK (system)",
+                "match_reason": "Navn lignende" if name_match else f"{len(common_ingredients)} fælles ingredienser"
+            })
+    
+    return similar
+
 # Proxy endpoints for redirect service
 REDIRECT_SERVICE_URL = "http://localhost:3001"
 
