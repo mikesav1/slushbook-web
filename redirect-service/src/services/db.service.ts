@@ -99,7 +99,7 @@ export const createOption = async (option: Omit<Option, 'updatedAt'> & { updated
 export const getOptions = async (mappingId: string): Promise<Option[]> => {
   const db = getDb();
   const results = await db.collection('redirect_options').find({ mappingId }, { projection: { _id: 0 } }).toArray();
-  return results as Option[];
+  return results as unknown as Option[];
 };
 
 export const getOption = async (id: string): Promise<Option | null> => {
@@ -141,7 +141,7 @@ export const getActiveOption = async (mappingId: string): Promise<Option | null>
 export const getAllActiveOptions = async (): Promise<Option[]> => {
   const db = getDb();
   const results = await db.collection('redirect_options').find({ status: 'active' }, { projection: { _id: 0 } }).toArray();
-  return results as Option[];
+  return results as unknown as Option[];
 };
 
 export const logClick = async (click: Omit<Click, 'id' | 'ts'>): Promise<Click> => {
@@ -159,13 +159,13 @@ export const logClick = async (click: Omit<Click, 'id' | 'ts'>): Promise<Click> 
 export const getAllSuppliers = async (): Promise<Supplier[]> => {
   const db = getDb();
   const results = await db.collection('redirect_suppliers').find({}, { projection: { _id: 0 } }).sort({ name: 1 }).toArray();
-  return results as Supplier[];
+  return results as unknown as Supplier[];
 };
 
 export const getActiveSuppliers = async (): Promise<Supplier[]> => {
   const db = getDb();
   const results = await db.collection('redirect_suppliers').find({ active: 1 }, { projection: { _id: 0 } }).sort({ name: 1 }).toArray();
-  return results as Supplier[];
+  return results as unknown as Supplier[];
 };
 
 export const getSupplier = async (id: string): Promise<Supplier | null> => {
