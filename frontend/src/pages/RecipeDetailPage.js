@@ -128,6 +128,16 @@ const RecipeDetailPage = ({ sessionId }) => {
     return names[supplier] || supplier.charAt(0).toUpperCase() + supplier.slice(1);
   };
 
+  const isAdmin = () => {
+    return user && user.role === 'admin';
+  };
+
+  const isAuthor = () => {
+    if (!recipe || !user) return false;
+    // Check if current user is the recipe author
+    return recipe.author === user.email || recipe.author === sessionId;
+  };
+
   const getProductForIngredient = (categoryKey) => {
     return products.find(p => p.category_key === categoryKey);
   };
