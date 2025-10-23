@@ -1038,6 +1038,90 @@ const AdminLinksPage = () => {
         </div>
       )}
 
+      {/* Import CSV Dialog */}
+      {showImportDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <h2 className="text-2xl font-bold mb-4">Importer Links fra CSV</h2>
+            
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+              <h3 className="font-semibold text-blue-900 mb-2">CSV Format:</h3>
+              <pre className="text-xs bg-white p-2 rounded border overflow-x-auto">
+produkt_navn,keywords,ean,leverandør,url,title
+Agave Sirup,Agave;Nectar;Sirup,,Bevco,https://...,Monin Agave
+              </pre>
+              <p className="text-sm text-blue-800 mt-2">
+                ⚠️ Keywords skal adskilles med <strong>semikolon (;)</strong>
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Vælg CSV fil</label>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".csv"
+                  onChange={(e) => {
+                    setImportFile(e.target.files[0]);
+                    setImportResult(null);
+                  }}
+                  className="w-full px-4 py-2 border rounded-lg"
+                />
+              </div>
+
+              {importResult && (
+                <div className={`p-4 rounded-lg ${
+                  importResult.errors?.length > 0 ? 'bg-yellow-50 border border-yellow-200' : 'bg-green-50 border border-green-200'
+                }`}>
+                  <h4 className="font-semibold mb-2">Import Resultat:</h4>
+                  <ul className="text-sm space-y-1">
+                    <li>✅ Mappings oprettet: {importResult.mappings}</li>
+                    <li>✅ Options oprettet: {importResult.options}</li>
+                    {importResult.errors?.length > 0 && (
+                      <li className="text-yellow-800 mt-2">
+                        ⚠️ {importResult.errors.length} fejl:
+                        <ul className="ml-4 mt-1 max-h-32 overflow-y-auto">
+                          {importResult.errors.map((err, idx) => (
+                            <li key={idx} className="text-xs">{err}</li>
+                          ))}
+                        </ul>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              )}
+
+              <div className="flex gap-3">
+                <Button
+                  onClick={importCSV}
+                  disabled={!importFile || importing}
+                  className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500"
+                >
+                  {importing ? 'Importerer...' : 'Importer'}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setShowImportDialog(false);
+                    setImportFile(null);
+                    setImportResult(null);
+                    if (fileInputRef.current) {
+                      fileInputRef.current.value = '';
+                    }
+                  }}
+                  className="flex-1"
+                  disabled={importing}
+                >
+                  Luk
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Delete Confirmation Dialog */}
       {showDeleteConfirm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
