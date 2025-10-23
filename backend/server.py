@@ -2336,7 +2336,7 @@ async def seed_ingredients(request: Request):
     return {"success": True, "message": f"Oprettet {created} ingredienser", "count": created}
 
 # Proxy endpoints for redirect service
-REDIRECT_SERVICE_URL = "http://localhost:3001"
+REDIRECT_SERVICE_URL = os.environ.get('REDIRECT_SERVICE_URL', 'http://localhost:3001')
 
 @api_router.api_route("/redirect-proxy/{path:path}", methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"])
 async def redirect_proxy(path: str, request: Request):
