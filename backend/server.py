@@ -2010,9 +2010,12 @@ async def import_recipe_from_csv(file: UploadFile = File(...)):
                     if len(parts) >= 4:
                         # Generate category_key from ingredient name
                         ingredient_name = parts[0]
-                        category_key = ingredient_name.lower().replace(' ', '-').replace('æ', 'ae').replace('ø', 'oe').replace('å', 'aa')
-                        # Remove special characters except hyphens
-                        category_key = ''.join(c for c in category_key if c.isalnum() or c == '-')
+                        category_key = ingredient_name.lower().replace('æ', 'ae').replace('ø', 'oe').replace('å', 'aa')
+                        # Remove special characters except alphanumeric and spaces
+                        category_key = ''.join(c if c.isalnum() else ' ' for c in category_key)
+                        # Replace multiple spaces with single space, then convert spaces to hyphens
+                        import re
+                        category_key = re.sub(r'\s+', '-', category_key.strip())
                         
                         ingredient = {
                             'name': ingredient_name,
