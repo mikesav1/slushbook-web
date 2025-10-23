@@ -391,6 +391,18 @@ const SettingsPage = ({ sessionId }) => {
               </div>
             </Link>
             <Link
+              to="/admin/ingredients"
+              className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-green-100"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-bold text-gray-800">🥤 Ingredienser</h3>
+                  <p className="text-sm text-gray-600">Administrer master ingrediens-listen</p>
+                </div>
+                <span className="text-green-600">→</span>
+              </div>
+            </Link>
+            <Link
               to="/admin"
               className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-red-100"
             >
