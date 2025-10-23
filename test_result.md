@@ -246,12 +246,15 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Redirect Service Integration"
+    - "Fix 'Add to list' functionality for ingredients with missing category_key"
+    - "Fix category_key handling in CSV import and shopping list"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
+  - agent: "main"
+    message: "Fixed critical bug in 'Add to list' functionality. Root cause: CSV-imported recipes had empty category_key values for ingredients. Implemented two fixes: 1) Frontend: Updated addMissingToShoppingList in RecipeDetailPage.js to generate category_key from ingredient name when missing/empty (backward compatibility). 2) Backend: Fixed CSV import in server.py to auto-generate category_key from ingredient names using slug-style formatting (lowercase, hyphens, normalized Danish characters). Ready for testing with both new CSV imports and existing recipes with empty category_keys."
   - agent: "testing"
     message: "Completed comprehensive authentication system testing for SLUSHBOOK. Tested all 5 major authentication flows with real data using backend_test.py. Found and fixed critical issue in auth.py User model (was using _id alias instead of id field). All authentication endpoints now working correctly: signup creates users with hashed passwords, login creates sessions and returns tokens, auth check validates sessions, logout deletes sessions, password reset flow works end-to-end. Database collections (users, user_sessions, password_resets) functioning properly. Only minor issue: no password length validation implemented, but core functionality unaffected."
   - agent: "testing"
