@@ -350,6 +350,123 @@ const MembersPage = () => {
         )}
       </div>
 
+      {/* User Details Modal */}
+      {isDetailsModalOpen && selectedUser && (
+        <Dialog open={isDetailsModalOpen} onOpenChange={setIsDetailsModalOpen}>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Bruger Detaljer: {selectedUser.name}</DialogTitle>
+            </DialogHeader>
+            
+            {loadingDetails ? (
+              <div className="flex justify-center py-12">
+                <div className="loading-spinner"></div>
+              </div>
+            ) : userDetails ? (
+              <div className="space-y-6">
+                {/* User Info Summary */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-lg">
+                  <div>
+                    <div className="text-xs text-gray-500 mb-1">Rolle</div>
+                    <div className="font-semibold capitalize">{userDetails.role}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-500 mb-1">Oprettet</div>
+                    <div className="font-semibold">
+                      {new Date(userDetails.created_at).toLocaleDateString('da-DK')}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-500 mb-1">Sidst Aktiv</div>
+                    <div className="font-semibold">
+                      {userDetails.last_active 
+                        ? new Date(userDetails.last_active).toLocaleDateString('da-DK')
+                        : 'Aldrig'}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-500 mb-1">Antal Opskrifter</div>
+                    <div className="font-semibold">{userDetails.recipes?.length || 0}</div>
+                  </div>
+                </div>
+
+                {/* Actions/Activity Log */}
+                <div>
+                  <h3 className="font-bold text-lg mb-3">Handlinger</h3>
+                  {userDetails.activities && userDetails.activities.length > 0 ? (
+                    <div className="border rounded-lg overflow-hidden">
+                      <table className="w-full">
+                        <thead className="bg-gray-50">
+                          <tr>
+                            <th className="px-4 py-2 text-left text-sm font-semibold">Handling</th>
+                            <th className="px-4 py-2 text-left text-sm font-semibold">Tidspunkt</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {userDetails.activities.map((activity, idx) => (
+                            <tr key={idx} className="border-t">
+                              <td className="px-4 py-2 text-sm">{activity.action}</td>
+                              <td className="px-4 py-2 text-sm text-gray-600">
+                                {new Date(activity.timestamp).toLocaleString('da-DK')}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <div className="text-gray-500 text-sm py-4 text-center border rounded-lg">
+                      Ingen handlinger registreret
+                    </div>
+                  )}
+                </div>
+
+                {/* User's Recipes */}
+                {userDetails.recipes && userDetails.recipes.length > 0 && (
+                  <div>
+                    <h3 className="font-bold text-lg mb-3">Brugerens Opskrifter ({userDetails.recipes.length})</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {userDetails.recipes.map((recipe) => (
+                        <div key={recipe.id} className="border rounded-lg p-3 hover:shadow-md transition-shadow">
+                          <div className="font-medium">{recipe.name}</div>
+                          <div className="text-xs text-gray-500 mt-1">
+                            Oprettet: {new Date(recipe.created_at).toLocaleDateString('da-DK')}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Favorites */}
+                {userDetails.favorites && userDetails.favorites.length > 0 && (
+                  <div>
+                    <h3 className="font-bold text-lg mb-3">Favoritter ({userDetails.favorites.length})</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {userDetails.favorites.map((fav, idx) => (
+                        <span key={idx} className="px-3 py-1 bg-pink-100 text-pink-700 rounded-full text-sm">
+                          {fav.recipe_name || fav}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="text-center py-12 text-gray-500">
+                Kunne ikke hente bruger detaljer
+              </div>
+            )}
+            
+            <div className="flex justify-end mt-6">
+              <Button onClick={() => setIsDetailsModalOpen(false)} variant="outline">
+                Luk
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+
       {/* Create User Modal */}
       {isCreateModalOpen && (
         <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
