@@ -22,13 +22,13 @@ const AdminSandboxPage = ({ sessionId }) => {
   const fetchPendingRecipes = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API}/admin/pending-recipes`, {
-        headers: { Authorization: `Bearer ${sessionId}` }
-      });
+      const response = await axios.get(`${API}/admin/pending-recipes`);
       setPendingRecipes(response.data);
     } catch (error) {
       console.error('Error fetching pending recipes:', error);
-      toast.error('Kunne ikke hente ventende opskrifter');
+      if (error.response?.status !== 403) {
+        toast.error('Kunne ikke hente ventende opskrifter');
+      }
     } finally {
       setLoading(false);
     }
