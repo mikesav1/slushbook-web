@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { toast, Toaster } from "sonner";
-import { FaHome, FaBook, FaBoxOpen, FaShoppingCart, FaHeart, FaSearch, FaCog, FaMagic, FaPlus, FaSignOutAlt } from "react-icons/fa";
+import { FaHome, FaBook, FaBoxOpen, FaShoppingCart, FaHeart, FaSearch, FaCog, FaMagic, FaPlus, FaSignOutAlt, FaSeedling, FaLink } from "react-icons/fa";
 import "@/App.css";
 import { getSessionId } from "./utils/session";
 import { AuthProvider, useAuth } from "./context/AuthContext";
