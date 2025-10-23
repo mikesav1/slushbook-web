@@ -710,6 +710,329 @@ class BackendTester:
             
         return True
         
+    def test_csv_import_category_key_generation(self):
+        """Test CSV import with category_key generation for ingredients"""
+        self.log("Testing CSV import with category_key generation...")
+        
+        # Create a test CSV content with Danish characters and various ingredient names
+        csv_content = """Navn,Beskrivelse,Type,Farve,Brix,Volumen,Alkohol,Tags,Ingredienser,Fremgangsmåde
+Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,Vand:100:ml:0:required;Jordbær sirup:200:ml:65:required;Rødgrød med fløde:50:ml:30:optional,Bland alt sammen|Fyld i maskinen"""
+        
+        try:
+            # Create a temporary CSV file-like object
+            files = {
+                'file': ('test_recipe.csv', csv_content, 'text/csv')
+            }
+            
+            response = self.session.post(f"{BASE_URL}/admin/import-csv", files=files)
+            
+            if response.status_code == 200:
+                data = response.json()
+                self.log(f"✅ CSV import successful - {data.get('count')} recipes parsed")
+                
+                # Verify response structure
+                if 'recipes' in data and len(data['recipes']) > 0:
+                    recipe = data['recipes'][0]
+                    self.log("✅ Recipe data structure is correct")
+                    
+                    # Check ingredients have category_key generated
+                    if 'ingredients' in recipe and len(recipe['ingredients']) > 0:
+                        for ingredient in recipe['ingredients']:
+                            if 'category_key' not in ingredient:
+                                self.log(f"❌ Missing category_key for ingredient: {ingredient.get('name')}")
+                                return False
+                            
+                            # Test specific category_key generation rules
+                            name = ingredient['name']
+                            category_key = ingredient['category_key']
+                            
+                            self.log(f"✅ Ingredient '{name}' -> category_key: '{category_key}'")
+                            
+                            # Verify Danish character normalization
+                            if name == "Vand":
+                                if category_key == "vand":
+                                    self.log("✅ Basic lowercase conversion works")
+                                else:
+                                    self.log(f"❌ Expected 'vand', got '{category_key}'")
+                                    return False
+                                    
+                            elif name == "Jordbær sirup":
+                                if category_key == "jordbaer-sirup":
+                                    self.log("✅ Danish character normalization (æ→ae) and space replacement works")
+                                else:
+                                    self.log(f"❌ Expected 'jordbaer-sirup', got '{category_key}'")
+                                    return False
+                                    
+                            elif name == "Rødgrød med fløde":
+                                if category_key == "roedgroed-med-floede":
+                                    self.log("✅ Complex Danish character normalization (ø→oe) works")
+                                else:
+                                    self.log(f"❌ Expected 'roedgroed-med-floede', got '{category_key}'")
+                                    return False
+                        
+                        self.log("✅ All ingredients have properly generated category_keys")
+                    else:
+                        self.log("❌ No ingredients found in parsed recipe")
+                        return False
+                else:
+                    self.log("❌ No recipes found in CSV import response")
+                    return False
+                    
+            else:
+                self.log(f"❌ CSV import failed: {response.status_code} - {response.text}")
+                return False
+                
+        except Exception as e:
+            self.log(f"❌ CSV import test failed with exception: {str(e)}")
+            return False
+            
+        return True
+        
+    def test_shopping_list_with_category_key(self):
+        """Test shopping list creation with valid and empty category_key"""
+        self.log("Testing shopping list creation with category_key handling...")
+        
+        try:
+            # Test 1: Create shopping list item with valid category_key
+            valid_item = {
+                "session_id": self.test_session_id,
+                "ingredient_name": "Jordbær sirup",
+                "category_key": "jordbaer-sirup",
+                "quantity": 250.0,
+                "unit": "ml",
+                "linked_recipe_id": "test-recipe-123",
+                "linked_recipe_name": "Test Recipe"
+            }
+            
+            response = self.session.post(f"{BASE_URL}/shopping-list", json=valid_item)
+            
+            if response.status_code == 200:
+                data = response.json()
+                self.log("✅ Shopping list item created with valid category_key")
+                
+                # Verify response structure
+                required_fields = ['id', 'session_id', 'ingredient_name', 'category_key', 'quantity', 'unit']
+                for field in required_fields:
+                    if field not in data:
+                        self.log(f"❌ Missing field in shopping list response: {field}")
+                        return False
+                        
+                if data['category_key'] != valid_item['category_key']:
+                    self.log(f"❌ Category key mismatch: expected {valid_item['category_key']}, got {data['category_key']}")
+                    return False
+                    
+                self.log("✅ Shopping list item data structure is correct")
+                
+            else:
+                self.log(f"❌ Shopping list creation with valid category_key failed: {response.status_code} - {response.text}")
+                return False
+            
+            # Test 2: Create shopping list item with empty category_key (should not cause errors)
+            empty_category_item = {
+                "session_id": self.test_session_id,
+                "ingredient_name": "Test Ingredient",
+                "category_key": "",  # Empty category_key
+                "quantity": 100.0,
+                "unit": "ml",
+                "linked_recipe_id": "test-recipe-456",
+                "linked_recipe_name": "Test Recipe 2"
+            }
+            
+            response2 = self.session.post(f"{BASE_URL}/shopping-list", json=empty_category_item)
+            
+            if response2.status_code == 200:
+                data2 = response2.json()
+                self.log("✅ Shopping list item created with empty category_key (no errors)")
+                
+                # Verify the empty category_key is handled
+                if 'category_key' in data2:
+                    self.log(f"✅ Category key field present: '{data2['category_key']}'")
+                else:
+                    self.log("❌ Category key field missing in response")
+                    return False
+                    
+            else:
+                self.log(f"❌ Shopping list creation with empty category_key failed: {response2.status_code} - {response2.text}")
+                return False
+            
+            # Test 3: Verify shopping list items can be retrieved
+            get_response = self.session.get(f"{BASE_URL}/shopping-list/{self.test_session_id}")
+            
+            if get_response.status_code == 200:
+                items = get_response.json()
+                self.log(f"✅ Shopping list retrieved successfully - {len(items)} items")
+                
+                # Verify our test items are in the list
+                found_valid = False
+                found_empty = False
+                
+                for item in items:
+                    if item.get('ingredient_name') == 'Jordbær sirup':
+                        found_valid = True
+                    elif item.get('ingredient_name') == 'Test Ingredient':
+                        found_empty = True
+                        
+                if found_valid and found_empty:
+                    self.log("✅ Both test items found in shopping list")
+                else:
+                    self.log(f"❌ Test items not found: valid={found_valid}, empty={found_empty}")
+                    return False
+                    
+            else:
+                self.log(f"❌ Shopping list retrieval failed: {get_response.status_code}")
+                return False
+                
+        except Exception as e:
+            self.log(f"❌ Shopping list test failed with exception: {str(e)}")
+            return False
+            
+        return True
+        
+    def test_backward_compatibility_empty_category_key(self):
+        """Test backward compatibility with existing recipes having empty category_key"""
+        self.log("Testing backward compatibility with empty category_key...")
+        
+        try:
+            # Create a recipe with ingredients that have empty category_key (simulating old data)
+            recipe_data = {
+                "name": "Backward Compatibility Test",
+                "description": "Test recipe with empty category keys",
+                "ingredients": [
+                    {
+                        "name": "Æble juice",
+                        "category_key": "",  # Empty category_key (old data)
+                        "quantity": 200,
+                        "unit": "ml",
+                        "role": "required"
+                    },
+                    {
+                        "name": "Rødbede sirup", 
+                        "category_key": "",  # Empty category_key (old data)
+                        "quantity": 100,
+                        "unit": "ml",
+                        "role": "required"
+                    }
+                ],
+                "steps": ["Mix ingredients", "Serve cold"],
+                "session_id": self.test_session_id,
+                "base_volume_ml": 1000,
+                "target_brix": 14.0,
+                "color": "red",
+                "type": "klassisk",
+                "tags": ["test"]
+            }
+            
+            # Create the recipe
+            create_response = self.session.post(f"{BASE_URL}/recipes", json=recipe_data)
+            
+            if create_response.status_code == 200:
+                recipe = create_response.json()
+                recipe_id = recipe.get('id')
+                self.log(f"✅ Test recipe created with ID: {recipe_id}")
+                
+                # Verify ingredients have empty category_key
+                for ingredient in recipe['ingredients']:
+                    if ingredient.get('category_key') != '':
+                        self.log(f"❌ Expected empty category_key, got: '{ingredient.get('category_key')}'")
+                        return False
+                        
+                self.log("✅ Recipe created with empty category_keys as expected")
+                
+                # Test that we can still add these ingredients to shopping list
+                # This should work because the frontend generates category_key on-the-fly
+                for ingredient in recipe['ingredients']:
+                    shopping_item = {
+                        "session_id": self.test_session_id,
+                        "ingredient_name": ingredient['name'],
+                        "category_key": ingredient['category_key'],  # Empty string
+                        "quantity": ingredient['quantity'],
+                        "unit": ingredient['unit'],
+                        "linked_recipe_id": recipe_id,
+                        "linked_recipe_name": recipe['name']
+                    }
+                    
+                    add_response = self.session.post(f"{BASE_URL}/shopping-list", json=shopping_item)
+                    
+                    if add_response.status_code == 200:
+                        self.log(f"✅ Added '{ingredient['name']}' to shopping list despite empty category_key")
+                    else:
+                        self.log(f"❌ Failed to add '{ingredient['name']}' to shopping list: {add_response.status_code}")
+                        return False
+                
+                self.log("✅ All ingredients with empty category_key successfully added to shopping list")
+                
+            else:
+                self.log(f"❌ Failed to create test recipe: {create_response.status_code} - {create_response.text}")
+                return False
+                
+        except Exception as e:
+            self.log(f"❌ Backward compatibility test failed with exception: {str(e)}")
+            return False
+            
+        return True
+        
+    def test_danish_character_normalization(self):
+        """Test specific Danish character normalization in category_key generation"""
+        self.log("Testing Danish character normalization...")
+        
+        # Test cases for Danish character normalization
+        test_cases = [
+            ("Æble", "aeble"),
+            ("Øl", "oel"), 
+            ("Årsag", "aarsag"),
+            ("Rødgrød med fløde", "roedgroed-med-floede"),
+            ("Kærnemælk", "kaernemaelk"),
+            ("Brød & smør", "broed-smoer"),  # Special characters should be removed
+            ("Test 123", "test-123"),  # Numbers should be preserved
+            ("Multiple   Spaces", "multiple-spaces")  # Multiple spaces should become single hyphen
+        ]
+        
+        csv_rows = []
+        for i, (ingredient_name, expected_key) in enumerate(test_cases):
+            csv_rows.append(f"Test Recipe {i+1},Test description,klassisk,red,14.0,1000,Nej,test,{ingredient_name}:100:ml:0:required,Mix well")
+        
+        csv_content = "Navn,Beskrivelse,Type,Farve,Brix,Volumen,Alkohol,Tags,Ingredienser,Fremgangsmåde\n" + "\n".join(csv_rows)
+        
+        try:
+            files = {
+                'file': ('danish_test.csv', csv_content, 'text/csv')
+            }
+            
+            response = self.session.post(f"{BASE_URL}/admin/import-csv", files=files)
+            
+            if response.status_code == 200:
+                data = response.json()
+                recipes = data.get('recipes', [])
+                
+                if len(recipes) != len(test_cases):
+                    self.log(f"❌ Expected {len(test_cases)} recipes, got {len(recipes)}")
+                    return False
+                
+                for i, (ingredient_name, expected_key) in enumerate(test_cases):
+                    recipe = recipes[i]
+                    if len(recipe['ingredients']) > 0:
+                        actual_key = recipe['ingredients'][0]['category_key']
+                        if actual_key == expected_key:
+                            self.log(f"✅ '{ingredient_name}' -> '{actual_key}' (correct)")
+                        else:
+                            self.log(f"❌ '{ingredient_name}' -> expected '{expected_key}', got '{actual_key}'")
+                            return False
+                    else:
+                        self.log(f"❌ No ingredients found for recipe {i+1}")
+                        return False
+                
+                self.log("✅ All Danish character normalization tests passed")
+                
+            else:
+                self.log(f"❌ Danish character test CSV import failed: {response.status_code} - {response.text}")
+                return False
+                
+        except Exception as e:
+            self.log(f"❌ Danish character normalization test failed with exception: {str(e)}")
+            return False
+            
+        return True
+
     def run_all_tests(self):
         """Run all backend tests"""
         self.log("Starting SLUSHBOOK Backend System Tests")
@@ -727,6 +1050,10 @@ class BackendTester:
             ("Machine Update", self.test_machine_update),
             ("Machine Delete", self.test_machine_delete),
             ("Complete Machine CRUD Flow", self.test_machine_crud_complete_flow),
+            ("CSV Import Category Key Generation", self.test_csv_import_category_key_generation),
+            ("Shopping List Category Key Handling", self.test_shopping_list_with_category_key),
+            ("Backward Compatibility Empty Category Key", self.test_backward_compatibility_empty_category_key),
+            ("Danish Character Normalization", self.test_danish_character_normalization),
             ("Redirect Service Health (Direct)", self.test_redirect_service_health_direct),
             ("Redirect Admin Get Mapping", self.test_redirect_admin_get_mapping),
             ("Redirect Public Redirect", self.test_redirect_public_redirect),
