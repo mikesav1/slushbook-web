@@ -44,6 +44,8 @@ app.use('/admin', adminLimiter, adminRoutes);
 app.use('/go', goRoutes);
 
 // Initialize database and start server
+let server: any;
+
 const startServer = async () => {
   try {
     await initDb();
@@ -51,7 +53,7 @@ const startServer = async () => {
     
     // Only start server if not in test mode
     if (process.env.NODE_ENV !== 'test') {
-      app.listen(PORT, () => {
+      server = app.listen(PORT, () => {
         console.log(`Redirect service running on port ${PORT}`);
       });
     }
@@ -60,6 +62,29 @@ const startServer = async () => {
     process.exit(1);
   }
 };
+
+// Graceful shutdown
+const gracefulShutdown = (signal: string) => {
+  console.log(`\n${signal} received. Closing server gracefully...`);
+  if (server) {
+    server.close(() => {
+      console.log('Server closed. Exiting process.');
+      process.exit(0);
+    });
+    
+    // Force shutdown after 10 seconds
+    setTimeout(() => {
+      console.error('Forced shutdown after timeout');
+      process.exit(1);
+    }, 10000);
+  } else {
+    process.exit(0);
+  }
+};
+
+// Handle termination signals
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
 startServer();
 
