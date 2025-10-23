@@ -20,23 +20,33 @@ const AdminSandboxPage = ({ sessionId }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchPendingRecipes();
+    fetchAllRecipes();
   }, []);
 
-  const fetchPendingRecipes = async () => {
+  const fetchAllRecipes = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API}/admin/pending-recipes`);
-      setPendingRecipes(response.data);
+      // Fetch all user recipes
+      const response = await axios.get(`${API}/recipes?session_id=${sessionId}`);
+      // Filter to only show recipes from other users (not admin's own)
+      setAllRecipes(response.data);
     } catch (error) {
-      console.error('Error fetching pending recipes:', error);
-      if (error.response?.status !== 403) {
-        toast.error('Kunne ikke hente ventende opskrifter');
-      }
+      console.error('Error fetching recipes:', error);
+      toast.error('Kunne ikke hente opskrifter');
     } finally {
       setLoading(false);
     }
   };
+
+  const getFilteredRecipes = () => {
+    if (activeTab === 'all') return allRecipes;
+    if (activeTab === 'pending') return allRecipes.filter(r => r.approval_status === 'pending');
+    if (activeTab === 'approved') return allRecipes.filter(r => r.approval_status === 'approved');
+    if (activeTab === 'rejected') return allRecipes.filter(r => r.approval_status === 'rejected');
+    return allRecipes;
+  };
+
+  const filteredRecipes = getFilteredRecipes();
 
   const approveRecipe = async (recipeId) => {
     try {
