@@ -128,10 +128,6 @@ const RecipeDetailPage = ({ sessionId }) => {
     return names[supplier] || supplier.charAt(0).toUpperCase() + supplier.slice(1);
   };
 
-  const isAdmin = () => {
-    return user && user.role === 'admin';
-  };
-
   const isAuthor = () => {
     if (!recipe || !user) return false;
     // Check if current user is the recipe author
