@@ -2166,6 +2166,116 @@ async def find_similar_recipes(recipe_id: str, request: Request):
     
     return similar
 
+# ===== ADMIN INGREDIENTS MANAGEMENT =====
+
+@api_router.get("/admin/ingredients")
+async def get_all_ingredients(request: Request):
+    """Get all master ingredients for admin"""
+    user = await get_current_user(request, None, db)
+    
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    # Get all master ingredients
+    ingredients = await db.master_ingredients.find({}, {"_id": 0}).to_list(length=None)
+    return ingredients
+
+@api_router.post("/admin/ingredients")
+async def create_ingredient(ingredient: dict, request: Request):
+    """Create a new master ingredient"""
+    user = await get_current_user(request, None, db)
+    
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    # Check if ingredient already exists
+    existing = await db.master_ingredients.find_one({"name": ingredient['name']})
+    if existing:
+        raise HTTPException(status_code=400, detail="Ingrediens findes allerede")
+    
+    # Add ID and created timestamp
+    ingredient['id'] = str(uuid.uuid4())
+    ingredient['created_at'] = datetime.now(timezone.utc).isoformat()
+    
+    await db.master_ingredients.insert_one(ingredient)
+    return {"success": True, "ingredient": ingredient}
+
+@api_router.put("/admin/ingredients/{ingredient_id}")
+async def update_ingredient(ingredient_id: str, ingredient: dict, request: Request):
+    """Update a master ingredient"""
+    user = await get_current_user(request, None, db)
+    
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    result = await db.master_ingredients.update_one(
+        {"id": ingredient_id},
+        {"$set": ingredient}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Ingrediens ikke fundet")
+    
+    return {"success": True, "message": "Ingrediens opdateret"}
+
+@api_router.delete("/admin/ingredients/{ingredient_id}")
+async def delete_ingredient(ingredient_id: str, request: Request):
+    """Delete a master ingredient"""
+    user = await get_current_user(request, None, db)
+    
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    result = await db.master_ingredients.delete_one({"id": ingredient_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Ingrediens ikke fundet")
+    
+    return {"success": True, "message": "Ingrediens slettet"}
+
+@api_router.post("/admin/ingredients/seed")
+async def seed_ingredients(request: Request):
+    """Seed default ingredients"""
+    user = await get_current_user(request, None, db)
+    
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    default_ingredients = [
+        {"name": "Jordbær sirup", "category": "Sirup", "default_brix": 65},
+        {"name": "Citron sirup", "category": "Sirup", "default_brix": 65},
+        {"name": "Blå curaçao", "category": "Sirup", "default_brix": 65},
+        {"name": "Hindbær sirup", "category": "Sirup", "default_brix": 65},
+        {"name": "Vanilje sirup", "category": "Sirup", "default_brix": 65},
+        {"name": "Karamel sirup", "category": "Sirup", "default_brix": 65},
+        {"name": "Power", "category": "Energidrik", "default_brix": 11},
+        {"name": "Sodastream", "category": "Sodavand", "default_brix": 10},
+        {"name": "Coca Cola", "category": "Sodavand", "default_brix": 11},
+        {"name": "Sprite", "category": "Sodavand", "default_brix": 9},
+        {"name": "Fanta", "category": "Sodavand", "default_brix": 12},
+        {"name": "Appelsin juice", "category": "Juice", "default_brix": 11},
+        {"name": "Æble juice", "category": "Juice", "default_brix": 11},
+        {"name": "Ananas juice", "category": "Juice", "default_brix": 13},
+        {"name": "Mango juice", "category": "Juice", "default_brix": 14},
+        {"name": "Vodka", "category": "Alkohol", "default_brix": 0},
+        {"name": "Rom", "category": "Alkohol", "default_brix": 0},
+        {"name": "Tequila", "category": "Alkohol", "default_brix": 0},
+        {"name": "Is", "category": "Basis", "default_brix": 0},
+        {"name": "Vand", "category": "Basis", "default_brix": 0},
+    ]
+    
+    created = 0
+    for ing in default_ingredients:
+        # Check if exists
+        existing = await db.master_ingredients.find_one({"name": ing['name']})
+        if not existing:
+            ing['id'] = str(uuid.uuid4())
+            ing['created_at'] = datetime.now(timezone.utc).isoformat()
+            await db.master_ingredients.insert_one(ing)
+            created += 1
+    
+    return {"success": True, "message": f"Oprettet {created} ingredienser", "count": created}
+
 # Proxy endpoints for redirect service
 REDIRECT_SERVICE_URL = "http://localhost:3001"
 
