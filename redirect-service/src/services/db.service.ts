@@ -135,7 +135,7 @@ export const getActiveOption = async (mappingId: string): Promise<Option | null>
     .limit(1)
     .toArray();
   
-  return result.length > 0 ? result[0] as Option : null;
+  return result.length > 0 ? result[0] as unknown as Option : null;
 };
 
 export const getAllActiveOptions = async (): Promise<Option[]> => {
