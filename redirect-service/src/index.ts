@@ -4,7 +4,7 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import adminRoutes from './routes/admin.routes';
 import goRoutes from './routes/go.routes';
-import db from './db';
+import { initDb, getDb } from './db';
 
 // Load environment variables
 dotenv.config();
@@ -28,13 +28,14 @@ const adminLimiter = rateLimit({
 });
 
 // Health endpoint
-app.get('/health', (req, res) => {
+app.get('/health', async (req, res) => {
   try {
     // Test DB connection
-    db.prepare('SELECT 1').get();
+    const db = getDb();
+    await db.admin().ping();
     res.json({ ok: true, db: true });
   } catch (error) {
-    res.status(500).json({ ok: false, db: false });
+    res.status(500).json({ ok: false, db: false, error: (error as Error).message });
   }
 });
 
