@@ -251,9 +251,7 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus:
-    - "Fix 'Add to list' functionality for ingredients with missing category_key"
-    - "Fix category_key handling in CSV import and shopping list"
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
