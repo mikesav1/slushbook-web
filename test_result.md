@@ -106,7 +106,7 @@ user_problem_statement: "Fix 'Add to list' functionality bug where ingredients w
 
 backend:
   - task: "Fix category_key handling in CSV import and shopping list"
-    implemented: false
+    implemented: true
     working: "NA"
     file: "backend/server.py"
     stuck_count: 0
@@ -116,6 +116,9 @@ backend:
       - working: "NA"
         agent: "main"
         comment: "Bug identified: CSV import sets category_key to empty string (line 2017 in server.py), causing 'Add to list' functionality to fail. Need to fix CSV import to generate proper category_key from ingredient names, and ensure existing recipes can handle this gracefully."
+      - working: "NA"
+        agent: "main"
+        comment: "Fixed CSV import to generate category_key from ingredient name by converting to lowercase, replacing spaces with hyphens, normalizing Danish characters (æ→ae, ø→oe, å→aa), and removing special characters. This ensures all CSV-imported recipes have valid category_keys for shopping list functionality."
 
   - task: "CSV Recipe Import Endpoints"
     implemented: true
