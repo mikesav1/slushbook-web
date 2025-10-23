@@ -54,7 +54,7 @@ export const getMapping = async (id: string): Promise<Mapping | null> => {
 export const getAllMappings = async (): Promise<Mapping[]> => {
   const db = getDb();
   const results = await db.collection('redirect_mappings').find({}, { projection: { _id: 0 } }).toArray();
-  return results as Mapping[];
+  return results as unknown as Mapping[];
 };
 
 export const updateMapping = async (id: string, updates: Partial<Pick<Mapping, 'name' | 'ean' | 'keywords'>>): Promise<Mapping | null> => {
