@@ -219,10 +219,15 @@ const RecipeDetailPage = ({ sessionId }) => {
     try {
       for (const ingredient of ingredients) {
         if (ingredient.role === 'required') {
+          // Generate category_key from ingredient name if missing or empty
+          const categoryKey = ingredient.category_key && ingredient.category_key.trim() !== '' 
+            ? ingredient.category_key 
+            : ingredient.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-æøå]/g, '');
+          
           await axios.post(`${API}/shopping-list`, {
             session_id: sessionId,
             ingredient_name: ingredient.name,
-            category_key: ingredient.category_key,
+            category_key: categoryKey,
             quantity: ingredient.quantity,
             unit: ingredient.unit,
             linked_recipe_id: id,
