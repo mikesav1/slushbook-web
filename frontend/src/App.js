@@ -219,13 +219,125 @@ const Navigation = () => {
 
       {/* Mobile menu button */}
       <div className="absolute right-4 top-4 md:hidden">
-        <button
-          onClick={() => navigate("/settings")}
-          className="p-2 text-white hover:bg-white/10 rounded-lg"
-          data-testid="mobile-menu-button"
-        >
-          <FaCog size={24} />
-        </button>
+        {user ? (
+          <div className="relative">
+            <button
+              onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+              className="flex items-center gap-2 p-2 bg-white/10 backdrop-blur-md rounded-lg hover:bg-white/20 transition-all"
+              data-testid="mobile-menu-button"
+            >
+              <div className="text-left">
+                <div className="text-xs text-white font-medium">{user.name}</div>
+                <div className="text-xs text-white/70 capitalize">{user.role}</div>
+              </div>
+              <FaCog size={20} className="text-white" />
+            </button>
+            
+            {/* Same dropdown menu as desktop */}
+            {isUserMenuOpen && (
+              <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                <div className="px-4 py-3 border-b border-gray-100">
+                  <div className="text-sm font-medium text-gray-800">{user.name}</div>
+                  <div className="text-xs text-gray-500">{user.email}</div>
+                </div>
+                
+                {/* Bruger Platformen Section */}
+                <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Bruger platformen
+                </div>
+                <Link
+                  to="/profile"
+                  onClick={() => setIsUserMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  Min profil
+                </Link>
+                
+                {/* Admin Section */}
+                {user.role === 'admin' && (
+                  <>
+                    <div className="px-4 py-2 mt-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-t border-gray-100">
+                      Admin
+                    </div>
+                    <Link
+                      to="/members"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                      </svg>
+                      Medlemmer
+                    </Link>
+                    <Link
+                      to="/admin/sandbox"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      <FaSearch className="w-4 h-4" />
+                      Sandkasse
+                    </Link>
+                    <Link
+                      to="/admin/ingredients"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      <FaSeedling className="w-4 h-4" />
+                      Ingredienser
+                    </Link>
+                    <Link
+                      to="/admin/links"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      <FaLink className="w-4 h-4" />
+                      Leverandør Links
+                    </Link>
+                    <Link
+                      to="/admin"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      <FaCog className="w-4 h-4" />
+                      Admin Panel
+                    </Link>
+                  </>
+                )}
+                
+                <Link
+                  to="/settings"
+                  onClick={() => setIsUserMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 border-t border-gray-100 mt-2"
+                >
+                  <FaCog className="w-4 h-4" />
+                  Indstillinger
+                </Link>
+                <button
+                  onClick={async () => {
+                    setIsUserMenuOpen(false);
+                    await logout();
+                    window.location.href = '/login';
+                  }}
+                  className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 border-t border-gray-100"
+                >
+                  <FaSignOutAlt className="w-4 h-4" />
+                  Log ud
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <button
+            onClick={() => navigate("/settings")}
+            className="p-2 text-white hover:bg-white/10 rounded-lg"
+            data-testid="mobile-menu-button"
+          >
+            <FaCog size={24} />
+          </button>
+        )}
       </div>
     </nav>
   );
