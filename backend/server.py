@@ -1241,13 +1241,13 @@ async def get_recipes(
     # Get system recipes (always published)
     system_recipes = await db.recipes.find({**query, "author": "system"}, {"_id": 0}).to_list(1000)
     
-    # Get published user recipes (is_published = true)
+    # Get published user recipes (is_published = true AND approved)
     published_user_recipes = await db.user_recipes.find(
-        {**query, "is_published": True},
+        {**query, "is_published": True, "approval_status": "approved"},
         {"_id": 0}
     ).to_list(1000)
     
-    # Get current user's private recipes if logged in
+    # Get current user's private recipes if logged in (include pending/rejected for creator)
     private_user_recipes = []
     if session_id:
         private_user_recipes = await db.user_recipes.find(
