@@ -390,16 +390,19 @@ const RecipeDetailPage = ({ sessionId }) => {
 
             {/* Action Buttons */}
             <div className="flex gap-2 mt-6">
-              <Link
-                to={`/edit-recipe/${recipe.id}`}
-                data-testid="edit-recipe-button"
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
-                <span className="text-sm font-medium">Rediger</span>
-              </Link>
+              {/* Rediger - Only for recipe author */}
+              {isAuthor() && (
+                <Link
+                  to={`/edit-recipe/${recipe.id}`}
+                  data-testid="edit-recipe-button"
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  <span className="text-sm font-medium">Rediger</span>
+                </Link>
+              )}
               <button
                 onClick={toggleFavorite}
                 data-testid="toggle-favorite-button"
@@ -414,7 +417,8 @@ const RecipeDetailPage = ({ sessionId }) => {
                   {recipe.is_favorite ? 'Fjern favorit' : 'Tilføj favorit'}
                 </span>
               </button>
-              {isAdmin() && (
+              {/* Slet - Only for admin and recipe author */}
+              {(isAdmin() || isAuthor()) && (
                 <button
                   onClick={deleteRecipe}
                   data-testid="delete-recipe-button"
