@@ -1000,9 +1000,12 @@ async def get_all_members(request: Request):
     # Get all users
     users = await db.users.find({}).to_list(length=None)
     
-    # Remove password hashes
+    # Remove password hashes and add id field
     for u in users:
         u.pop("hashed_password", None)
+        # Use email as id if id doesn't exist
+        if "id" not in u:
+            u["id"] = u.get("email")
         u["_id"] = str(u.get("_id", ""))
     
     return users
