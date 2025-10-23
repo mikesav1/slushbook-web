@@ -111,127 +111,150 @@ const AdminSandboxPage = ({ sessionId }) => {
     );
   }
 
+  const pendingCount = allRecipes.filter(r => r.approval_status === 'pending').length;
+  const approvedCount = allRecipes.filter(r => r.approval_status === 'approved').length;
+  const rejectedCount = allRecipes.filter(r => r.approval_status === 'rejected').length;
+
   return (
     <div className="container mx-auto p-6 max-w-7xl">
       <div className="mb-6">
-        <h1 className="text-4xl font-bold mb-2">Sandkasse - Opskriftsgodkendelse</h1>
+        <h1 className="text-4xl font-bold mb-2">Opskrifts-Sandkasse</h1>
         <p className="text-gray-600">
-          {pendingRecipes.length} opskrifter venter på godkendelse
+          Godkend eller afvis opskrifter fra Pro-brugere
         </p>
       </div>
 
-      {pendingRecipes.length === 0 ? (
+      {/* Tabs */}
+      <div className="flex gap-2 mb-6 border-b border-gray-200">
+        <button
+          onClick={() => setActiveTab('all')}
+          className={`px-6 py-3 font-semibold transition-colors ${
+            activeTab === 'all'
+              ? 'text-blue-600 border-b-2 border-blue-600'
+              : 'text-gray-600 hover:text-gray-800'
+          }`}
+        >
+          Alle ({allRecipes.length})
+        </button>
+        <button
+          onClick={() => setActiveTab('pending')}
+          className={`px-6 py-3 font-semibold transition-colors ${
+            activeTab === 'pending'
+              ? 'text-blue-600 border-b-2 border-blue-600'
+              : 'text-gray-600 hover:text-gray-800'
+          }`}
+        >
+          Afventer ({pendingCount})
+        </button>
+        <button
+          onClick={() => setActiveTab('approved')}
+          className={`px-6 py-3 font-semibold transition-colors ${
+            activeTab === 'approved'
+              ? 'text-blue-600 border-b-2 border-blue-600'
+              : 'text-gray-600 hover:text-gray-800'
+          }`}
+        >
+          Godkendte ({approvedCount})
+        </button>
+        <button
+          onClick={() => setActiveTab('rejected')}
+          className={`px-6 py-3 font-semibold transition-colors ${
+            activeTab === 'rejected'
+              ? 'text-blue-600 border-b-2 border-blue-600'
+              : 'text-gray-600 hover:text-gray-800'
+          }`}
+        >
+          Afviste ({rejectedCount})
+        </button>
+      </div>
+
+      {filteredRecipes.length === 0 ? (
         <div className="bg-white rounded-2xl p-12 text-center shadow-sm">
-          <div className="text-6xl mb-4">✅</div>
-          <h3 className="text-xl font-bold mb-2">Ingen ventende opskrifter</h3>
-          <p className="text-gray-600">Alle opskrifter er behandlet</p>
+          <div className="text-6xl mb-4">📭</div>
+          <h3 className="text-xl font-bold mb-2">Ingen opskrifter i denne kategori</h3>
+          <p className="text-gray-600">
+            {activeTab === 'pending' && 'Alle opskrifter er behandlet'}
+            {activeTab === 'approved' && 'Ingen godkendte opskrifter endnu'}
+            {activeTab === 'rejected' && 'Ingen afviste opskrifter'}
+            {activeTab === 'all' && 'Ingen opskrifter tilgængelige'}
+          </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Recipe List */}
-          <div className="space-y-4">
-            {pendingRecipes.map((recipe) => (
-              <div
-                key={recipe.id}
-                className={`bg-white rounded-2xl p-6 shadow-sm border-2 cursor-pointer transition-all ${
-                  selectedRecipe?.id === recipe.id
-                    ? 'border-blue-500 shadow-lg'
-                    : 'border-gray-100 hover:border-blue-200'
-                }`}
-                onClick={() => setSelectedRecipe(recipe)}
-              >
-                <div className="flex items-start gap-4">
-                  <img
-                    src={recipe.image_url}
-                    alt={recipe.name}
-                    className="w-20 h-20 rounded-lg object-cover"
-                  />
-                  <div className="flex-1">
-                    <h3 className="font-bold text-lg">{recipe.name}</h3>
-                    <p className="text-sm text-gray-600 mb-2">{recipe.description}</p>
-                    <div className="flex items-center gap-4 text-xs text-gray-500">
-                      <span>👤 {recipe.author_name}</span>
-                      <span>📅 {new Date(recipe.created_at).toLocaleDateString('da-DK')}</span>
-                      <span>🥤 {recipe.ingredients?.length || 0} ingredienser</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Recipe Details */}
-          {selectedRecipe && (
-            <div className="bg-white rounded-2xl p-6 shadow-sm sticky top-6">
-              <h2 className="text-2xl font-bold mb-4">{selectedRecipe.name}</h2>
-              
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {filteredRecipes.map((recipe) => (
+            <div
+              key={recipe.id}
+              className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all"
+            >
               <img
-                src={selectedRecipe.image_url}
-                alt={selectedRecipe.name}
-                className="w-full h-64 object-cover rounded-lg mb-4"
+                src={recipe.image_url}
+                alt={recipe.name}
+                className="w-full h-48 object-cover"
               />
+              <div className="p-6">
+                <h3 className="font-bold text-xl mb-2">{recipe.name}</h3>
+                <p className="text-sm text-gray-600 mb-4 line-clamp-2">{recipe.description}</p>
+                
+                <div className="flex items-center gap-4 text-xs text-gray-500 mb-4">
+                  <span>👤 {recipe.author_name}</span>
+                  <span>📅 {new Date(recipe.created_at).toLocaleDateString('da-DK')}</span>
+                  <span>🥤 {recipe.ingredients?.length || 0} ingredienser</span>
+                </div>
 
-              <div className="mb-4">
-                <h3 className="font-semibold mb-2">Beskrivelse:</h3>
-                <p className="text-gray-700">{selectedRecipe.description}</p>
-              </div>
-
-              <div className="mb-4">
-                <h3 className="font-semibold mb-2">Ingredienser:</h3>
-                <ul className="space-y-1">
-                  {selectedRecipe.ingredients?.map((ing, idx) => (
-                    <li key={idx} className="text-sm text-gray-700">
-                      • {ing.quantity} {ing.unit} {ing.name}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="mb-6">
-                <Button
-                  onClick={() => findSimilar(selectedRecipe.id)}
-                  disabled={loadingSimilar}
-                  variant="outline"
-                  className="w-full mb-2"
-                >
-                  <FaSearch className="mr-2" />
-                  {loadingSimilar ? 'Søger...' : 'Find lignende opskrifter'}
-                </Button>
-
-                {similarRecipes.length > 0 && (
-                  <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <h4 className="font-semibold mb-2 text-yellow-900">
-                      ⚠️ {similarRecipes.length} lignende opskrifter fundet:
-                    </h4>
-                    <ul className="space-y-1 text-sm">
-                      {similarRecipes.map((sim, idx) => (
-                        <li key={idx} className="text-yellow-800">
-                          • <strong>{sim.name}</strong> - {sim.author_name} ({sim.match_reason})
-                        </li>
-                      ))}
-                    </ul>
+                {recipe.approval_status === 'rejected' && recipe.rejection_reason && (
+                  <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-xs text-red-800">
+                      <strong>Afvist:</strong> {recipe.rejection_reason}
+                    </p>
                   </div>
                 )}
-              </div>
 
-              <div className="flex gap-3">
-                <Button
-                  onClick={() => approveRecipe(selectedRecipe.id)}
-                  className="flex-1 bg-green-500 hover:bg-green-600"
-                >
-                  <FaCheck className="mr-2" />
-                  Godkend
-                </Button>
-                <Button
-                  onClick={() => setShowRejectDialog(true)}
-                  className="flex-1 bg-red-500 hover:bg-red-600"
-                >
-                  <FaTimes className="mr-2" />
-                  Afvis
-                </Button>
+                <div className="flex flex-col gap-2">
+                  <Button
+                    onClick={() => {
+                      setSelectedRecipe(recipe);
+                      setShowPreviewDialog(true);
+                    }}
+                    className="w-full bg-blue-500 hover:bg-blue-600"
+                  >
+                    <FaEye className="mr-2" />
+                    Preview
+                  </Button>
+                  
+                  <Button
+                    onClick={() => findSimilar(recipe.id)}
+                    disabled={loadingSimilar[recipe.id]}
+                    className="w-full bg-purple-500 hover:bg-purple-600"
+                  >
+                    <FaSearch className="mr-2" />
+                    {loadingSimilar[recipe.id] ? 'Søger...' : 'Tjek for Dublet'}
+                  </Button>
+
+                  {recipe.approval_status === 'pending' && (
+                    <div className="flex gap-2 mt-2">
+                      <Button
+                        onClick={() => approveRecipe(recipe.id)}
+                        className="flex-1 bg-green-500 hover:bg-green-600 text-sm"
+                      >
+                        <FaCheck className="mr-1" />
+                        Godkend
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          setSelectedRecipe(recipe);
+                          setShowRejectDialog(true);
+                        }}
+                        className="flex-1 bg-red-500 hover:bg-red-600 text-sm"
+                      >
+                        <FaTimes className="mr-1" />
+                        Afvis
+                      </Button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          )}
+          ))}
         </div>
       )}
 
