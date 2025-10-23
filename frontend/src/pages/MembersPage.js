@@ -97,22 +97,42 @@ const MembersPage = () => {
     }
   };
 
-  const handleDeleteMember = async (userId, userName) => {
-    if (!window.confirm(`Er du sikker på at du vil slette brugeren "${userName}"? Dette kan ikke fortrydes.`)) {
+  const handleDeleteMember = async (memberId, memberName) => {
+    if (!window.confirm(`Er du sikker på at du vil slette ${memberName}?`)) {
       return;
     }
-
+    
     try {
-      await axios.delete(`${API}/admin/members/${userId}`, {
+      await axios.delete(`${API}/admin/members/${memberId}`, {
         withCredentials: true
       });
-      
-      toast.success('Medlem slettet!');
-      fetchMembers(); // Refresh list
+      toast.success('Medlem slettet');
+      fetchMembers();
     } catch (error) {
       console.error('Error deleting member:', error);
-      toast.error(error.response?.data?.detail || 'Kunne ikke slette medlem');
+      toast.error('Kunne ikke slette medlem');
     }
+  };
+
+  const fetchUserDetails = async (userId) => {
+    try {
+      setLoadingDetails(true);
+      const response = await axios.get(`${API}/admin/members/${userId}/details`, {
+        withCredentials: true
+      });
+      setUserDetails(response.data);
+    } catch (error) {
+      console.error('Error fetching user details:', error);
+      toast.error('Kunne ikke hente bruger detaljer');
+    } finally {
+      setLoadingDetails(false);
+    }
+  };
+
+  const openDetailsModal = (member) => {
+    setSelectedUser(member);
+    setIsDetailsModalOpen(true);
+    fetchUserDetails(member.id || member.email);
   };
 
   const filteredMembers = members.filter(member => {
