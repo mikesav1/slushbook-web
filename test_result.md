@@ -102,9 +102,21 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Implement CSV recipe import feature for admin users with preview functionality"
+user_problem_statement: "Fix 'Add to list' functionality bug where ingredients with missing or empty category_key cause the shopping list addition to fail"
 
 backend:
+  - task: "Fix category_key handling in CSV import and shopping list"
+    implemented: false
+    working: "NA"
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Bug identified: CSV import sets category_key to empty string (line 2017 in server.py), causing 'Add to list' functionality to fail. Need to fix CSV import to generate proper category_key from ingredient names, and ensure existing recipes can handle this gracefully."
+
   - task: "CSV Recipe Import Endpoints"
     implemented: true
     working: true
