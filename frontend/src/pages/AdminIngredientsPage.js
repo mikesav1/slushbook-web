@@ -25,7 +25,9 @@ const AdminIngredientsPage = () => {
   const fetchIngredients = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API}/admin/ingredients`);
+      const response = await axios.get(`${API}/admin/ingredients`, {
+        withCredentials: true
+      });
       setIngredients(response.data);
     } catch (error) {
       console.error('Error fetching ingredients:', error);
@@ -48,11 +50,15 @@ const AdminIngredientsPage = () => {
       
       if (editingIngredient) {
         // Update
-        await axios.put(`${API}/admin/ingredients/${editingIngredient.id}`, formData);
+        await axios.put(`${API}/admin/ingredients/${editingIngredient.id}`, formData, {
+          withCredentials: true
+        });
         toast.success('Ingrediens opdateret!');
       } else {
         // Create
-        await axios.post(`${API}/admin/ingredients`, formData);
+        await axios.post(`${API}/admin/ingredients`, formData, {
+          withCredentials: true
+        });
         toast.success('Ingrediens oprettet!');
       }
       
@@ -74,7 +80,9 @@ const AdminIngredientsPage = () => {
     }
 
     try {
-      await axios.delete(`${API}/admin/ingredients/${id}`);
+      await axios.delete(`${API}/admin/ingredients/${id}`, {
+        withCredentials: true
+      });
       toast.success('Ingrediens slettet!');
       fetchIngredients();
     } catch (error) {
