@@ -17,6 +17,7 @@ import SettingsPage from "./pages/SettingsPage";
 import AddRecipePage from "./pages/AddRecipePage";
 import EditRecipePage from "./pages/EditRecipePage";
 import AdminPage from "./pages/AdminPage";
+import AdminSandboxPage from "./pages/AdminSandboxPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
