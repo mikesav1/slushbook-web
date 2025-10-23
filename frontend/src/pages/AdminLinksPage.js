@@ -328,6 +328,74 @@ const AdminLinksPage = () => {
     setShowDeleteConfirm(true);
   };
 
+  const exportCSV = async () => {
+    try {
+      const response = await axios.get(
+        `${REDIRECT_API}/admin/export-csv`,
+        { 
+          headers: { Authorization: `Bearer ${ADMIN_TOKEN}` },
+          responseType: 'blob'
+        }
+      );
+      
+      // Create download link
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'slushice-links.csv');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      
+      toast.success('CSV eksporteret!');
+    } catch (error) {
+      console.error('Error exporting CSV:', error);
+      toast.error('Kunne ikke eksportere CSV');
+    }
+  };
+
+  const importCSV = async () => {
+    if (!importFile) {
+      toast.error('Vælg en fil først');
+      return;
+    }
+    
+    try {
+      setImporting(true);
+      const formData = new FormData();
+      formData.append('file', importFile);
+      
+      const response = await axios.post(
+        `${REDIRECT_API}/admin/import-csv`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${ADMIN_TOKEN}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      );
+      
+      setImportResult(response.data);
+      toast.success(`Importeret! ${response.data.mappings} mappings, ${response.data.options} options`);
+      
+      // Refresh mappings
+      fetchMappings();
+      
+      // Keep dialog open to show results
+      setImportFile(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    } catch (error) {
+      console.error('Error importing CSV:', error);
+      toast.error(error.response?.data?.error || 'Kunne ikke importere CSV');
+    } finally {
+      setImporting(false);
+    }
+  };
+
   return (
     <div className="space-y-6 fade-in">
       {/* Header */}
