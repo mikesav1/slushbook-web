@@ -404,6 +404,26 @@ const AdminLinksPage = () => {
           <h1 className="text-4xl font-bold mb-2">Admin: Links & Leverandører</h1>
           <p className="text-gray-600">Administrer produkt-links og leverandører</p>
         </div>
+        <div className="flex gap-2">
+          <Button
+            onClick={exportCSV}
+            variant="outline"
+            className="border-green-500 text-green-600 hover:bg-green-50"
+          >
+            <FaDownload className="mr-2" />
+            Eksporter CSV
+          </Button>
+          <Button
+            onClick={() => {
+              setShowImportDialog(true);
+              setImportResult(null);
+            }}
+            className="bg-gradient-to-r from-purple-500 to-pink-500"
+          >
+            <FaUpload className="mr-2" />
+            Importer CSV
+          </Button>
+        </div>
       </div>
 
       {/* Tabs */}
