@@ -70,6 +70,32 @@ router.get('/mapping/:id', requireAuth, (req: Request, res: Response) => {
   }
 });
 
+// POST /admin/option - Create new option
+router.post('/option', requireAuth, (req: Request, res: Response) => {
+  try {
+    const { option } = req.body;
+    
+    if (!option || !option.id || !option.mappingId || !option.supplier || !option.title || !option.url) {
+      return res.status(400).json({ error: 'Missing required fields: id, mappingId, supplier, title, url' });
+    }
+    
+    const newOption = dbService.createOption({
+      id: option.id,
+      mappingId: option.mappingId,
+      supplier: option.supplier,
+      title: option.title,
+      url: option.url,
+      status: option.status || 'active',
+      priceLastSeen: option.priceLastSeen || null,
+      updatedAt: new Date().toISOString()
+    });
+    
+    res.json(newOption);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // PATCH /admin/option/:id
 router.patch('/option/:id', requireAuth, (req: Request, res: Response) => {
   try {
