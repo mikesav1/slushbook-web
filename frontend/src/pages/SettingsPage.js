@@ -373,72 +373,89 @@ const SettingsPage = ({ sessionId }) => {
         </p>
       </div>
 
-      {/* Admin Section */}
-      {isAdmin() && (
-        <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-6 shadow-sm border-2 border-red-200">
-          <h2 className="text-2xl font-bold mb-4 text-red-700">⚙️ Administrator</h2>
-          <div className="space-y-3">
-            <Link
-              to="/admin/sandbox"
-              className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-purple-100"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-bold text-gray-800">🔍 Sandkasse - Godkend Opskrifter</h3>
-                  <p className="text-sm text-gray-600">Godkend eller afvis brugeropskrifter</p>
-                </div>
-                <span className="text-purple-600">→</span>
+      {/* Administrator Section - Only for admin */}
+      {user && user.role === 'admin' && (
+        <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-2xl p-6 shadow-lg">
+          <h2 className="text-2xl font-bold mb-1">Administrator</h2>
+          <p className="text-white/90 mb-4">Admin værktøjer og indstillinger</p>
+        </div>
+      )}
+      
+      {user && user.role === 'admin' && (
+        <div className="space-y-3">
+          <Link
+            to="/admin/sandbox"
+            className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-purple-100"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-bold text-gray-800">🔍 Sandkasse - Godkend Opskrifter</h3>
+                <p className="text-sm text-gray-600">Godkend eller afvis brugeropskrifter</p>
               </div>
-            </Link>
-            <Link
-              to="/admin/ingredients"
-              className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-green-100"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-bold text-gray-800">🥤 Ingredienser</h3>
-                  <p className="text-sm text-gray-600">Administrer master ingrediens-listen</p>
-                </div>
-                <span className="text-green-600">→</span>
+              <span className="text-purple-600">→</span>
+            </div>
+          </Link>
+          <Link
+            to="/admin/ingredients"
+            className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-green-100"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-bold text-gray-800">🥤 Ingredienser</h3>
+                <p className="text-sm text-gray-600">Administrer master ingrediens-listen</p>
               </div>
-            </Link>
-            <Link
-              to="/admin"
-              className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-red-100"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-bold text-gray-800">Admin Panel</h3>
-                  <p className="text-sm text-gray-600">CSV import og vendor management</p>
-                </div>
-                <span className="text-red-600">→</span>
+              <span className="text-green-600">→</span>
+            </div>
+          </Link>
+          <Link
+            to="/admin"
+            className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-red-100"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-bold text-gray-800">Admin Panel</h3>
+                <p className="text-sm text-gray-600">CSV import og vendor management</p>
               </div>
-            </Link>
-            <Link
-              to="/members"
-              className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-red-100"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-bold text-gray-800">Medlemmer</h3>
-                  <p className="text-sm text-gray-600">Administrer brugere og adgang</p>
-                </div>
-                <span className="text-red-600">→</span>
+              <span className="text-red-600">→</span>
+            </div>
+          </Link>
+          <Link
+            to="/admin/links"
+            className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-red-100"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-bold text-gray-800">Produkt-Links</h3>
+                <p className="text-sm text-gray-600">Administrer links til leverandører</p>
               </div>
-            </Link>
-            <Link
-              to="/admin/links"
-              className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-red-100"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-bold text-gray-800">Produkt-Links</h3>
-                  <p className="text-sm text-gray-600">Administrer links til leverandører</p>
-                </div>
-                <span className="text-red-600">→</span>
+              <span className="text-red-600">→</span>
+            </div>
+          </Link>
+        </div>
+      )}
+
+      {/* Bruger Platformen Section - Only for admin */}
+      {user && user.role === 'admin' && (
+        <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-2xl p-6 shadow-lg mt-6">
+          <h2 className="text-2xl font-bold mb-1">Bruger Platformen</h2>
+          <p className="text-white/90 mb-4">Se alle brugere og deres aktivitet</p>
+        </div>
+      )}
+      
+      {user && user.role === 'admin' && (
+        <div className="space-y-3">
+          <Link
+            to="/members"
+            className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-blue-100"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-bold text-gray-800">👥 Medlemmer</h3>
+                <p className="text-sm text-gray-600">Se alle brugere og deres aktivitet</p>
               </div>
-            </Link>
-          </div>
+              <span className="text-blue-600">→</span>
+            </div>
+          </Link>
         </div>
       )}
     </div>
