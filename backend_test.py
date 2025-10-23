@@ -557,8 +557,9 @@ class BackendTester:
         headers = {"Authorization": "Bearer dev-token-change-in-production"}
         
         try:
+            # Use test-produkt-123 which should exist from our CSV import test
             response = self.session.get(
-                f"{BASE_URL}/redirect-proxy/admin/mapping/sodastream-pepsi-440ml",
+                f"{BASE_URL}/redirect-proxy/admin/mapping/test-produkt-123",
                 headers=headers
             )
             
