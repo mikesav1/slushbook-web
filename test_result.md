@@ -174,6 +174,18 @@ backend:
         agent: "testing"
         comment: "Comprehensive redirect service integration testing completed successfully. All test cases passed: ✅ Direct Health Check (localhost:3001/health returns {ok: true, db: true}) ✅ Admin Get Mapping via Proxy (GET /api/redirect-proxy/admin/mapping/sodastream-pepsi-440ml with Bearer token returns mapping with Power.dk options) ✅ Public Redirect via Proxy (GET /api/redirect-proxy/go/sodastream-pepsi-440ml returns 302 redirect to Power.dk with UTM parameters) ✅ Admin Link Health Check via Proxy (POST /api/redirect-proxy/admin/link-health with Bearer token and URL array returns health status) ✅ Non-Existent Mapping Handling (GET /api/redirect-proxy/go/non-existent-product returns 302 fallback redirect to Power.dk category page). All 3 seeded product mappings verified: sodastream-pepsi-440ml, sodastream-7up-free-440ml, and power-flavours-category. Proxy endpoint correctly forwards requests to Node.js redirect service on localhost:3001, handles authentication with Bearer tokens, and manages CORS properly. Integration fully functional."
 
+  - task: "CSV Import Supplier Links via Backend Proxy"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Comprehensive CSV import supplier links testing completed successfully. All test scenarios passed: ✅ Valid CSV Import (POST /api/redirect-proxy/admin/import-csv with multipart/form-data and Bearer auth creates 2 mappings, 2 options, 0 errors) ✅ CSV Format Verification (product_id,product_name,keywords,supplier,url,price,active format correctly parsed) ✅ Multipart/Form-Data Handling (backend proxy correctly forwards file uploads to Node.js service on localhost:3001) ✅ Authorization Verification (requests without Bearer token correctly rejected with 401/403) ✅ Error Handling (invalid CSV format handled gracefully with descriptive errors) ✅ Duplicate Prevention (duplicate imports correctly report 0 new mappings) ✅ Import Verification (GET /api/redirect-proxy/admin/mappings confirms imported products exist with correct structure) ✅ Backend Proxy Integration (lines 2356-2377 in server.py handle multipart/form-data specially as documented). CSV import functionality for supplier links is fully functional and ready for production use."
+
 frontend:
   - task: "Fix 'Add to list' functionality for ingredients with missing category_key"
     implemented: true
