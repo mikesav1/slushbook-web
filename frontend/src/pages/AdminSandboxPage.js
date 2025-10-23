@@ -52,8 +52,7 @@ const AdminSandboxPage = ({ sessionId }) => {
     try {
       await axios.post(`${API}/admin/approve-recipe/${recipeId}`);
       toast.success('Opskrift godkendt!');
-      fetchPendingRecipes();
-      setSelectedRecipe(null);
+      fetchAllRecipes();
     } catch (error) {
       console.error('Error approving recipe:', error);
       toast.error('Kunne ikke godkende opskrift');
@@ -72,7 +71,7 @@ const AdminSandboxPage = ({ sessionId }) => {
         { reason: rejectReason }
       );
       toast.success('Opskrift afvist');
-      fetchPendingRecipes();
+      fetchAllRecipes();
       setSelectedRecipe(null);
       setShowRejectDialog(false);
       setRejectReason('');
@@ -86,14 +85,21 @@ const AdminSandboxPage = ({ sessionId }) => {
 
   const findSimilar = async (recipeId) => {
     try {
-      setLoadingSimilar(true);
+      setLoadingSimilar(prev => ({ ...prev, [recipeId]: true }));
       const response = await axios.get(`${API}/admin/find-similar/${recipeId}`);
       setSimilarRecipes(response.data);
+      setSelectedRecipe(allRecipes.find(r => r.id === recipeId));
+      
+      if (response.data.length === 0) {
+        toast.info('Ingen lignende opskrifter fundet');
+      } else {
+        toast.success(`Fandt ${response.data.length} lignende opskrifter`);
+      }
     } catch (error) {
       console.error('Error finding similar recipes:', error);
       toast.error('Kunne ikke finde lignende opskrifter');
     } finally {
-      setLoadingSimilar(false);
+      setLoadingSimilar(prev => ({ ...prev, [recipeId]: false }));
     }
   };
 
