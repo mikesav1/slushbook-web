@@ -43,11 +43,24 @@ app.get('/health', async (req, res) => {
 app.use('/admin', adminLimiter, adminRoutes);
 app.use('/go', goRoutes);
 
-// Only start server if not in test mode
-if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT, () => {
-    console.log(`Redirect service running on port ${PORT}`);
-  });
-}
+// Initialize database and start server
+const startServer = async () => {
+  try {
+    await initDb();
+    console.log('MongoDB connected successfully');
+    
+    // Only start server if not in test mode
+    if (process.env.NODE_ENV !== 'test') {
+      app.listen(PORT, () => {
+        console.log(`Redirect service running on port ${PORT}`);
+      });
+    }
+  } catch (error) {
+    console.error('Failed to connect to MongoDB:', error);
+    process.exit(1);
+  }
+};
+
+startServer();
 
 export default app;
