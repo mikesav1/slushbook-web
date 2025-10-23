@@ -7,7 +7,7 @@ const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 // POST /admin/mapping
-router.post('/mapping', requireAuth, (req: Request, res: Response) => {
+router.post('/mapping', requireAuth, async (req: Request, res: Response) => {
   try {
     const { mapping, options } = req.body;
     
@@ -42,7 +42,7 @@ router.post('/mapping', requireAuth, (req: Request, res: Response) => {
 });
 
 // GET /admin/mappings - Get all mappings (plural endpoint)
-router.get('/mappings', requireAuth, (req: Request, res: Response) => {
+router.get('/mappings', requireAuth, async (req: Request, res: Response) => {
   try {
     const mappings = dbService.getAllMappings();
     res.json(mappings);
@@ -52,7 +52,7 @@ router.get('/mappings', requireAuth, (req: Request, res: Response) => {
 });
 
 // GET /admin/mapping/:id
-router.get('/mapping/:id', requireAuth, (req: Request, res: Response) => {
+router.get('/mapping/:id', requireAuth, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     
@@ -73,7 +73,7 @@ router.get('/mapping/:id', requireAuth, (req: Request, res: Response) => {
 });
 
 // POST /admin/option - Create new option
-router.post('/option', requireAuth, (req: Request, res: Response) => {
+router.post('/option', requireAuth, async (req: Request, res: Response) => {
   try {
     const { option } = req.body;
     
@@ -99,7 +99,7 @@ router.post('/option', requireAuth, (req: Request, res: Response) => {
 });
 
 // PATCH /admin/option/:id
-router.patch('/option/:id', requireAuth, (req: Request, res: Response) => {
+router.patch('/option/:id', requireAuth, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { status, url, priceLastSeen } = req.body;
@@ -122,7 +122,7 @@ router.patch('/option/:id', requireAuth, (req: Request, res: Response) => {
 });
 
 // DELETE /admin/mapping/:id - Delete a mapping and all its options
-router.delete('/mapping/:id', requireAuth, (req: Request, res: Response) => {
+router.delete('/mapping/:id', requireAuth, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     
@@ -146,7 +146,7 @@ router.delete('/mapping/:id', requireAuth, (req: Request, res: Response) => {
 });
 
 // DELETE /admin/option/:id - Delete an option
-router.delete('/option/:id', requireAuth, (req: Request, res: Response) => {
+router.delete('/option/:id', requireAuth, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     
@@ -218,7 +218,7 @@ router.get('/suppliers', (req: Request, res: Response) => {
 });
 
 // POST /admin/suppliers - Create new supplier
-router.post('/suppliers', requireAuth, (req: Request, res: Response) => {
+router.post('/suppliers', requireAuth, async (req: Request, res: Response) => {
   try {
     const { name, url } = req.body;
     
@@ -244,7 +244,7 @@ router.post('/suppliers', requireAuth, (req: Request, res: Response) => {
 });
 
 // PATCH /admin/suppliers/:id - Update supplier
-router.patch('/suppliers/:id', requireAuth, (req: Request, res: Response) => {
+router.patch('/suppliers/:id', requireAuth, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { name, url, active } = req.body;
@@ -267,7 +267,7 @@ router.patch('/suppliers/:id', requireAuth, (req: Request, res: Response) => {
 });
 
 // DELETE /admin/suppliers/:id - Delete supplier
-router.delete('/suppliers/:id', requireAuth, (req: Request, res: Response) => {
+router.delete('/suppliers/:id', requireAuth, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     
@@ -286,7 +286,7 @@ router.delete('/suppliers/:id', requireAuth, (req: Request, res: Response) => {
 // ===== CSV IMPORT/EXPORT =====
 
 // GET /admin/export-csv - Export all mappings and options to CSV
-router.get('/export-csv', requireAuth, (req: Request, res: Response) => {
+router.get('/export-csv', requireAuth, async (req: Request, res: Response) => {
   try {
     const mappings = dbService.getAllMappings();
     const csvRows = ['produkt_navn,keywords,ean,leverandør,url,title'];
