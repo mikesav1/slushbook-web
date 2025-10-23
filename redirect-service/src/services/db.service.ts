@@ -117,6 +117,28 @@ export const upsertOption = (option: Omit<Option, 'updatedAt'> & { updatedAt?: s
   return { ...option, updatedAt };
 };
 
+export const createOption = (option: Omit<Option, 'updatedAt'> & { updatedAt?: string }): Option => {
+  const updatedAt = option.updatedAt || new Date().toISOString();
+  
+  const stmt = db.prepare(`
+    INSERT INTO option (id, mappingId, supplier, title, url, status, priceLastSeen, updatedAt)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  `);
+  
+  stmt.run(
+    option.id,
+    option.mappingId,
+    option.supplier,
+    option.title,
+    option.url,
+    option.status,
+    option.priceLastSeen || null,
+    updatedAt
+  );
+  
+  return { ...option, updatedAt };
+};
+
 export const getOptions = (mappingId: string): Option[] => {
   const stmt = db.prepare('SELECT * FROM option WHERE mappingId = ?');
   return stmt.all(mappingId) as Option[];
