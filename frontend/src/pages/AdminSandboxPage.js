@@ -258,6 +258,111 @@ const AdminSandboxPage = ({ sessionId }) => {
         </div>
       )}
 
+      {/* Preview Dialog */}
+      {showPreviewDialog && selectedRecipe && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
+          <div className="bg-white rounded-2xl p-6 max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-start mb-4">
+              <h2 className="text-2xl font-bold">{selectedRecipe.name}</h2>
+              <button
+                onClick={() => {
+                  setShowPreviewDialog(false);
+                  setSelectedRecipe(null);
+                }}
+                className="text-gray-500 hover:text-gray-700 text-2xl"
+              >
+                ×
+              </button>
+            </div>
+            
+            <img
+              src={selectedRecipe.image_url}
+              alt={selectedRecipe.name}
+              className="w-full h-64 object-cover rounded-lg mb-4"
+            />
+
+            <div className="mb-4">
+              <h3 className="font-semibold mb-2">Beskrivelse:</h3>
+              <p className="text-gray-700">{selectedRecipe.description}</p>
+            </div>
+
+            <div className="mb-4">
+              <h3 className="font-semibold mb-2">Ingredienser:</h3>
+              <ul className="space-y-1">
+                {selectedRecipe.ingredients?.map((ing, idx) => (
+                  <li key={idx} className="text-sm text-gray-700">
+                    • {ing.quantity} {ing.unit} {ing.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mb-4">
+              <h3 className="font-semibold mb-2">Fremgangsmåde:</h3>
+              <ol className="space-y-2">
+                {selectedRecipe.steps?.map((step, idx) => (
+                  <li key={idx} className="text-sm text-gray-700">
+                    {idx + 1}. {step}
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <Button
+              onClick={() => navigate(`/recipes/${selectedRecipe.id}`)}
+              className="w-full bg-blue-500 hover:bg-blue-600"
+            >
+              Åbn fuld opskrift
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Similar Recipes Dialog */}
+      {similarRecipes.length > 0 && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <h2 className="text-2xl font-bold text-yellow-900">⚠️ Lignende opskrifter fundet</h2>
+                <p className="text-sm text-gray-600">Tjek om opskriften allerede findes</p>
+              </div>
+              <button
+                onClick={() => {
+                  setSimilarRecipes([]);
+                  setSelectedRecipe(null);
+                }}
+                className="text-gray-500 hover:text-gray-700 text-2xl"
+              >
+                ×
+              </button>
+            </div>
+            
+            <div className="space-y-3">
+              {similarRecipes.map((sim, idx) => (
+                <div key={idx} className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <h4 className="font-semibold text-yellow-900">{sim.name}</h4>
+                  <p className="text-sm text-yellow-800">
+                    Forfatter: {sim.author_name}
+                  </p>
+                  <p className="text-xs text-yellow-700 mt-1">
+                    Match grund: {sim.match_reason}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <Button
+              onClick={() => setSimilarRecipes([])}
+              className="w-full mt-4"
+              variant="outline"
+            >
+              Luk
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Reject Dialog */}
       {showRejectDialog && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
