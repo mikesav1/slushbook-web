@@ -64,14 +64,14 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* SLUSHBOOK Text - Visible on mobile, hidden on desktop */}
-          <Link to="/" className="flex-shrink-0 md:hidden">
+          <Link to="/" className="flex-shrink-0 lg:hidden">
             <span className="text-2xl font-bold text-white" style={{fontFamily: 'Fredoka'}}>
               SLUSHBOOK
             </span>
           </Link>
           
           {/* Desktop Navigation - Right side only */}
-          <div className="hidden md:flex items-center gap-4 ml-auto">
+          <div className="hidden lg:flex items-center gap-4 ml-auto">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
