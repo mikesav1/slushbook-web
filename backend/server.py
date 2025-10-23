@@ -2333,26 +2333,52 @@ REDIRECT_SERVICE_URL = "http://localhost:3001"
 async def redirect_proxy(path: str, request: Request):
     """Proxy requests to redirect service to avoid CORS issues"""
     try:
-        async with httpx.AsyncClient() as client:
-            # Get request body if present
-            body = None
-            if request.method in ["POST", "PATCH"]:
-                body = await request.body()
-            
+        async with httpx.AsyncClient(timeout=60.0) as client:
             # Forward headers
             headers = dict(request.headers)
             # Remove host header as it will be set by httpx
             headers.pop('host', None)
+            headers.pop('content-length', None)  # Let httpx set this
             
             # Make request to redirect service
             url = f"{REDIRECT_SERVICE_URL}/{path}"
-            response = await client.request(
-                method=request.method,
-                url=url,
-                headers=headers,
-                content=body,
-                params=dict(request.query_params)
-            )
+            
+            # Handle multipart/form-data for file uploads
+            if 'multipart/form-data' in headers.get('content-type', ''):
+                # Get the form data
+                form = await request.form()
+                files = {}
+                data = {}
+                
+                for field_name, field_value in form.items():
+                    if hasattr(field_value, 'file'):
+                        # It's a file
+                        files[field_name] = (field_value.filename, field_value.file, field_value.content_type)
+                    else:
+                        # It's a regular form field
+                        data[field_name] = field_value
+                
+                response = await client.request(
+                    method=request.method,
+                    url=url,
+                    headers={k: v for k, v in headers.items() if k.lower() != 'content-type'},
+                    files=files if files else None,
+                    data=data if data else None,
+                    params=dict(request.query_params)
+                )
+            else:
+                # Get request body if present
+                body = None
+                if request.method in ["POST", "PATCH"]:
+                    body = await request.body()
+                
+                response = await client.request(
+                    method=request.method,
+                    url=url,
+                    headers=headers,
+                    content=body,
+                    params=dict(request.query_params)
+                )
             
             # Return response
             return Response(
