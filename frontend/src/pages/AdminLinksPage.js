@@ -379,10 +379,14 @@ const AdminLinksPage = () => {
       
       setImportResult(response.data);
       
+      const totalImported = response.data.mappings + response.data.options;
+      
       if (response.data.errors && response.data.errors.length > 0) {
-        toast.warning(`Importeret med ${response.data.errors.length} fejl`);
+        toast.warning(`Importeret ${totalImported} items med ${response.data.errors.length} fejl`);
+      } else if (totalImported === 0) {
+        toast.info('Ingen nye items at importere (alle findes allerede)');
       } else {
-        toast.success(`Importeret! ${response.data.mappings} mappings, ${response.data.options} options`);
+        toast.success(`Importeret! ${response.data.mappings} nye produkter, ${response.data.options} nye links`);
       }
       
       // Refresh mappings
