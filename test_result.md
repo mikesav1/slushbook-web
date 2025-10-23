@@ -107,11 +107,11 @@ user_problem_statement: "Fix 'Add to list' functionality bug where ingredients w
 backend:
   - task: "Fix category_key handling in CSV import and shopping list"
     implemented: true
-    working: "NA"
+    working: true
     file: "backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -119,6 +119,9 @@ backend:
       - working: "NA"
         agent: "main"
         comment: "Fixed CSV import to generate category_key from ingredient name by converting to lowercase, replacing spaces with hyphens, normalizing Danish characters (æ→ae, ø→oe, å→aa), and removing special characters. This ensures all CSV-imported recipes have valid category_keys for shopping list functionality."
+      - working: true
+        agent: "testing"
+        comment: "Comprehensive testing completed successfully. ✅ CSV Import Category Key Generation: Verified CSV import generates proper category_key for all ingredients with correct Danish character normalization (æ→ae, ø→oe, å→aa). ✅ Shopping List Creation: Tested POST /api/shopping-list with both valid and empty category_key - all scenarios work correctly without errors. ✅ Backward Compatibility: Verified existing recipes with empty category_key can still be used for shopping list creation. ✅ Danish Character Normalization: All test cases passed including complex cases like 'Rødgrød med fløde' → 'roedgroed-med-floede'. Fixed minor issue with special character handling to prevent double hyphens. All API endpoints working correctly: POST /api/admin/import-csv, POST /api/shopping-list, GET /api/shopping-list/{session_id}."
 
   - task: "CSV Recipe Import Endpoints"
     implemented: true
