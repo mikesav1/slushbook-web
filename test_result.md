@@ -169,6 +169,18 @@ backend:
         comment: "Comprehensive redirect service integration testing completed successfully. All test cases passed: ✅ Direct Health Check (localhost:3001/health returns {ok: true, db: true}) ✅ Admin Get Mapping via Proxy (GET /api/redirect-proxy/admin/mapping/sodastream-pepsi-440ml with Bearer token returns mapping with Power.dk options) ✅ Public Redirect via Proxy (GET /api/redirect-proxy/go/sodastream-pepsi-440ml returns 302 redirect to Power.dk with UTM parameters) ✅ Admin Link Health Check via Proxy (POST /api/redirect-proxy/admin/link-health with Bearer token and URL array returns health status) ✅ Non-Existent Mapping Handling (GET /api/redirect-proxy/go/non-existent-product returns 302 fallback redirect to Power.dk category page). All 3 seeded product mappings verified: sodastream-pepsi-440ml, sodastream-7up-free-440ml, and power-flavours-category. Proxy endpoint correctly forwards requests to Node.js redirect service on localhost:3001, handles authentication with Bearer tokens, and manages CORS properly. Integration fully functional."
 
 frontend:
+  - task: "Fix 'Add to list' functionality for ingredients with missing category_key"
+    implemented: false
+    working: "NA"
+    file: "frontend/src/pages/RecipeDetailPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Bug identified: addMissingToShoppingList function fails when ingredients have empty or missing category_key. Need to implement fallback logic to generate category_key from ingredient name when missing."
+  
   - task: "CSV Recipe Import UI on AdminPage"
     implemented: true
     working: true
