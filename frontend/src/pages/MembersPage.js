@@ -43,7 +43,10 @@ const MembersPage = () => {
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [userDetails, setUserDetails] = useState(null);
+  const [loadingDetails, setLoadingDetails] = useState(false);
   const [createForm, setCreateForm] = useState({ email: '', name: '', password: '', role: 'guest' });
   const [resetPassword, setResetPassword] = useState('');
 
