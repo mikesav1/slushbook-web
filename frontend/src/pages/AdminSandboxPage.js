@@ -36,9 +36,7 @@ const AdminSandboxPage = ({ sessionId }) => {
 
   const approveRecipe = async (recipeId) => {
     try {
-      await axios.post(`${API}/admin/approve-recipe/${recipeId}`, {}, {
-        headers: { Authorization: `Bearer ${sessionId}` }
-      });
+      await axios.post(`${API}/admin/approve-recipe/${recipeId}`);
       toast.success('Opskrift godkendt!');
       fetchPendingRecipes();
       setSelectedRecipe(null);
@@ -57,8 +55,7 @@ const AdminSandboxPage = ({ sessionId }) => {
     try {
       setRejecting(true);
       await axios.post(`${API}/admin/reject-recipe/${recipeId}`, 
-        { reason: rejectReason },
-        { headers: { Authorization: `Bearer ${sessionId}` }}
+        { reason: rejectReason }
       );
       toast.success('Opskrift afvist');
       fetchPendingRecipes();
@@ -76,9 +73,7 @@ const AdminSandboxPage = ({ sessionId }) => {
   const findSimilar = async (recipeId) => {
     try {
       setLoadingSimilar(true);
-      const response = await axios.get(`${API}/admin/find-similar/${recipeId}`, {
-        headers: { Authorization: `Bearer ${sessionId}` }
-      });
+      const response = await axios.get(`${API}/admin/find-similar/${recipeId}`);
       setSimilarRecipes(response.data);
     } catch (error) {
       console.error('Error finding similar recipes:', error);
