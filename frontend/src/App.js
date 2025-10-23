@@ -218,7 +218,7 @@ const Navigation = () => {
       </div>
 
       {/* Mobile menu button */}
-      <div className="absolute right-4 top-4 md:hidden">
+      <div className="absolute right-4 top-4 lg:hidden">
         {user ? (
           <div className="relative">
             <button
