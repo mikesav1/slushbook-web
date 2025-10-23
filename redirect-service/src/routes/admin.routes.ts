@@ -16,7 +16,7 @@ router.post('/mapping', requireAuth, async (req: Request, res: Response) => {
     }
     
     // Upsert mapping
-    const savedMapping = dbService.upsertMapping(mapping);
+    const savedMapping = await dbService.upsertMapping(mapping);
     
     // Upsert options if provided
     const savedOptions: any[] = [];
@@ -25,12 +25,12 @@ router.post('/mapping', requireAuth, async (req: Request, res: Response) => {
         if (!option.id || !option.supplier || !option.title || !option.url || !option.status) {
           return res.status(400).json({ error: 'Invalid option data' });
         }
-        savedOptions.push(dbService.upsertOption({ ...option, mappingId: mapping.id }));
+        savedOptions.push(await dbService.upsertOption({ ...option, mappingId: mapping.id }));
       }
     }
     
     // Return mapping with all its options
-    const allOptions = dbService.getOptions(mapping.id);
+    const allOptions = await dbService.getOptions(mapping.id);
     
     res.json({
       mapping: savedMapping,
@@ -44,7 +44,7 @@ router.post('/mapping', requireAuth, async (req: Request, res: Response) => {
 // GET /admin/mappings - Get all mappings (plural endpoint)
 router.get('/mappings', requireAuth, async (req: Request, res: Response) => {
   try {
-    const mappings = dbService.getAllMappings();
+    const mappings = await dbService.getAllMappings();
     res.json(mappings);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
@@ -56,12 +56,12 @@ router.get('/mapping/:id', requireAuth, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     
-    const mapping = dbService.getMapping(id);
+    const mapping = await dbService.getMapping(id);
     if (!mapping) {
       return res.status(404).json({ error: 'Mapping not found' });
     }
     
-    const options = dbService.getOptions(id);
+    const options = await dbService.getOptions(id);
     
     res.json({
       mapping,
@@ -81,7 +81,7 @@ router.post('/option', requireAuth, async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Missing required fields: id, mappingId, supplier, title, url' });
     }
     
-    const newOption = dbService.createOption({
+    const newOption = await dbService.createOption({
       id: option.id,
       mappingId: option.mappingId,
       supplier: option.supplier,
@@ -109,7 +109,7 @@ router.patch('/option/:id', requireAuth, async (req: Request, res: Response) => 
     if (url) updates.url = url;
     if (priceLastSeen !== undefined) updates.priceLastSeen = priceLastSeen;
     
-    const option = dbService.updateOption(id, updates);
+    const option = await dbService.updateOption(id, updates);
     
     if (!option) {
       return res.status(404).json({ error: 'Option not found' });
@@ -127,13 +127,13 @@ router.delete('/mapping/:id', requireAuth, async (req: Request, res: Response) =
     const { id } = req.params;
     
     // Delete all options for this mapping first
-    const options = dbService.getOptions(id);
+    const options = await dbService.getOptions(id);
     for (const option of options) {
-      dbService.deleteOption(option.id);
+      await dbService.deleteOption(option.id);
     }
     
     // Delete the mapping
-    const deleted = dbService.deleteMapping(id);
+    const deleted = await dbService.deleteMapping(id);
     
     if (!deleted) {
       return res.status(404).json({ error: 'Mapping not found' });
@@ -150,7 +150,7 @@ router.delete('/option/:id', requireAuth, async (req: Request, res: Response) =>
   try {
     const { id } = req.params;
     
-    const deleted = dbService.deleteOption(id);
+    const deleted = await dbService.deleteOption(id);
     
     if (!deleted) {
       return res.status(404).json({ error: 'Option not found' });
@@ -165,7 +165,7 @@ router.delete('/option/:id', requireAuth, async (req: Request, res: Response) =>
 // POST /admin/link-health
 router.post('/link-health', requireAuth, async (req: Request, res: Response) => {
   try {
-    const activeOptions = dbService.getAllActiveOptions();
+    const activeOptions = await dbService.getAllActiveOptions();
     const changed: any[] = [];
     
     for (const option of activeOptions) {
@@ -181,7 +181,7 @@ router.post('/link-health', requireAuth, async (req: Request, res: Response) => 
         clearTimeout(timeoutId);
         
         if (response.status >= 400) {
-          dbService.updateOption(option.id, { status: 'inactive' });
+          await dbService.updateOption(option.id, { status: 'inactive' });
           changed.push({
             id: option.id,
             url: option.url,
@@ -190,7 +190,7 @@ router.post('/link-health', requireAuth, async (req: Request, res: Response) => 
           });
         }
       } catch (error: any) {
-        dbService.updateOption(option.id, { status: 'inactive' });
+        await dbService.updateOption(option.id, { status: 'inactive' });
         changed.push({
           id: option.id,
           url: option.url,
@@ -210,7 +210,7 @@ router.post('/link-health', requireAuth, async (req: Request, res: Response) => 
 // GET /admin/suppliers - Get all suppliers
 router.get('/suppliers', async (req: Request, res: Response) => {
   try {
-    const suppliers = dbService.getAllSuppliers();
+    const suppliers = await dbService.getAllSuppliers();
     res.json(suppliers);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
@@ -229,7 +229,7 @@ router.post('/suppliers', requireAuth, async (req: Request, res: Response) => {
     // Generate slug from name
     const id = name.toLowerCase().replace(/[^a-z0-9]/g, '');
     
-    const supplier = dbService.createSupplier({
+    const supplier = await dbService.createSupplier({
       id,
       name,
       url: url || '',
@@ -254,7 +254,7 @@ router.patch('/suppliers/:id', requireAuth, async (req: Request, res: Response) 
     if (url !== undefined) updates.url = url;
     if (active !== undefined) updates.active = active ? 1 : 0;
     
-    const supplier = dbService.updateSupplier(id, updates);
+    const supplier = await dbService.updateSupplier(id, updates);
     
     if (!supplier) {
       return res.status(404).json({ error: 'Supplier not found' });
@@ -271,7 +271,7 @@ router.delete('/suppliers/:id', requireAuth, async (req: Request, res: Response)
   try {
     const { id } = req.params;
     
-    const deleted = dbService.deleteSupplier(id);
+    const deleted = await dbService.deleteSupplier(id);
     
     if (!deleted) {
       return res.status(404).json({ error: 'Supplier not found' });
@@ -288,11 +288,11 @@ router.delete('/suppliers/:id', requireAuth, async (req: Request, res: Response)
 // GET /admin/export-csv - Export all mappings and options to CSV
 router.get('/export-csv', requireAuth, async (req: Request, res: Response) => {
   try {
-    const mappings = dbService.getAllMappings();
+    const mappings = await dbService.getAllMappings();
     const csvRows = ['produkt_navn,keywords,ean,leverandør,url,title'];
     
     for (const mapping of mappings) {
-      const options = dbService.getOptions(mapping.id);
+      const options = await dbService.getOptions(mapping.id);
       
       // Convert keywords from comma to semicolon
       const keywords = mapping.keywords ? mapping.keywords.replace(/,/g, ';') : '';
@@ -414,9 +414,9 @@ router.post('/import-csv', requireAuth, (req: any, res: any, next: any) => {
           const keywordsFormatted = keywords ? keywords.replace(/;/g, ',') : '';
           
           // Check if mapping exists
-          let mapping = dbService.getMapping(mappingId);
+          let mapping = await dbService.getMapping(mappingId);
           if (!mapping) {
-            mapping = dbService.upsertMapping({
+            mapping = await dbService.upsertMapping({
               id: mappingId,
               name: produktNavn,
               ean: ean || null,
@@ -429,7 +429,7 @@ router.post('/import-csv', requireAuth, (req: any, res: any, next: any) => {
           const optionId = `opt_${mappingId}_${leverandor}_${Date.now()}`;
           
           // Create option
-          dbService.createOption({
+          await dbService.createOption({
             id: optionId,
             mappingId: mappingId,
             supplier: leverandor,

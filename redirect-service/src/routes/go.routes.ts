@@ -28,14 +28,14 @@ router.get('/:mappingId', async (req: Request, res: Response) => {
     const { mappingId } = req.params;
     
     // Log click
-    dbService.logClick({
+    await dbService.logClick({
       mappingId,
       userAgent: req.headers['user-agent'],
       referer: req.headers['referer']
     });
     
     // Find active option
-    const option = dbService.getActiveOption(mappingId);
+    const option = await dbService.getActiveOption(mappingId);
     
     let targetUrl: string;
     
