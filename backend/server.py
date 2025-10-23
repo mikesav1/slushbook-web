@@ -70,6 +70,8 @@ class Recipe(BaseModel):
     view_count: int = 0
     is_free: bool = False  # True = accessible to guests
     is_published: bool = False  # True = visible to all, False = only to creator
+    approval_status: str = "approved"  # pending, approved, rejected
+    rejection_reason: Optional[str] = None
 
 class RecipeCreate(BaseModel):
     name: str
