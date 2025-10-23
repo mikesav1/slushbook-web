@@ -4,16 +4,20 @@ import { toast } from 'sonner';
 import { FaCheck, FaTimes, FaSearch, FaEye } from 'react-icons/fa';
 import { API } from '../App';
 import { Button } from '../components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const AdminSandboxPage = ({ sessionId }) => {
-  const [pendingRecipes, setPendingRecipes] = useState([]);
+  const [allRecipes, setAllRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('pending'); // 'all', 'pending', 'approved', 'rejected'
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [similarRecipes, setSimilarRecipes] = useState([]);
-  const [loadingSimilar, setLoadingSimilar] = useState(false);
+  const [loadingSimilar, setLoadingSimilar] = useState({});
+  const [showPreviewDialog, setShowPreviewDialog] = useState(false);
   const [showRejectDialog, setShowRejectDialog] = useState(false);
   const [rejectReason, setRejectReason] = useState('');
   const [rejecting, setRejecting] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchPendingRecipes();
