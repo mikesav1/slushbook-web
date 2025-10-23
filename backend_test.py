@@ -1228,6 +1228,7 @@ test,data,here"""
             ("Shopping List Category Key Handling", self.test_shopping_list_with_category_key),
             ("Backward Compatibility Empty Category Key", self.test_backward_compatibility_empty_category_key),
             ("Danish Character Normalization", self.test_danish_character_normalization),
+            ("CSV Import Supplier Links", self.test_csv_import_supplier_links),
             ("Redirect Service Health (Direct)", self.test_redirect_service_health_direct),
             ("Redirect Admin Get Mapping", self.test_redirect_admin_get_mapping),
             ("Redirect Public Redirect", self.test_redirect_public_redirect),
