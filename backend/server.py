@@ -87,6 +87,7 @@ class RecipeCreate(BaseModel):
     steps: List[str]
     session_id: str
     is_published: bool = False  # Default to private
+    approval_status: str = "pending"  # New recipes default to pending
 
 class PantryItem(BaseModel):
     model_config = ConfigDict(extra="ignore")
