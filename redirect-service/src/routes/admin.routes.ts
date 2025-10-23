@@ -331,120 +331,126 @@ router.get('/export-csv', requireAuth, (req: Request, res: Response) => {
 });
 
 // POST /admin/import-csv - Import mappings and options from CSV
-router.post('/import-csv', requireAuth, upload.single('file'), (req: Request, res: Response) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No file uploaded' });
+router.post('/import-csv', requireAuth, (req: Request, res: Response, next) => {
+  upload.single('file')(req, res, (err) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
     }
     
-    const csvContent = req.file.buffer.toString('utf-8');
-    const lines = csvContent.split('\n').filter(line => line.trim());
-    
-    if (lines.length < 2) {
-      return res.status(400).json({ error: 'CSV file is empty or invalid' });
-    }
-    
-    // Skip header
-    const dataLines = lines.slice(1);
-    
-    const imported = {
-      mappings: 0,
-      options: 0,
-      errors: [] as string[]
-    };
-    
-    for (let i = 0; i < dataLines.length; i++) {
-      try {
-        const line = dataLines[i].trim();
-        if (!line) continue;
-        
-        // Simple CSV parser (handles quoted fields)
-        const fields: string[] = [];
-        let currentField = '';
-        let inQuotes = false;
-        
-        for (let j = 0; j < line.length; j++) {
-          const char = line[j];
-          
-          if (char === '"') {
-            if (inQuotes && line[j + 1] === '"') {
-              currentField += '"';
-              j++; // Skip next quote
-            } else {
-              inQuotes = !inQuotes;
-            }
-          } else if (char === ',' && !inQuotes) {
-            fields.push(currentField);
-            currentField = '';
-          } else {
-            currentField += char;
-          }
-        }
-        fields.push(currentField); // Add last field
-        
-        if (fields.length < 6) {
-          imported.errors.push(`Line ${i + 2}: Invalid format (expected 6 fields, got ${fields.length})`);
-          continue;
-        }
-        
-        const [produktNavn, keywords, ean, leverandor, url, title] = fields;
-        
-        if (!produktNavn || !leverandor || !url || !title) {
-          imported.errors.push(`Line ${i + 2}: Missing required fields`);
-          continue;
-        }
-        
-        // Generate mapping ID from product name (slug)
-        const mappingId = produktNavn
-          .toLowerCase()
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
-          .replace(/æ/g, 'ae')
-          .replace(/ø/g, 'o')
-          .replace(/å/g, 'aa')
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/^-|-$/g, '');
-        
-        // Convert keywords from semicolon to comma for storage
-        const keywordsFormatted = keywords ? keywords.replace(/;/g, ',') : '';
-        
-        // Check if mapping exists
-        let mapping = dbService.getMapping(mappingId);
-        if (!mapping) {
-          mapping = dbService.upsertMapping({
-            id: mappingId,
-            name: produktNavn,
-            ean: ean || null,
-            keywords: keywordsFormatted
-          });
-          imported.mappings++;
-        }
-        
-        // Generate option ID
-        const optionId = `opt_${mappingId}_${leverandor}_${Date.now()}`;
-        
-        // Create option
-        dbService.createOption({
-          id: optionId,
-          mappingId: mappingId,
-          supplier: leverandor,
-          title: title,
-          url: url,
-          status: 'active',
-          priceLastSeen: null,
-          updatedAt: new Date().toISOString()
-        });
-        
-        imported.options++;
-      } catch (error: any) {
-        imported.errors.push(`Line ${i + 2}: ${error.message}`);
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: 'No file uploaded' });
       }
+      
+      const csvContent = req.file.buffer.toString('utf-8');
+      const lines = csvContent.split('\n').filter(line => line.trim());
+      
+      if (lines.length < 2) {
+        return res.status(400).json({ error: 'CSV file is empty or invalid' });
+      }
+      
+      // Skip header
+      const dataLines = lines.slice(1);
+      
+      const imported = {
+        mappings: 0,
+        options: 0,
+        errors: [] as string[]
+      };
+      
+      for (let i = 0; i < dataLines.length; i++) {
+        try {
+          const line = dataLines[i].trim();
+          if (!line) continue;
+          
+          // Simple CSV parser (handles quoted fields)
+          const fields: string[] = [];
+          let currentField = '';
+          let inQuotes = false;
+          
+          for (let j = 0; j < line.length; j++) {
+            const char = line[j];
+            
+            if (char === '"') {
+              if (inQuotes && line[j + 1] === '"') {
+                currentField += '"';
+                j++; // Skip next quote
+              } else {
+                inQuotes = !inQuotes;
+              }
+            } else if (char === ',' && !inQuotes) {
+              fields.push(currentField);
+              currentField = '';
+            } else {
+              currentField += char;
+            }
+          }
+          fields.push(currentField); // Add last field
+          
+          if (fields.length < 6) {
+            imported.errors.push(`Line ${i + 2}: Invalid format (expected 6 fields, got ${fields.length})`);
+            continue;
+          }
+          
+          const [produktNavn, keywords, ean, leverandor, url, title] = fields;
+          
+          if (!produktNavn || !leverandor || !url || !title) {
+            imported.errors.push(`Line ${i + 2}: Missing required fields`);
+            continue;
+          }
+          
+          // Generate mapping ID from product name (slug)
+          const mappingId = produktNavn
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+            .replace(/æ/g, 'ae')
+            .replace(/ø/g, 'o')
+            .replace(/å/g, 'aa')
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-|-$/g, '');
+          
+          // Convert keywords from semicolon to comma for storage
+          const keywordsFormatted = keywords ? keywords.replace(/;/g, ',') : '';
+          
+          // Check if mapping exists
+          let mapping = dbService.getMapping(mappingId);
+          if (!mapping) {
+            mapping = dbService.upsertMapping({
+              id: mappingId,
+              name: produktNavn,
+              ean: ean || null,
+              keywords: keywordsFormatted
+            });
+            imported.mappings++;
+          }
+          
+          // Generate option ID
+          const optionId = `opt_${mappingId}_${leverandor}_${Date.now()}`;
+          
+          // Create option
+          dbService.createOption({
+            id: optionId,
+            mappingId: mappingId,
+            supplier: leverandor,
+            title: title,
+            url: url,
+            status: 'active',
+            priceLastSeen: null,
+            updatedAt: new Date().toISOString()
+          });
+          
+          imported.options++;
+        } catch (error: any) {
+          imported.errors.push(`Line ${i + 2}: ${error.message}`);
+        }
+      }
+      
+      res.json(imported);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
     }
-    
-    res.json(imported);
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
-  }
+  });
 });
 
 export default router;
