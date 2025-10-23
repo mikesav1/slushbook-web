@@ -13,12 +13,17 @@ const AdminLinksPage = () => {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [showSupplierDialog, setShowSupplierDialog] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showImportDialog, setShowImportDialog] = useState(false);
+  const [importFile, setImportFile] = useState(null);
+  const [importResult, setImportResult] = useState(null);
+  const [importing, setImporting] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null); // {type: 'mapping'|'option'|'supplier', id, name}
   const [editingMapping, setEditingMapping] = useState(null);
   const [editingOption, setEditingOption] = useState(null);
   const [editingSupplier, setEditingSupplier] = useState(null);
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState('mappings'); // 'mappings' or 'suppliers'
+  const fileInputRef = useRef(null);
   
   // Use proxy through backend instead of direct localhost
   const REDIRECT_API = `${API}/redirect-proxy`;
