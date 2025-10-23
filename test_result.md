@@ -173,7 +173,7 @@ backend:
 
 frontend:
   - task: "Fix 'Add to list' functionality for ingredients with missing category_key"
-    implemented: false
+    implemented: true
     working: "NA"
     file: "frontend/src/pages/RecipeDetailPage.js"
     stuck_count: 0
@@ -183,6 +183,9 @@ frontend:
       - working: "NA"
         agent: "main"
         comment: "Bug identified: addMissingToShoppingList function fails when ingredients have empty or missing category_key. Need to implement fallback logic to generate category_key from ingredient name when missing."
+      - working: "NA"
+        agent: "main"
+        comment: "Fixed addMissingToShoppingList function to generate category_key from ingredient name when missing or empty. Fallback logic converts name to lowercase, replaces spaces with hyphens, and removes special characters. This ensures backward compatibility with existing recipes that have empty category_key values."
   
   - task: "CSV Recipe Import UI on AdminPage"
     implemented: true
