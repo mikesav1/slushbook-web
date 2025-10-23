@@ -332,7 +332,7 @@ router.get('/export-csv', requireAuth, async (req: Request, res: Response) => {
 
 // POST /admin/import-csv - Import mappings and options from CSV
 router.post('/import-csv', requireAuth, (req: any, res: any, next: any) => {
-  upload.single('file')(req, res, (err: any) => {
+  upload.single('file')(req, res, async (err: any) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
