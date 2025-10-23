@@ -107,7 +107,9 @@ const AdminIngredientsPage = () => {
     }
 
     try {
-      const response = await axios.post(`${API}/admin/ingredients/seed`);
+      const response = await axios.post(`${API}/admin/ingredients/seed`, {}, {
+        withCredentials: true
+      });
       toast.success(response.data.message);
       fetchIngredients();
     } catch (error) {
