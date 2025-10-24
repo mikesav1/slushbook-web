@@ -324,6 +324,9 @@ const App = () => {
 const AppContent = ({ sessionId }) => {
   const { user, loading, login } = useAuth();
   const location = useLocation();
+  
+  // Use user.id as sessionId for logged-in users, otherwise use guest sessionId
+  const effectiveSessionId = user ? user.id : sessionId;
 
   const navItems = [
     { path: "/", icon: FaHome, label: "Hjem" },
