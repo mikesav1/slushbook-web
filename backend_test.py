@@ -1209,6 +1209,300 @@ test,data,here"""
             
         return True
 
+    def test_admin_member_deletion(self):
+        """Test member deletion functionality in admin members page"""
+        self.log("Testing admin member deletion functionality...")
+        
+        try:
+            # Step 1: Create a test user to delete
+            self.log("Step 1: Creating test user for deletion...")
+            test_user_email = f"delete.test.{int(time.time())}@example.com"
+            test_user_password = "deletetest123"
+            test_user_name = "Delete Test User"
+            
+            signup_data = {
+                "email": test_user_email,
+                "password": test_user_password,
+                "name": test_user_name
+            }
+            
+            signup_response = self.session.post(f"{BASE_URL}/auth/signup", json=signup_data)
+            
+            if signup_response.status_code != 200:
+                self.log(f"❌ Failed to create test user: {signup_response.status_code} - {signup_response.text}")
+                return False
+                
+            test_user_id = signup_response.json().get("user_id")
+            self.log(f"✅ Test user created with ID: {test_user_id}")
+            
+            # Step 2: Login as admin
+            self.log("Step 2: Logging in as admin...")
+            admin_login_data = {
+                "email": "kimesav@gmail.com",
+                "password": "admin123"
+            }
+            
+            admin_login_response = self.session.post(f"{BASE_URL}/auth/login", json=admin_login_data)
+            
+            if admin_login_response.status_code != 200:
+                self.log(f"❌ Admin login failed: {admin_login_response.status_code} - {admin_login_response.text}")
+                return False
+                
+            admin_session_token = admin_login_response.json().get("session_token")
+            admin_user_data = admin_login_response.json().get("user", {})
+            admin_user_id = admin_user_data.get("id")
+            self.log(f"✅ Admin login successful - Admin ID: {admin_user_id}")
+            
+            # Step 3: Create some test data for the user (to verify cleanup)
+            self.log("Step 3: Creating test data for user (sessions, recipes, etc.)...")
+            
+            # Login as test user to create session
+            test_login_response = self.session.post(f"{BASE_URL}/auth/login", json={
+                "email": test_user_email,
+                "password": test_user_password
+            })
+            
+            if test_login_response.status_code == 200:
+                test_session_token = test_login_response.json().get("session_token")
+                self.log("✅ Test user session created")
+                
+                # Create some test data (machine, shopping list item, etc.)
+                test_machine_data = {
+                    "session_id": test_user_id,
+                    "name": "Test User Machine",
+                    "tank_volumes_ml": [8000],
+                    "loss_margin_pct": 3
+                }
+                
+                machine_response = self.session.post(f"{BASE_URL}/machines", json=test_machine_data)
+                if machine_response.status_code == 200:
+                    self.log("✅ Test machine created for user")
+                
+                # Create shopping list item
+                shopping_item = {
+                    "session_id": test_user_id,
+                    "ingredient_name": "Test Ingredient",
+                    "category_key": "test-ingredient",
+                    "quantity": 100.0,
+                    "unit": "ml"
+                }
+                
+                shopping_response = self.session.post(f"{BASE_URL}/shopping-list", json=shopping_item)
+                if shopping_response.status_code == 200:
+                    self.log("✅ Test shopping list item created for user")
+            
+            # Step 4: Test delete endpoint exists and works
+            self.log("Step 4: Testing DELETE /api/admin/members/{user_id} endpoint...")
+            
+            admin_headers = {"Authorization": f"Bearer {admin_session_token}"}
+            
+            delete_response = self.session.delete(
+                f"{BASE_URL}/admin/members/{test_user_id}",
+                headers=admin_headers
+            )
+            
+            if delete_response.status_code == 200:
+                self.log("✅ User deletion successful")
+                
+                # Verify response message
+                delete_data = delete_response.json()
+                if "message" in delete_data:
+                    self.log(f"✅ Delete response message: {delete_data['message']}")
+                else:
+                    self.log("❌ No message in delete response")
+                    return False
+                    
+            else:
+                self.log(f"❌ User deletion failed: {delete_response.status_code} - {delete_response.text}")
+                return False
+            
+            # Step 5: Verify user is deleted from members list
+            self.log("Step 5: Verifying user is deleted from members list...")
+            
+            members_response = self.session.get(f"{BASE_URL}/admin/members", headers=admin_headers)
+            
+            if members_response.status_code == 200:
+                members = members_response.json()
+                
+                # Check if deleted user is NOT in the list
+                deleted_user_found = False
+                for member in members:
+                    if member.get("id") == test_user_id or member.get("email") == test_user_email:
+                        deleted_user_found = True
+                        break
+                
+                if not deleted_user_found:
+                    self.log("✅ Deleted user not found in members list (correctly deleted)")
+                else:
+                    self.log("❌ Deleted user still found in members list")
+                    return False
+                    
+            else:
+                self.log(f"❌ Failed to get members list: {members_response.status_code}")
+                return False
+            
+            # Step 6: Test error cases
+            self.log("Step 6: Testing error cases...")
+            
+            # Test 6a: Try to delete non-existent user
+            self.log("Test 6a: Deleting non-existent user...")
+            fake_user_id = "non-existent-user-123"
+            
+            fake_delete_response = self.session.delete(
+                f"{BASE_URL}/admin/members/{fake_user_id}",
+                headers=admin_headers
+            )
+            
+            if fake_delete_response.status_code == 404:
+                self.log("✅ Non-existent user deletion correctly returned 404")
+            else:
+                self.log(f"❌ Non-existent user deletion returned unexpected status: {fake_delete_response.status_code}")
+                return False
+            
+            # Test 6b: Try to delete as non-admin (create new regular user)
+            self.log("Test 6b: Testing deletion as non-admin...")
+            
+            regular_user_email = f"regular.{int(time.time())}@example.com"
+            regular_signup = {
+                "email": regular_user_email,
+                "password": "regular123",
+                "name": "Regular User"
+            }
+            
+            regular_signup_response = self.session.post(f"{BASE_URL}/auth/signup", json=regular_signup)
+            if regular_signup_response.status_code == 200:
+                # Login as regular user
+                regular_login_response = self.session.post(f"{BASE_URL}/auth/login", json={
+                    "email": regular_user_email,
+                    "password": "regular123"
+                })
+                
+                if regular_login_response.status_code == 200:
+                    regular_session_token = regular_login_response.json().get("session_token")
+                    regular_headers = {"Authorization": f"Bearer {regular_session_token}"}
+                    
+                    # Try to delete admin user as regular user
+                    unauthorized_delete_response = self.session.delete(
+                        f"{BASE_URL}/admin/members/{admin_user_id}",
+                        headers=regular_headers
+                    )
+                    
+                    if unauthorized_delete_response.status_code == 403:
+                        self.log("✅ Non-admin user correctly forbidden from deleting (403)")
+                    else:
+                        self.log(f"❌ Non-admin deletion returned unexpected status: {unauthorized_delete_response.status_code}")
+                        return False
+            
+            # Test 6c: Try admin deleting themselves
+            self.log("Test 6c: Testing admin deleting themselves...")
+            
+            self_delete_response = self.session.delete(
+                f"{BASE_URL}/admin/members/{admin_user_id}",
+                headers=admin_headers
+            )
+            
+            if self_delete_response.status_code == 400:
+                self.log("✅ Admin self-deletion correctly prevented (400)")
+                
+                # Check for Danish error message
+                error_data = self_delete_response.json()
+                if "detail" in error_data and "slette dig selv" in error_data["detail"]:
+                    self.log("✅ Correct Danish error message: 'Du kan ikke slette dig selv'")
+                else:
+                    self.log(f"⚠️  Error message: {error_data.get('detail', 'No detail')}")
+                    
+            else:
+                self.log(f"❌ Admin self-deletion returned unexpected status: {self_delete_response.status_code}")
+                return False
+            
+            # Step 7: Verify data cleanup (create another test user to verify cleanup)
+            self.log("Step 7: Testing data cleanup verification...")
+            
+            # Create another test user with more data
+            cleanup_test_email = f"cleanup.test.{int(time.time())}@example.com"
+            cleanup_signup = {
+                "email": cleanup_test_email,
+                "password": "cleanup123",
+                "name": "Cleanup Test User"
+            }
+            
+            cleanup_signup_response = self.session.post(f"{BASE_URL}/auth/signup", json=cleanup_signup)
+            if cleanup_signup_response.status_code == 200:
+                cleanup_user_id = cleanup_signup_response.json().get("user_id")
+                
+                # Login as cleanup test user
+                cleanup_login_response = self.session.post(f"{BASE_URL}/auth/login", json={
+                    "email": cleanup_test_email,
+                    "password": "cleanup123"
+                })
+                
+                if cleanup_login_response.status_code == 200:
+                    cleanup_session_token = cleanup_login_response.json().get("session_token")
+                    
+                    # Create various data types for this user
+                    # Machine
+                    cleanup_machine = {
+                        "session_id": cleanup_user_id,
+                        "name": "Cleanup Test Machine",
+                        "tank_volumes_ml": [12000],
+                        "loss_margin_pct": 4
+                    }
+                    self.session.post(f"{BASE_URL}/machines", json=cleanup_machine)
+                    
+                    # Shopping list item
+                    cleanup_shopping = {
+                        "session_id": cleanup_user_id,
+                        "ingredient_name": "Cleanup Ingredient",
+                        "category_key": "cleanup-ingredient",
+                        "quantity": 200.0,
+                        "unit": "ml"
+                    }
+                    self.session.post(f"{BASE_URL}/shopping-list", json=cleanup_shopping)
+                    
+                    self.log("✅ Created test data for cleanup verification")
+                    
+                    # Now delete this user as admin
+                    cleanup_delete_response = self.session.delete(
+                        f"{BASE_URL}/admin/members/{cleanup_user_id}",
+                        headers=admin_headers
+                    )
+                    
+                    if cleanup_delete_response.status_code == 200:
+                        self.log("✅ Cleanup test user deleted successfully")
+                        
+                        # Verify data cleanup by checking if machines and shopping list items are gone
+                        # Check machines
+                        machines_check = self.session.get(f"{BASE_URL}/machines/{cleanup_user_id}")
+                        if machines_check.status_code == 200:
+                            machines = machines_check.json()
+                            if len(machines) == 0:
+                                self.log("✅ User machines cleaned up correctly")
+                            else:
+                                self.log(f"❌ User machines not cleaned up: {len(machines)} machines still exist")
+                                return False
+                        
+                        # Check shopping list
+                        shopping_check = self.session.get(f"{BASE_URL}/shopping-list/{cleanup_user_id}")
+                        if shopping_check.status_code == 200:
+                            shopping_items = shopping_check.json()
+                            if len(shopping_items) == 0:
+                                self.log("✅ User shopping list cleaned up correctly")
+                            else:
+                                self.log(f"❌ User shopping list not cleaned up: {len(shopping_items)} items still exist")
+                                return False
+                        
+                        self.log("✅ All user data cleanup verification passed")
+                    else:
+                        self.log(f"❌ Cleanup test user deletion failed: {cleanup_delete_response.status_code}")
+                        return False
+            
+            self.log("✅ All member deletion tests passed successfully")
+            return True
+            
+        except Exception as e:
+            self.log(f"❌ Admin member deletion test failed with exception: {str(e)}")
+            return False
+
     def run_all_tests(self):
         """Run all backend tests"""
         self.log("Starting SLUSHBOOK Backend System Tests")
