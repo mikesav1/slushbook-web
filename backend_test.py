@@ -1352,10 +1352,7 @@ test,data,here"""
             self.log("Test 6a: Deleting non-existent user...")
             fake_user_id = "non-existent-user-123"
             
-            fake_delete_response = self.session.delete(
-                f"{BASE_URL}/admin/members/{fake_user_id}",
-                headers=admin_headers
-            )
+            fake_delete_response = admin_session.delete(f"{BASE_URL}/admin/members/{fake_user_id}")
             
             if fake_delete_response.status_code == 404:
                 self.log("✅ Non-existent user deletion correctly returned 404")
