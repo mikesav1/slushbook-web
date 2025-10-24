@@ -2121,6 +2121,36 @@ async def get_pending_recipes(request: Request):
     
     return recipes
 
+@api_router.patch("/admin/recipes/{recipe_id}/toggle-free")
+async def toggle_recipe_free_status(recipe_id: str, request: Request):
+    """Toggle free/pro status for a recipe (admin only)"""
+    user = await get_current_user(request, None, db)
+    
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    # Get current recipe
+    recipe = await db.user_recipes.find_one({"id": recipe_id})
+    if not recipe:
+        raise HTTPException(status_code=404, detail="Recipe not found")
+    
+    # Toggle is_free status
+    new_free_status = not recipe.get('is_free', False)
+    
+    result = await db.user_recipes.update_one(
+        {"id": recipe_id},
+        {"$set": {"is_free": new_free_status}}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Recipe not found")
+    
+    return {
+        "success": True,
+        "message": f"Opskrift er nu {'gratis' if new_free_status else 'pro'}",
+        "is_free": new_free_status
+    }
+
 @api_router.post("/admin/approve-recipe/{recipe_id}")
 async def approve_recipe(recipe_id: str, request: Request):
     """Approve a pending recipe"""
