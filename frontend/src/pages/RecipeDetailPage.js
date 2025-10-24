@@ -429,7 +429,7 @@ const RecipeDetailPage = ({ sessionId }) => {
                 </span>
               </button>
               {/* Slet - Only for admin and recipe author */}
-              {(isAdmin || isAuthor()) && (
+              {(isAdmin() || isAuthor()) && (
                 <button
                   onClick={deleteRecipe}
                   data-testid="delete-recipe-button"
