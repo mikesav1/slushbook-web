@@ -151,6 +151,23 @@ const RecipesPage = ({ sessionId }) => {
           </div>
         </div>
 
+        {/* Mine Opskrifter Filter */}
+        <div className="mb-4">
+          <button
+            onClick={() => setShowMyRecipes(!showMyRecipes)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 transition-all ${
+              showMyRecipes 
+                ? 'bg-blue-500 text-white border-blue-500' 
+                : 'bg-white text-gray-700 border-gray-200 hover:border-blue-300'
+            }`}
+          >
+            <FaFilter />
+            <span className="font-medium">
+              {showMyRecipes ? 'Viser egne opskrifter' : 'Vis egne opskrifter'}
+            </span>
+          </button>
+        </div>
+
         {/* Type Filter */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">Type</label>
