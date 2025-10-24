@@ -1392,11 +1392,11 @@ test,data,here"""
                         # Try to delete admin user as regular user
                         unauthorized_delete_response = regular_session.delete(f"{BASE_URL}/admin/members/{admin_user_id}")
                     
-                    if unauthorized_delete_response.status_code == 403:
-                        self.log("✅ Non-admin user correctly forbidden from deleting (403)")
-                    else:
-                        self.log(f"❌ Non-admin deletion returned unexpected status: {unauthorized_delete_response.status_code}")
-                        return False
+                        if unauthorized_delete_response.status_code == 403:
+                            self.log("✅ Non-admin user correctly forbidden from deleting (403)")
+                        else:
+                            self.log(f"❌ Non-admin deletion returned unexpected status: {unauthorized_delete_response.status_code}")
+                            return False
             
             # Test 6c: Try admin deleting themselves
             self.log("Test 6c: Testing admin deleting themselves...")
