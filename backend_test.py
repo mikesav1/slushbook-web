@@ -1502,6 +1502,293 @@ test,data,here"""
             self.log(f"❌ Admin member deletion test failed with exception: {str(e)}")
             return False
 
+    def test_shopping_list_add_from_recipe(self):
+        """Test 'Add to shopping list' functionality from recipe detail page"""
+        self.log("Testing 'Add to shopping list' functionality from recipe detail page...")
+        
+        try:
+            # Step 1: Login as user (kimesav@gmail.com / admin123)
+            self.log("Step 1: Logging in as user kimesav@gmail.com...")
+            
+            login_data = {
+                "email": "kimesav@gmail.com",
+                "password": "admin123"
+            }
+            
+            # Use fresh session for this test
+            test_session = requests.Session()
+            login_response = test_session.post(f"{BASE_URL}/auth/login", json=login_data)
+            
+            if login_response.status_code != 200:
+                self.log(f"❌ Login failed: {login_response.status_code} - {login_response.text}")
+                return False
+                
+            login_data_response = login_response.json()
+            user_session_id = login_data_response.get("user", {}).get("id")
+            session_token = login_data_response.get("session_token")
+            
+            if not user_session_id:
+                self.log("❌ No user session ID returned from login")
+                return False
+                
+            self.log(f"✅ Login successful - User session ID: {user_session_id}")
+            
+            # Step 2: Get a recipe with ingredients
+            self.log("Step 2: Getting a recipe with ingredients...")
+            
+            recipes_response = test_session.get(f"{BASE_URL}/recipes?session_id={user_session_id}")
+            
+            if recipes_response.status_code != 200:
+                self.log(f"❌ Failed to get recipes: {recipes_response.status_code}")
+                return False
+                
+            recipes = recipes_response.json()
+            if not recipes:
+                self.log("❌ No recipes found")
+                return False
+                
+            # Find a recipe with ingredients
+            test_recipe = None
+            for recipe in recipes:
+                if recipe.get('ingredients') and len(recipe['ingredients']) > 0:
+                    test_recipe = recipe
+                    break
+                    
+            if not test_recipe:
+                self.log("❌ No recipe with ingredients found")
+                return False
+                
+            recipe_id = test_recipe['id']
+            recipe_name = test_recipe['name']
+            ingredients = test_recipe['ingredients']
+            
+            self.log(f"✅ Found test recipe: '{recipe_name}' with {len(ingredients)} ingredients")
+            
+            # Step 3: Clear existing shopping list items for this user
+            self.log("Step 3: Clearing existing shopping list items...")
+            
+            existing_items_response = test_session.get(f"{BASE_URL}/shopping-list/{user_session_id}")
+            if existing_items_response.status_code == 200:
+                existing_items = existing_items_response.json()
+                for item in existing_items:
+                    delete_response = test_session.delete(f"{BASE_URL}/shopping-list/{item['id']}")
+                    if delete_response.status_code == 200:
+                        self.log(f"✅ Deleted existing item: {item['ingredient_name']}")
+            
+            # Step 4: Add recipe ingredients to shopping list (simulating frontend behavior)
+            self.log("Step 4: Adding recipe ingredients to shopping list...")
+            
+            import re
+            added_ingredients = []
+            for ingredient in ingredients:
+                if ingredient.get('role') == 'required':
+                    # Generate category_key from ingredient name if missing (same logic as frontend)
+                    category_key = ingredient.get('category_key', '')
+                    if not category_key or category_key.strip() == '':
+                        # Frontend fallback logic (Python equivalent)
+                        category_key = ingredient['name'].lower()
+                        category_key = re.sub(r'\s+', '-', category_key)
+                        category_key = re.sub(r'[^a-z0-9\-æøå]', '', category_key)
+                    
+                    shopping_item = {
+                        "session_id": user_session_id,
+                        "ingredient_name": ingredient['name'],
+                        "category_key": category_key,
+                        "quantity": ingredient['quantity'],
+                        "unit": ingredient['unit'],
+                        "linked_recipe_id": recipe_id,
+                        "linked_recipe_name": recipe_name
+                    }
+                    
+                    add_response = test_session.post(f"{BASE_URL}/shopping-list", json=shopping_item)
+                    
+                    if add_response.status_code == 200:
+                        added_data = add_response.json()
+                        added_ingredients.append(added_data)
+                        self.log(f"✅ Added ingredient: {ingredient['name']} (category_key: {category_key})")
+                    else:
+                        self.log(f"❌ Failed to add ingredient {ingredient['name']}: {add_response.status_code} - {add_response.text}")
+                        return False
+            
+            if not added_ingredients:
+                self.log("❌ No required ingredients were added to shopping list")
+                return False
+                
+            self.log(f"✅ Successfully added {len(added_ingredients)} ingredients to shopping list")
+            
+            # Step 5: Verify items appear in shopping list
+            self.log("Step 5: Verifying items appear in shopping list...")
+            
+            shopping_list_response = test_session.get(f"{BASE_URL}/shopping-list/{user_session_id}")
+            
+            if shopping_list_response.status_code != 200:
+                self.log(f"❌ Failed to get shopping list: {shopping_list_response.status_code}")
+                return False
+                
+            shopping_list_items = shopping_list_response.json()
+            self.log(f"✅ Retrieved shopping list with {len(shopping_list_items)} items")
+            
+            # Verify all added ingredients are in the shopping list
+            found_ingredients = []
+            for added_ingredient in added_ingredients:
+                found = False
+                for list_item in shopping_list_items:
+                    if (list_item.get('ingredient_name') == added_ingredient.get('ingredient_name') and
+                        list_item.get('linked_recipe_id') == recipe_id):
+                        found = True
+                        found_ingredients.append(list_item)
+                        break
+                        
+                if not found:
+                    self.log(f"❌ Ingredient not found in shopping list: {added_ingredient.get('ingredient_name')}")
+                    return False
+                    
+            self.log(f"✅ All {len(found_ingredients)} ingredients found in shopping list")
+            
+            # Step 6: Test with different ingredient types
+            self.log("Step 6: Testing with different ingredient types...")
+            
+            # Test ingredient with valid category_key
+            valid_category_item = {
+                "session_id": user_session_id,
+                "ingredient_name": "Test Valid Category",
+                "category_key": "test-valid-category",
+                "quantity": 100.0,
+                "unit": "ml",
+                "linked_recipe_id": recipe_id,
+                "linked_recipe_name": recipe_name
+            }
+            
+            valid_response = test_session.post(f"{BASE_URL}/shopping-list", json=valid_category_item)
+            if valid_response.status_code == 200:
+                self.log("✅ Ingredient with valid category_key added successfully")
+            else:
+                self.log(f"❌ Failed to add ingredient with valid category_key: {valid_response.status_code}")
+                return False
+            
+            # Test ingredient with empty category_key
+            empty_category_item = {
+                "session_id": user_session_id,
+                "ingredient_name": "Test Empty Category",
+                "category_key": "",
+                "quantity": 50.0,
+                "unit": "g",
+                "linked_recipe_id": recipe_id,
+                "linked_recipe_name": recipe_name
+            }
+            
+            empty_response = test_session.post(f"{BASE_URL}/shopping-list", json=empty_category_item)
+            if empty_response.status_code == 200:
+                self.log("✅ Ingredient with empty category_key added successfully")
+            else:
+                self.log(f"❌ Failed to add ingredient with empty category_key: {empty_response.status_code}")
+                return False
+            
+            # Test ingredient with special characters
+            special_char_item = {
+                "session_id": user_session_id,
+                "ingredient_name": "Rødgrød med fløde & æbler",
+                "category_key": "roedgroed-med-floede-aebler",
+                "quantity": 200.0,
+                "unit": "ml",
+                "linked_recipe_id": recipe_id,
+                "linked_recipe_name": recipe_name
+            }
+            
+            special_response = test_session.post(f"{BASE_URL}/shopping-list", json=special_char_item)
+            if special_response.status_code == 200:
+                self.log("✅ Ingredient with special characters added successfully")
+            else:
+                self.log(f"❌ Failed to add ingredient with special characters: {special_response.status_code}")
+                return False
+            
+            # Step 7: Verify session_id handling
+            self.log("Step 7: Verifying session_id handling...")
+            
+            # Get final shopping list and verify all items are associated with correct session
+            final_list_response = test_session.get(f"{BASE_URL}/shopping-list/{user_session_id}")
+            
+            if final_list_response.status_code == 200:
+                final_items = final_list_response.json()
+                
+                # Verify all items have correct session_id
+                session_mismatch = False
+                for item in final_items:
+                    if item.get('session_id') != user_session_id:
+                        self.log(f"❌ Session ID mismatch for item {item.get('ingredient_name')}: expected {user_session_id}, got {item.get('session_id')}")
+                        session_mismatch = True
+                        
+                if not session_mismatch:
+                    self.log("✅ All items have correct session_id")
+                else:
+                    return False
+                    
+                # Verify items persist across requests
+                persistence_response = test_session.get(f"{BASE_URL}/shopping-list/{user_session_id}")
+                if persistence_response.status_code == 200:
+                    persistence_items = persistence_response.json()
+                    if len(persistence_items) == len(final_items):
+                        self.log("✅ Items persist across page refreshes")
+                    else:
+                        self.log(f"❌ Item count mismatch after refresh: expected {len(final_items)}, got {len(persistence_items)}")
+                        return False
+                else:
+                    self.log(f"❌ Failed to verify persistence: {persistence_response.status_code}")
+                    return False
+                    
+            else:
+                self.log(f"❌ Failed to get final shopping list: {final_list_response.status_code}")
+                return False
+            
+            # Step 8: Test with guest session_id vs authenticated user session_id
+            self.log("Step 8: Testing guest session vs authenticated user session...")
+            
+            # Create a guest session item
+            guest_session_id = f"guest_session_{int(time.time())}"
+            guest_item = {
+                "session_id": guest_session_id,
+                "ingredient_name": "Guest Test Item",
+                "category_key": "guest-test-item",
+                "quantity": 75.0,
+                "unit": "ml"
+            }
+            
+            guest_response = test_session.post(f"{BASE_URL}/shopping-list", json=guest_item)
+            if guest_response.status_code == 200:
+                self.log("✅ Guest session item added successfully")
+                
+                # Verify guest items don't appear in authenticated user's list
+                auth_list_response = test_session.get(f"{BASE_URL}/shopping-list/{user_session_id}")
+                guest_list_response = test_session.get(f"{BASE_URL}/shopping-list/{guest_session_id}")
+                
+                if auth_list_response.status_code == 200 and guest_list_response.status_code == 200:
+                    auth_items = auth_list_response.json()
+                    guest_items = guest_list_response.json()
+                    
+                    # Check that guest item is not in auth user's list
+                    guest_in_auth = any(item.get('ingredient_name') == 'Guest Test Item' for item in auth_items)
+                    auth_in_guest = any(item.get('session_id') == user_session_id for item in guest_items)
+                    
+                    if not guest_in_auth and not auth_in_guest:
+                        self.log("✅ Session isolation working correctly")
+                    else:
+                        self.log("❌ Session isolation failed - items appearing in wrong session")
+                        return False
+                else:
+                    self.log("❌ Failed to verify session isolation")
+                    return False
+            else:
+                self.log(f"❌ Failed to add guest session item: {guest_response.status_code}")
+                return False
+            
+            self.log("✅ All shopping list functionality tests passed successfully")
+            return True
+            
+        except Exception as e:
+            self.log(f"❌ Shopping list test failed with exception: {str(e)}")
+            import traceback
+            self.log(f"Traceback: {traceback.format_exc()}")
+            return False
     def run_all_tests(self):
         """Run all backend tests"""
         self.log("Starting SLUSHBOOK Backend System Tests")
