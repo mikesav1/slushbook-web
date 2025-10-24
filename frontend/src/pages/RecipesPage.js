@@ -12,6 +12,7 @@ const RecipesPage = ({ sessionId }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [alcoholFilter, setAlcoholFilter] = useState('none');
   const [typeFilter, setTypeFilter] = useState('');
+  const [showMyRecipes, setShowMyRecipes] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   useEffect(() => {
@@ -20,7 +21,7 @@ const RecipesPage = ({ sessionId }) => {
 
   useEffect(() => {
     filterRecipes();
-  }, [recipes, searchTerm]);
+  }, [recipes, searchTerm, showMyRecipes]);
 
   const fetchRecipes = async () => {
     try {
@@ -31,7 +32,21 @@ const RecipesPage = ({ sessionId }) => {
       if (typeFilter) params.append('type', typeFilter);
       
       const response = await axios.get(`${API}/recipes?${params}`);
-      setRecipes(response.data);
+      
+      // Sort recipes: own recipes first, then by created date
+      const sortedRecipes = response.data.sort((a, b) => {
+        const aIsOwn = a.author === sessionId;
+        const bIsOwn = b.author === sessionId;
+        
+        // Own recipes first
+        if (aIsOwn && !bIsOwn) return -1;
+        if (!aIsOwn && bIsOwn) return 1;
+        
+        // Then sort by created date (newest first)
+        return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+      });
+      
+      setRecipes(sortedRecipes);
     } catch (error) {
       console.error('Error fetching recipes:', error);
     } finally {
@@ -40,15 +55,22 @@ const RecipesPage = ({ sessionId }) => {
   };
 
   const filterRecipes = () => {
-    if (!searchTerm) {
-      setFilteredRecipes(recipes);
-      return;
+    let filtered = recipes;
+    
+    // Filter by "mine opskrifter" if enabled
+    if (showMyRecipes) {
+      filtered = filtered.filter(recipe => recipe.author === sessionId);
     }
-    const filtered = recipes.filter(recipe =>
-      recipe.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      recipe.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      recipe.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
+    
+    // Filter by search term
+    if (searchTerm) {
+      filtered = filtered.filter(recipe =>
+        recipe.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        recipe.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        recipe.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+      );
+    }
+    
     setFilteredRecipes(filtered);
   };
 
