@@ -2698,32 +2698,7 @@ test,data,here"""
         self.log("=" * 60)
         
         tests = [
-            ("🛒 ADD TO SHOPPING LIST END-TO-END", self.test_add_to_shopping_list_end_to_end),
-            ("🔐 RECIPE DELETE BUTTON VISIBILITY ACCESS CONTROL", self.test_recipe_delete_button_visibility_access_control),
-            ("🔍 ULLA RECIPE INVESTIGATION", self.test_ulla_recipe_investigation),
-            ("Shopping List Add From Recipe", self.test_shopping_list_add_from_recipe),
-            ("Signup Flow", self.test_signup),
-            ("Login Flow", self.test_login),
-            ("Auth Check", self.test_auth_check),
-            ("Logout", self.test_logout),
-            ("Password Reset", self.test_password_reset),
-            ("Password Validation", self.test_password_validation),
-            ("Machine Create", self.test_machine_create),
-            ("Machine Get", self.test_machine_get),
-            ("Machine Update", self.test_machine_update),
-            ("Machine Delete", self.test_machine_delete),
-            ("Complete Machine CRUD Flow", self.test_machine_crud_complete_flow),
-            ("CSV Import Category Key Generation", self.test_csv_import_category_key_generation),
-            ("Shopping List Category Key Handling", self.test_shopping_list_with_category_key),
-            ("Backward Compatibility Empty Category Key", self.test_backward_compatibility_empty_category_key),
-            ("Danish Character Normalization", self.test_danish_character_normalization),
-            ("CSV Import Supplier Links", self.test_csv_import_supplier_links),
-            ("Redirect Service Health (Direct)", self.test_redirect_service_health_direct),
-            ("Redirect Admin Get Mapping", self.test_redirect_admin_get_mapping),
-            ("Redirect Public Redirect", self.test_redirect_public_redirect),
-            ("Redirect Admin Link Health", self.test_redirect_admin_link_health),
-            ("Redirect Non-Existent Mapping", self.test_redirect_non_existent_mapping),
-            ("Admin Member Deletion", self.test_admin_member_deletion)
+            ("🛒 SHOPPING LIST DEBUG - MOJITO SLUSH ISSUE", self.test_shopping_list_debug_mojito_slush)
         ]
         
         results = {}
