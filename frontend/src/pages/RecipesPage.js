@@ -22,6 +22,21 @@ const RecipesPage = ({ sessionId }) => {
   useEffect(() => {
     filterRecipes();
   }, [recipes, searchTerm, showMyRecipes]);
+  
+  // Check URL params for sort preference
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sortBy = urlParams.get('sort');
+    if (sortBy === 'rating') {
+      // Sort by rating when coming from "Højest vurderet" button
+      const sorted = [...recipes].sort((a, b) => {
+        const aRating = a.avg_rating || 0;
+        const bRating = b.avg_rating || 0;
+        return bRating - aRating;
+      });
+      setRecipes(sorted);
+    }
+  }, []);
 
   const fetchRecipes = async () => {
     try {
@@ -33,18 +48,32 @@ const RecipesPage = ({ sessionId }) => {
       
       const response = await axios.get(`${API}/recipes?${params}`);
       
-      // Sort recipes: own recipes first, then by created date
-      const sortedRecipes = response.data.sort((a, b) => {
-        const aIsOwn = a.author === sessionId;
-        const bIsOwn = b.author === sessionId;
-        
-        // Own recipes first
-        if (aIsOwn && !bIsOwn) return -1;
-        if (!aIsOwn && bIsOwn) return 1;
-        
-        // Then sort by created date (newest first)
-        return new Date(b.created_at || 0) - new Date(a.created_at || 0);
-      });
+      // Check if we should sort by rating
+      const urlParams = new URLSearchParams(window.location.search);
+      const sortBy = urlParams.get('sort');
+      
+      let sortedRecipes;
+      if (sortBy === 'rating') {
+        // Sort by rating (highest first)
+        sortedRecipes = response.data.sort((a, b) => {
+          const aRating = a.avg_rating || 0;
+          const bRating = b.avg_rating || 0;
+          return bRating - aRating;
+        });
+      } else {
+        // Default sort: own recipes first, then by created date
+        sortedRecipes = response.data.sort((a, b) => {
+          const aIsOwn = a.author === sessionId;
+          const bIsOwn = b.author === sessionId;
+          
+          // Own recipes first
+          if (aIsOwn && !bIsOwn) return -1;
+          if (!aIsOwn && bIsOwn) return 1;
+          
+          // Then sort by created date (newest first)
+          return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+        });
+      }
       
       setRecipes(sortedRecipes);
     } catch (error) {
