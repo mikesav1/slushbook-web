@@ -439,6 +439,36 @@ const RecipeDetailPage = ({ sessionId }) => {
                   <span className="text-sm font-medium">Slet Opskrift</span>
                 </button>
               )}
+              
+              {/* Toggle Free/Pro - Only for admin */}
+              {isAdmin && (
+                <button
+                  onClick={async () => {
+                    try {
+                      const response = await axios.patch(
+                        `${API}/admin/recipes/${id}/toggle-free`,
+                        {},
+                        { withCredentials: true }
+                      );
+                      toast.success(response.data.message);
+                      // Refresh recipe to show new status
+                      fetchRecipe();
+                    } catch (error) {
+                      console.error('Error toggling free status:', error);
+                      toast.error('Kunne ikke ændre status');
+                    }
+                  }}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                    recipe.is_free 
+                      ? 'bg-green-100 hover:bg-green-200 text-green-700' 
+                      : 'bg-yellow-100 hover:bg-yellow-200 text-yellow-700'
+                  }`}
+                >
+                  <span className="text-sm font-medium">
+                    {recipe.is_free ? '✓ Gratis for gæster' : '🔒 Kun Pro'}
+                  </span>
+                </button>
+              )}
             </div>
           </div>
 
