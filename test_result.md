@@ -320,7 +320,8 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus: []
+  current_focus:
+    - "Ulla Recipe Visibility Issue - Pending Recipes Not Shown"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
