@@ -352,6 +352,30 @@ frontend:
         agent: "main"
         comment: "Machine CRUD operations fully functional. Added is_system field to Machine model. Edit and delete buttons now display correctly for user-created machines. Annuller (Cancel) button working. Dialog is scrollable for mobile. Logout now redirects to login page. User feedback issues resolved."
 
+  - task: "Free Alcohol Recipes Visible for Guests"
+    implemented: true
+    working: true
+    file: "frontend/src/pages/RecipesPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ VERIFIED: Free alcohol recipes with 18+ badges are now visible to guest users (not logged in). Successfully found all 3 expected alcohol recipes: Margarita Ice (18+), Piña Colada Slush (18+), and Mojito Slush (18+). The alcoholFilter default change from 'none' to 'both' in RecipesPage.js is working correctly. Guests can now see free alcohol recipes without being blocked by Pro lock. Total of 36 recipes displayed to guests, including 3 alcohol recipes with proper 18+ badges."
+
+  - task: "Admin Sandbox Shows User Recipes"
+    implemented: true
+    working: true
+    file: "frontend/src/pages/AdminSandboxPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ VERIFIED: Admin sandbox properly displays user-created recipes with approval status tabs. Successfully logged in as admin (kimesav@gmail.com/admin123) and confirmed sandbox shows 11 total recipes across tabs: Alle (11), Afventer (0), Godkendte (11), Afviste (0). All tabs (Pending, All, Approved, Rejected) are working correctly. The admin/pending-recipes endpoint update is functioning as expected, returning ALL user recipes for admin review. Admin can properly manage recipe approval workflow."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
