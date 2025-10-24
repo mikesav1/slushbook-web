@@ -330,13 +330,13 @@ const Navigation = () => {
             )}
           </div>
         ) : (
-          <button
-            onClick={() => navigate("/settings")}
-            className="p-2 text-white hover:bg-white/10 rounded-lg"
-            data-testid="mobile-menu-button"
+          <Link
+            to="/login"
+            className="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-white/90 font-medium text-sm"
+            data-testid="mobile-login-button"
           >
-            <FaCog size={24} />
-          </button>
+            Log ind
+          </Link>
         )}
       </div>
     </nav>
