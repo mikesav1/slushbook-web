@@ -13,6 +13,7 @@ import uuid
 from datetime import datetime, timezone, timedelta
 import shutil
 import httpx
+import subprocess
 
 # Import auth module
 from auth import (
@@ -25,6 +26,14 @@ from auth import (
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
+
+# Start redirect-service if not running
+try:
+    startup_script = ROOT_DIR / 'start_redirect_service.sh'
+    if startup_script.exists():
+        subprocess.run(['bash', str(startup_script)], check=False)
+except Exception as e:
+    print(f"Warning: Could not start redirect-service: {e}")
 
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
