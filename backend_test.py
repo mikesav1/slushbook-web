@@ -1380,13 +1380,17 @@ test,data,here"""
                 
                 if regular_login_response.status_code == 200:
                     regular_session_token = regular_login_response.json().get("session_token")
-                    regular_headers = {"Authorization": f"Bearer {regular_session_token}"}
                     
-                    # Try to delete admin user as regular user
-                    unauthorized_delete_response = self.session.delete(
-                        f"{BASE_URL}/admin/members/{admin_user_id}",
-                        headers=regular_headers
-                    )
+                    # Use a fresh session for regular user
+                    regular_session = requests.Session()
+                    regular_login_response2 = regular_session.post(f"{BASE_URL}/auth/login", json={
+                        "email": regular_user_email,
+                        "password": "regular123"
+                    })
+                    
+                    if regular_login_response2.status_code == 200:
+                        # Try to delete admin user as regular user
+                        unauthorized_delete_response = regular_session.delete(f"{BASE_URL}/admin/members/{admin_user_id}")
                     
                     if unauthorized_delete_response.status_code == 403:
                         self.log("✅ Non-admin user correctly forbidden from deleting (403)")
