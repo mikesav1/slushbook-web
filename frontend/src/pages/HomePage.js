@@ -139,6 +139,12 @@ const HomePage = ({ sessionId }) => {
                 >
                   Gennemse alle
                 </Link>
+                <Link
+                  to="/brix-info"
+                  className="px-8 py-4 bg-gradient-to-r from-blue-400 to-blue-500 text-white rounded-full hover:from-blue-500 hover:to-blue-600 font-semibold text-lg shadow-lg transition-all transform hover:scale-105"
+                >
+                  Læs om Brix
+                </Link>
               </div>
             </div>
           </div>
