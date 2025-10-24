@@ -252,6 +252,18 @@ backend:
         agent: "testing"
         comment: "COMPREHENSIVE TESTING COMPLETED: Admin member deletion functionality fully tested and working correctly. ✅ DELETE Endpoint (DELETE /api/admin/members/{user_id}): Endpoint exists and works correctly with proper admin authentication ✅ Admin Authentication: Requires admin role, correctly rejects non-admin users (403) ✅ Self-Deletion Prevention: Admin cannot delete themselves, returns 400 with Danish message 'Du kan ikke slette dig selv' ✅ Error Handling: Non-existent user returns 404, unauthorized access returns 403 ✅ Data Cleanup Verification: All user data properly cleaned up after deletion including user_sessions, recipes, favorites, pantry_items, shopping_list, and machines collections ✅ Member List Verification: Deleted users correctly removed from GET /api/admin/members response ✅ Complete Test Flow: Created test users, added test data (machines, shopping lists), deleted users as admin, verified cleanup. All 7 test scenarios passed successfully. Member deletion functionality is fully functional and ready for production use."
 
+  - task: "Recipe Delete Button Visibility Access Control"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "COMPREHENSIVE DELETE BUTTON VISIBILITY TESTING COMPLETED: ✅ Recipe Detail Endpoint Testing: Verified GET /api/recipes/{recipe_id} returns author information for all user types (guest, admin, pro user). ✅ Access Control Logic Verified: Guest user (isAdmin=false, isAuthor=false) → NO delete button. Admin user (isAdmin=true) → SHOW delete button regardless of authorship. Pro user not author (isAdmin=false, isAuthor=false) → NO delete button. Pro user is author (isAdmin=false, isAuthor=true) → SHOW delete button. ✅ Backend Data Sufficiency: Backend provides required 'author' field in recipe responses for frontend decision making. ✅ Authentication Context: Frontend can get user context (role, email, id) from /api/auth/me endpoint. ✅ Frontend Implementation Logic: (user.role === 'admin') OR (recipe.author === user.email) OR (recipe.author === user.id). ⚠️ IMPORTANT FINDING: Backend currently uses user.id as recipe author, not user.email. Frontend logic must account for both user.id and user.email comparison for proper delete button visibility. All test scenarios passed successfully - backend provides correct data for frontend access control decisions."
+
 frontend:
   - task: "Fix 'Add to list' functionality for ingredients with missing category_key"
     implemented: true
