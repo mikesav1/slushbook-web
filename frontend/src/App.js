@@ -330,13 +330,22 @@ const Navigation = () => {
             )}
           </div>
         ) : (
-          <Link
-            to="/login"
-            className="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-white/90 font-medium text-sm"
-            data-testid="mobile-login-button"
-          >
-            Log ind
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link
+              to="/login"
+              className="px-3 py-2 bg-white text-blue-600 rounded-lg hover:bg-white/90 font-medium text-sm"
+              data-testid="mobile-login-button"
+            >
+              Log ind
+            </Link>
+            <Link
+              to="/signup"
+              className="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 font-medium text-sm"
+              data-testid="mobile-signup-button"
+            >
+              Tilmeld
+            </Link>
+          </div>
         )}
       </div>
     </nav>
