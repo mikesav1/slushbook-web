@@ -11,7 +11,7 @@ import uuid
 from datetime import datetime, timezone, timedelta
 
 # Configuration
-BASE_URL = "https://slushbook.itopgaver.dk/api"  # DEPLOYED environment for database verification
+BASE_URL = "https://flavor-fix.preview.emergentagent.com/api"  # Preview environment for testing
 TEST_EMAIL = f"test.user.{int(time.time())}@example.com"
 TEST_PASSWORD = "testpass123"
 TEST_NAME = "Test User"
