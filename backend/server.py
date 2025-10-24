@@ -1309,15 +1309,24 @@ async def get_recipes(
     # Get current user's own recipes (private + pending + rejected) if logged in
     own_recipes = []
     if session_id:
+        # Get current user's user_id to query by author field as well
+        user = await db.users.find_one({"id": session_id})
+        user_id = user.get("id") if user else None
+        
+        # Build query to match EITHER session_id OR author (for backward compatibility)
+        user_query = {"$or": [{"session_id": session_id}]}
+        if user_id:
+            user_query["$or"].append({"author": user_id})
+        
         # Get user's private recipes (not published)
         private_recipes = await db.user_recipes.find(
-            {**query, "session_id": session_id, "is_published": {"$ne": True}},
+            {**query, **user_query, "is_published": {"$ne": True}},
             {"_id": 0}
         ).to_list(1000)
         
         # Get user's pending/rejected published recipes (so they can see their own submissions)
         pending_recipes = await db.user_recipes.find(
-            {**query, "session_id": session_id, "is_published": True, "approval_status": {"$in": ["pending", "rejected"]}},
+            {**query, **user_query, "is_published": True, "approval_status": {"$in": ["pending", "rejected"]}},
             {"_id": 0}
         ).to_list(1000)
         
