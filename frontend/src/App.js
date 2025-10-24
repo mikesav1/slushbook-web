@@ -368,16 +368,16 @@ const AppContent = ({ sessionId }) => {
             <Route path="/profile" element={<ProfilePage />} />
 
             {/* App Routes */}
-            <Route path="/" element={<HomePage sessionId={sessionId} />} />
-            <Route path="/recipes" element={<RecipesPage sessionId={sessionId} />} />
-            <Route path="/recipe/:id" element={<RecipeDetailPage sessionId={sessionId} />} />
-            <Route path="/pantry" element={<PantryPage sessionId={sessionId} />} />
-            <Route path="/match" element={<MatchFinderPage sessionId={sessionId} />} />
-            <Route path="/shopping" element={<ShoppingListPage sessionId={sessionId} />} />
-            <Route path="/favorites" element={<FavoritesPage sessionId={sessionId} />} />
-            <Route path="/settings" element={<SettingsPage sessionId={sessionId} />} />
-            <Route path="/add-recipe" element={<AddRecipePage sessionId={sessionId} />} />
-            <Route path="/edit-recipe/:id" element={<EditRecipePage sessionId={sessionId} />} />
+            <Route path="/" element={<HomePage sessionId={effectiveSessionId} />} />
+            <Route path="/recipes" element={<RecipesPage sessionId={effectiveSessionId} />} />
+            <Route path="/recipe/:id" element={<RecipeDetailPage sessionId={effectiveSessionId} />} />
+            <Route path="/pantry" element={<PantryPage sessionId={effectiveSessionId} />} />
+            <Route path="/match" element={<MatchFinderPage sessionId={effectiveSessionId} />} />
+            <Route path="/shopping" element={<ShoppingListPage sessionId={effectiveSessionId} />} />
+            <Route path="/favorites" element={<FavoritesPage sessionId={effectiveSessionId} />} />
+            <Route path="/settings" element={<SettingsPage sessionId={effectiveSessionId} />} />
+            <Route path="/add-recipe" element={<AddRecipePage sessionId={effectiveSessionId} />} />
+            <Route path="/edit-recipe/:id" element={<EditRecipePage sessionId={effectiveSessionId} />} />
             <Route path="/members" element={<MembersPage />} />
             <Route path="/brix-info" element={<BrixInfoPage />} />
             <Route path="/admin" element={<AdminPage sessionId={sessionId} />} />
