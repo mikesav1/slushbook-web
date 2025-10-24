@@ -1297,8 +1297,18 @@ async def get_recipes(
             {"tags": {"$regex": search, "$options": "i"}}
         ]
     
-    # Get system recipes (always published)
-    system_recipes = await db.recipes.find({**query, "author": "system"}, {"_id": 0}).to_list(1000)
+    # Get system recipes with filtering based on user role and is_free status
+    # Guests can only see recipes with is_free=true OR recipes without is_free field (legacy support)
+    # Pro/Admin users can see all recipes
+    if user and user.role in ["pro", "editor", "admin"]:
+        # Pro/Admin users see all system recipes
+        system_recipes = await db.recipes.find({**query, "author": "system"}, {"_id": 0}).to_list(1000)
+    else:
+        # Guest users only see free recipes
+        system_recipes = await db.recipes.find(
+            {**query, "author": "system", "$or": [{"is_free": True}, {"is_free": {"$exists": False}}]},
+            {"_id": 0}
+        ).to_list(1000)
     
     # Get published user recipes (is_published = true AND approved)
     published_user_recipes = await db.user_recipes.find(
