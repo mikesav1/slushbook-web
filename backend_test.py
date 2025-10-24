@@ -1529,7 +1529,8 @@ test,data,here"""
             ("Redirect Admin Get Mapping", self.test_redirect_admin_get_mapping),
             ("Redirect Public Redirect", self.test_redirect_public_redirect),
             ("Redirect Admin Link Health", self.test_redirect_admin_link_health),
-            ("Redirect Non-Existent Mapping", self.test_redirect_non_existent_mapping)
+            ("Redirect Non-Existent Mapping", self.test_redirect_non_existent_mapping),
+            ("Admin Member Deletion", self.test_admin_member_deletion)
         ]
         
         results = {}
