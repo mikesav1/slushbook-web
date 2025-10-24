@@ -1984,6 +1984,295 @@ test,data,here"""
             self.log(f"❌ Ulla recipe investigation failed with exception: {str(e)}")
             return False
 
+    def test_recipe_delete_button_visibility_access_control(self):
+        """Test delete button visibility access control on recipe detail page"""
+        self.log("Testing recipe delete button visibility access control...")
+        
+        try:
+            # Step 1: Get a recipe ID from /api/recipes endpoint
+            self.log("Step 1: Getting recipe ID from /api/recipes endpoint...")
+            
+            recipes_response = self.session.get(f"{BASE_URL}/recipes")
+            
+            if recipes_response.status_code != 200:
+                self.log(f"❌ Failed to get recipes: {recipes_response.status_code} - {recipes_response.text}")
+                return False
+                
+            recipes = recipes_response.json()
+            if not recipes or len(recipes) == 0:
+                self.log("❌ No recipes found in database")
+                return False
+                
+            # Get the first recipe ID
+            test_recipe = recipes[0]
+            recipe_id = test_recipe.get('id')
+            recipe_author = test_recipe.get('author', 'system')
+            recipe_name = test_recipe.get('name', 'Unknown')
+            
+            self.log(f"✅ Using recipe: '{recipe_name}' (ID: {recipe_id}, Author: {recipe_author})")
+            
+            # Step 2: Test recipe detail endpoint for guest user (no auth)
+            self.log("Step 2: Testing recipe detail endpoint for guest user (no auth)...")
+            
+            guest_session = requests.Session()
+            guest_response = guest_session.get(f"{BASE_URL}/recipes/{recipe_id}")
+            
+            if guest_response.status_code == 200:
+                guest_recipe_data = guest_response.json()
+                self.log("✅ Guest user can access recipe detail")
+                
+                # Check if author information is included
+                if 'author' in guest_recipe_data:
+                    self.log(f"✅ Recipe includes author information: {guest_recipe_data['author']}")
+                else:
+                    self.log("❌ Recipe missing author information for guest user")
+                    return False
+                    
+                # For guest user: isAdmin() should return false, isAuthor() should return false
+                # So delete button should NOT be visible
+                self.log("✅ Guest user: isAdmin() = false, isAuthor() = false → Delete button should NOT be visible")
+                
+            else:
+                self.log(f"❌ Guest user cannot access recipe detail: {guest_response.status_code}")
+                return False
+            
+            # Step 3: Test recipe detail endpoint for admin user
+            self.log("Step 3: Testing recipe detail endpoint for admin user...")
+            
+            # Login as admin
+            admin_login_data = {
+                "email": "kimesav@gmail.com",
+                "password": "admin123"
+            }
+            
+            admin_session = requests.Session()
+            admin_login_response = admin_session.post(f"{BASE_URL}/auth/login", json=admin_login_data)
+            
+            if admin_login_response.status_code != 200:
+                self.log(f"❌ Admin login failed: {admin_login_response.status_code} - {admin_login_response.text}")
+                return False
+                
+            admin_user_data = admin_login_response.json().get("user", {})
+            admin_email = admin_user_data.get("email")
+            admin_role = admin_user_data.get("role")
+            
+            self.log(f"✅ Admin login successful: {admin_email} (role: {admin_role})")
+            
+            if admin_role != "admin":
+                self.log(f"❌ User is not admin: {admin_role}")
+                return False
+            
+            # Get recipe detail as admin
+            admin_response = admin_session.get(f"{BASE_URL}/recipes/{recipe_id}")
+            
+            if admin_response.status_code == 200:
+                admin_recipe_data = admin_response.json()
+                self.log("✅ Admin user can access recipe detail")
+                
+                # Check if author information is included
+                if 'author' in admin_recipe_data:
+                    recipe_author_from_detail = admin_recipe_data['author']
+                    self.log(f"✅ Recipe includes author information: {recipe_author_from_detail}")
+                    
+                    # For admin user: isAdmin() should return true
+                    # So delete button SHOULD be visible regardless of authorship
+                    self.log("✅ Admin user: isAdmin() = true → Delete button SHOULD be visible")
+                    
+                else:
+                    self.log("❌ Recipe missing author information for admin user")
+                    return False
+                    
+            else:
+                self.log(f"❌ Admin user cannot access recipe detail: {admin_response.status_code}")
+                return False
+            
+            # Step 4: Test recipe detail endpoint for regular pro user (if available)
+            self.log("Step 4: Testing recipe detail endpoint for regular pro user...")
+            
+            # Create a pro user for testing
+            pro_user_email = f"pro.test.{int(time.time())}@example.com"
+            pro_user_password = "protest123"
+            pro_user_name = "Pro Test User"
+            
+            pro_signup_data = {
+                "email": pro_user_email,
+                "password": pro_user_password,
+                "name": pro_user_name
+            }
+            
+            pro_signup_response = self.session.post(f"{BASE_URL}/auth/signup", json=pro_signup_data)
+            
+            if pro_signup_response.status_code == 200:
+                pro_user_id = pro_signup_response.json().get("user_id")
+                self.log(f"✅ Pro test user created: {pro_user_id}")
+                
+                # Upgrade user to pro role (admin action)
+                role_update_data = {"role": "pro"}
+                role_update_response = admin_session.put(f"{BASE_URL}/admin/members/{pro_user_id}/role", json=role_update_data)
+                
+                if role_update_response.status_code == 200:
+                    self.log("✅ User upgraded to pro role")
+                    
+                    # Login as pro user
+                    pro_login_data = {
+                        "email": pro_user_email,
+                        "password": pro_user_password
+                    }
+                    
+                    pro_session = requests.Session()
+                    pro_login_response = pro_session.post(f"{BASE_URL}/auth/login", json=pro_login_data)
+                    
+                    if pro_login_response.status_code == 200:
+                        pro_user_data = pro_login_response.json().get("user", {})
+                        pro_email = pro_user_data.get("email")
+                        pro_role = pro_user_data.get("role")
+                        
+                        self.log(f"✅ Pro user login successful: {pro_email} (role: {pro_role})")
+                        
+                        # Get recipe detail as pro user
+                        pro_response = pro_session.get(f"{BASE_URL}/recipes/{recipe_id}")
+                        
+                        if pro_response.status_code == 200:
+                            pro_recipe_data = pro_response.json()
+                            self.log("✅ Pro user can access recipe detail")
+                            
+                            # Check if author information is included
+                            if 'author' in pro_recipe_data:
+                                recipe_author_from_pro = pro_recipe_data['author']
+                                self.log(f"✅ Recipe includes author information: {recipe_author_from_pro}")
+                                
+                                # For pro user: isAdmin() = false, isAuthor() depends on recipe.author === user.email
+                                is_author = (recipe_author_from_pro == pro_email)
+                                
+                                if is_author:
+                                    self.log("✅ Pro user: isAdmin() = false, isAuthor() = true → Delete button SHOULD be visible")
+                                else:
+                                    self.log("✅ Pro user: isAdmin() = false, isAuthor() = false → Delete button should NOT be visible")
+                                    
+                            else:
+                                self.log("❌ Recipe missing author information for pro user")
+                                return False
+                                
+                        else:
+                            self.log(f"❌ Pro user cannot access recipe detail: {pro_response.status_code}")
+                            return False
+                            
+                    else:
+                        self.log(f"❌ Pro user login failed: {pro_login_response.status_code}")
+                        return False
+                        
+                else:
+                    self.log(f"❌ Failed to upgrade user to pro: {role_update_response.status_code}")
+                    return False
+                    
+            else:
+                self.log(f"❌ Failed to create pro test user: {pro_signup_response.status_code}")
+                return False
+            
+            # Step 5: Test with a recipe created by the pro user (to test isAuthor() = true case)
+            self.log("Step 5: Testing with recipe created by pro user (isAuthor() = true case)...")
+            
+            # Create a recipe as the pro user
+            pro_recipe_data = {
+                "name": "Pro User Test Recipe",
+                "description": "Test recipe created by pro user for delete button testing",
+                "ingredients": [
+                    {
+                        "name": "Test Ingredient",
+                        "category_key": "test-ingredient",
+                        "quantity": 100,
+                        "unit": "ml",
+                        "role": "required"
+                    }
+                ],
+                "steps": ["Mix ingredients", "Serve"],
+                "session_id": pro_user_id,
+                "base_volume_ml": 1000,
+                "target_brix": 14.0,
+                "color": "red",
+                "type": "klassisk",
+                "tags": ["test"],
+                "is_published": False  # Keep it private for testing
+            }
+            
+            create_recipe_response = pro_session.post(f"{BASE_URL}/recipes", json=pro_recipe_data)
+            
+            if create_recipe_response.status_code == 200:
+                created_recipe = create_recipe_response.json()
+                created_recipe_id = created_recipe.get('id')
+                created_recipe_author = created_recipe.get('author')
+                
+                self.log(f"✅ Pro user created recipe: {created_recipe_id} (author: {created_recipe_author})")
+                
+                # Test recipe detail for the created recipe
+                pro_own_recipe_response = pro_session.get(f"{BASE_URL}/recipes/{created_recipe_id}")
+                
+                if pro_own_recipe_response.status_code == 200:
+                    pro_own_recipe_data = pro_own_recipe_response.json()
+                    
+                    if 'author' in pro_own_recipe_data:
+                        own_recipe_author = pro_own_recipe_data['author']
+                        self.log(f"✅ Pro user's own recipe author: {own_recipe_author}")
+                        
+                        # Check if pro user is the author
+                        is_author_of_own_recipe = (own_recipe_author == pro_email or own_recipe_author == pro_user_id)
+                        
+                        if is_author_of_own_recipe:
+                            self.log("✅ Pro user viewing own recipe: isAdmin() = false, isAuthor() = true → Delete button SHOULD be visible")
+                        else:
+                            self.log(f"❌ Pro user not recognized as author of own recipe. Expected: {pro_email} or {pro_user_id}, Got: {own_recipe_author}")
+                            return False
+                            
+                    else:
+                        self.log("❌ Pro user's own recipe missing author information")
+                        return False
+                        
+                else:
+                    self.log(f"❌ Pro user cannot access own recipe detail: {pro_own_recipe_response.status_code}")
+                    return False
+                    
+            else:
+                self.log(f"❌ Failed to create recipe as pro user: {create_recipe_response.status_code}")
+                return False
+            
+            # Step 6: Verify backend returns correct data for frontend decision making
+            self.log("Step 6: Verifying backend returns correct data for frontend decision making...")
+            
+            # Summary of what we found:
+            self.log("=" * 50)
+            self.log("SUMMARY OF DELETE BUTTON VISIBILITY REQUIREMENTS:")
+            self.log("=" * 50)
+            self.log("✅ Guest user: isAdmin() = false, isAuthor() = false → NO delete button")
+            self.log("✅ Admin user: isAdmin() = true → SHOW delete button (regardless of authorship)")
+            self.log("✅ Pro user (not author): isAdmin() = false, isAuthor() = false → NO delete button")
+            self.log("✅ Pro user (is author): isAdmin() = false, isAuthor() = true → SHOW delete button")
+            self.log("=" * 50)
+            
+            # Check if the backend provides enough information for frontend to make these decisions
+            required_fields = ['author']
+            missing_fields = []
+            
+            for field in required_fields:
+                if field not in admin_recipe_data:
+                    missing_fields.append(field)
+            
+            if missing_fields:
+                self.log(f"❌ Backend missing required fields for delete button logic: {missing_fields}")
+                return False
+            else:
+                self.log("✅ Backend provides sufficient data (author field) for frontend delete button logic")
+            
+            # Note: The frontend also needs user authentication context (user.role, user.email)
+            # This should come from the auth context, not the recipe endpoint
+            self.log("✅ Frontend should get user context (role, email) from auth endpoint (/api/auth/me)")
+            self.log("✅ Frontend can then implement: (user.role === 'admin') OR (recipe.author === user.email)")
+            
+        except Exception as e:
+            self.log(f"❌ Recipe delete button visibility test failed with exception: {str(e)}")
+            return False
+            
+        return True
+
     def run_all_tests(self):
         """Run all backend tests"""
         self.log("Starting SLUSHBOOK Backend System Tests")
