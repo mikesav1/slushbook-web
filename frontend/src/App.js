@@ -380,10 +380,10 @@ const AppContent = ({ sessionId }) => {
             <Route path="/edit-recipe/:id" element={<EditRecipePage sessionId={effectiveSessionId} />} />
             <Route path="/members" element={<MembersPage />} />
             <Route path="/brix-info" element={<BrixInfoPage />} />
-            <Route path="/admin" element={<AdminPage sessionId={sessionId} />} />
-            <Route path="/admin/sandbox" element={<AdminSandboxPage sessionId={sessionId} />} />
-            <Route path="/admin/ingredients" element={<AdminIngredientsPage />} />
-            <Route path="/admin/links" element={<AdminLinksPage />} />
+            <Route path="/admin" element={<AdminPage sessionId={effectiveSessionId} />} />
+            <Route path="/admin/sandbox" element={<AdminSandboxPage sessionId={effectiveSessionId} />} />
+            <Route path="/admin/ingredients" element={<AdminIngredientsPage sessionId={effectiveSessionId} />} />
+            <Route path="/admin/links" element={<AdminLinksPage sessionId={effectiveSessionId} />} />
           </Routes>
         </main>
       </div>
