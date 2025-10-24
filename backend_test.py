@@ -2269,10 +2269,11 @@ test,data,here"""
             else:
                 self.log("✅ Backend provides sufficient data (author field) for frontend delete button logic")
             
-            # Note: The frontend also needs user authentication context (user.role, user.email)
+            # Note: The frontend also needs user authentication context (user.role, user.email, user.id)
             # This should come from the auth context, not the recipe endpoint
-            self.log("✅ Frontend should get user context (role, email) from auth endpoint (/api/auth/me)")
-            self.log("✅ Frontend can then implement: (user.role === 'admin') OR (recipe.author === user.email)")
+            self.log("✅ Frontend should get user context (role, email, id) from auth endpoint (/api/auth/me)")
+            self.log("✅ Frontend can then implement: (user.role === 'admin') OR (recipe.author === user.email) OR (recipe.author === user.id)")
+            self.log("⚠️  IMPORTANT: Backend currently uses user.id as recipe author, not user.email")
             
         except Exception as e:
             self.log(f"❌ Recipe delete button visibility test failed with exception: {str(e)}")
