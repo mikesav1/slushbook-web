@@ -26,9 +26,10 @@ const AdminSandboxPage = ({ sessionId }) => {
   const fetchAllRecipes = async () => {
     try {
       setLoading(true);
-      // Fetch all user recipes
-      const response = await axios.get(`${API}/recipes?session_id=${sessionId}`);
-      // Filter to only show recipes from other users (not admin's own)
+      // Fetch all user recipes with approval_status (pending, approved, rejected) for admin
+      const response = await axios.get(`${API}/admin/pending-recipes`, {
+        withCredentials: true
+      });
       setAllRecipes(response.data);
     } catch (error) {
       console.error('Error fetching recipes:', error);
