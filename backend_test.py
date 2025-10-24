@@ -2505,6 +2505,193 @@ test,data,here"""
             self.log(f"Traceback: {traceback.format_exc()}")
             return False
 
+    def test_shopping_list_debug_mojito_slush(self):
+        """Debug shopping list issue - items not appearing after 'Tilføj til liste' for Mojito Slush recipe"""
+        self.log("Testing shopping list debug scenario for Mojito Slush recipe...")
+        
+        try:
+            # Step 1: Login as kimesav@gmail.com / admin123
+            self.log("Step 1: Login as kimesav@gmail.com / admin123...")
+            login_data = {
+                "email": "kimesav@gmail.com",
+                "password": "admin123"
+            }
+            
+            login_response = self.session.post(f"{BASE_URL}/auth/login", json=login_data)
+            
+            if login_response.status_code != 200:
+                self.log(f"❌ Login failed: {login_response.status_code} - {login_response.text}")
+                return False
+                
+            login_result = login_response.json()
+            session_id = login_result.get("session_token")
+            user_data = login_result.get("user", {})
+            
+            self.log(f"✅ Login successful - Session ID: {session_id[:20]}...")
+            self.log(f"✅ User: {user_data.get('name')} ({user_data.get('email')}) - Role: {user_data.get('role')}")
+            
+            # Step 2: Get the session_id from login response (already done above)
+            self.log(f"Step 2: Session ID obtained: {session_id[:20]}...")
+            
+            # Step 3: Navigate to recipe "Mojito Slush (18+)" (id: 6a5e1c1c-3fb9-4c73-a2c9-2bbfe25c1023)
+            self.log("Step 3: Getting Mojito Slush recipe details...")
+            mojito_recipe_id = "6a5e1c1c-3fb9-4c73-a2c9-2bbfe25c1023"
+            
+            recipe_response = self.session.get(f"{BASE_URL}/recipes/{mojito_recipe_id}?session_id={session_id}")
+            
+            if recipe_response.status_code != 200:
+                self.log(f"❌ Failed to get Mojito Slush recipe: {recipe_response.status_code} - {recipe_response.text}")
+                # Try to find the recipe by searching for it
+                self.log("Searching for Mojito Slush recipe...")
+                search_response = self.session.get(f"{BASE_URL}/recipes?search=Mojito&session_id={session_id}")
+                
+                if search_response.status_code == 200:
+                    recipes = search_response.json()
+                    mojito_recipe = None
+                    for recipe in recipes:
+                        if "Mojito" in recipe.get("name", "") and "18+" in recipe.get("name", ""):
+                            mojito_recipe = recipe
+                            mojito_recipe_id = recipe.get("id")
+                            self.log(f"✅ Found Mojito Slush recipe with ID: {mojito_recipe_id}")
+                            break
+                    
+                    if not mojito_recipe:
+                        self.log("❌ Mojito Slush recipe not found in search results")
+                        return False
+                else:
+                    self.log(f"❌ Recipe search failed: {search_response.status_code}")
+                    return False
+            else:
+                mojito_recipe = recipe_response.json()
+                self.log(f"✅ Mojito Slush recipe found: {mojito_recipe.get('name')}")
+            
+            # Step 4: Get recipe details to see ingredients
+            self.log("Step 4: Analyzing recipe ingredients...")
+            ingredients = mojito_recipe.get("ingredients", [])
+            required_ingredients = [ing for ing in ingredients if ing.get("role") == "required"]
+            
+            self.log(f"✅ Recipe has {len(ingredients)} total ingredients, {len(required_ingredients)} required")
+            
+            for i, ingredient in enumerate(required_ingredients):
+                self.log(f"  Ingredient {i+1}: {ingredient.get('name')} - {ingredient.get('quantity')} {ingredient.get('unit')} - Category: '{ingredient.get('category_key')}'")
+            
+            # Step 5: Simulate "Tilføj til liste" by POSTing each required ingredient to /api/shopping-list
+            self.log("Step 5: Simulating 'Tilføj til liste' - adding each required ingredient...")
+            
+            added_items = []
+            for ingredient in required_ingredients:
+                shopping_item = {
+                    "session_id": session_id,
+                    "ingredient_name": ingredient.get("name"),
+                    "category_key": ingredient.get("category_key", ""),
+                    "quantity": ingredient.get("quantity"),
+                    "unit": ingredient.get("unit"),
+                    "linked_recipe_id": mojito_recipe_id,
+                    "linked_recipe_name": mojito_recipe.get("name")
+                }
+                
+                self.log(f"  Adding: {ingredient.get('name')} ({ingredient.get('quantity')} {ingredient.get('unit')})")
+                
+                add_response = self.session.post(f"{BASE_URL}/shopping-list", json=shopping_item)
+                
+                if add_response.status_code == 200:
+                    added_item = add_response.json()
+                    added_items.append(added_item)
+                    self.log(f"  ✅ Added successfully - Item ID: {added_item.get('id')}")
+                else:
+                    self.log(f"  ❌ Failed to add {ingredient.get('name')}: {add_response.status_code} - {add_response.text}")
+                    return False
+            
+            self.log(f"✅ Successfully added {len(added_items)} ingredients to shopping list")
+            
+            # Step 6: GET /api/shopping-list/{session_id} to verify items are stored
+            self.log("Step 6: Verifying items are stored in shopping list...")
+            
+            get_shopping_list_response = self.session.get(f"{BASE_URL}/shopping-list/{session_id}")
+            
+            if get_shopping_list_response.status_code != 200:
+                self.log(f"❌ Failed to get shopping list: {get_shopping_list_response.status_code} - {get_shopping_list_response.text}")
+                return False
+            
+            shopping_list_items = get_shopping_list_response.json()
+            self.log(f"✅ Shopping list retrieved - Total items: {len(shopping_list_items)}")
+            
+            # Find items from Mojito Slush recipe
+            mojito_items = [item for item in shopping_list_items if item.get("linked_recipe_id") == mojito_recipe_id]
+            self.log(f"✅ Items from Mojito Slush recipe: {len(mojito_items)}")
+            
+            # Verify each added ingredient is in the shopping list
+            for ingredient in required_ingredients:
+                found_item = None
+                for item in mojito_items:
+                    if item.get("ingredient_name") == ingredient.get("name"):
+                        found_item = item
+                        break
+                
+                if found_item:
+                    self.log(f"  ✅ Found: {ingredient.get('name')} - Quantity: {found_item.get('quantity')} {found_item.get('unit')}")
+                else:
+                    self.log(f"  ❌ Missing: {ingredient.get('name')}")
+                    return False
+            
+            # Step 7: Check if there's a session_id mismatch between adding and retrieving
+            self.log("Step 7: Checking for session_id consistency...")
+            
+            # Verify session_id in all retrieved items matches our login session_id
+            session_id_mismatches = []
+            for item in mojito_items:
+                item_session_id = item.get("session_id")
+                if item_session_id != session_id:
+                    session_id_mismatches.append({
+                        "item": item.get("ingredient_name"),
+                        "expected": session_id,
+                        "actual": item_session_id
+                    })
+            
+            if session_id_mismatches:
+                self.log(f"❌ Session ID mismatches found: {len(session_id_mismatches)}")
+                for mismatch in session_id_mismatches:
+                    self.log(f"  Item: {mismatch['item']} - Expected: {mismatch['expected'][:20]}..., Actual: {mismatch['actual'][:20]}...")
+                return False
+            else:
+                self.log("✅ All items have consistent session_id")
+            
+            # Additional verification: Test with different session_id to ensure isolation
+            self.log("Additional test: Verifying session isolation...")
+            
+            fake_session_id = "fake-session-123"
+            fake_shopping_list_response = self.session.get(f"{BASE_URL}/shopping-list/{fake_session_id}")
+            
+            if fake_shopping_list_response.status_code == 200:
+                fake_items = fake_shopping_list_response.json()
+                mojito_items_in_fake = [item for item in fake_items if item.get("linked_recipe_id") == mojito_recipe_id]
+                
+                if len(mojito_items_in_fake) == 0:
+                    self.log("✅ Session isolation working - no items found with fake session_id")
+                else:
+                    self.log(f"❌ Session isolation broken - found {len(mojito_items_in_fake)} items with fake session_id")
+                    return False
+            else:
+                self.log(f"✅ Fake session_id correctly handled: {fake_shopping_list_response.status_code}")
+            
+            # Summary
+            self.log("=" * 60)
+            self.log("SHOPPING LIST DEBUG TEST SUMMARY:")
+            self.log(f"✅ Login successful with session_id: {session_id[:20]}...")
+            self.log(f"✅ Mojito Slush recipe found with ID: {mojito_recipe_id}")
+            self.log(f"✅ {len(required_ingredients)} required ingredients identified")
+            self.log(f"✅ All {len(required_ingredients)} ingredients successfully added to shopping list")
+            self.log(f"✅ All {len(required_ingredients)} ingredients verified in shopping list retrieval")
+            self.log(f"✅ Session ID consistency verified - no mismatches")
+            self.log(f"✅ Session isolation verified - items not visible to other sessions")
+            self.log("=" * 60)
+            
+            return True
+            
+        except Exception as e:
+            self.log(f"❌ Shopping list debug test failed with exception: {str(e)}")
+            return False
+
     def run_all_tests(self):
         """Run all backend tests"""
         self.log("Starting SLUSHBOOK Backend System Tests")
