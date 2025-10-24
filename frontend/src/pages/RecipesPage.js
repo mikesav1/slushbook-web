@@ -10,7 +10,7 @@ const RecipesPage = ({ sessionId }) => {
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [alcoholFilter, setAlcoholFilter] = useState('none');
+  const [alcoholFilter, setAlcoholFilter] = useState('both'); // Changed from 'none' to 'both' to show all recipes including free alcohol recipes
   const [typeFilter, setTypeFilter] = useState('');
   const [showMyRecipes, setShowMyRecipes] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
