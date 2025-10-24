@@ -1323,7 +1323,7 @@ test,data,here"""
             # Step 5: Verify user is deleted from members list
             self.log("Step 5: Verifying user is deleted from members list...")
             
-            members_response = self.session.get(f"{BASE_URL}/admin/members", headers=admin_headers)
+            members_response = admin_session.get(f"{BASE_URL}/admin/members")
             
             if members_response.status_code == 200:
                 members = members_response.json()
