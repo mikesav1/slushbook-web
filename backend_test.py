@@ -11,7 +11,7 @@ import uuid
 from datetime import datetime, timezone, timedelta
 
 # Configuration
-BASE_URL = "https://slush-manager.preview.emergentagent.com/api"
+BASE_URL = "https://slushice-recipes.emergent.host/api"  # DEPLOYED environment for Ulla investigation
 TEST_EMAIL = f"test.user.{int(time.time())}@example.com"
 TEST_PASSWORD = "testpass123"
 TEST_NAME = "Test User"
