@@ -1464,10 +1464,7 @@ test,data,here"""
                     self.log("✅ Created test data for cleanup verification")
                     
                     # Now delete this user as admin
-                    cleanup_delete_response = self.session.delete(
-                        f"{BASE_URL}/admin/members/{cleanup_user_id}",
-                        headers=admin_headers
-                    )
+                    cleanup_delete_response = admin_session.delete(f"{BASE_URL}/admin/members/{cleanup_user_id}")
                     
                     if cleanup_delete_response.status_code == 200:
                         self.log("✅ Cleanup test user deleted successfully")
