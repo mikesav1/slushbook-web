@@ -8,6 +8,12 @@ if ! pgrep -f "node.*dist/index.js" > /dev/null; then
     echo "📦 Redirect-service not running, starting it..."
     cd /app/redirect-service
     
+    # Install dependencies if node_modules doesn't exist
+    if [ ! -d "node_modules" ]; then
+        echo "📦 Installing dependencies..."
+        yarn install --production=false
+    fi
+    
     # Build if dist folder doesn't exist
     if [ ! -d "dist" ]; then
         echo "🔨 Building redirect-service..."
