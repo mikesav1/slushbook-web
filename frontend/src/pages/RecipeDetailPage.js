@@ -415,20 +415,23 @@ const RecipeDetailPage = ({ sessionId }) => {
                   <span className="text-sm font-medium">Rediger</span>
                 </Link>
               )}
-              <button
-                onClick={toggleFavorite}
-                data-testid="toggle-favorite-button"
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-              >
-                {recipe.is_favorite ? (
-                  <FaHeart className="text-red-500" size={20} />
-                ) : (
-                  <FaRegHeart className="text-gray-600" size={20} />
-                )}
-                <span className="text-sm font-medium">
-                  {recipe.is_favorite ? 'Fjern favorit' : 'Tilføj favorit'}
-                </span>
-              </button>
+              {/* Tilføj favorit - Only for logged-in users */}
+              {user && (
+                <button
+                  onClick={toggleFavorite}
+                  data-testid="toggle-favorite-button"
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                >
+                  {recipe.is_favorite ? (
+                    <FaHeart className="text-red-500" size={20} />
+                  ) : (
+                    <FaRegHeart className="text-gray-600" size={20} />
+                  )}
+                  <span className="text-sm font-medium">
+                    {recipe.is_favorite ? 'Fjern favorit' : 'Tilføj favorit'}
+                  </span>
+                </button>
+              )}
               {/* Slet - Only for admin and recipe author */}
               {(isAdmin() || isAuthor()) && (
                 <button
