@@ -377,15 +377,26 @@ const AppContent = ({ sessionId }) => {
               <span className="text-xs font-medium">Liste</span>
             </Link>
             
-            {/* Match */}
+            {/* Pantry (Ingredienser) */}
             <Link
-              to="/match"
+              to="/pantry"
               className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
-                location.pathname === '/match' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
+                location.pathname === '/pantry' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
               }`}
             >
-              <FaMagic size={20} />
-              <span className="text-xs font-medium">Match</span>
+              <FaSeedling size={20} />
+              <span className="text-xs font-medium">Ingredienser</span>
+            </Link>
+            
+            {/* Favoritter */}
+            <Link
+              to="/recipes?filter=favorites"
+              className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
+                location.search.includes('favorites') ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
+              }`}
+            >
+              <FaHeart size={20} />
+              <span className="text-xs font-medium">Favoritter</span>
             </Link>
           </div>
         </div>
