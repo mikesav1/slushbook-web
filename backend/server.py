@@ -1306,15 +1306,24 @@ async def get_recipes(
         {"_id": 0}
     ).to_list(1000)
     
-    # Get current user's private recipes if logged in (include pending/rejected for creator)
-    private_user_recipes = []
+    # Get current user's own recipes (private + pending + rejected) if logged in
+    own_recipes = []
     if session_id:
-        private_user_recipes = await db.user_recipes.find(
+        # Get user's private recipes (not published)
+        private_recipes = await db.user_recipes.find(
             {**query, "session_id": session_id, "is_published": {"$ne": True}},
             {"_id": 0}
         ).to_list(1000)
+        
+        # Get user's pending/rejected published recipes (so they can see their own submissions)
+        pending_recipes = await db.user_recipes.find(
+            {**query, "session_id": session_id, "is_published": True, "approval_status": {"$in": ["pending", "rejected"]}},
+            {"_id": 0}
+        ).to_list(1000)
+        
+        own_recipes = private_recipes + pending_recipes
     
-    all_recipes = system_recipes + published_user_recipes + private_user_recipes
+    all_recipes = system_recipes + published_user_recipes + own_recipes
     
     # Parse datetime
     for recipe in all_recipes:
