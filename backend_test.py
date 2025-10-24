@@ -2884,23 +2884,23 @@ test,data,here"""
             return False
 
 def main():
-    """Run database verification tests"""
+    """Run shopping list debug test"""
     tester = BackendTester()
     
     print("=" * 80)
-    print("SLUSHBOOK DEPLOYED DATABASE VERIFICATION")
+    print("SLUSHBOOK SHOPPING LIST DEBUG TEST")
     print("=" * 80)
     print(f"Testing against: {BASE_URL}")
     print("=" * 80)
     
-    # Only run the database verification test
-    success = tester.test_deployed_database_verification()
+    # Run the shopping list debug test
+    success = tester.test_shopping_list_debug_mojito_slush()
     
     if success:
-        print("\n✅ DATABASE VERIFICATION: PASSED - Database has data")
+        print("\n✅ SHOPPING LIST DEBUG: PASSED - Backend working correctly")
         exit(0)
     else:
-        print("\n❌ DATABASE VERIFICATION: FAILED - Database appears empty")
+        print("\n❌ SHOPPING LIST DEBUG: FAILED - Issue found")
         exit(1)
 
 if __name__ == "__main__":
