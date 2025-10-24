@@ -1789,6 +1789,201 @@ test,data,here"""
             import traceback
             self.log(f"Traceback: {traceback.format_exc()}")
             return False
+
+    def test_ulla_recipe_investigation(self):
+        """Investigate why Ulla's newly created recipe is not showing up in sandbox or on her recipes page"""
+        self.log("=== INVESTIGATING ULLA'S RECIPE ISSUE ===")
+        
+        try:
+            # Step 1: Login as admin on deployed environment
+            self.log("Step 1: Logging in as admin on deployed environment...")
+            admin_login_data = {
+                "email": "kimesav@gmail.com",
+                "password": "admin123"
+            }
+            
+            admin_session = requests.Session()
+            admin_login_response = admin_session.post(f"{BASE_URL}/auth/login", json=admin_login_data)
+            
+            if admin_login_response.status_code != 200:
+                self.log(f"❌ Admin login failed on deployed: {admin_login_response.status_code} - {admin_login_response.text}")
+                return False
+                
+            admin_data = admin_login_response.json()
+            admin_session_token = admin_data.get("session_token")
+            admin_user = admin_data.get("user", {})
+            
+            self.log(f"✅ Admin login successful - User: {admin_user.get('name')} ({admin_user.get('email')})")
+            self.log(f"✅ Admin role: {admin_user.get('role')}")
+            
+            # Step 2: Get all recipes and filter by Ulla's email
+            self.log("Step 2: Getting all recipes and filtering by Ulla's email (ulla@itopgaver.dk)...")
+            
+            # Get all recipes with admin session
+            recipes_response = admin_session.get(f"{BASE_URL}/recipes?session_id={admin_session_token}")
+            
+            if recipes_response.status_code == 200:
+                all_recipes = recipes_response.json()
+                self.log(f"✅ Retrieved {len(all_recipes)} total recipes from deployed database")
+                
+                # Filter recipes by Ulla's email
+                ulla_recipes = []
+                for recipe in all_recipes:
+                    author = recipe.get('author', '')
+                    author_name = recipe.get('author_name', '')
+                    
+                    # Check if recipe belongs to Ulla
+                    if 'ulla@itopgaver.dk' in author.lower() or 'ulla' in author_name.lower():
+                        ulla_recipes.append(recipe)
+                        
+                self.log(f"📊 Found {len(ulla_recipes)} recipes by Ulla:")
+                
+                for i, recipe in enumerate(ulla_recipes, 1):
+                    created_at = recipe.get('created_at', 'Unknown')
+                    approval_status = recipe.get('approval_status', 'Unknown')
+                    is_published = recipe.get('is_published', False)
+                    
+                    self.log(f"  {i}. '{recipe.get('name', 'Unnamed')}' - Created: {created_at}")
+                    self.log(f"     Author: {recipe.get('author', 'Unknown')} ({recipe.get('author_name', 'Unknown')})")
+                    self.log(f"     Published: {is_published}, Approval: {approval_status}")
+                    self.log(f"     Recipe ID: {recipe.get('id', 'No ID')}")
+                    
+                if len(ulla_recipes) == 0:
+                    self.log("❌ NO RECIPES FOUND FOR ULLA - This confirms the issue!")
+                    
+            else:
+                self.log(f"❌ Failed to get recipes: {recipes_response.status_code} - {recipes_response.text}")
+                return False
+            
+            # Step 3: Check sandbox/pending recipes
+            self.log("Step 3: Checking sandbox/pending recipes...")
+            
+            pending_response = admin_session.get(f"{BASE_URL}/admin/pending-recipes")
+            
+            if pending_response.status_code == 200:
+                pending_recipes = pending_response.json()
+                self.log(f"✅ Retrieved {len(pending_recipes)} pending recipes from sandbox")
+                
+                # Filter pending recipes by Ulla
+                ulla_pending = []
+                for recipe in pending_recipes:
+                    author = recipe.get('author', '')
+                    author_name = recipe.get('author_name', '')
+                    
+                    if 'ulla@itopgaver.dk' in author.lower() or 'ulla' in author_name.lower():
+                        ulla_pending.append(recipe)
+                        
+                self.log(f"📊 Found {len(ulla_pending)} pending recipes by Ulla:")
+                
+                for i, recipe in enumerate(ulla_pending, 1):
+                    created_at = recipe.get('created_at', 'Unknown')
+                    approval_status = recipe.get('approval_status', 'Unknown')
+                    
+                    self.log(f"  {i}. '{recipe.get('name', 'Unnamed')}' - Created: {created_at}")
+                    self.log(f"     Author: {recipe.get('author', 'Unknown')} ({recipe.get('author_name', 'Unknown')})")
+                    self.log(f"     Approval Status: {approval_status}")
+                    
+                if len(ulla_pending) == 0:
+                    self.log("❌ NO PENDING RECIPES FOUND FOR ULLA in sandbox")
+                    
+            else:
+                self.log(f"❌ Failed to get pending recipes: {pending_response.status_code} - {pending_response.text}")
+                # This might be expected if endpoint doesn't exist
+                self.log("⚠️  Pending recipes endpoint may not exist - checking user_recipes collection directly")
+            
+            # Step 4: Check user_recipes collection directly (if accessible)
+            self.log("Step 4: Checking for Ulla's recipes in user_recipes collection...")
+            
+            # Try to get recipes with different parameters to see if we can find Ulla's data
+            user_recipes_response = admin_session.get(f"{BASE_URL}/recipes?author=ulla@itopgaver.dk&session_id={admin_session_token}")
+            
+            if user_recipes_response.status_code == 200:
+                user_recipes = user_recipes_response.json()
+                self.log(f"✅ User recipes query returned {len(user_recipes)} recipes")
+                
+                for recipe in user_recipes:
+                    self.log(f"  Found: '{recipe.get('name')}' by {recipe.get('author')} - Status: {recipe.get('approval_status')}")
+                    
+            else:
+                self.log(f"⚠️  User recipes query failed: {user_recipes_response.status_code}")
+            
+            # Step 5: Check if Ulla exists as a user
+            self.log("Step 5: Checking if Ulla exists as a user in the system...")
+            
+            # Try to get all members to see if Ulla is registered
+            members_response = admin_session.get(f"{BASE_URL}/admin/members")
+            
+            if members_response.status_code == 200:
+                members = members_response.json()
+                self.log(f"✅ Retrieved {len(members)} total members")
+                
+                ulla_user = None
+                for member in members:
+                    if member.get('email', '').lower() == 'ulla@itopgaver.dk':
+                        ulla_user = member
+                        break
+                        
+                if ulla_user:
+                    self.log(f"✅ Found Ulla as user:")
+                    self.log(f"  Name: {ulla_user.get('name', 'Unknown')}")
+                    self.log(f"  Email: {ulla_user.get('email', 'Unknown')}")
+                    self.log(f"  Role: {ulla_user.get('role', 'Unknown')}")
+                    self.log(f"  User ID: {ulla_user.get('id', 'Unknown')}")
+                    self.log(f"  Created: {ulla_user.get('created_at', 'Unknown')}")
+                else:
+                    self.log("❌ ULLA NOT FOUND AS REGISTERED USER - This could be the root cause!")
+                    
+            else:
+                self.log(f"❌ Failed to get members: {members_response.status_code}")
+            
+            # Step 6: Test recipe creation flow to understand the issue
+            self.log("Step 6: Testing recipe creation flow to understand approval_status logic...")
+            
+            # Check the recipe creation logic by examining what happens when is_published=true
+            self.log("📋 Recipe Creation Logic Analysis:")
+            self.log("  - When user creates recipe with is_published=true:")
+            self.log("  - If user is NOT admin: approval_status should be 'pending' (lines 1451-1453 in server.py)")
+            self.log("  - If user IS admin: approval_status should be 'approved' (lines 1454-1456)")
+            self.log("  - If is_published=false: approval_status should be 'approved' (private recipe)")
+            
+            # Step 7: Summary and diagnosis
+            self.log("Step 7: DIAGNOSIS SUMMARY")
+            self.log("=" * 50)
+            
+            if len(ulla_recipes) == 0:
+                self.log("🔍 ISSUE CONFIRMED: Ulla's recipe is not in the database at all")
+                self.log("💡 POSSIBLE CAUSES:")
+                self.log("  1. Recipe creation failed silently")
+                self.log("  2. Recipe was created but deleted/lost")
+                self.log("  3. Recipe was created in different database/environment")
+                self.log("  4. User authentication issue during creation")
+                self.log("  5. Recipe was created with wrong author field")
+                
+                if not ulla_user:
+                    self.log("  6. ⚠️  CRITICAL: Ulla is not registered as a user!")
+                    self.log("     - This suggests she may have created recipe as guest")
+                    self.log("     - Or there was an authentication issue")
+                    
+            else:
+                self.log("✅ Ulla's recipes found in database - investigating visibility issue")
+                
+                for recipe in ulla_recipes:
+                    is_published = recipe.get('is_published', False)
+                    approval_status = recipe.get('approval_status', 'unknown')
+                    
+                    if is_published and approval_status == 'pending':
+                        self.log(f"  📝 Recipe '{recipe.get('name')}' should appear in sandbox (pending approval)")
+                    elif is_published and approval_status == 'approved':
+                        self.log(f"  ✅ Recipe '{recipe.get('name')}' should be visible to all users")
+                    elif not is_published:
+                        self.log(f"  🔒 Recipe '{recipe.get('name')}' is private (only visible to creator)")
+                        
+            return True
+            
+        except Exception as e:
+            self.log(f"❌ Ulla recipe investigation failed with exception: {str(e)}")
+            return False
+
     def run_all_tests(self):
         """Run all backend tests"""
         self.log("Starting SLUSHBOOK Backend System Tests")
