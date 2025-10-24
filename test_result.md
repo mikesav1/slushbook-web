@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Fix 'Add to list' functionality bug where ingredients with missing or empty category_key cause the shopping list addition to fail"
+user_problem_statement: "Test 'Add to shopping list' functionality from recipe detail page - User reports that clicking 'Tilføj til liste' button shows success message but ingredients don't appear in the shopping list"
 
 backend:
   - task: "Fix category_key handling in CSV import and shopping list"
