@@ -1302,12 +1302,8 @@ test,data,here"""
             # Step 4: Test delete endpoint exists and works
             self.log("Step 4: Testing DELETE /api/admin/members/{user_id} endpoint...")
             
-            admin_headers = {"Authorization": f"Bearer {admin_session_token}"}
-            
-            delete_response = self.session.delete(
-                f"{BASE_URL}/admin/members/{test_user_id}",
-                headers=admin_headers
-            )
+            # Use the admin session (with cookies) for the delete request
+            delete_response = admin_session.delete(f"{BASE_URL}/admin/members/{test_user_id}")
             
             if delete_response.status_code == 200:
                 self.log("✅ User deletion successful")
