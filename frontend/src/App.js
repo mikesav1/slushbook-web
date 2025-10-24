@@ -220,13 +220,58 @@ const Navigation = () => {
       {/* Mobile menu button */}
       <div className="absolute right-4 top-4 lg:hidden">
         {user ? (
-          <Link
-            to="/profile"
-            className="flex items-center justify-center p-3 bg-white/10 backdrop-blur-md rounded-full hover:bg-white/20 transition-all"
-            data-testid="mobile-profile-button"
-          >
-            <FaCog size={24} className="text-white" />
-          </Link>
+          <div className="relative">
+            <button
+              onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+              className="flex items-center justify-center p-3 bg-white/10 backdrop-blur-md rounded-full hover:bg-white/20 transition-all"
+              data-testid="mobile-profile-button"
+            >
+              <FaCog size={24} className="text-white" />
+            </button>
+            
+            {/* Dropdown menu */}
+            {isUserMenuOpen && (
+              <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                <Link
+                  to="/profile"
+                  onClick={() => setIsUserMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  Min profil
+                </Link>
+                
+                <Link
+                  to="/pantry"
+                  onClick={() => setIsUserMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  <FaSeedling className="w-4 h-4" />
+                  Ingredienser
+                </Link>
+                
+                <Link
+                  to="/recipes?filter=favorites"
+                  onClick={() => setIsUserMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  <FaHeart className="w-4 h-4" />
+                  Favoritter
+                </Link>
+                
+                <Link
+                  to="/settings"
+                  onClick={() => setIsUserMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-t border-gray-100"
+                >
+                  <FaCog className="w-4 h-4" />
+                  Indstillinger
+                </Link>
+              </div>
+            )}
+          </div>
         ) : (
           <div className="flex items-center gap-2">
             <Link
