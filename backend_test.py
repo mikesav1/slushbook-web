@@ -2204,8 +2204,8 @@ test,data,here"""
                 
                 self.log(f"✅ Pro user created recipe: {created_recipe_id} (author: {created_recipe_author})")
                 
-                # Test recipe detail for the created recipe
-                pro_own_recipe_response = pro_session.get(f"{BASE_URL}/recipes/{created_recipe_id}")
+                # Test recipe detail for the created recipe (need session_id for user recipes)
+                pro_own_recipe_response = pro_session.get(f"{BASE_URL}/recipes/{created_recipe_id}?session_id={pro_user_id}")
                 
                 if pro_own_recipe_response.status_code == 200:
                     pro_own_recipe_data = pro_own_recipe_response.json()
