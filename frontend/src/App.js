@@ -377,27 +377,28 @@ const AppContent = ({ sessionId }) => {
               <span className="text-xs font-medium">Liste</span>
             </Link>
             
-            {/* Pantry (Ingredienser) */}
+            {/* Settings/Profile */}
             <Link
-              to="/pantry"
+              to="/profile"
               className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
-                location.pathname === '/pantry' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
+                location.pathname === '/profile' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
               }`}
             >
-              <FaSeedling size={20} />
-              <span className="text-xs font-medium">Ingredienser</span>
+              <FaCog size={20} />
+              <span className="text-xs font-medium">Profil</span>
             </Link>
             
-            {/* Favoritter */}
-            <Link
-              to="/recipes?filter=favorites"
-              className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
-                location.search.includes('favorites') ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
-              }`}
+            {/* Log ud */}
+            <button
+              onClick={async () => {
+                await logout();
+                window.location.href = '/login';
+              }}
+              className="flex flex-col items-center gap-1 p-2 rounded-lg transition-colors text-red-600"
             >
-              <FaHeart size={20} />
-              <span className="text-xs font-medium">Favoritter</span>
-            </Link>
+              <FaSignOutAlt size={20} />
+              <span className="text-xs font-medium">Log ud</span>
+            </button>
           </div>
         </div>
       )}
