@@ -1401,10 +1401,7 @@ test,data,here"""
             # Test 6c: Try admin deleting themselves
             self.log("Test 6c: Testing admin deleting themselves...")
             
-            self_delete_response = self.session.delete(
-                f"{BASE_URL}/admin/members/{admin_user_id}",
-                headers=admin_headers
-            )
+            self_delete_response = admin_session.delete(f"{BASE_URL}/admin/members/{admin_user_id}")
             
             if self_delete_response.status_code == 400:
                 self.log("✅ Admin self-deletion correctly prevented (400)")
