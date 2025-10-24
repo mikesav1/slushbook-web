@@ -1990,6 +1990,7 @@ test,data,here"""
         self.log("=" * 60)
         
         tests = [
+            ("🔍 ULLA RECIPE INVESTIGATION", self.test_ulla_recipe_investigation),
             ("Shopping List Add From Recipe", self.test_shopping_list_add_from_recipe),
             ("Signup Flow", self.test_signup),
             ("Login Flow", self.test_login),
