@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Test 'Add to shopping list' functionality from recipe detail page - User reports that clicking 'Tilføj til liste' button shows success message but ingredients don't appear in the shopping list"
+user_problem_statement: "Investigate why Ulla's newly created recipe is not showing up in sandbox or on her recipes page. User ulla@itopgaver.dk created a new recipe but it's not visible anywhere: not in sandbox (admin approval page), not on her own recipes page, not when filtering 'Mine opskrifter'."
 
 backend:
   - task: "Fix category_key handling in CSV import and shopping list"
