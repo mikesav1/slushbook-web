@@ -201,6 +201,18 @@ backend:
         agent: "testing"
         comment: "ISSUE RESOLVED: Used password reset flow to fix deployed login. ✅ Password Reset Request: Generated reset token for kimesav@gmail.com on deployed environment ✅ Password Reset: Successfully reset password to 'admin123' ✅ Login Test: Login now works on deployed environment (https://slushice-recipes.emergent.host) ✅ Auth Check: Session tokens and authentication working correctly ✅ Verification: Multiple login tests (3/3) successful. Deployed environment login is now fully functional. The issue was caused by different password hashes between preview and deployed databases, resolved by synchronizing the password through reset flow."
 
+  - task: "Admin Member Deletion Functionality"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "COMPREHENSIVE TESTING COMPLETED: Admin member deletion functionality fully tested and working correctly. ✅ DELETE Endpoint (DELETE /api/admin/members/{user_id}): Endpoint exists and works correctly with proper admin authentication ✅ Admin Authentication: Requires admin role, correctly rejects non-admin users (403) ✅ Self-Deletion Prevention: Admin cannot delete themselves, returns 400 with Danish message 'Du kan ikke slette dig selv' ✅ Error Handling: Non-existent user returns 404, unauthorized access returns 403 ✅ Data Cleanup Verification: All user data properly cleaned up after deletion including user_sessions, recipes, favorites, pantry_items, shopping_list, and machines collections ✅ Member List Verification: Deleted users correctly removed from GET /api/admin/members response ✅ Complete Test Flow: Created test users, added test data (machines, shopping lists), deleted users as admin, verified cleanup. All 7 test scenarios passed successfully. Member deletion functionality is fully functional and ready for production use."
+
 frontend:
   - task: "Fix 'Add to list' functionality for ingredients with missing category_key"
     implemented: true
