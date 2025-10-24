@@ -2215,10 +2215,17 @@ test,data,here"""
                         self.log(f"✅ Pro user's own recipe author: {own_recipe_author}")
                         
                         # Check if pro user is the author
-                        is_author_of_own_recipe = (own_recipe_author == pro_email or own_recipe_author == pro_user_id)
+                        # Note: The backend currently sets author to user_id, but frontend logic expects email comparison
+                        is_author_by_id = (own_recipe_author == pro_user_id)
+                        is_author_by_email = (own_recipe_author == pro_email)
                         
-                        if is_author_of_own_recipe:
+                        if is_author_by_id:
                             self.log("✅ Pro user viewing own recipe: isAdmin() = false, isAuthor() = true → Delete button SHOULD be visible")
+                            self.log(f"⚠️  NOTE: Backend uses user_id as author ({pro_user_id}), but frontend logic expects email comparison")
+                            self.log(f"⚠️  Frontend will need to compare: recipe.author === user.id OR recipe.author === user.email")
+                        elif is_author_by_email:
+                            self.log("✅ Pro user viewing own recipe: isAdmin() = false, isAuthor() = true → Delete button SHOULD be visible")
+                            self.log("✅ Backend correctly uses email as author for frontend comparison")
                         else:
                             self.log(f"❌ Pro user not recognized as author of own recipe. Expected: {pro_email} or {pro_user_id}, Got: {own_recipe_author}")
                             return False
