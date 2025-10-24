@@ -105,6 +105,18 @@
 user_problem_statement: "Investigate why Ulla's newly created recipe is not showing up in sandbox or on her recipes page. User ulla@itopgaver.dk created a new recipe but it's not visible anywhere: not in sandbox (admin approval page), not on her own recipes page, not when filtering 'Mine opskrifter'."
 
 backend:
+  - task: "Ulla Recipe Visibility Issue - Pending Recipes Not Shown"
+    implemented: false
+    working: false
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "CRITICAL ISSUE IDENTIFIED: Recipes with approval_status='pending' are invisible to both users and admin. ROOT CAUSE: get_recipes() function (lines 1304-1315) has logic gap - only shows published recipes if approved, only shows private recipes if not published. Missing: user's own pending recipes. IMPACT: When Ulla creates published recipe, it gets approval_status='pending' but disappears from her view and admin sandbox. SOLUTION NEEDED: Modify get_recipes() to include user's own pending recipes in their recipe list. CONFIRMED: Ulla can create recipes successfully, but published recipes with pending status are invisible everywhere."
+
   - task: "Fix category_key handling in CSV import and shopping list"
     implemented: true
     working: true
