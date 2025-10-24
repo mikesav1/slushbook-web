@@ -131,7 +131,8 @@ const RecipeDetailPage = ({ sessionId }) => {
   const isAuthor = () => {
     if (!recipe || !user) return false;
     // Check if current user is the recipe author
-    return recipe.author === user.email || recipe.author === sessionId;
+    // Backend uses user.id as recipe author, so check both user.id and user.email
+    return recipe.author === user.id || recipe.author === user.email || recipe.author === sessionId;
   };
 
   const getProductForIngredient = (categoryKey) => {
