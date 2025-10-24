@@ -54,19 +54,31 @@ const RecipesPage = ({ sessionId }) => {
       
       let sortedRecipes;
       if (sortBy === 'rating') {
-        // Sort by rating (highest first)
+        // Sort by rating (highest first), but free recipes before locked ones
         sortedRecipes = response.data.sort((a, b) => {
+          // Free recipes first (is_free=true or missing is_free field means free)
+          const aIsFree = a.is_free !== false;
+          const bIsFree = b.is_free !== false;
+          if (aIsFree && !bIsFree) return -1;
+          if (!aIsFree && bIsFree) return 1;
+          
+          // Then by rating
           const aRating = a.avg_rating || 0;
           const bRating = b.avg_rating || 0;
           return bRating - aRating;
         });
       } else {
-        // Default sort: own recipes first, then by created date
+        // Default sort: free recipes first, then own recipes, then by created date
         sortedRecipes = response.data.sort((a, b) => {
+          // Free recipes first (is_free=true or missing is_free field means free)
+          const aIsFree = a.is_free !== false;
+          const bIsFree = b.is_free !== false;
+          if (aIsFree && !bIsFree) return -1;
+          if (!aIsFree && bIsFree) return 1;
+          
+          // Then own recipes
           const aIsOwn = a.author === sessionId;
           const bIsOwn = b.author === sessionId;
-          
-          // Own recipes first
           if (aIsOwn && !bIsOwn) return -1;
           if (!aIsOwn && bIsOwn) return 1;
           
