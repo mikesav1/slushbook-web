@@ -441,7 +441,7 @@ const RecipeDetailPage = ({ sessionId }) => {
               )}
               
               {/* Toggle Free/Pro - Only for admin */}
-              {isAdmin && (
+              {isAdmin() && (
                 <button
                   onClick={async () => {
                     try {
