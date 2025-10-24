@@ -2144,15 +2144,21 @@ async def confirm_recipe_import(recipes: List[dict]):
 
 @api_router.get("/admin/pending-recipes")
 async def get_pending_recipes(request: Request):
-    """Get all recipes pending approval"""
+    """Get all user-submitted recipes for admin review (pending, approved, rejected)"""
     user = await get_current_user(request, None, db)
     
     if not user or user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
     
-    # Get all pending recipes from user_recipes
-    cursor = db.user_recipes.find({"approval_status": "pending"})
+    # Get all published user recipes (pending, approved, rejected) from user_recipes
+    # These are recipes that users have submitted for public visibility
+    cursor = db.user_recipes.find({"is_published": True}, {"_id": 0})
     recipes = await cursor.to_list(length=None)
+    
+    # Parse datetime fields
+    for recipe in recipes:
+        if isinstance(recipe.get('created_at'), str):
+            recipe['created_at'] = datetime.fromisoformat(recipe['created_at'])
     
     return recipes
 
