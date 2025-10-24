@@ -2511,6 +2511,7 @@ test,data,here"""
         self.log("=" * 60)
         
         tests = [
+            ("🛒 ADD TO SHOPPING LIST END-TO-END", self.test_add_to_shopping_list_end_to_end),
             ("🔐 RECIPE DELETE BUTTON VISIBILITY ACCESS CONTROL", self.test_recipe_delete_button_visibility_access_control),
             ("🔍 ULLA RECIPE INVESTIGATION", self.test_ulla_recipe_investigation),
             ("Shopping List Add From Recipe", self.test_shopping_list_add_from_recipe),
