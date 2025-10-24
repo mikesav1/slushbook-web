@@ -1242,7 +1242,9 @@ test,data,here"""
                 "password": "admin123"
             }
             
-            admin_login_response = self.session.post(f"{BASE_URL}/auth/login", json=admin_login_data)
+            # Use a fresh session for admin to avoid cookie conflicts
+            admin_session = requests.Session()
+            admin_login_response = admin_session.post(f"{BASE_URL}/auth/login", json=admin_login_data)
             
             if admin_login_response.status_code != 200:
                 self.log(f"❌ Admin login failed: {admin_login_response.status_code} - {admin_login_response.text}")
@@ -1252,6 +1254,12 @@ test,data,here"""
             admin_user_data = admin_login_response.json().get("user", {})
             admin_user_id = admin_user_data.get("id")
             self.log(f"✅ Admin login successful - Admin ID: {admin_user_id}")
+            
+            # Verify admin role
+            if admin_user_data.get("role") != "admin":
+                self.log(f"❌ User is not admin: {admin_user_data.get('role')}")
+                return False
+            self.log("✅ Admin role verified")
             
             # Step 3: Create some test data for the user (to verify cleanup)
             self.log("Step 3: Creating test data for user (sessions, recipes, etc.)...")
