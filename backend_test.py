@@ -2731,7 +2731,8 @@ test,data,here"""
             if len(user_recipes) == 0:
                 self.log("⚠️  No user recipes found - creating test recipe for testing")
                 
-                # Create a test user recipe
+                # Create a test user recipe using admin's user ID as session_id
+                admin_user_id = admin_user.get('id')
                 test_recipe_data = {
                     "name": "Test User Recipe for Access Testing",
                     "description": "Test recipe to verify access control",
@@ -2745,15 +2746,14 @@ test,data,here"""
                         }
                     ],
                     "steps": ["Mix ingredients", "Serve"],
-                    "session_id": "test_session_123",
+                    "session_id": admin_user_id,
                     "base_volume_ml": 1000,
                     "target_brix": 14.0,
                     "color": "red",
                     "type": "klassisk",
                     "tags": ["test"],
-                    "is_published": True,  # Published recipe
-                    "approval_status": "rejected",  # Set as rejected to test rejection reason
-                    "rejection_reason": "Test rejection reason for access testing"
+                    "is_published": False,  # Make it private first
+                    "approval_status": "approved"  # Start as approved
                 }
                 
                 create_response = admin_session.post(f"{BASE_URL}/recipes", json=test_recipe_data)
