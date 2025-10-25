@@ -45,7 +45,10 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
+      // Clear user state and localStorage
       setUser(null);
+      localStorage.removeItem('session_token');
+      console.log('[AuthContext] Logged out, cleared session_token');
     }
   };
 
