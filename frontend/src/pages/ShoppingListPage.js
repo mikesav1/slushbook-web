@@ -138,20 +138,10 @@ const ShoppingListPage = ({ sessionId }) => {
 
   const fetchShoppingList = async () => {
     try {
-      // Get session_token from localStorage for logged-in users
-      const storedToken = localStorage.getItem('session_token');
-      const actualSessionId = storedToken || sessionId;
-      
-      console.log('[Shopping List] Fetching with session_id:', actualSessionId);
-      const response = await axios.get(`${API}/shopping-list/${actualSessionId}`, {
-        withCredentials: true
-      });
-      console.log('[Shopping List] Retrieved items:', response.data.length);
-      console.log('[Shopping List] First item:', response.data[0]);
+      const response = await axios.get(`${API}/shopping-list/${sessionId}`);
       setItems(response.data);
     } catch (error) {
       console.error('Error fetching shopping list:', error);
-      console.error('Error details:', error.response?.data);
       toast.error('Kunne ikke hente indkøbsliste');
     } finally {
       setLoading(false);
