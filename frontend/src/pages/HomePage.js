@@ -35,20 +35,34 @@ const HomePage = ({ sessionId }) => {
       const response = await axios.get(`${API}/recipes?session_id=${sessionId}`);
       
       // Show ALL recipes on homepage (both free and locked)
-      // RecipeCard component will handle showing lock icon for non-free recipes
+      // But sort so free recipes appear first, then locked recipes
       const allRecipes = response.data;
       
       let sortedRecipes;
       if (sortBy === 'latest') {
-        // Sort by created_at (newest first)
+        // Sort by free first, then by created_at (newest first)
         sortedRecipes = allRecipes.sort((a, b) => {
+          // Free recipes first (is_free !== false means free)
+          const aIsFree = a.is_free !== false;
+          const bIsFree = b.is_free !== false;
+          if (aIsFree && !bIsFree) return -1;
+          if (!aIsFree && bIsFree) return 1;
+          
+          // Then by date
           const dateA = new Date(a.created_at || 0);
           const dateB = new Date(b.created_at || 0);
           return dateB - dateA; // Newest first
         });
       } else {
-        // Sort by popularity (rating, then favorites count)
+        // Sort by free first, then by popularity (rating, then favorites count)
         sortedRecipes = allRecipes.sort((a, b) => {
+          // Free recipes first
+          const aIsFree = a.is_free !== false;
+          const bIsFree = b.is_free !== false;
+          if (aIsFree && !bIsFree) return -1;
+          if (!aIsFree && bIsFree) return 1;
+          
+          // Then by rating
           const ratingA = a.average_rating || 0;
           const ratingB = b.average_rating || 0;
           if (ratingB !== ratingA) {
