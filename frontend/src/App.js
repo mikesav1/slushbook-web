@@ -339,6 +339,13 @@ const AppContent = ({ sessionId }) => {
   
   // Use user.id as sessionId for logged-in users, otherwise use guest sessionId
   const effectiveSessionId = user ? user.id : sessionId;
+  
+  // Debug logging
+  React.useEffect(() => {
+    console.log('[App] User:', user ? `${user.email} (id: ${user.id})` : 'Guest');
+    console.log('[App] Guest sessionId:', sessionId);
+    console.log('[App] Effective sessionId:', effectiveSessionId);
+  }, [user, sessionId, effectiveSessionId]);
 
   const navItems = [
     { path: "/", icon: FaHome, label: "Hjem" },
