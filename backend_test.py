@@ -3333,6 +3333,7 @@ test,data,here"""
         self.log("=" * 60)
         
         tests = [
+            ("🛒 SHOPPING LIST DEBUG - GIN HASH SLUSH ISSUE", self.test_shopping_list_gin_hash_slush_debug),
             ("🔐 USER RECIPE ACCESS & REJECTION REASONS", self.test_user_recipe_access_and_rejection_reasons)
         ]
         
