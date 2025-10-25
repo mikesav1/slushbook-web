@@ -3356,8 +3356,46 @@ test,data,here"""
                 self.log("✅ No session_id mismatch detected - items are stored and retrieved properly")
                 self.log("⚠️  If users report empty shopping list, the issue is likely in frontend JavaScript or browser cache")
             else:
-                self.log("❌ CONCLUSION: Session_id mismatch detected - this could cause the reported issue")
-                return False
+                self.log("❌ CONCLUSION: Session_id mismatch detected - ROOT CAUSE FOUND!")
+                self.log("❌ ISSUE: Frontend is likely using different session_id values for POST and GET operations")
+                self.log("❌ IMPACT: Items are added successfully but not visible when retrieving shopping list")
+                self.log("❌ SOLUTION NEEDED: Frontend must use consistent session_id for both operations")
+                
+                # Test additional scenarios to confirm
+                self.log("\n🔍 ADDITIONAL TESTING: Let's test what happens if we add with session_token...")
+                
+                # Add an item using session_token as session_id
+                test_item = {
+                    "session_id": session_token,  # Using session_token instead of user.id
+                    "ingredient_name": "Test Session Token Item",
+                    "category_key": "test-item",
+                    "quantity": 100.0,
+                    "unit": "ml",
+                    "linked_recipe_id": recipe_id,
+                    "linked_recipe_name": recipe['name']
+                }
+                
+                test_add_response = self.session.post(f"{BASE_URL}/shopping-list", json=test_item)
+                
+                if test_add_response.status_code == 200:
+                    self.log("✅ Successfully added item using session_token as session_id")
+                    
+                    # Now check if it appears when retrieving with session_token
+                    test_get_response = self.session.get(f"{BASE_URL}/shopping-list/{session_token}")
+                    
+                    if test_get_response.status_code == 200:
+                        test_items = test_get_response.json()
+                        self.log(f"✅ Retrieved {len(test_items)} items using session_token")
+                        
+                        # Check if our test item is there
+                        found_test_item = any(item.get('ingredient_name') == 'Test Session Token Item' for item in test_items)
+                        if found_test_item:
+                            self.log("✅ CONFIRMED: Item added with session_token is retrievable with session_token")
+                            self.log("✅ CONFIRMED: Backend is working correctly - the issue is session_id consistency in frontend")
+                        else:
+                            self.log("❌ Test item not found even with matching session_id")
+                
+                return False  # Mark as failed since we found the root cause
                 
         except Exception as e:
             self.log(f"❌ Shopping list debug test failed with exception: {str(e)}")
