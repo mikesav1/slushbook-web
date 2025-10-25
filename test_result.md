@@ -420,6 +420,7 @@ metadata:
 
 test_plan:
   current_focus:
+    - "Shopping List Session ID Mismatch Debug - Tilføj til liste Issue"
     - "Ulla Recipe Visibility Issue - Pending Recipes Not Shown"
   stuck_tasks: []
   test_all: false
