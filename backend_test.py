@@ -3208,23 +3208,23 @@ test,data,here"""
             return False
 
 def main():
-    """Run shopping list debug test"""
+    """Run user recipe access and rejection reason tests"""
     tester = BackendTester()
     
     print("=" * 80)
-    print("SLUSHBOOK SHOPPING LIST DEBUG TEST")
+    print("SLUSHBOOK USER RECIPE ACCESS & REJECTION REASON TEST")
     print("=" * 80)
     print(f"Testing against: {BASE_URL}")
     print("=" * 80)
     
-    # Run the shopping list debug test
-    success = tester.test_shopping_list_debug_mojito_slush()
+    # Run the user recipe access test
+    success = tester.test_user_recipe_access_and_rejection_reasons()
     
     if success:
-        print("\n✅ SHOPPING LIST DEBUG: PASSED - Backend working correctly")
+        print("\n✅ USER RECIPE ACCESS TEST: PASSED - Recipe access control working correctly")
         exit(0)
     else:
-        print("\n❌ SHOPPING LIST DEBUG: FAILED - Issue found")
+        print("\n❌ USER RECIPE ACCESS TEST: FAILED - Issue found")
         exit(1)
 
 if __name__ == "__main__":
