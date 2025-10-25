@@ -230,6 +230,8 @@ const RecipeDetailPage = ({ sessionId }) => {
             unit: ingredient.unit,
             linked_recipe_id: id,
             linked_recipe_name: recipe.name
+          }, {
+            withCredentials: true  // CRITICAL: Send cookies to backend!
           });
           console.log('[Shopping List] Added:', ingredient.name, 'with session_id:', sessionId);
         }
