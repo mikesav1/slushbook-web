@@ -388,6 +388,18 @@ frontend:
         agent: "testing"
         comment: "✅ VERIFIED: Admin sandbox properly displays user-created recipes with approval status tabs. Successfully logged in as admin (kimesav@gmail.com/admin123) and confirmed sandbox shows 11 total recipes across tabs: Alle (11), Afventer (0), Godkendte (11), Afviste (0). All tabs (Pending, All, Approved, Rejected) are working correctly. The admin/pending-recipes endpoint update is functioning as expected, returning ALL user recipes for admin review. Admin can properly manage recipe approval workflow."
 
+  - task: "Mobile Navigation 'Log ud' Button in Gear Dropdown"
+    implemented: true
+    working: true
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE MOBILE TESTING COMPLETED: All test requirements successfully met. ✅ MOBILE VIEWPORT: Set to 375x667 as requested. ✅ LOGIN: Successfully logged in as kimesav@gmail.com/admin123. ✅ BOTTOM NAVIGATION: Verified exactly 4 items ['Hjem', 'Opskrifter', 'Liste', 'Profil'] with NO 'Log ud' button (as expected). ✅ GEAR DROPDOWN: Gear icon (tandhjul) clickable in top right corner, dropdown opens correctly. ✅ DROPDOWN CONTENT: All expected items present ['Min profil', 'Ingredienser', 'Favoritter', 'Indstillinger', 'Log ud']. ✅ LOG UD STYLING: 'Log ud' button has red color (text-red-600) and positioned at bottom of dropdown. ✅ LOGOUT FUNCTIONALITY: 'Log ud' button successfully logs out user and redirects to login page. ✅ LOGOUT VERIFICATION: Confirmed user is actually logged out. User-reported issue resolved - mobile 'Log ud' button now works correctly from gear dropdown instead of bottom navigation."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
