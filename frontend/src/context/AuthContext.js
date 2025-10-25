@@ -20,12 +20,9 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data);
       console.log('[AuthContext] User loaded from /auth/me:', response.data.email);
     } catch (error) {
-      // Not authenticated - only set to null if user is not already set
-      // (to avoid overwriting user set by login)
-      if (user === undefined) {
-        setUser(null);
-      }
-      console.log('[AuthContext] Not authenticated, user remains:', user);
+      // Not authenticated - user is null
+      setUser(null);
+      console.log('[AuthContext] Not authenticated');
     } finally {
       setLoading(false);
     }
