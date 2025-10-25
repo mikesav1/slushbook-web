@@ -3060,6 +3060,8 @@ test,data,here"""
                 rejected_recipe = rejected_create_response.json()
                 rejected_recipe_id = rejected_recipe.get('id')
                 self.log(f"✅ Created rejected recipe for testing: {rejected_recipe_id}")
+                self.log(f"   Created recipe approval_status: {rejected_recipe.get('approval_status')}")
+                self.log(f"   Created recipe rejection_reason: {rejected_recipe.get('rejection_reason')}")
                 
                 # Test accessing the rejected recipe as the author
                 rejected_access_response = admin_session.get(f"{BASE_URL}/recipes/{rejected_recipe_id}?session_id={admin_user_id}")
