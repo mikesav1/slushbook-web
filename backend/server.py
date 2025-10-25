@@ -1873,8 +1873,22 @@ async def create_rating(rating_data: RatingCreate):
 
 # Shopping List
 @api_router.get("/shopping-list/{session_id}")
-async def get_shopping_list(session_id: str):
-    items = await db.shopping_list.find({"session_id": session_id}, {"_id": 0}).to_list(1000)
+async def get_shopping_list(session_id: str, request: Request):
+    # Try to get session from cookie first (for logged-in users), otherwise use URL param
+    actual_session_id = session_id
+    
+    try:
+        session_token = request.cookies.get("session_token")
+        if session_token:
+            # User is logged in, use their session_token instead of URL param
+            actual_session_id = session_token
+            print(f"[Shopping List GET] Using session_token from cookie: {session_token[:20]}...")
+    except:
+        pass
+    
+    print(f"[Shopping List GET] Fetching with session_id: {actual_session_id[:20] if len(actual_session_id) > 20 else actual_session_id}")
+    items = await db.shopping_list.find({"session_id": actual_session_id}, {"_id": 0}).to_list(1000)
+    print(f"[Shopping List GET] Found {len(items)} items")
     
     for item in items:
         if isinstance(item.get('added_at'), str):
@@ -1883,10 +1897,24 @@ async def get_shopping_list(session_id: str):
     return items
 
 @api_router.post("/shopping-list", response_model=ShoppingListItem)
-async def add_shopping_list_item(item_data: ShoppingListItemCreate):
+async def add_shopping_list_item(item_data: ShoppingListItemCreate, request: Request):
+    # Try to get session from cookie first (for logged-in users), otherwise use request body
+    actual_session_id = item_data.session_id
+    
+    try:
+        session_token = request.cookies.get("session_token")
+        if session_token:
+            # User is logged in, use their session_token instead of body param
+            actual_session_id = session_token
+            print(f"[Shopping List POST] Using session_token from cookie: {session_token[:20]}...")
+    except:
+        pass
+    
+    print(f"[Shopping List POST] Adding item with session_id: {actual_session_id[:20] if len(actual_session_id) > 20 else actual_session_id}")
+    
     # Check if exists
     existing = await db.shopping_list.find_one({
-        "session_id": item_data.session_id,
+        "session_id": actual_session_id,
         "ingredient_name": item_data.ingredient_name
     })
     
