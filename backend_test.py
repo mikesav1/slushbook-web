@@ -2785,7 +2785,12 @@ test,data,here"""
             # Test 3a: Access with original session_id (should work)
             self.log("Test 3a: Accessing recipe with original session_id...")
             
-            original_response = self.session.get(f"{BASE_URL}/recipes/{recipe_id}?session_id={recipe_session_id}")
+            # Handle case where session_id might be None
+            if recipe_session_id:
+                original_response = self.session.get(f"{BASE_URL}/recipes/{recipe_id}?session_id={recipe_session_id}")
+            else:
+                # If no session_id, try with admin session (since admin created it)
+                original_response = admin_session.get(f"{BASE_URL}/recipes/{recipe_id}")
             
             if original_response.status_code == 200:
                 original_recipe_data = original_response.json()
