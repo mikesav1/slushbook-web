@@ -138,7 +138,9 @@ const ShoppingListPage = ({ sessionId }) => {
 
   const fetchShoppingList = async () => {
     try {
+      console.log('[Shopping List] Fetching with session_id:', sessionId);
       const response = await axios.get(`${API}/shopping-list/${sessionId}`);
+      console.log('[Shopping List] Retrieved items:', response.data.length);
       setItems(response.data);
     } catch (error) {
       console.error('Error fetching shopping list:', error);
