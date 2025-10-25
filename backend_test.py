@@ -2759,8 +2759,23 @@ test,data,here"""
                 create_response = admin_session.post(f"{BASE_URL}/recipes", json=test_recipe_data)
                 if create_response.status_code == 200:
                     test_recipe = create_response.json()
-                    user_recipes = [test_recipe]
                     self.log(f"✅ Created test recipe: {test_recipe.get('id')}")
+                    
+                    # Also create a rejected recipe to test rejection reasons
+                    rejected_recipe_data = test_recipe_data.copy()
+                    rejected_recipe_data["name"] = "Test Rejected Recipe"
+                    rejected_recipe_data["is_published"] = True
+                    rejected_recipe_data["approval_status"] = "rejected"
+                    rejected_recipe_data["rejection_reason"] = "Test rejection reason for access testing"
+                    
+                    rejected_response = admin_session.post(f"{BASE_URL}/recipes", json=rejected_recipe_data)
+                    if rejected_response.status_code == 200:
+                        rejected_recipe = rejected_response.json()
+                        user_recipes = [test_recipe, rejected_recipe]
+                        self.log(f"✅ Created rejected test recipe: {rejected_recipe.get('id')}")
+                    else:
+                        user_recipes = [test_recipe]
+                        self.log(f"⚠️  Failed to create rejected recipe: {rejected_response.status_code}")
                 else:
                     self.log(f"❌ Failed to create test recipe: {create_response.status_code}")
                     return False
