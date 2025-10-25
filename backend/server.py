@@ -815,7 +815,7 @@ async def login(request: LoginRequest, response: Response):
         value=session_token,
         httponly=True,
         secure=True,
-        samesite="none",
+        samesite="lax",  # Changed from "none" to "lax" for better compatibility
         max_age=7 * 24 * 60 * 60  # 7 days
     )
     
