@@ -269,6 +269,18 @@ const Navigation = () => {
                   <FaCog className="w-4 h-4" />
                   Indstillinger
                 </Link>
+                
+                <button
+                  onClick={async () => {
+                    setIsUserMenuOpen(false);
+                    await logout();
+                    navigate('/login');
+                  }}
+                  className="flex items-center gap-3 w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 border-t border-gray-100"
+                >
+                  <FaSignOutAlt className="w-4 h-4" />
+                  Log ud
+                </button>
               </div>
             )}
           </div>
