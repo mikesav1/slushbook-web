@@ -27,14 +27,18 @@ const LoginPage = ({ onLogin }) => {
       });
 
       toast.success('Login successful!');
+      // Set user in context FIRST
       onLogin(response.data.user);
-      navigate('/');
+      // Wait a bit for state to update, then navigate
+      setTimeout(() => {
+        navigate('/');
+      }, 500);
     } catch (error) {
       console.error('Login error:', error);
       toast.error(error.response?.data?.detail || 'Login failed');
-    } finally {
       setLoading(false);
     }
+    // Don't set loading false here - let navigation handle it
   };
 
   return (
