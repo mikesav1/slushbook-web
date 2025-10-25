@@ -31,10 +31,6 @@ export const AuthProvider = ({ children }) => {
   const login = (userData) => {
     setUser(userData);
     console.log('[AuthContext] User set via login:', userData.email);
-    // Re-check auth to ensure cookies are working
-    setTimeout(() => {
-      checkAuth();
-    }, 1000);
   };
 
   const logout = async () => {
