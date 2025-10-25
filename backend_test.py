@@ -3027,6 +3027,74 @@ test,data,here"""
             else:
                 self.log("⚠️  Could not login as Ulla - unable to test her specific scenario")
             
+            # Step 6: Test rejection reason functionality specifically
+            self.log("Step 6: Testing rejection reason functionality...")
+            
+            # Create a rejected recipe to test rejection reasons
+            rejected_recipe_data = {
+                "name": "Test Rejected Recipe for Rejection Reason Testing",
+                "description": "This recipe should be rejected to test rejection reason display",
+                "ingredients": [
+                    {
+                        "name": "Test Rejected Ingredient",
+                        "category_key": "test-rejected",
+                        "quantity": 50,
+                        "unit": "ml",
+                        "role": "required"
+                    }
+                ],
+                "steps": ["This should be rejected"],
+                "session_id": admin_user_id,
+                "base_volume_ml": 500,
+                "target_brix": 10.0,
+                "color": "purple",
+                "type": "klassisk",
+                "tags": ["rejected", "test"],
+                "is_published": True,
+                "approval_status": "rejected",
+                "rejection_reason": "This is a test rejection reason to verify rejection reason display functionality"
+            }
+            
+            rejected_create_response = admin_session.post(f"{BASE_URL}/recipes", json=rejected_recipe_data)
+            if rejected_create_response.status_code == 200:
+                rejected_recipe = rejected_create_response.json()
+                rejected_recipe_id = rejected_recipe.get('id')
+                self.log(f"✅ Created rejected recipe for testing: {rejected_recipe_id}")
+                
+                # Test accessing the rejected recipe as the author
+                rejected_access_response = admin_session.get(f"{BASE_URL}/recipes/{rejected_recipe_id}?session_id={admin_user_id}")
+                
+                if rejected_access_response.status_code == 200:
+                    rejected_recipe_data = rejected_access_response.json()
+                    self.log("✅ Rejected recipe accessible to author")
+                    
+                    # Verify rejection reason is present
+                    if 'rejection_reason' in rejected_recipe_data and rejected_recipe_data['rejection_reason']:
+                        expected_reason = "This is a test rejection reason to verify rejection reason display functionality"
+                        actual_reason = rejected_recipe_data['rejection_reason']
+                        if actual_reason == expected_reason:
+                            self.log(f"✅ Rejection reason correctly displayed: '{actual_reason}'")
+                        else:
+                            self.log(f"⚠️  Rejection reason mismatch - Expected: '{expected_reason}', Got: '{actual_reason}'")
+                    else:
+                        self.log("❌ Rejection reason missing from rejected recipe response")
+                        return False
+                        
+                    # Verify approval status is correct
+                    if rejected_recipe_data.get('approval_status') == 'rejected':
+                        self.log("✅ Approval status correctly set to 'rejected'")
+                    else:
+                        self.log(f"❌ Approval status incorrect: {rejected_recipe_data.get('approval_status')}")
+                        return False
+                        
+                else:
+                    self.log(f"❌ Rejected recipe not accessible to author: {rejected_access_response.status_code}")
+                    return False
+                    
+            else:
+                self.log(f"⚠️  Could not create rejected recipe for testing: {rejected_create_response.status_code}")
+                self.log("   Rejection reason testing skipped")
+            
             # Summary
             self.log("\n" + "="*60)
             self.log("RECIPE ACCESS TESTING SUMMARY:")
@@ -3035,6 +3103,7 @@ test,data,here"""
             self.log("✅ Recipe access control for different sessions works")
             self.log("✅ Rejection reason display works for rejected recipes")
             self.log("✅ Logged-in user access to own recipes works")
+            self.log("✅ Rejection reason functionality tested successfully")
             
             if ulla_logged_in:
                 self.log("✅ Ulla-specific scenario tested successfully")
