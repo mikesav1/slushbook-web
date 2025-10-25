@@ -2963,7 +2963,7 @@ test,data,here"""
                 self.log("⚠️  Could not determine recipe author email - testing with admin access only")
                 
                 # Test admin access to recipe
-                admin_recipe_response = admin_session.get(f"{BASE_URL}/recipes/{recipe_id}")
+                admin_recipe_response = admin_session.get(f"{BASE_URL}/recipes/{recipe_id}?session_id={admin_user_id}")
                 
                 if admin_recipe_response.status_code == 200:
                     self.log("✅ Recipe accessible to admin user")
