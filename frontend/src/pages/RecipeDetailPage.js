@@ -214,13 +214,15 @@ const RecipeDetailPage = ({ sessionId }) => {
 
   const addMissingToShoppingList = async (ingredients) => {
     try {
+      let addedCount = 0;
       for (const ingredient of ingredients) {
         if (ingredient.role === 'required') {
           const categoryKey = ingredient.category_key && ingredient.category_key.trim() !== '' 
             ? ingredient.category_key 
             : ingredient.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-æøå]/g, '');
           
-          await axios.post(`${API}/shopping-list`, {
+          console.log('[Add to List] Posting ingredient:', ingredient.name, 'with sessionId:', sessionId);
+          const response = await axios.post(`${API}/shopping-list`, {
             session_id: sessionId,
             ingredient_name: ingredient.name,
             category_key: categoryKey,
@@ -229,12 +231,17 @@ const RecipeDetailPage = ({ sessionId }) => {
             linked_recipe_id: id,
             linked_recipe_name: recipe.name
           });
+          console.log('[Add to List] Response:', response.status, response.data);
+          addedCount++;
         }
       }
-      toast.success('Tilføjet til indkøbsliste!');
+      console.log('[Add to List] Successfully added', addedCount, 'items');
+      toast.success(`Tilføjet ${addedCount} ingredienser til indkøbsliste!`);
     } catch (error) {
-      console.error('Error adding to shopping list:', error);
-      toast.error('Nogle ingredienser kunne ikke tilføjes');
+      console.error('[Add to List] Error:', error);
+      console.error('[Add to List] Error response:', error.response?.data);
+      console.error('[Add to List] Error status:', error.response?.status);
+      toast.error('Kunne ikke tilføje til indkøbsliste: ' + (error.response?.data?.detail || error.message));
     }
   };
 
