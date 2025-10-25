@@ -296,7 +296,7 @@ const RecipeDetailPage = ({ sessionId }) => {
     );
   }
 
-  const ingredientsToShow = scaledData ? scaledData.scaled_ingredients : recipe.ingredients;
+  const ingredientsToShow = scaledData ? scaledData.scaled_ingredients : (recipe.ingredients || []);
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 fade-in" data-testid="recipe-detail-page">
