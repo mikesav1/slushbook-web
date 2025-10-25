@@ -1873,27 +1873,8 @@ async def create_rating(rating_data: RatingCreate):
 
 # Shopping List
 @api_router.get("/shopping-list/{session_id}")
-async def get_shopping_list(session_id: str, request: Request):
-    # For logged-in users, use their user.id instead of session_token
-    # This ensures items persist across login sessions
-    actual_session_id = session_id
-    
-    try:
-        user = await get_current_user(request, None, db)
-        if user:
-            # Use user.id for logged-in users
-            actual_session_id = user.id
-            print(f"[Shopping List GET] Using user.id: {user.id}")
-        else:
-            # Guest - use URL param
-            print(f"[Shopping List GET] Guest using session_id from URL")
-    except:
-        # Not logged in, use URL param
-        pass
-    
-    print(f"[Shopping List GET] Fetching with session_id: {actual_session_id[:40] if len(actual_session_id) > 40 else actual_session_id}")
-    items = await db.shopping_list.find({"session_id": actual_session_id}, {"_id": 0}).to_list(1000)
-    print(f"[Shopping List GET] Found {len(items)} items")
+async def get_shopping_list(session_id: str):
+    items = await db.shopping_list.find({"session_id": session_id}, {"_id": 0}).to_list(1000)
     
     for item in items:
         if isinstance(item.get('added_at'), str):
@@ -1902,29 +1883,10 @@ async def get_shopping_list(session_id: str, request: Request):
     return items
 
 @api_router.post("/shopping-list", response_model=ShoppingListItem)
-async def add_shopping_list_item(item_data: ShoppingListItemCreate, request: Request):
-    # For logged-in users, use their user.id instead of session_token
-    # This ensures items persist across login sessions
-    actual_session_id = item_data.session_id
-    
-    try:
-        user = await get_current_user(request, None, db)
-        if user:
-            # Use user.id for logged-in users
-            actual_session_id = user.id
-            print(f"[Shopping List POST] Using user.id: {user.id}")
-        else:
-            # Guest - use body param
-            print(f"[Shopping List POST] Guest using session_id from body")
-    except:
-        # Not logged in, use body param
-        pass
-    
-    print(f"[Shopping List POST] Adding item with session_id: {actual_session_id[:40] if len(actual_session_id) > 40 else actual_session_id}")
-    
+async def add_shopping_list_item(item_data: ShoppingListItemCreate):
     # Check if exists
     existing = await db.shopping_list.find_one({
-        "session_id": actual_session_id,
+        "session_id": item_data.session_id,
         "ingredient_name": item_data.ingredient_name
     })
     
