@@ -28,11 +28,6 @@ const LoginPage = ({ onLogin }) => {
 
       toast.success('Login successful!');
       
-      // Save session_token to localStorage for shopping list and other features
-      if (response.data.session_token) {
-        localStorage.setItem('session_token', response.data.session_token);
-      }
-      
       // Set user in context
       onLogin(response.data.user);
       
