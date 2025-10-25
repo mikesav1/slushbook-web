@@ -2916,7 +2916,11 @@ test,data,here"""
                     # Test 4a: Access recipe as logged-in author
                     self.log("Test 4a: Accessing recipe as logged-in author...")
                     
-                    author_recipe_response = author_session.get(f"{BASE_URL}/recipes/{recipe_id}")
+                    # Get the author's user ID to use as session_id
+                    author_user_data = author_login_response.json().get("user", {})
+                    author_user_id = author_user_data.get("id")
+                    
+                    author_recipe_response = author_session.get(f"{BASE_URL}/recipes/{recipe_id}?session_id={author_user_id}")
                     
                     if author_recipe_response.status_code == 200:
                         author_recipe_data = author_recipe_response.json()
