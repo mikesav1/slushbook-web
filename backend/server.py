@@ -1374,16 +1374,34 @@ async def get_recipes(
     return all_recipes
 
 @api_router.get("/recipes/{recipe_id}")
-async def get_recipe(recipe_id: str, session_id: Optional[str] = None):
+async def get_recipe(recipe_id: str, session_id: Optional[str] = None, request: Request = None):
+    # Get current user if logged in
+    user = None
+    if request:
+        try:
+            user = await get_current_user(request, None, db)
+        except:
+            pass
+    
     # Try system recipes first
     recipe = await db.recipes.find_one({"id": recipe_id}, {"_id": 0})
     
-    # Try user recipes
+    # Try user recipes if not found in system recipes
     if not recipe and session_id:
-        recipe = await db.user_recipes.find_one(
-            {"id": recipe_id, "session_id": session_id},
-            {"_id": 0}
-        )
+        # Search by session_id OR author (for logged-in users)
+        query = {"id": recipe_id}
+        if user:
+            # If logged in, search by author (user.id) or session_id
+            query["$or"] = [
+                {"session_id": session_id},
+                {"author": user.id},
+                {"author": user.email}
+            ]
+        else:
+            # If guest, search by session_id only
+            query["session_id"] = session_id
+            
+        recipe = await db.user_recipes.find_one(query, {"_id": 0})
     
     if not recipe:
         raise HTTPException(status_code=404, detail="Recipe not found")
@@ -1405,11 +1423,12 @@ async def get_recipe(recipe_id: str, session_id: Optional[str] = None):
         )
         recipe['user_rating'] = rating.get('stars') if rating else None
     
-    # Increment view count
-    await db.recipes.update_one(
-        {"id": recipe_id},
-        {"$inc": {"view_count": 1}}
-    )
+    # Increment view count (only for system recipes)
+    if recipe.get('author') == 'system':
+        await db.recipes.update_one(
+            {"id": recipe_id},
+            {"$inc": {"view_count": 1}}
+        )
     
     return recipe
 
