@@ -3135,6 +3135,198 @@ test,data,here"""
             self.log(f"❌ Recipe access testing failed with exception: {str(e)}")
             return False
 
+    def test_shopping_list_gin_hash_slush_debug(self):
+        """Debug shopping list 'Tilføj til liste' issue - items not appearing after adding"""
+        self.log("Testing shopping list debug scenario - Gin Hash Slush issue...")
+        
+        try:
+            # Step 1: Login as kimesav@gmail.com / admin123
+            self.log("Step 1: Login as kimesav@gmail.com / admin123...")
+            
+            login_data = {
+                "email": "kimesav@gmail.com",
+                "password": "admin123"
+            }
+            
+            login_response = self.session.post(f"{BASE_URL}/auth/login", json=login_data)
+            
+            if login_response.status_code != 200:
+                self.log(f"❌ Login failed: {login_response.status_code} - {login_response.text}")
+                return False
+            
+            login_result = login_response.json()
+            user_data = login_result.get("user", {})
+            user_id = user_data.get("id")
+            session_token = login_result.get("session_token")
+            
+            self.log(f"✅ Login successful - User ID: {user_id}")
+            self.log(f"✅ Session token: {session_token[:20]}...")
+            
+            # Step 2: Get user.id from login response (already done above)
+            self.log(f"Step 2: User ID from login response: {user_id}")
+            
+            # Step 3: Navigate to recipe "Gin Hash Slush" (id: 3dd10962-8fd9-4698-9528-54d6cc4c6200)
+            self.log("Step 3: Getting recipe 'Gin Hash Slush'...")
+            
+            recipe_id = "3dd10962-8fd9-4698-9528-54d6cc4c6200"
+            recipe_response = self.session.get(f"{BASE_URL}/recipes/{recipe_id}?session_id={user_id}")
+            
+            if recipe_response.status_code != 200:
+                self.log(f"❌ Failed to get recipe: {recipe_response.status_code} - {recipe_response.text}")
+                return False
+            
+            recipe = recipe_response.json()
+            self.log(f"✅ Recipe found: {recipe.get('name')}")
+            self.log(f"✅ Recipe has {len(recipe.get('ingredients', []))} ingredients")
+            
+            # Step 4: Simulate adding ingredients to shopping list using POST /api/shopping-list
+            self.log("Step 4: Adding ingredients to shopping list...")
+            
+            ingredients = recipe.get('ingredients', [])
+            required_ingredients = [ing for ing in ingredients if ing.get('role') == 'required']
+            
+            self.log(f"✅ Found {len(required_ingredients)} required ingredients to add")
+            
+            added_items = []
+            for ingredient in required_ingredients:
+                shopping_item = {
+                    "session_id": user_id,  # Using user.id as session_id
+                    "ingredient_name": ingredient['name'],
+                    "category_key": ingredient.get('category_key', ''),
+                    "quantity": ingredient['quantity'],
+                    "unit": ingredient['unit'],
+                    "linked_recipe_id": recipe_id,
+                    "linked_recipe_name": recipe['name']
+                }
+                
+                add_response = self.session.post(f"{BASE_URL}/shopping-list", json=shopping_item)
+                
+                if add_response.status_code == 200:
+                    added_item = add_response.json()
+                    added_items.append(added_item)
+                    self.log(f"✅ Added '{ingredient['name']}' to shopping list")
+                else:
+                    self.log(f"❌ Failed to add '{ingredient['name']}': {add_response.status_code} - {add_response.text}")
+                    return False
+            
+            self.log(f"✅ Successfully added {len(added_items)} items to shopping list")
+            
+            # Step 5: Try to retrieve shopping list using different session_id values
+            self.log("Step 5: Testing shopping list retrieval with different session_id values...")
+            
+            # Test 5a: GET /api/shopping-list/{user.id} (effectiveSessionId)
+            self.log("Test 5a: GET /api/shopping-list/{user.id} (effectiveSessionId)...")
+            
+            get_response_user_id = self.session.get(f"{BASE_URL}/shopping-list/{user_id}")
+            
+            if get_response_user_id.status_code == 200:
+                items_user_id = get_response_user_id.json()
+                self.log(f"✅ Retrieved {len(items_user_id)} items using user.id as session_id")
+                
+                # Check if our added items are present
+                found_items = 0
+                for added_item in added_items:
+                    for retrieved_item in items_user_id:
+                        if (retrieved_item.get('ingredient_name') == added_item.get('ingredient_name') and
+                            retrieved_item.get('linked_recipe_id') == recipe_id):
+                            found_items += 1
+                            break
+                
+                self.log(f"✅ Found {found_items}/{len(added_items)} added items in retrieval")
+                
+            else:
+                self.log(f"❌ Failed to retrieve shopping list with user.id: {get_response_user_id.status_code}")
+                return False
+            
+            # Test 5b: GET /api/shopping-list/{original_session_token}
+            self.log("Test 5b: GET /api/shopping-list/{original_session_token}...")
+            
+            get_response_session_token = self.session.get(f"{BASE_URL}/shopping-list/{session_token}")
+            
+            if get_response_session_token.status_code == 200:
+                items_session_token = get_response_session_token.json()
+                self.log(f"✅ Retrieved {len(items_session_token)} items using session_token as session_id")
+                
+                # Check if our added items are present
+                found_items_token = 0
+                for added_item in added_items:
+                    for retrieved_item in items_session_token:
+                        if (retrieved_item.get('ingredient_name') == added_item.get('ingredient_name') and
+                            retrieved_item.get('linked_recipe_id') == recipe_id):
+                            found_items_token += 1
+                            break
+                
+                self.log(f"✅ Found {found_items_token}/{len(added_items)} added items in session_token retrieval")
+                
+            else:
+                self.log(f"❌ Failed to retrieve shopping list with session_token: {get_response_session_token.status_code}")
+                return False
+            
+            # Step 6: Check if items are being stored with correct session_id
+            self.log("Step 6: Analyzing session_id consistency...")
+            
+            # Compare the results
+            if len(items_user_id) == len(items_session_token):
+                self.log("✅ Same number of items retrieved with both session_id values")
+                
+                # Check if the items are identical
+                user_id_items_set = set()
+                session_token_items_set = set()
+                
+                for item in items_user_id:
+                    user_id_items_set.add((item.get('ingredient_name'), item.get('linked_recipe_id')))
+                
+                for item in items_session_token:
+                    session_token_items_set.add((item.get('ingredient_name'), item.get('linked_recipe_id')))
+                
+                if user_id_items_set == session_token_items_set:
+                    self.log("✅ Items are identical between user.id and session_token retrieval")
+                else:
+                    self.log("❌ Items differ between user.id and session_token retrieval")
+                    self.log(f"User ID items: {user_id_items_set}")
+                    self.log(f"Session token items: {session_token_items_set}")
+                    return False
+                    
+            else:
+                self.log(f"❌ Different number of items: user.id={len(items_user_id)}, session_token={len(items_session_token)}")
+                return False
+            
+            # Step 7: Verify session_id values in stored items
+            self.log("Step 7: Verifying session_id values in stored items...")
+            
+            for item in items_user_id:
+                stored_session_id = item.get('session_id')
+                if stored_session_id == user_id:
+                    self.log(f"✅ Item '{item.get('ingredient_name')}' stored with correct session_id (user.id)")
+                elif stored_session_id == session_token:
+                    self.log(f"⚠️  Item '{item.get('ingredient_name')}' stored with session_token instead of user.id")
+                else:
+                    self.log(f"❌ Item '{item.get('ingredient_name')}' stored with unexpected session_id: {stored_session_id}")
+                    return False
+            
+            # Final analysis
+            self.log("\n📊 ANALYSIS SUMMARY:")
+            self.log(f"✅ Login successful with user.id: {user_id}")
+            self.log(f"✅ Recipe '{recipe['name']}' found with {len(required_ingredients)} required ingredients")
+            self.log(f"✅ All {len(added_items)} ingredients successfully added to shopping list")
+            self.log(f"✅ Shopping list retrieval works with both user.id and session_token")
+            self.log(f"✅ Items are consistently stored and retrieved")
+            
+            # Key findings
+            if found_items == len(added_items) and found_items_token == len(added_items):
+                self.log("✅ CONCLUSION: Backend shopping list functionality is working correctly")
+                self.log("✅ No session_id mismatch detected - items are stored and retrieved properly")
+                self.log("⚠️  If users report empty shopping list, the issue is likely in frontend JavaScript or browser cache")
+            else:
+                self.log("❌ CONCLUSION: Session_id mismatch detected - this could cause the reported issue")
+                return False
+                
+        except Exception as e:
+            self.log(f"❌ Shopping list debug test failed with exception: {str(e)}")
+            return False
+            
+        return True
+
     def run_all_tests(self):
         """Run all backend tests"""
         self.log("Starting SLUSHBOOK Backend System Tests")
