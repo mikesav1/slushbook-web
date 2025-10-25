@@ -3119,6 +3119,8 @@ test,data,here"""
                     self.log("✅ Rejection reason functionality works correctly")
                 else:
                     self.log("⚠️  FINDING: Rejection reason field not being saved/returned properly")
+                    self.log("⚠️  FINDING: Backend overrides approval_status for admin-created recipes")
+                    self.log("   This prevents proper testing of rejection scenarios")
             else:
                 self.log("⚠️  Rejection reason testing was skipped")
             
