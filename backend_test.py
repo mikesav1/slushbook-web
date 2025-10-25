@@ -3165,14 +3165,40 @@ test,data,here"""
             # Step 2: Get user.id from login response (already done above)
             self.log(f"Step 2: User ID from login response: {user_id}")
             
-            # Step 3: Navigate to recipe "Gin Hash Slush" (id: 3dd10962-8fd9-4698-9528-54d6cc4c6200)
-            self.log("Step 3: Getting recipe 'Gin Hash Slush'...")
+            # Step 3: Find a suitable recipe for testing (since Gin Hash Slush doesn't exist)
+            self.log("Step 3: Finding a suitable recipe for testing...")
             
-            recipe_id = "3dd10962-8fd9-4698-9528-54d6cc4c6200"
+            # First, get all recipes to find one with ingredients
+            recipes_response = self.session.get(f"{BASE_URL}/recipes?session_id={user_id}")
+            
+            if recipes_response.status_code != 200:
+                self.log(f"❌ Failed to get recipes: {recipes_response.status_code} - {recipes_response.text}")
+                return False
+            
+            recipes = recipes_response.json()
+            self.log(f"✅ Found {len(recipes)} total recipes")
+            
+            # Find a recipe with required ingredients
+            test_recipe = None
+            for recipe in recipes:
+                ingredients = recipe.get('ingredients', [])
+                required_ingredients = [ing for ing in ingredients if ing.get('role') == 'required']
+                if len(required_ingredients) >= 2:  # Need at least 2 ingredients for meaningful test
+                    test_recipe = recipe
+                    break
+            
+            if not test_recipe:
+                self.log("❌ No suitable recipe found with required ingredients")
+                return False
+            
+            recipe_id = test_recipe['id']
+            self.log(f"✅ Using recipe '{test_recipe['name']}' (ID: {recipe_id}) for testing")
+            
+            # Get the full recipe details
             recipe_response = self.session.get(f"{BASE_URL}/recipes/{recipe_id}?session_id={user_id}")
             
             if recipe_response.status_code != 200:
-                self.log(f"❌ Failed to get recipe: {recipe_response.status_code} - {recipe_response.text}")
+                self.log(f"❌ Failed to get recipe details: {recipe_response.status_code} - {recipe_response.text}")
                 return False
             
             recipe = recipe_response.json()
