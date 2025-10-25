@@ -3109,9 +3109,17 @@ test,data,here"""
             self.log("="*60)
             self.log("✅ Recipe access with original session_id works")
             self.log("✅ Recipe access control for different sessions works")
-            self.log("✅ Rejection reason display works for rejected recipes")
             self.log("✅ Logged-in user access to own recipes works")
-            self.log("✅ Rejection reason functionality tested successfully")
+            
+            # Check if rejection reason functionality worked
+            if rejected_create_response.status_code == 200:
+                rejected_recipe_test_data = rejected_access_response.json() if rejected_access_response.status_code == 200 else {}
+                if rejected_recipe_test_data.get('rejection_reason'):
+                    self.log("✅ Rejection reason functionality works correctly")
+                else:
+                    self.log("⚠️  FINDING: Rejection reason field not being saved/returned properly")
+            else:
+                self.log("⚠️  Rejection reason testing was skipped")
             
             if ulla_logged_in:
                 self.log("✅ Ulla-specific scenario tested successfully")
