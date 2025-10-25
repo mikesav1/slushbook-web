@@ -447,18 +447,6 @@ const AppContent = ({ sessionId }) => {
               <FaCog size={20} />
               <span className="text-xs font-medium">Profil</span>
             </Link>
-            
-            {/* Log ud */}
-            <button
-              onClick={async () => {
-                await logout();
-                window.location.href = '/login';
-              }}
-              className="flex flex-col items-center gap-1 p-2 rounded-lg transition-colors text-red-600"
-            >
-              <FaSignOutAlt size={20} />
-              <span className="text-xs font-medium">Log ud</span>
-            </button>
           </div>
         </div>
       )}
