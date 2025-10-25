@@ -28,10 +28,16 @@ const LoginPage = ({ onLogin }) => {
 
       toast.success('Login successful!');
       
-      // Set user in context
+      // CRITICAL: Save session_token to localStorage (since httpOnly cookies don't work)
+      if (response.data.session_token) {
+        localStorage.setItem('session_token', response.data.session_token);
+        console.log('[LoginPage] Saved session_token to localStorage');
+      }
+      
+      // Save user data
       onLogin(response.data.user);
       
-      // Wait a bit for state to update, then navigate
+      // Navigate to home
       setTimeout(() => {
         navigate('/');
       }, 500);
@@ -40,7 +46,6 @@ const LoginPage = ({ onLogin }) => {
       toast.error(error.response?.data?.detail || 'Login failed');
       setLoading(false);
     }
-    // Don't set loading false here - let navigation handle it
   };
 
   return (
