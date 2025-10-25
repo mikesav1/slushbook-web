@@ -214,6 +214,7 @@ const RecipeDetailPage = ({ sessionId }) => {
 
   const addMissingToShoppingList = async (ingredients) => {
     try {
+      console.log('[Shopping List] Adding items with session_id:', sessionId);
       for (const ingredient of ingredients) {
         if (ingredient.role === 'required') {
           // Generate category_key from ingredient name if missing or empty
@@ -230,6 +231,7 @@ const RecipeDetailPage = ({ sessionId }) => {
             linked_recipe_id: id,
             linked_recipe_name: recipe.name
           });
+          console.log('[Shopping List] Added:', ingredient.name, 'with session_id:', sessionId);
         }
       }
       toast.success('Tilføjet til indkøbsliste!');
