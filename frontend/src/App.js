@@ -337,13 +337,26 @@ const AppContent = ({ sessionId }) => {
   const { user, loading, login } = useAuth();
   const location = useLocation();
   
-  // Use user.id as sessionId for logged-in users, otherwise use guest sessionId
-  const effectiveSessionId = user ? user.id : sessionId;
+  // Use session_token from localStorage if available (for logged-in users)
+  // Otherwise use user.id, otherwise use guest sessionId
+  const getEffectiveSessionId = () => {
+    const storedToken = localStorage.getItem('session_token');
+    if (storedToken) {
+      return storedToken;
+    }
+    if (user && user.id) {
+      return user.id;
+    }
+    return sessionId;
+  };
+  
+  const effectiveSessionId = getEffectiveSessionId();
   
   // Debug logging
   React.useEffect(() => {
     console.log('[App] User:', user ? `${user.email} (id: ${user.id})` : 'Guest');
     console.log('[App] Guest sessionId:', sessionId);
+    console.log('[App] Stored session_token:', localStorage.getItem('session_token'));
     console.log('[App] Effective sessionId:', effectiveSessionId);
   }, [user, sessionId, effectiveSessionId]);
 
