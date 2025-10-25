@@ -349,6 +349,36 @@ const RecipeDetailPage = ({ sessionId }) => {
             
             <p className="text-gray-700 text-base md:text-lg mb-4">{recipe.description}</p>
             
+            {/* Rejection Notice - Show if recipe is rejected */}
+            {recipe.approval_status === 'rejected' && (
+              <div className="mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded">
+                <div className="flex items-start">
+                  <FaTimes className="text-red-500 mt-1 mr-3 flex-shrink-0" size={20} />
+                  <div>
+                    <h4 className="text-red-800 font-semibold mb-1">Opskrift Afvist</h4>
+                    <p className="text-red-700 text-sm">
+                      {recipe.rejection_reason || 'Din opskrift blev afvist af administrator.'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Pending Notice - Show if recipe is pending approval */}
+            {recipe.approval_status === 'pending' && recipe.is_published === true && (
+              <div className="mb-4 p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded">
+                <div className="flex items-start">
+                  <span className="text-yellow-500 mt-1 mr-3 flex-shrink-0 text-xl">⏳</span>
+                  <div>
+                    <h4 className="text-yellow-800 font-semibold mb-1">Afventer Godkendelse</h4>
+                    <p className="text-yellow-700 text-sm">
+                      Din opskrift venter på godkendelse fra administrator.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+            
             {/* Info */}
             <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
               <span>📏 Basis: {recipe.base_volume_ml || 2700}ml</span>
