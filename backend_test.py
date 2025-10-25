@@ -3315,7 +3315,19 @@ test,data,here"""
                     
             else:
                 self.log(f"❌ Different number of items: user.id={len(items_user_id)}, session_token={len(items_session_token)}")
-                return False
+                self.log("🔍 CRITICAL FINDING: Session ID mismatch detected!")
+                self.log(f"   - Items stored with session_id: {user_id} (user.id)")
+                self.log(f"   - Frontend might be using session_token: {session_token}")
+                self.log("   - This explains why users see success but empty shopping list!")
+                
+                # Let's examine what session_id values are actually stored
+                self.log("\n🔍 Examining stored session_id values:")
+                for item in items_user_id:
+                    stored_session_id = item.get('session_id')
+                    self.log(f"   Item '{item.get('ingredient_name')}' stored with session_id: {stored_session_id}")
+                
+                # This is actually the root cause - continue analysis but mark as issue found
+                session_id_mismatch_found = True
             
             # Step 7: Verify session_id values in stored items
             self.log("Step 7: Verifying session_id values in stored items...")
