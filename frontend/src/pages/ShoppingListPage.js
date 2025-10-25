@@ -138,9 +138,13 @@ const ShoppingListPage = ({ sessionId }) => {
 
   const fetchShoppingList = async () => {
     try {
-      console.log('[Shopping List] Fetching with session_id:', sessionId);
-      const response = await axios.get(`${API}/shopping-list/${sessionId}`, {
-        withCredentials: true  // CRITICAL: Send cookies to backend!
+      // Get session_token from localStorage for logged-in users
+      const storedToken = localStorage.getItem('session_token');
+      const actualSessionId = storedToken || sessionId;
+      
+      console.log('[Shopping List] Fetching with session_id:', actualSessionId);
+      const response = await axios.get(`${API}/shopping-list/${actualSessionId}`, {
+        withCredentials: true
       });
       console.log('[Shopping List] Retrieved items:', response.data.length);
       console.log('[Shopping List] First item:', response.data[0]);
