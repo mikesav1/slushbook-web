@@ -3022,7 +3022,7 @@ test,data,here"""
         self.log("=" * 60)
         
         tests = [
-            ("🛒 SHOPPING LIST DEBUG - MOJITO SLUSH ISSUE", self.test_shopping_list_debug_mojito_slush)
+            ("🔐 USER RECIPE ACCESS & REJECTION REASONS", self.test_user_recipe_access_and_rejection_reasons)
         ]
         
         results = {}
