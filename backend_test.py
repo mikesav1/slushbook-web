@@ -2942,7 +2942,7 @@ test,data,here"""
                     self.log("⚠️  Could not login as recipe author - testing with admin instead")
                     
                     # Test with admin user accessing the recipe
-                    admin_recipe_response = admin_session.get(f"{BASE_URL}/recipes/{recipe_id}")
+                    admin_recipe_response = admin_session.get(f"{BASE_URL}/recipes/{recipe_id}?session_id={admin_user_id}")
                     
                     if admin_recipe_response.status_code == 200:
                         admin_recipe_data = admin_recipe_response.json()
