@@ -214,7 +214,11 @@ const RecipeDetailPage = ({ sessionId }) => {
 
   const addMissingToShoppingList = async (ingredients) => {
     try {
-      console.log('[Shopping List] Adding items with session_id:', sessionId);
+      // Get session_token from localStorage for logged-in users
+      const storedToken = localStorage.getItem('session_token');
+      const actualSessionId = storedToken || sessionId;
+      
+      console.log('[Shopping List] Adding items with session_id:', actualSessionId);
       for (const ingredient of ingredients) {
         if (ingredient.role === 'required') {
           // Generate category_key from ingredient name if missing or empty
@@ -223,7 +227,7 @@ const RecipeDetailPage = ({ sessionId }) => {
             : ingredient.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-æøå]/g, '');
           
           await axios.post(`${API}/shopping-list`, {
-            session_id: sessionId,
+            session_id: actualSessionId,
             ingredient_name: ingredient.name,
             category_key: categoryKey,
             quantity: ingredient.quantity,
@@ -233,7 +237,7 @@ const RecipeDetailPage = ({ sessionId }) => {
           }, {
             withCredentials: true  // CRITICAL: Send cookies to backend!
           });
-          console.log('[Shopping List] Added:', ingredient.name, 'with session_id:', sessionId);
+          console.log('[Shopping List] Added:', ingredient.name, 'with session_id:', actualSessionId);
         }
       }
       toast.success('Tilføjet til indkøbsliste!');
