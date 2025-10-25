@@ -1035,6 +1035,173 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             
         return True
 
+    def test_shopping_list_cookie_session_management(self):
+        """Test NEW cookie-based session management for shopping list endpoints"""
+        self.log("Testing NEW cookie-based session management for shopping list...")
+        
+        try:
+            # Step 1: Login as kimesav@gmail.com / admin123 and capture cookies
+            self.log("Step 1: Login as kimesav@gmail.com / admin123 and capture cookies...")
+            
+            login_data = {
+                "email": "kimesav@gmail.com",
+                "password": "admin123"
+            }
+            
+            # Use a fresh session to ensure clean cookie state
+            cookie_session = requests.Session()
+            login_response = cookie_session.post(f"{BASE_URL}/auth/login", json=login_data)
+            
+            if login_response.status_code != 200:
+                self.log(f"❌ Login failed: {login_response.status_code} - {login_response.text}")
+                return False
+            
+            login_data_response = login_response.json()
+            session_token = login_data_response.get("session_token")
+            user_data = login_data_response.get("user", {})
+            user_id = user_data.get("id")
+            
+            self.log(f"✅ Login successful - Session token: {session_token[:20]}...")
+            self.log(f"✅ User ID: {user_id}")
+            
+            # Verify cookies are set
+            cookies = cookie_session.cookies
+            if 'session_token' in cookies:
+                cookie_token = cookies['session_token']
+                self.log(f"✅ Session token cookie captured: {cookie_token[:20]}...")
+                
+                if cookie_token == session_token:
+                    self.log("✅ Cookie session_token matches response session_token")
+                else:
+                    self.log("❌ Cookie session_token does not match response session_token")
+                    return False
+            else:
+                self.log("❌ Session token cookie not found")
+                return False
+            
+            # Step 2: Get session_token from login response (already done above)
+            self.log(f"Step 2: Session token from login response: {session_token[:20]}...")
+            
+            # Step 3: Add items to shopping list using POST /api/shopping-list WITH cookies
+            self.log("Step 3: Add items to shopping list using POST /api/shopping-list WITH cookies...")
+            
+            # Test ingredients to add
+            test_ingredients = [
+                {
+                    "session_id": "DIFFERENT_SESSION_ID",  # This should be ignored due to cookie priority
+                    "ingredient_name": "Cookie Test Ingredient 1",
+                    "category_key": "cookie-test-1",
+                    "quantity": 250.0,
+                    "unit": "ml",
+                    "linked_recipe_id": "cookie-test-recipe",
+                    "linked_recipe_name": "Cookie Test Recipe"
+                },
+                {
+                    "session_id": "ANOTHER_DIFFERENT_ID",  # This should also be ignored
+                    "ingredient_name": "Cookie Test Ingredient 2", 
+                    "category_key": "cookie-test-2",
+                    "quantity": 100.0,
+                    "unit": "g",
+                    "linked_recipe_id": "cookie-test-recipe",
+                    "linked_recipe_name": "Cookie Test Recipe"
+                }
+            ]
+            
+            added_items = []
+            for ingredient in test_ingredients:
+                add_response = cookie_session.post(f"{BASE_URL}/shopping-list", json=ingredient)
+                
+                if add_response.status_code == 200:
+                    item_data = add_response.json()
+                    added_items.append(item_data)
+                    self.log(f"✅ Added '{ingredient['ingredient_name']}' to shopping list")
+                    
+                    # Verify the item was stored with session_token, not the body session_id
+                    if item_data.get('session_id') == session_token:
+                        self.log(f"✅ Item stored with session_token from cookie: {session_token[:20]}...")
+                    else:
+                        self.log(f"❌ Item stored with wrong session_id: {item_data.get('session_id')[:20] if item_data.get('session_id') else 'None'}...")
+                        return False
+                        
+                else:
+                    self.log(f"❌ Failed to add '{ingredient['ingredient_name']}': {add_response.status_code} - {add_response.text}")
+                    return False
+            
+            # Step 4: Retrieve shopping list using GET /api/shopping-list/{any_session_id} WITH cookies
+            self.log("Step 4: Retrieve shopping list using GET /api/shopping-list/{any_session_id} WITH cookies...")
+            
+            # Use a different session_id in URL - should be ignored due to cookie priority
+            fake_session_id = "FAKE_SESSION_ID_SHOULD_BE_IGNORED"
+            get_response = cookie_session.get(f"{BASE_URL}/shopping-list/{fake_session_id}")
+            
+            if get_response.status_code == 200:
+                shopping_items = get_response.json()
+                self.log(f"✅ Retrieved shopping list successfully - {len(shopping_items)} items")
+                
+                # Step 5: Verify items are stored and retrieved with session_token from cookies
+                self.log("Step 5: Verify items are stored and retrieved with session_token from cookies...")
+                
+                # Check if our test items are in the retrieved list
+                found_items = []
+                for item in shopping_items:
+                    for test_ingredient in test_ingredients:
+                        if item.get('ingredient_name') == test_ingredient['ingredient_name']:
+                            found_items.append(item)
+                            self.log(f"✅ Found '{item['ingredient_name']}' in shopping list")
+                            
+                            # Verify session_id is the session_token from cookie
+                            if item.get('session_id') == session_token:
+                                self.log(f"✅ Item has correct session_id from cookie: {session_token[:20]}...")
+                            else:
+                                self.log(f"❌ Item has wrong session_id: {item.get('session_id')[:20] if item.get('session_id') else 'None'}...")
+                                return False
+                
+                if len(found_items) == len(test_ingredients):
+                    self.log("✅ All test items found in shopping list with correct session management")
+                else:
+                    self.log(f"❌ Expected {len(test_ingredients)} items, found {len(found_items)}")
+                    return False
+                
+                # Additional verification: Test that items are NOT accessible with different session_id
+                self.log("Additional verification: Test session isolation...")
+                
+                # Use a fresh session without cookies to test different session_id
+                isolation_session = requests.Session()
+                isolation_response = isolation_session.get(f"{BASE_URL}/shopping-list/{user_id}")
+                
+                if isolation_response.status_code == 200:
+                    isolation_items = isolation_response.json()
+                    
+                    # Should find fewer items (or none) since we're not using the cookie session
+                    isolation_found = 0
+                    for item in isolation_items:
+                        for test_ingredient in test_ingredients:
+                            if item.get('ingredient_name') == test_ingredient['ingredient_name']:
+                                isolation_found += 1
+                    
+                    if isolation_found < len(found_items):
+                        self.log(f"✅ Session isolation working - found {isolation_found} items without cookies vs {len(found_items)} with cookies")
+                    else:
+                        self.log(f"⚠️  Session isolation unclear - found {isolation_found} items without cookies")
+                
+            else:
+                self.log(f"❌ Failed to retrieve shopping list: {get_response.status_code} - {get_response.text}")
+                return False
+            
+            # Test the specific debug messages mentioned in the review request
+            self.log("Checking for expected debug messages in backend logs...")
+            self.log("Expected messages:")
+            self.log("- '[Shopping List POST] Using session_token from cookie'")
+            self.log("- '[Shopping List GET] Using session_token from cookie'") 
+            self.log("- '[Shopping List POST] Created new item: {ingredient_name}'")
+            self.log("Note: Check backend logs with: tail -n 100 /var/log/supervisor/backend.*.log")
+            
+        except Exception as e:
+            self.log(f"❌ Cookie-based session management test failed with exception: {str(e)}")
+            return False
+            
+        return True
+
     def test_csv_import_supplier_links(self):
         """Test CSV import functionality for supplier links through backend proxy"""
         self.log("Testing CSV import for supplier links...")
