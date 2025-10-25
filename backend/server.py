@@ -1925,12 +1925,28 @@ async def add_shopping_list_item(item_data: ShoppingListItemCreate, request: Req
             {"id": existing['id']},
             {"$set": {"quantity": new_qty}}
         )
-        item = ShoppingListItem(**{**existing, "quantity": new_qty})
-    else:
-        item = ShoppingListItem(**item_data.model_dump())
-        doc = item.model_dump()
-        doc['added_at'] = doc['added_at'].isoformat()
-        await db.shopping_list.insert_one(doc)
+        existing['quantity'] = new_qty
+        print(f"[Shopping List POST] Updated existing item: {item_data.ingredient_name}, new qty: {new_qty}")
+        return ShoppingListItem(**existing)
+    
+    # Create new item
+    item = ShoppingListItem(
+        id=str(uuid.uuid4()),
+        session_id=actual_session_id,  # Use actual_session_id from cookie or param
+        ingredient_name=item_data.ingredient_name,
+        category_key=item_data.category_key,
+        quantity=item_data.quantity,
+        unit=item_data.unit,
+        linked_recipe_id=item_data.linked_recipe_id,
+        linked_recipe_name=item_data.linked_recipe_name,
+        checked=False,
+        added_at=datetime.now(timezone.utc)
+    )
+    
+    doc = item.model_dump()
+    doc['added_at'] = doc['added_at'].isoformat()
+    await db.shopping_list.insert_one(doc)
+    print(f"[Shopping List POST] Created new item: {item_data.ingredient_name}")
     
     return item
 
