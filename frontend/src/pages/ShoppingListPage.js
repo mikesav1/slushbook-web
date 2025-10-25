@@ -139,11 +139,15 @@ const ShoppingListPage = ({ sessionId }) => {
   const fetchShoppingList = async () => {
     try {
       console.log('[Shopping List] Fetching with session_id:', sessionId);
-      const response = await axios.get(`${API}/shopping-list/${sessionId}`);
+      const response = await axios.get(`${API}/shopping-list/${sessionId}`, {
+        withCredentials: true  // CRITICAL: Send cookies to backend!
+      });
       console.log('[Shopping List] Retrieved items:', response.data.length);
+      console.log('[Shopping List] First item:', response.data[0]);
       setItems(response.data);
     } catch (error) {
       console.error('Error fetching shopping list:', error);
+      console.error('Error details:', error.response?.data);
       toast.error('Kunne ikke hente indkøbsliste');
     } finally {
       setLoading(false);
