@@ -3012,7 +3012,7 @@ test,data,here"""
                         ulla_recipe = ulla_own_recipes[0]
                         ulla_recipe_id = ulla_recipe.get('id')
                         
-                        ulla_detail_response = ulla_session.get(f"{BASE_URL}/recipes/{ulla_recipe_id}")
+                        ulla_detail_response = ulla_session.get(f"{BASE_URL}/recipes/{ulla_recipe_id}?session_id={ulla_user_id}")
                         
                         if ulla_detail_response.status_code == 200:
                             self.log(f"✅ Ulla can access her own recipe: '{ulla_recipe.get('name')}'")
