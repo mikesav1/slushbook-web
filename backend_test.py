@@ -2726,6 +2726,25 @@ test,data,here"""
             all_recipes = recipes_response.json()
             user_recipes = [r for r in all_recipes if r.get('author') != 'system']
             
+            # Also try to get admin's own recipes with their session_id
+            admin_user_id = admin_user.get('id')
+            admin_recipes_response = admin_session.get(f"{BASE_URL}/recipes?session_id={admin_user_id}")
+            if admin_recipes_response.status_code == 200:
+                admin_recipes = admin_recipes_response.json()
+                admin_own_recipes = [r for r in admin_recipes if r.get('author') == admin_user_id or r.get('author') == admin_user.get('email')]
+                self.log(f"✅ Found {len(admin_own_recipes)} admin's own recipes")
+                user_recipes.extend(admin_own_recipes)
+            
+            # Remove duplicates based on recipe ID
+            seen_ids = set()
+            unique_user_recipes = []
+            for recipe in user_recipes:
+                recipe_id = recipe.get('id')
+                if recipe_id not in seen_ids:
+                    seen_ids.add(recipe_id)
+                    unique_user_recipes.append(recipe)
+            user_recipes = unique_user_recipes
+            
             self.log(f"✅ Found {len(user_recipes)} user recipes out of {len(all_recipes)} total recipes")
             
             if len(user_recipes) == 0:
