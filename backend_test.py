@@ -1053,12 +1053,15 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         if dummy_response.status_code == 401:
             response_text = dummy_response.text.lower()
             if "invalid email or password" in response_text:
-                self.log(f"✅ User {email} exists in database (401 with invalid credentials)")
+                # This could mean either user doesn't exist OR wrong password
+                # We need to check backend logs to be sure
+                self.log(f"⚠️  User {email} returned 401 - could be missing user or wrong password")
+                self.log(f"⚠️  Check backend logs: 'User not found' vs 'Password verification failed'")
             else:
                 self.log(f"❌ Unexpected 401 response for {email}: {dummy_response.text}")
                 return False, None
         elif dummy_response.status_code == 404:
-            self.log(f"❌ User {email} does not exist in database")
+            self.log(f"❌ User {email} does not exist in database (404)")
             return False, None
         else:
             self.log(f"⚠️  Unexpected response for user existence check: {dummy_response.status_code}")
@@ -1090,6 +1093,66 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         
         self.log(f"❌ All password attempts failed for {email}")
         return False, None
+
+    def test_database_user_verification(self):
+        """Check what users actually exist in the database"""
+        self.log("=== CHECKING WHAT USERS EXIST IN DATABASE ===")
+        
+        # First, login as a known working admin to get access to admin endpoints
+        admin_login_data = {
+            "email": "kimesav@gmail.com",
+            "password": "admin123"
+        }
+        
+        admin_session = requests.Session()
+        admin_login_response = admin_session.post(f"{BASE_URL}/auth/login", json=admin_login_data)
+        
+        if admin_login_response.status_code != 200:
+            self.log(f"❌ Cannot login as kimesav@gmail.com to check users: {admin_login_response.status_code}")
+            return False
+        
+        self.log("✅ Logged in as kimesav@gmail.com to check database users")
+        
+        # Get all members
+        members_response = admin_session.get(f"{BASE_URL}/admin/members")
+        
+        if members_response.status_code != 200:
+            self.log(f"❌ Cannot get members list: {members_response.status_code}")
+            return False
+        
+        members = members_response.json()
+        self.log(f"✅ Found {len(members)} total users in database:")
+        
+        # Check for specific users
+        admin_user = None
+        ulla_user = None
+        
+        for member in members:
+            email = member.get('email', '').lower()
+            name = member.get('name', 'Unknown')
+            role = member.get('role', 'Unknown')
+            created_at = member.get('created_at', 'Unknown')
+            
+            self.log(f"  - {email} ({name}) - Role: {role} - Created: {created_at}")
+            
+            if email == 'admin@slushbook.dk':
+                admin_user = member
+            elif email == 'ulla@test.dk':
+                ulla_user = member
+        
+        # Report findings
+        self.log("\n🔍 SPECIFIC USER CHECK:")
+        if admin_user:
+            self.log(f"✅ admin@slushbook.dk EXISTS: {admin_user}")
+        else:
+            self.log("❌ admin@slushbook.dk NOT FOUND in database")
+        
+        if ulla_user:
+            self.log(f"✅ ulla@test.dk EXISTS: {ulla_user}")
+        else:
+            self.log("❌ ulla@test.dk NOT FOUND in database")
+        
+        return True
 
     def test_admin_login(self):
         """Test admin login with admin@slushbook.dk"""
