@@ -37,6 +37,11 @@ const getBackendUrl = () => {
     return 'https://slushice-recipes.emergent.host';
   }
   
+  // If on custom domain (slushbook.itopgaver.dk), use production backend
+  if (hostname === 'slushbook.itopgaver.dk') {
+    return 'https://slushice-recipes.emergent.host';
+  }
+  
   // If on preview domain, use preview backend
   if (hostname === 'flavor-sync.preview.emergentagent.com') {
     return 'https://flavor-sync.preview.emergentagent.com';
