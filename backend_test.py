@@ -5046,18 +5046,18 @@ test,data,here"""
         return results
 
 def main():
-    """Run custom domain login test as requested"""
+    """Run dual environment shopping list test as requested"""
     tester = BackendTester()
     
     print("=" * 80)
-    print("SLUSHBOOK CUSTOM DOMAIN LOGIN TEST")
-    print("Testing login from custom domain perspective")
-    print("Backend URL: https://slushice-recipes.emergent.host/api")
-    print("Custom Domain: https://slushbook.itopgaver.dk")
+    print("SLUSHBOOK DUAL ENVIRONMENT SHOPPING LIST TEST")
+    print("Testing shopping list functionality on both environments")
+    print("Preview URL: https://flavor-sync.preview.emergentagent.com/api")
+    print("Production URL: https://slushice-recipes.emergent.host/api")
     print("=" * 80)
     
-    # Run the custom domain login test
-    success = tester.test_custom_domain_login()
+    # Run the dual environment shopping list test
+    results = tester.test_dual_environment_shopping_list()
     
     print(f"\n{'='*80}")
     if success:
