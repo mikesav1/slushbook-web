@@ -58,8 +58,8 @@ const RecipeCard = ({ recipe, sessionId, showMatchInfo, onLockedClick }) => {
       to={`/recipes/${recipe.id}`}
       onClick={handleClick}
       data-testid={`recipe-card-${recipe.id}`}
-      className={`flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all hover:scale-105 overflow-hidden border border-gray-100 ${
-        isLocked ? 'opacity-75' : ''
+      className={`flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all overflow-hidden border border-gray-100 ${
+        isLocked ? 'opacity-80 grayscale-[20%]' : 'hover:scale-105'
       }`}
     >
       {/* Image/Color Header - Portrait */}
