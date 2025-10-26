@@ -24,7 +24,8 @@ KIMESAV_EMAIL = "kimesav@gmail.com"
 KIMESAV_PASSWORD = "admin123"
 
 class BackendTester:
-    def __init__(self):
+    def __init__(self, base_url=PREVIEW_BASE_URL):
+        self.base_url = base_url
         self.session = requests.Session()
         self.user_id = None
         self.session_token = None
