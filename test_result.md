@@ -423,9 +423,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Dual Environment Shopping List Testing - Preview vs Production"
-    - "Shopping List Session ID Mismatch Debug - Tilføj til liste Issue"
-    - "Ulla Recipe Visibility Issue - Pending Recipes Not Shown"
+    - "Production Shopping List Session ID Mismatch - CRITICAL ISSUE IDENTIFIED"
+    - "Mappings API 500 Error on Production"
+    - "User Context Lost in LocalStorage"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
