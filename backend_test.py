@@ -11,8 +11,8 @@ import uuid
 from datetime import datetime, timezone, timedelta
 
 # Configuration
-PREVIEW_BASE_URL = "https://flavor-sync.preview.emergentagent.com/api"  # Preview environment
-PRODUCTION_BASE_URL = "https://slushice-recipes.emergent.host/api"  # Production environment
+PREVIEW_self.base_url = "https://flavor-sync.preview.emergentagent.com/api"  # Preview environment
+PRODUCTION_self.base_url = "https://slushice-recipes.emergent.host/api"  # Production environment
 TEST_EMAIL = f"test.user.{int(time.time())}@example.com"
 TEST_PASSWORD = "testpass123"
 TEST_NAME = "Test User"
@@ -24,7 +24,7 @@ KIMESAV_EMAIL = "kimesav@gmail.com"
 KIMESAV_PASSWORD = "admin123"
 
 class BackendTester:
-    def __init__(self, base_url=PREVIEW_BASE_URL):
+    def __init__(self, base_url=PREVIEW_self.base_url):
         self.base_url = base_url
         self.session = requests.Session()
         self.user_id = None
@@ -71,7 +71,7 @@ class BackendTester:
             return False
             
         # Test duplicate email rejection
-        duplicate_response = self.session.post(f"{BASE_URL}/auth/signup", json=signup_data)
+        duplicate_response = self.session.post(f"{self.base_url}/auth/signup", json=signup_data)
         if duplicate_response.status_code == 400:
             self.log("✅ Duplicate email correctly rejected")
         else:
@@ -90,7 +90,7 @@ class BackendTester:
             "password": TEST_PASSWORD
         }
         
-        response = self.session.post(f"{BASE_URL}/auth/login", json=login_data)
+        response = self.session.post(f"{self.base_url}/auth/login", json=login_data)
         
         if response.status_code == 200:
             data = response.json()
@@ -118,7 +118,7 @@ class BackendTester:
             "password": "wrongpassword"
         }
         
-        invalid_response = self.session.post(f"{BASE_URL}/auth/login", json=invalid_login)
+        invalid_response = self.session.post(f"{self.base_url}/auth/login", json=invalid_login)
         if invalid_response.status_code == 401:
             self.log("✅ Invalid credentials correctly rejected")
         else:
@@ -133,7 +133,7 @@ class BackendTester:
         
         # Test with valid session token (using Authorization header)
         headers = {"Authorization": f"Bearer {self.session_token}"}
-        response = self.session.get(f"{BASE_URL}/auth/me", headers=headers)
+        response = self.session.get(f"{self.base_url}/auth/me", headers=headers)
         
         if response.status_code == 200:
             user_data = response.json()
@@ -153,7 +153,7 @@ class BackendTester:
             
         # Test without session token (use fresh session to avoid cookies)
         fresh_session = requests.Session()
-        no_auth_response = fresh_session.get(f"{BASE_URL}/auth/me")
+        no_auth_response = fresh_session.get(f"{self.base_url}/auth/me")
         if no_auth_response.status_code == 401:
             self.log("✅ Unauthorized access correctly rejected (401)")
         else:
@@ -169,13 +169,13 @@ class BackendTester:
         
         # Test logout with session token
         headers = {"Authorization": f"Bearer {self.session_token}"}
-        response = self.session.post(f"{BASE_URL}/auth/logout", headers=headers)
+        response = self.session.post(f"{self.base_url}/auth/logout", headers=headers)
         
         if response.status_code == 200:
             self.log("✅ Logout successful")
             
             # Verify session is deleted by trying to use it
-            auth_check = self.session.get(f"{BASE_URL}/auth/me", headers=headers)
+            auth_check = self.session.get(f"{self.base_url}/auth/me", headers=headers)
             if auth_check.status_code == 401:
                 self.log("✅ Session successfully deleted from database")
             else:
@@ -194,7 +194,7 @@ class BackendTester:
         
         # Step 1: Request password reset
         reset_request = {"email": TEST_EMAIL}
-        response = self.session.post(f"{BASE_URL}/auth/forgot-password", json=reset_request)
+        response = self.session.post(f"{self.base_url}/auth/forgot-password", json=reset_request)
         
         if response.status_code == 200:
             data = response.json()
@@ -211,7 +211,7 @@ class BackendTester:
             "new_password": new_password
         }
         
-        reset_response = self.session.post(f"{BASE_URL}/auth/reset-password", json=reset_data)
+        reset_response = self.session.post(f"{self.base_url}/auth/reset-password", json=reset_data)
         
         if reset_response.status_code == 200:
             self.log("✅ Password reset successful")
@@ -222,7 +222,7 @@ class BackendTester:
                 "password": new_password
             }
             
-            login_response = self.session.post(f"{BASE_URL}/auth/login", json=login_data)
+            login_response = self.session.post(f"{self.base_url}/auth/login", json=login_data)
             if login_response.status_code == 200:
                 self.log("✅ Login with new password successful")
                 
@@ -238,7 +238,7 @@ class BackendTester:
                 "password": TEST_PASSWORD
             }
             
-            old_response = self.session.post(f"{BASE_URL}/auth/login", json=old_login)
+            old_response = self.session.post(f"{self.base_url}/auth/login", json=old_login)
             if old_response.status_code == 401:
                 self.log("✅ Old password correctly rejected")
             else:
@@ -255,7 +255,7 @@ class BackendTester:
             "new_password": "somepassword"
         }
         
-        invalid_response = self.session.post(f"{BASE_URL}/auth/reset-password", json=invalid_reset)
+        invalid_response = self.session.post(f"{self.base_url}/auth/reset-password", json=invalid_reset)
         if invalid_response.status_code == 400:
             self.log("✅ Invalid reset token correctly rejected")
         else:
@@ -275,7 +275,7 @@ class BackendTester:
             "name": "Short Password Test"
         }
         
-        response = self.session.post(f"{BASE_URL}/auth/signup", json=short_password_data)
+        response = self.session.post(f"{self.base_url}/auth/signup", json=short_password_data)
         
         # Note: The current implementation doesn't seem to have password length validation
         # This is more of a documentation test to verify current behavior
@@ -297,7 +297,7 @@ class BackendTester:
             "loss_margin_pct": 5
         }
         
-        response = self.session.post(f"{BASE_URL}/machines", json=machine_data)
+        response = self.session.post(f"{self.base_url}/machines", json=machine_data)
         
         if response.status_code == 200:
             data = response.json()
@@ -332,7 +332,7 @@ class BackendTester:
         """Test getting machines (GET /api/machines/{session_id})"""
         self.log("Testing machine retrieval...")
         
-        response = self.session.get(f"{BASE_URL}/machines/{self.test_session_id}")
+        response = self.session.get(f"{self.base_url}/machines/{self.test_session_id}")
         
         if response.status_code == 200:
             machines = response.json()
@@ -380,13 +380,13 @@ class BackendTester:
             "loss_margin_pct": 7
         }
         
-        response = self.session.put(f"{BASE_URL}/machines/{self.created_machine_id}", json=update_data)
+        response = self.session.put(f"{self.base_url}/machines/{self.created_machine_id}", json=update_data)
         
         if response.status_code == 200:
             self.log("✅ Machine update successful")
             
             # Verify update by getting the machine again
-            get_response = self.session.get(f"{BASE_URL}/machines/{self.test_session_id}")
+            get_response = self.session.get(f"{self.base_url}/machines/{self.test_session_id}")
             if get_response.status_code == 200:
                 machines = get_response.json()
                 updated_machine = None
@@ -429,14 +429,14 @@ class BackendTester:
             self.log("❌ No machine ID available for delete test")
             return False
             
-        response = self.session.delete(f"{BASE_URL}/machines/{self.created_machine_id}?session_id={self.test_session_id}")
+        response = self.session.delete(f"{self.base_url}/machines/{self.created_machine_id}?session_id={self.test_session_id}")
         
         if response.status_code == 200:
             data = response.json()
             self.log("✅ Machine deletion successful")
             
             # Verify deletion by checking if machine is no longer in the list
-            get_response = self.session.get(f"{BASE_URL}/machines/{self.test_session_id}")
+            get_response = self.session.get(f"{self.base_url}/machines/{self.test_session_id}")
             if get_response.status_code == 200:
                 machines = get_response.json()
                 deleted_machine = None
@@ -472,7 +472,7 @@ class BackendTester:
             "loss_margin_pct": 5
         }
         
-        create_response = self.session.post(f"{BASE_URL}/machines", json=machine_data)
+        create_response = self.session.post(f"{self.base_url}/machines", json=machine_data)
         if create_response.status_code != 200:
             self.log(f"❌ Step 1 - Machine creation failed: {create_response.status_code}")
             return False
@@ -481,7 +481,7 @@ class BackendTester:
         self.log(f"✅ Step 1 - Machine created with ID: {machine_id}")
         
         # Step 2: Get machines and verify creation
-        get_response = self.session.get(f"{BASE_URL}/machines/{self.test_session_id}")
+        get_response = self.session.get(f"{self.base_url}/machines/{self.test_session_id}")
         if get_response.status_code != 200:
             self.log(f"❌ Step 2 - Get machines failed: {get_response.status_code}")
             return False
@@ -501,21 +501,21 @@ class BackendTester:
             "loss_margin_pct": 7
         }
         
-        update_response = self.session.put(f"{BASE_URL}/machines/{machine_id}", json=update_data)
+        update_response = self.session.put(f"{self.base_url}/machines/{machine_id}", json=update_data)
         if update_response.status_code != 200:
             self.log(f"❌ Step 3 - Machine update failed: {update_response.status_code}")
             return False
         self.log("✅ Step 3 - Machine updated successfully")
         
         # Step 4: Delete machine
-        delete_response = self.session.delete(f"{BASE_URL}/machines/{machine_id}?session_id={self.test_session_id}")
+        delete_response = self.session.delete(f"{self.base_url}/machines/{machine_id}?session_id={self.test_session_id}")
         if delete_response.status_code != 200:
             self.log(f"❌ Step 4 - Machine deletion failed: {delete_response.status_code}")
             return False
         self.log("✅ Step 4 - Machine deleted successfully")
         
         # Step 5: Verify deletion
-        verify_response = self.session.get(f"{BASE_URL}/machines/{self.test_session_id}")
+        verify_response = self.session.get(f"{self.base_url}/machines/{self.test_session_id}")
         if verify_response.status_code != 200:
             self.log(f"❌ Step 5 - Verification get failed: {verify_response.status_code}")
             return False
@@ -567,7 +567,7 @@ class BackendTester:
         try:
             # Use test-produkt-123 which should exist from our CSV import test
             response = self.session.get(
-                f"{BASE_URL}/redirect-proxy/admin/mapping/test-produkt-123",
+                f"{self.base_url}/redirect-proxy/admin/mapping/test-produkt-123",
                 headers=headers
             )
             
@@ -614,7 +614,7 @@ class BackendTester:
             # Use allow_redirects=False to capture the 302 response
             # Try with our test product first, fallback to non-existent for fallback test
             response = self.session.get(
-                f"{BASE_URL}/redirect-proxy/go/test-produkt-123",
+                f"{self.base_url}/redirect-proxy/go/test-produkt-123",
                 allow_redirects=False
             )
             
@@ -662,7 +662,7 @@ class BackendTester:
         
         try:
             response = self.session.post(
-                f"{BASE_URL}/redirect-proxy/admin/link-health",
+                f"{self.base_url}/redirect-proxy/admin/link-health",
                 headers=headers,
                 json=body
             )
@@ -694,7 +694,7 @@ class BackendTester:
         
         try:
             response = self.session.get(
-                f"{BASE_URL}/redirect-proxy/go/non-existent-product",
+                f"{self.base_url}/redirect-proxy/go/non-existent-product",
                 allow_redirects=False
             )
             
@@ -734,7 +734,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
                 'file': ('test_recipe.csv', csv_content, 'text/csv')
             }
             
-            response = self.session.post(f"{BASE_URL}/admin/import-csv", files=files)
+            response = self.session.post(f"{self.base_url}/admin/import-csv", files=files)
             
             if response.status_code == 200:
                 data = response.json()
@@ -814,7 +814,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
                 "linked_recipe_name": "Test Recipe"
             }
             
-            response = self.session.post(f"{BASE_URL}/shopping-list", json=valid_item)
+            response = self.session.post(f"{self.base_url}/shopping-list", json=valid_item)
             
             if response.status_code == 200:
                 data = response.json()
@@ -848,7 +848,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
                 "linked_recipe_name": "Test Recipe 2"
             }
             
-            response2 = self.session.post(f"{BASE_URL}/shopping-list", json=empty_category_item)
+            response2 = self.session.post(f"{self.base_url}/shopping-list", json=empty_category_item)
             
             if response2.status_code == 200:
                 data2 = response2.json()
@@ -866,7 +866,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
                 return False
             
             # Test 3: Verify shopping list items can be retrieved
-            get_response = self.session.get(f"{BASE_URL}/shopping-list/{self.test_session_id}")
+            get_response = self.session.get(f"{self.base_url}/shopping-list/{self.test_session_id}")
             
             if get_response.status_code == 200:
                 items = get_response.json()
@@ -933,7 +933,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             }
             
             # Create the recipe
-            create_response = self.session.post(f"{BASE_URL}/recipes", json=recipe_data)
+            create_response = self.session.post(f"{self.base_url}/recipes", json=recipe_data)
             
             if create_response.status_code == 200:
                 recipe = create_response.json()
@@ -961,7 +961,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
                         "linked_recipe_name": recipe['name']
                     }
                     
-                    add_response = self.session.post(f"{BASE_URL}/shopping-list", json=shopping_item)
+                    add_response = self.session.post(f"{self.base_url}/shopping-list", json=shopping_item)
                     
                     if add_response.status_code == 200:
                         self.log(f"✅ Added '{ingredient['name']}' to shopping list despite empty category_key")
@@ -1008,7 +1008,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
                 'file': ('danish_test.csv', csv_content, 'text/csv')
             }
             
-            response = self.session.post(f"{BASE_URL}/admin/import-csv", files=files)
+            response = self.session.post(f"{self.base_url}/admin/import-csv", files=files)
             
             if response.status_code == 200:
                 data = response.json()
@@ -1048,7 +1048,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         self.log(f"Testing login for user: {email}")
         
         # First check if user exists by trying login with a dummy password
-        dummy_response = self.session.post(f"{BASE_URL}/auth/login", json={
+        dummy_response = self.session.post(f"{self.base_url}/auth/login", json={
             "email": email,
             "password": "dummy_password_that_should_not_work"
         })
@@ -1073,7 +1073,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         for password in passwords_to_try:
             self.log(f"Trying password: {password}")
             
-            login_response = self.session.post(f"{BASE_URL}/auth/login", json={
+            login_response = self.session.post(f"{self.base_url}/auth/login", json={
                 "email": email,
                 "password": password
             })
@@ -1114,7 +1114,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             self.log(f"Trying to login as {email} to access admin endpoints...")
             
             test_session = requests.Session()
-            login_response = test_session.post(f"{BASE_URL}/auth/login", json={
+            login_response = test_session.post(f"{self.base_url}/auth/login", json={
                 "email": email,
                 "password": password
             })
@@ -1133,7 +1133,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             return False
         
         # Get all members
-        members_response = admin_session.get(f"{BASE_URL}/admin/members")
+        members_response = admin_session.get(f"{self.base_url}/admin/members")
         
         if members_response.status_code != 200:
             self.log(f"❌ Cannot get members list: {members_response.status_code}")
@@ -1181,7 +1181,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         if success and session_token:
             # Test session validation
             self.log("Testing admin session validation...")
-            auth_response = self.session.get(f"{BASE_URL}/auth/me")
+            auth_response = self.session.get(f"{self.base_url}/auth/me")
             
             if auth_response.status_code == 200:
                 user_data = auth_response.json()
@@ -1208,7 +1208,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         if success and session_token:
             # Test session validation
             self.log("Testing ulla session validation...")
-            auth_response = self.session.get(f"{BASE_URL}/auth/me")
+            auth_response = self.session.get(f"{self.base_url}/auth/me")
             
             if auth_response.status_code == 200:
                 user_data = auth_response.json()
@@ -1229,7 +1229,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         test_password = "knownpassword123"
         
         # Create user
-        signup_response = self.session.post(f"{BASE_URL}/auth/signup", json={
+        signup_response = self.session.post(f"{self.base_url}/auth/signup", json={
             "email": test_email,
             "password": test_password,
             "name": "Hash Test User"
@@ -1242,7 +1242,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         self.log("✅ Test user created for password hashing verification")
         
         # Test correct password
-        correct_login = self.session.post(f"{BASE_URL}/auth/login", json={
+        correct_login = self.session.post(f"{self.base_url}/auth/login", json={
             "email": test_email,
             "password": test_password
         })
@@ -1254,7 +1254,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             return False
         
         # Test incorrect password
-        wrong_login = self.session.post(f"{BASE_URL}/auth/login", json={
+        wrong_login = self.session.post(f"{self.base_url}/auth/login", json={
             "email": test_email,
             "password": "wrongpassword"
         })
@@ -1276,7 +1276,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         test_password = "sessiontest123"
         
         # Create user
-        signup_response = self.session.post(f"{BASE_URL}/auth/signup", json={
+        signup_response = self.session.post(f"{self.base_url}/auth/signup", json={
             "email": test_email,
             "password": test_password,
             "name": "Session Test User"
@@ -1287,7 +1287,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             return False
         
         # Login and get session
-        login_response = self.session.post(f"{BASE_URL}/auth/login", json={
+        login_response = self.session.post(f"{self.base_url}/auth/login", json={
             "email": test_email,
             "password": test_password
         })
@@ -1306,7 +1306,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         self.log(f"✅ Session token created: {session_token[:20]}...")
         
         # Test session validation via /api/auth/me
-        auth_response = self.session.get(f"{BASE_URL}/auth/me")
+        auth_response = self.session.get(f"{self.base_url}/auth/me")
         
         if auth_response.status_code == 200:
             user_data = auth_response.json()
@@ -1325,7 +1325,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         
         # Test session with explicit Authorization header
         headers = {"Authorization": f"Bearer {session_token}"}
-        auth_header_response = self.session.get(f"{BASE_URL}/auth/me", headers=headers)
+        auth_header_response = self.session.get(f"{self.base_url}/auth/me", headers=headers)
         
         if auth_header_response.status_code == 200:
             self.log("✅ Session validation with Authorization header successful")
@@ -1359,7 +1359,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         if ulla_success and ulla_token:
             self.log("✅ Ulla login successful - testing session token...")
             # Test session token validation
-            auth_response = self.session.get(f"{BASE_URL}/auth/me")
+            auth_response = self.session.get(f"{self.base_url}/auth/me")
             if auth_response.status_code == 200:
                 user_data = auth_response.json()
                 self.log(f"✅ Ulla session token valid: {user_data}")
@@ -1375,7 +1375,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         if kimesav_success and kimesav_token:
             self.log("✅ Kimesav login successful - testing session token...")
             # Test session token validation
-            auth_response = self.session.get(f"{BASE_URL}/auth/me")
+            auth_response = self.session.get(f"{self.base_url}/auth/me")
             if auth_response.status_code == 200:
                 user_data = auth_response.json()
                 self.log(f"✅ Kimesav session token valid: {user_data}")
@@ -1431,7 +1431,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             
             # Use a fresh session for this test
             test_session = requests.Session()
-            login_response = test_session.post(f"{BASE_URL}/auth/login", json=login_data)
+            login_response = test_session.post(f"{self.base_url}/auth/login", json=login_data)
             
             if login_response.status_code != 200:
                 self.log(f"❌ Login failed for Ulla: {login_response.status_code} - {login_response.text}")
@@ -1480,7 +1480,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
                 "is_published": False  # Keep it private for testing
             }
             
-            create_response = test_session.post(f"{BASE_URL}/recipes", json=test_recipe_data)
+            create_response = test_session.post(f"{self.base_url}/recipes", json=test_recipe_data)
             
             if create_response.status_code == 200:
                 created_recipe = create_response.json()
@@ -1506,9 +1506,9 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             # Step 4: Attempt to delete the recipe
             self.log(f"Step 4: Attempt to delete recipe {recipe_id}...")
             
-            delete_response = test_session.delete(f"{BASE_URL}/recipes/{recipe_id}")
+            delete_response = test_session.delete(f"{self.base_url}/recipes/{recipe_id}")
             
-            self.log(f"DELETE request sent to: {BASE_URL}/recipes/{recipe_id}")
+            self.log(f"DELETE request sent to: {self.base_url}/recipes/{recipe_id}")
             self.log(f"Response status: {delete_response.status_code}")
             self.log(f"Response body: {delete_response.text}")
             
@@ -1574,7 +1574,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             # Step 5: Verify recipe is actually deleted
             self.log(f"Step 5: Verify recipe is deleted...")
             
-            verify_response = test_session.get(f"{BASE_URL}/recipes/{recipe_id}")
+            verify_response = test_session.get(f"{self.base_url}/recipes/{recipe_id}")
             
             if verify_response.status_code == 404:
                 self.log(f"✅ Recipe successfully deleted - No longer accessible")
@@ -1611,7 +1611,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             
             # Use a fresh session to ensure clean cookie state
             cookie_session = requests.Session()
-            login_response = cookie_session.post(f"{BASE_URL}/auth/login", json=login_data)
+            login_response = cookie_session.post(f"{self.base_url}/auth/login", json=login_data)
             
             if login_response.status_code != 200:
                 self.log(f"❌ Login failed: {login_response.status_code} - {login_response.text}")
@@ -1670,7 +1670,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             
             added_items = []
             for ingredient in test_ingredients:
-                add_response = cookie_session.post(f"{BASE_URL}/shopping-list", json=ingredient)
+                add_response = cookie_session.post(f"{self.base_url}/shopping-list", json=ingredient)
                 
                 if add_response.status_code == 200:
                     item_data = add_response.json()
@@ -1693,7 +1693,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             
             # Use a different session_id in URL - should be ignored due to cookie priority
             fake_session_id = "FAKE_SESSION_ID_SHOULD_BE_IGNORED"
-            get_response = cookie_session.get(f"{BASE_URL}/shopping-list/{fake_session_id}")
+            get_response = cookie_session.get(f"{self.base_url}/shopping-list/{fake_session_id}")
             
             if get_response.status_code == 200:
                 shopping_items = get_response.json()
@@ -1728,7 +1728,7 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
                 
                 # Use a fresh session without cookies to test different session_id
                 isolation_session = requests.Session()
-                isolation_response = isolation_session.get(f"{BASE_URL}/shopping-list/{user_id}")
+                isolation_response = isolation_session.get(f"{self.base_url}/shopping-list/{user_id}")
                 
                 if isolation_response.status_code == 200:
                     isolation_items = isolation_response.json()
@@ -1785,7 +1785,7 @@ sodavand-cola,Coca Cola 440ml,"cola,sodavand,coca",power,https://power.dk/cola,2
             }
             
             response = self.session.post(
-                f"{BASE_URL}/redirect-proxy/admin/import-csv",
+                f"{self.base_url}/redirect-proxy/admin/import-csv",
                 files=files,
                 headers=headers
             )
@@ -1819,7 +1819,7 @@ sodavand-cola,Coca Cola 440ml,"cola,sodavand,coca",power,https://power.dk/cola,2
             self.log("Test 2: Verifying import by checking mappings...")
             
             mappings_response = self.session.get(
-                f"{BASE_URL}/redirect-proxy/admin/mappings",
+                f"{self.base_url}/redirect-proxy/admin/mappings",
                 headers=headers
             )
             
@@ -1864,7 +1864,7 @@ sodavand-cola,Coca Cola 440ml,"cola,sodavand,coca",power,https://power.dk/cola,2
             }
             
             no_auth_response = self.session.post(
-                f"{BASE_URL}/redirect-proxy/admin/import-csv",
+                f"{self.base_url}/redirect-proxy/admin/import-csv",
                 files=files_no_auth
             )
             
@@ -1885,7 +1885,7 @@ test,data,here"""
             }
             
             invalid_response = self.session.post(
-                f"{BASE_URL}/redirect-proxy/admin/import-csv",
+                f"{self.base_url}/redirect-proxy/admin/import-csv",
                 files=files_invalid,
                 headers=headers
             )
@@ -1913,7 +1913,7 @@ test,data,here"""
             }
             
             duplicate_response = self.session.post(
-                f"{BASE_URL}/redirect-proxy/admin/import-csv",
+                f"{self.base_url}/redirect-proxy/admin/import-csv",
                 files=files_duplicate,
                 headers=headers
             )
@@ -1954,7 +1954,7 @@ test,data,here"""
                 "name": test_user_name
             }
             
-            signup_response = self.session.post(f"{BASE_URL}/auth/signup", json=signup_data)
+            signup_response = self.session.post(f"{self.base_url}/auth/signup", json=signup_data)
             
             if signup_response.status_code != 200:
                 self.log(f"❌ Failed to create test user: {signup_response.status_code} - {signup_response.text}")
@@ -1972,7 +1972,7 @@ test,data,here"""
             
             # Use a fresh session for admin to avoid cookie conflicts
             admin_session = requests.Session()
-            admin_login_response = admin_session.post(f"{BASE_URL}/auth/login", json=admin_login_data)
+            admin_login_response = admin_session.post(f"{self.base_url}/auth/login", json=admin_login_data)
             
             if admin_login_response.status_code != 200:
                 self.log(f"❌ Admin login failed: {admin_login_response.status_code} - {admin_login_response.text}")
@@ -1993,7 +1993,7 @@ test,data,here"""
             self.log("Step 3: Creating test data for user (sessions, recipes, etc.)...")
             
             # Login as test user to create session
-            test_login_response = self.session.post(f"{BASE_URL}/auth/login", json={
+            test_login_response = self.session.post(f"{self.base_url}/auth/login", json={
                 "email": test_user_email,
                 "password": test_user_password
             })
@@ -2010,7 +2010,7 @@ test,data,here"""
                     "loss_margin_pct": 3
                 }
                 
-                machine_response = self.session.post(f"{BASE_URL}/machines", json=test_machine_data)
+                machine_response = self.session.post(f"{self.base_url}/machines", json=test_machine_data)
                 if machine_response.status_code == 200:
                     self.log("✅ Test machine created for user")
                 
@@ -2023,7 +2023,7 @@ test,data,here"""
                     "unit": "ml"
                 }
                 
-                shopping_response = self.session.post(f"{BASE_URL}/shopping-list", json=shopping_item)
+                shopping_response = self.session.post(f"{self.base_url}/shopping-list", json=shopping_item)
                 if shopping_response.status_code == 200:
                     self.log("✅ Test shopping list item created for user")
             
@@ -2031,7 +2031,7 @@ test,data,here"""
             self.log("Step 4: Testing DELETE /api/admin/members/{user_id} endpoint...")
             
             # Use the admin session (with cookies) for the delete request
-            delete_response = admin_session.delete(f"{BASE_URL}/admin/members/{test_user_id}")
+            delete_response = admin_session.delete(f"{self.base_url}/admin/members/{test_user_id}")
             
             if delete_response.status_code == 200:
                 self.log("✅ User deletion successful")
@@ -2051,7 +2051,7 @@ test,data,here"""
             # Step 5: Verify user is deleted from members list
             self.log("Step 5: Verifying user is deleted from members list...")
             
-            members_response = admin_session.get(f"{BASE_URL}/admin/members")
+            members_response = admin_session.get(f"{self.base_url}/admin/members")
             
             if members_response.status_code == 200:
                 members = members_response.json()
@@ -2080,7 +2080,7 @@ test,data,here"""
             self.log("Test 6a: Deleting non-existent user...")
             fake_user_id = "non-existent-user-123"
             
-            fake_delete_response = admin_session.delete(f"{BASE_URL}/admin/members/{fake_user_id}")
+            fake_delete_response = admin_session.delete(f"{self.base_url}/admin/members/{fake_user_id}")
             
             if fake_delete_response.status_code == 404:
                 self.log("✅ Non-existent user deletion correctly returned 404")
@@ -2098,10 +2098,10 @@ test,data,here"""
                 "name": "Regular User"
             }
             
-            regular_signup_response = self.session.post(f"{BASE_URL}/auth/signup", json=regular_signup)
+            regular_signup_response = self.session.post(f"{self.base_url}/auth/signup", json=regular_signup)
             if regular_signup_response.status_code == 200:
                 # Login as regular user
-                regular_login_response = self.session.post(f"{BASE_URL}/auth/login", json={
+                regular_login_response = self.session.post(f"{self.base_url}/auth/login", json={
                     "email": regular_user_email,
                     "password": "regular123"
                 })
@@ -2111,14 +2111,14 @@ test,data,here"""
                     
                     # Use a fresh session for regular user
                     regular_session = requests.Session()
-                    regular_login_response2 = regular_session.post(f"{BASE_URL}/auth/login", json={
+                    regular_login_response2 = regular_session.post(f"{self.base_url}/auth/login", json={
                         "email": regular_user_email,
                         "password": "regular123"
                     })
                     
                     if regular_login_response2.status_code == 200:
                         # Try to delete admin user as regular user
-                        unauthorized_delete_response = regular_session.delete(f"{BASE_URL}/admin/members/{admin_user_id}")
+                        unauthorized_delete_response = regular_session.delete(f"{self.base_url}/admin/members/{admin_user_id}")
                     
                         if unauthorized_delete_response.status_code == 403:
                             self.log("✅ Non-admin user correctly forbidden from deleting (403)")
@@ -2129,7 +2129,7 @@ test,data,here"""
             # Test 6c: Try admin deleting themselves
             self.log("Test 6c: Testing admin deleting themselves...")
             
-            self_delete_response = admin_session.delete(f"{BASE_URL}/admin/members/{admin_user_id}")
+            self_delete_response = admin_session.delete(f"{self.base_url}/admin/members/{admin_user_id}")
             
             if self_delete_response.status_code == 400:
                 self.log("✅ Admin self-deletion correctly prevented (400)")
@@ -2156,12 +2156,12 @@ test,data,here"""
                 "name": "Cleanup Test User"
             }
             
-            cleanup_signup_response = self.session.post(f"{BASE_URL}/auth/signup", json=cleanup_signup)
+            cleanup_signup_response = self.session.post(f"{self.base_url}/auth/signup", json=cleanup_signup)
             if cleanup_signup_response.status_code == 200:
                 cleanup_user_id = cleanup_signup_response.json().get("user_id")
                 
                 # Login as cleanup test user
-                cleanup_login_response = self.session.post(f"{BASE_URL}/auth/login", json={
+                cleanup_login_response = self.session.post(f"{self.base_url}/auth/login", json={
                     "email": cleanup_test_email,
                     "password": "cleanup123"
                 })
@@ -2177,7 +2177,7 @@ test,data,here"""
                         "tank_volumes_ml": [12000],
                         "loss_margin_pct": 4
                     }
-                    self.session.post(f"{BASE_URL}/machines", json=cleanup_machine)
+                    self.session.post(f"{self.base_url}/machines", json=cleanup_machine)
                     
                     # Shopping list item
                     cleanup_shopping = {
@@ -2187,19 +2187,19 @@ test,data,here"""
                         "quantity": 200.0,
                         "unit": "ml"
                     }
-                    self.session.post(f"{BASE_URL}/shopping-list", json=cleanup_shopping)
+                    self.session.post(f"{self.base_url}/shopping-list", json=cleanup_shopping)
                     
                     self.log("✅ Created test data for cleanup verification")
                     
                     # Now delete this user as admin
-                    cleanup_delete_response = admin_session.delete(f"{BASE_URL}/admin/members/{cleanup_user_id}")
+                    cleanup_delete_response = admin_session.delete(f"{self.base_url}/admin/members/{cleanup_user_id}")
                     
                     if cleanup_delete_response.status_code == 200:
                         self.log("✅ Cleanup test user deleted successfully")
                         
                         # Verify data cleanup by checking if machines and shopping list items are gone
                         # Check machines
-                        machines_check = self.session.get(f"{BASE_URL}/machines/{cleanup_user_id}")
+                        machines_check = self.session.get(f"{self.base_url}/machines/{cleanup_user_id}")
                         if machines_check.status_code == 200:
                             machines = machines_check.json()
                             if len(machines) == 0:
@@ -2209,7 +2209,7 @@ test,data,here"""
                                 return False
                         
                         # Check shopping list
-                        shopping_check = self.session.get(f"{BASE_URL}/shopping-list/{cleanup_user_id}")
+                        shopping_check = self.session.get(f"{self.base_url}/shopping-list/{cleanup_user_id}")
                         if shopping_check.status_code == 200:
                             shopping_items = shopping_check.json()
                             if len(shopping_items) == 0:
@@ -2245,7 +2245,7 @@ test,data,here"""
             
             # Use fresh session for this test
             test_session = requests.Session()
-            login_response = test_session.post(f"{BASE_URL}/auth/login", json=login_data)
+            login_response = test_session.post(f"{self.base_url}/auth/login", json=login_data)
             
             if login_response.status_code != 200:
                 self.log(f"❌ Login failed: {login_response.status_code} - {login_response.text}")
@@ -2264,7 +2264,7 @@ test,data,here"""
             # Step 2: Get a recipe with ingredients
             self.log("Step 2: Getting a recipe with ingredients...")
             
-            recipes_response = test_session.get(f"{BASE_URL}/recipes?session_id={user_session_id}")
+            recipes_response = test_session.get(f"{self.base_url}/recipes?session_id={user_session_id}")
             
             if recipes_response.status_code != 200:
                 self.log(f"❌ Failed to get recipes: {recipes_response.status_code}")
@@ -2295,11 +2295,11 @@ test,data,here"""
             # Step 3: Clear existing shopping list items for this user
             self.log("Step 3: Clearing existing shopping list items...")
             
-            existing_items_response = test_session.get(f"{BASE_URL}/shopping-list/{user_session_id}")
+            existing_items_response = test_session.get(f"{self.base_url}/shopping-list/{user_session_id}")
             if existing_items_response.status_code == 200:
                 existing_items = existing_items_response.json()
                 for item in existing_items:
-                    delete_response = test_session.delete(f"{BASE_URL}/shopping-list/{item['id']}")
+                    delete_response = test_session.delete(f"{self.base_url}/shopping-list/{item['id']}")
                     if delete_response.status_code == 200:
                         self.log(f"✅ Deleted existing item: {item['ingredient_name']}")
             
@@ -2328,7 +2328,7 @@ test,data,here"""
                         "linked_recipe_name": recipe_name
                     }
                     
-                    add_response = test_session.post(f"{BASE_URL}/shopping-list", json=shopping_item)
+                    add_response = test_session.post(f"{self.base_url}/shopping-list", json=shopping_item)
                     
                     if add_response.status_code == 200:
                         added_data = add_response.json()
@@ -2347,7 +2347,7 @@ test,data,here"""
             # Step 5: Verify items appear in shopping list
             self.log("Step 5: Verifying items appear in shopping list...")
             
-            shopping_list_response = test_session.get(f"{BASE_URL}/shopping-list/{user_session_id}")
+            shopping_list_response = test_session.get(f"{self.base_url}/shopping-list/{user_session_id}")
             
             if shopping_list_response.status_code != 200:
                 self.log(f"❌ Failed to get shopping list: {shopping_list_response.status_code}")
@@ -2387,7 +2387,7 @@ test,data,here"""
                 "linked_recipe_name": recipe_name
             }
             
-            valid_response = test_session.post(f"{BASE_URL}/shopping-list", json=valid_category_item)
+            valid_response = test_session.post(f"{self.base_url}/shopping-list", json=valid_category_item)
             if valid_response.status_code == 200:
                 self.log("✅ Ingredient with valid category_key added successfully")
             else:
@@ -2405,7 +2405,7 @@ test,data,here"""
                 "linked_recipe_name": recipe_name
             }
             
-            empty_response = test_session.post(f"{BASE_URL}/shopping-list", json=empty_category_item)
+            empty_response = test_session.post(f"{self.base_url}/shopping-list", json=empty_category_item)
             if empty_response.status_code == 200:
                 self.log("✅ Ingredient with empty category_key added successfully")
             else:
@@ -2423,7 +2423,7 @@ test,data,here"""
                 "linked_recipe_name": recipe_name
             }
             
-            special_response = test_session.post(f"{BASE_URL}/shopping-list", json=special_char_item)
+            special_response = test_session.post(f"{self.base_url}/shopping-list", json=special_char_item)
             if special_response.status_code == 200:
                 self.log("✅ Ingredient with special characters added successfully")
             else:
@@ -2434,7 +2434,7 @@ test,data,here"""
             self.log("Step 7: Verifying session_id handling...")
             
             # Get final shopping list and verify all items are associated with correct session
-            final_list_response = test_session.get(f"{BASE_URL}/shopping-list/{user_session_id}")
+            final_list_response = test_session.get(f"{self.base_url}/shopping-list/{user_session_id}")
             
             if final_list_response.status_code == 200:
                 final_items = final_list_response.json()
@@ -2452,7 +2452,7 @@ test,data,here"""
                     return False
                     
                 # Verify items persist across requests
-                persistence_response = test_session.get(f"{BASE_URL}/shopping-list/{user_session_id}")
+                persistence_response = test_session.get(f"{self.base_url}/shopping-list/{user_session_id}")
                 if persistence_response.status_code == 200:
                     persistence_items = persistence_response.json()
                     if len(persistence_items) == len(final_items):
@@ -2481,13 +2481,13 @@ test,data,here"""
                 "unit": "ml"
             }
             
-            guest_response = test_session.post(f"{BASE_URL}/shopping-list", json=guest_item)
+            guest_response = test_session.post(f"{self.base_url}/shopping-list", json=guest_item)
             if guest_response.status_code == 200:
                 self.log("✅ Guest session item added successfully")
                 
                 # Verify guest items don't appear in authenticated user's list
-                auth_list_response = test_session.get(f"{BASE_URL}/shopping-list/{user_session_id}")
-                guest_list_response = test_session.get(f"{BASE_URL}/shopping-list/{guest_session_id}")
+                auth_list_response = test_session.get(f"{self.base_url}/shopping-list/{user_session_id}")
+                guest_list_response = test_session.get(f"{self.base_url}/shopping-list/{guest_session_id}")
                 
                 if auth_list_response.status_code == 200 and guest_list_response.status_code == 200:
                     auth_items = auth_list_response.json()
@@ -2531,7 +2531,7 @@ test,data,here"""
             }
             
             admin_session = requests.Session()
-            admin_login_response = admin_session.post(f"{BASE_URL}/auth/login", json=admin_login_data)
+            admin_login_response = admin_session.post(f"{self.base_url}/auth/login", json=admin_login_data)
             
             if admin_login_response.status_code != 200:
                 self.log(f"❌ Admin login failed on deployed: {admin_login_response.status_code} - {admin_login_response.text}")
@@ -2548,7 +2548,7 @@ test,data,here"""
             self.log("Step 2: Getting all recipes and filtering by Ulla's email (ulla@itopgaver.dk)...")
             
             # Get all recipes with admin session
-            recipes_response = admin_session.get(f"{BASE_URL}/recipes?session_id={admin_session_token}")
+            recipes_response = admin_session.get(f"{self.base_url}/recipes?session_id={admin_session_token}")
             
             if recipes_response.status_code == 200:
                 all_recipes = recipes_response.json()
@@ -2586,7 +2586,7 @@ test,data,here"""
             # Step 3: Check sandbox/pending recipes
             self.log("Step 3: Checking sandbox/pending recipes...")
             
-            pending_response = admin_session.get(f"{BASE_URL}/admin/pending-recipes")
+            pending_response = admin_session.get(f"{self.base_url}/admin/pending-recipes")
             
             if pending_response.status_code == 200:
                 pending_recipes = pending_response.json()
@@ -2623,7 +2623,7 @@ test,data,here"""
             self.log("Step 4: Checking for Ulla's recipes in user_recipes collection...")
             
             # Try to get recipes with different parameters to see if we can find Ulla's data
-            user_recipes_response = admin_session.get(f"{BASE_URL}/recipes?author=ulla@itopgaver.dk&session_id={admin_session_token}")
+            user_recipes_response = admin_session.get(f"{self.base_url}/recipes?author=ulla@itopgaver.dk&session_id={admin_session_token}")
             
             if user_recipes_response.status_code == 200:
                 user_recipes = user_recipes_response.json()
@@ -2639,7 +2639,7 @@ test,data,here"""
             self.log("Step 5: Checking if Ulla exists as a user in the system...")
             
             # Try to get all members to see if Ulla is registered
-            members_response = admin_session.get(f"{BASE_URL}/admin/members")
+            members_response = admin_session.get(f"{self.base_url}/admin/members")
             
             if members_response.status_code == 200:
                 members = members_response.json()
@@ -2720,7 +2720,7 @@ test,data,here"""
             # Step 1: Get a recipe ID from /api/recipes endpoint
             self.log("Step 1: Getting recipe ID from /api/recipes endpoint...")
             
-            recipes_response = self.session.get(f"{BASE_URL}/recipes")
+            recipes_response = self.session.get(f"{self.base_url}/recipes")
             
             if recipes_response.status_code != 200:
                 self.log(f"❌ Failed to get recipes: {recipes_response.status_code} - {recipes_response.text}")
@@ -2743,7 +2743,7 @@ test,data,here"""
             self.log("Step 2: Testing recipe detail endpoint for guest user (no auth)...")
             
             guest_session = requests.Session()
-            guest_response = guest_session.get(f"{BASE_URL}/recipes/{recipe_id}")
+            guest_response = guest_session.get(f"{self.base_url}/recipes/{recipe_id}")
             
             if guest_response.status_code == 200:
                 guest_recipe_data = guest_response.json()
@@ -2774,7 +2774,7 @@ test,data,here"""
             }
             
             admin_session = requests.Session()
-            admin_login_response = admin_session.post(f"{BASE_URL}/auth/login", json=admin_login_data)
+            admin_login_response = admin_session.post(f"{self.base_url}/auth/login", json=admin_login_data)
             
             if admin_login_response.status_code != 200:
                 self.log(f"❌ Admin login failed: {admin_login_response.status_code} - {admin_login_response.text}")
@@ -2791,7 +2791,7 @@ test,data,here"""
                 return False
             
             # Get recipe detail as admin
-            admin_response = admin_session.get(f"{BASE_URL}/recipes/{recipe_id}")
+            admin_response = admin_session.get(f"{self.base_url}/recipes/{recipe_id}")
             
             if admin_response.status_code == 200:
                 admin_recipe_data = admin_response.json()
@@ -2828,7 +2828,7 @@ test,data,here"""
                 "name": pro_user_name
             }
             
-            pro_signup_response = self.session.post(f"{BASE_URL}/auth/signup", json=pro_signup_data)
+            pro_signup_response = self.session.post(f"{self.base_url}/auth/signup", json=pro_signup_data)
             
             if pro_signup_response.status_code == 200:
                 pro_user_id = pro_signup_response.json().get("user_id")
@@ -2836,7 +2836,7 @@ test,data,here"""
                 
                 # Upgrade user to pro role (admin action)
                 role_update_data = {"role": "pro"}
-                role_update_response = admin_session.put(f"{BASE_URL}/admin/members/{pro_user_id}/role", json=role_update_data)
+                role_update_response = admin_session.put(f"{self.base_url}/admin/members/{pro_user_id}/role", json=role_update_data)
                 
                 if role_update_response.status_code == 200:
                     self.log("✅ User upgraded to pro role")
@@ -2848,7 +2848,7 @@ test,data,here"""
                     }
                     
                     pro_session = requests.Session()
-                    pro_login_response = pro_session.post(f"{BASE_URL}/auth/login", json=pro_login_data)
+                    pro_login_response = pro_session.post(f"{self.base_url}/auth/login", json=pro_login_data)
                     
                     if pro_login_response.status_code == 200:
                         pro_user_data = pro_login_response.json().get("user", {})
@@ -2858,7 +2858,7 @@ test,data,here"""
                         self.log(f"✅ Pro user login successful: {pro_email} (role: {pro_role})")
                         
                         # Get recipe detail as pro user
-                        pro_response = pro_session.get(f"{BASE_URL}/recipes/{recipe_id}")
+                        pro_response = pro_session.get(f"{self.base_url}/recipes/{recipe_id}")
                         
                         if pro_response.status_code == 200:
                             pro_recipe_data = pro_response.json()
@@ -2923,7 +2923,7 @@ test,data,here"""
                 "is_published": False  # Keep it private for testing
             }
             
-            create_recipe_response = pro_session.post(f"{BASE_URL}/recipes", json=pro_recipe_data)
+            create_recipe_response = pro_session.post(f"{self.base_url}/recipes", json=pro_recipe_data)
             
             if create_recipe_response.status_code == 200:
                 created_recipe = create_recipe_response.json()
@@ -2933,7 +2933,7 @@ test,data,here"""
                 self.log(f"✅ Pro user created recipe: {created_recipe_id} (author: {created_recipe_author})")
                 
                 # Test recipe detail for the created recipe (need session_id for user recipes)
-                pro_own_recipe_response = pro_session.get(f"{BASE_URL}/recipes/{created_recipe_id}?session_id={pro_user_id}")
+                pro_own_recipe_response = pro_session.get(f"{self.base_url}/recipes/{created_recipe_id}?session_id={pro_user_id}")
                 
                 if pro_own_recipe_response.status_code == 200:
                     pro_own_recipe_data = pro_own_recipe_response.json()
@@ -3022,7 +3022,7 @@ test,data,here"""
                 "password": "admin123"
             }
             
-            login_response = self.session.post(f"{BASE_URL}/auth/login", json=login_data)
+            login_response = self.session.post(f"{self.base_url}/auth/login", json=login_data)
             
             if login_response.status_code != 200:
                 self.log(f"❌ Login failed: {login_response.status_code} - {login_response.text}")
@@ -3039,7 +3039,7 @@ test,data,here"""
             # Step 2: Find a recipe with ingredients (any recipe)
             self.log("Step 2: Finding a recipe with ingredients...")
             
-            recipes_response = self.session.get(f"{BASE_URL}/recipes?session_id={session_id}")
+            recipes_response = self.session.get(f"{self.base_url}/recipes?session_id={session_id}")
             
             if recipes_response.status_code != 200:
                 self.log(f"❌ Failed to get recipes: {recipes_response.status_code}")
@@ -3105,7 +3105,7 @@ test,data,here"""
                     "linked_recipe_name": recipe_name
                 }
                 
-                add_response = self.session.post(f"{BASE_URL}/shopping-list", json=shopping_item)
+                add_response = self.session.post(f"{self.base_url}/shopping-list", json=shopping_item)
                 
                 if add_response.status_code == 200:
                     added_item = add_response.json()
@@ -3120,7 +3120,7 @@ test,data,here"""
             # Step 4: Verify items are added by calling GET /api/shopping-list/{session_id}
             self.log("Step 4: Verifying items are added via GET /api/shopping-list...")
             
-            get_response = self.session.get(f"{BASE_URL}/shopping-list/{session_id}")
+            get_response = self.session.get(f"{self.base_url}/shopping-list/{session_id}")
             
             if get_response.status_code != 200:
                 self.log(f"❌ Failed to get shopping list: {get_response.status_code} - {get_response.text}")
@@ -3174,7 +3174,7 @@ test,data,here"""
             
             # Create a different session and verify items don't appear there
             different_session_id = f"test_session_{int(time.time())}"
-            isolation_response = self.session.get(f"{BASE_URL}/shopping-list/{different_session_id}")
+            isolation_response = self.session.get(f"{self.base_url}/shopping-list/{different_session_id}")
             
             if isolation_response.status_code == 200:
                 isolation_list = isolation_response.json()
@@ -3195,7 +3195,7 @@ test,data,here"""
             self.log("Step 7: Testing persistence across multiple API calls...")
             
             # Make another GET request to verify items persist
-            persistence_response = self.session.get(f"{BASE_URL}/shopping-list/{session_id}")
+            persistence_response = self.session.get(f"{self.base_url}/shopping-list/{session_id}")
             
             if persistence_response.status_code == 200:
                 persistent_list = persistence_response.json()
@@ -3245,7 +3245,7 @@ test,data,here"""
                 "password": "admin123"
             }
             
-            login_response = self.session.post(f"{BASE_URL}/auth/login", json=login_data)
+            login_response = self.session.post(f"{self.base_url}/auth/login", json=login_data)
             
             if login_response.status_code != 200:
                 self.log(f"❌ Login failed: {login_response.status_code} - {login_response.text}")
@@ -3265,13 +3265,13 @@ test,data,here"""
             self.log("Step 3: Getting Mojito Slush recipe details...")
             mojito_recipe_id = "6a5e1c1c-3fb9-4c73-a2c9-2bbfe25c1023"
             
-            recipe_response = self.session.get(f"{BASE_URL}/recipes/{mojito_recipe_id}?session_id={session_id}")
+            recipe_response = self.session.get(f"{self.base_url}/recipes/{mojito_recipe_id}?session_id={session_id}")
             
             if recipe_response.status_code != 200:
                 self.log(f"❌ Failed to get Mojito Slush recipe: {recipe_response.status_code} - {recipe_response.text}")
                 # Try to find the recipe by searching for it
                 self.log("Searching for Mojito Slush recipe...")
-                search_response = self.session.get(f"{BASE_URL}/recipes?search=Mojito&session_id={session_id}")
+                search_response = self.session.get(f"{self.base_url}/recipes?search=Mojito&session_id={session_id}")
                 
                 if search_response.status_code == 200:
                     recipes = search_response.json()
@@ -3320,7 +3320,7 @@ test,data,here"""
                 
                 self.log(f"  Adding: {ingredient.get('name')} ({ingredient.get('quantity')} {ingredient.get('unit')})")
                 
-                add_response = self.session.post(f"{BASE_URL}/shopping-list", json=shopping_item)
+                add_response = self.session.post(f"{self.base_url}/shopping-list", json=shopping_item)
                 
                 if add_response.status_code == 200:
                     added_item = add_response.json()
@@ -3335,7 +3335,7 @@ test,data,here"""
             # Step 6: GET /api/shopping-list/{session_id} to verify items are stored
             self.log("Step 6: Verifying items are stored in shopping list...")
             
-            get_shopping_list_response = self.session.get(f"{BASE_URL}/shopping-list/{session_id}")
+            get_shopping_list_response = self.session.get(f"{self.base_url}/shopping-list/{session_id}")
             
             if get_shopping_list_response.status_code != 200:
                 self.log(f"❌ Failed to get shopping list: {get_shopping_list_response.status_code} - {get_shopping_list_response.text}")
@@ -3388,7 +3388,7 @@ test,data,here"""
             self.log("Additional test: Verifying session isolation...")
             
             fake_session_id = "fake-session-123"
-            fake_shopping_list_response = self.session.get(f"{BASE_URL}/shopping-list/{fake_session_id}")
+            fake_shopping_list_response = self.session.get(f"{self.base_url}/shopping-list/{fake_session_id}")
             
             if fake_shopping_list_response.status_code == 200:
                 fake_items = fake_shopping_list_response.json()
@@ -3435,7 +3435,7 @@ test,data,here"""
             }
             
             admin_session = requests.Session()
-            admin_login_response = admin_session.post(f"{BASE_URL}/auth/login", json=admin_login_data)
+            admin_login_response = admin_session.post(f"{self.base_url}/auth/login", json=admin_login_data)
             
             if admin_login_response.status_code != 200:
                 self.log(f"❌ Admin login failed: {admin_login_response.status_code}")
@@ -3446,7 +3446,7 @@ test,data,here"""
             self.log(f"✅ Admin login successful: {admin_user.get('email')}")
             
             # Get all recipes to find user recipes
-            recipes_response = admin_session.get(f"{BASE_URL}/recipes")
+            recipes_response = admin_session.get(f"{self.base_url}/recipes")
             if recipes_response.status_code != 200:
                 self.log(f"❌ Failed to get recipes: {recipes_response.status_code}")
                 return False
@@ -3456,7 +3456,7 @@ test,data,here"""
             
             # Also try to get admin's own recipes with their session_id
             admin_user_id = admin_user.get('id')
-            admin_recipes_response = admin_session.get(f"{BASE_URL}/recipes?session_id={admin_user_id}")
+            admin_recipes_response = admin_session.get(f"{self.base_url}/recipes?session_id={admin_user_id}")
             if admin_recipes_response.status_code == 200:
                 admin_recipes = admin_recipes_response.json()
                 admin_own_recipes = [r for r in admin_recipes if r.get('author') == admin_user_id or r.get('author') == admin_user.get('email')]
@@ -3503,7 +3503,7 @@ test,data,here"""
                     "approval_status": "approved"  # Start as approved
                 }
                 
-                create_response = admin_session.post(f"{BASE_URL}/recipes", json=test_recipe_data)
+                create_response = admin_session.post(f"{self.base_url}/recipes", json=test_recipe_data)
                 if create_response.status_code == 200:
                     test_recipe = create_response.json()
                     self.log(f"✅ Created test recipe: {test_recipe.get('id')}")
@@ -3535,10 +3535,10 @@ test,data,here"""
             
             # Handle case where session_id might be None
             if recipe_session_id:
-                original_response = self.session.get(f"{BASE_URL}/recipes/{recipe_id}?session_id={recipe_session_id}")
+                original_response = self.session.get(f"{self.base_url}/recipes/{recipe_id}?session_id={recipe_session_id}")
             else:
                 # If no session_id, try with admin session (since admin created it)
-                original_response = admin_session.get(f"{BASE_URL}/recipes/{recipe_id}")
+                original_response = admin_session.get(f"{self.base_url}/recipes/{recipe_id}")
             
             if original_response.status_code == 200:
                 original_recipe_data = original_response.json()
@@ -3560,7 +3560,7 @@ test,data,here"""
             self.log("Test 3b: Accessing recipe with different session_id...")
             
             different_session_id = f"different_session_{int(time.time())}"
-            different_response = self.session.get(f"{BASE_URL}/recipes/{recipe_id}?session_id={different_session_id}")
+            different_response = self.session.get(f"{self.base_url}/recipes/{recipe_id}?session_id={different_session_id}")
             
             is_published = test_recipe.get('is_published', False)
             is_approved = approval_status == 'approved'
@@ -3593,7 +3593,7 @@ test,data,here"""
                 recipe_author_email = recipe_author
             else:
                 # Try to find user by ID
-                members_response = admin_session.get(f"{BASE_URL}/admin/members")
+                members_response = admin_session.get(f"{self.base_url}/admin/members")
                 if members_response.status_code == 200:
                     members = members_response.json()
                     for member in members:
@@ -3616,7 +3616,7 @@ test,data,here"""
                 
                 for login_attempt in author_login_attempts:
                     author_session = requests.Session()
-                    author_login_response = author_session.post(f"{BASE_URL}/auth/login", json=login_attempt)
+                    author_login_response = author_session.post(f"{self.base_url}/auth/login", json=login_attempt)
                     
                     if author_login_response.status_code == 200:
                         author_user_data = author_login_response.json().get("user", {})
@@ -3634,7 +3634,7 @@ test,data,here"""
                     author_user_data = author_login_response.json().get("user", {})
                     author_user_id = author_user_data.get("id")
                     
-                    author_recipe_response = author_session.get(f"{BASE_URL}/recipes/{recipe_id}?session_id={author_user_id}")
+                    author_recipe_response = author_session.get(f"{self.base_url}/recipes/{recipe_id}?session_id={author_user_id}")
                     
                     if author_recipe_response.status_code == 200:
                         author_recipe_data = author_recipe_response.json()
@@ -3656,7 +3656,7 @@ test,data,here"""
                     self.log("⚠️  Could not login as recipe author - testing with admin instead")
                     
                     # Test with admin user accessing the recipe
-                    admin_recipe_response = admin_session.get(f"{BASE_URL}/recipes/{recipe_id}?session_id={admin_user_id}")
+                    admin_recipe_response = admin_session.get(f"{self.base_url}/recipes/{recipe_id}?session_id={admin_user_id}")
                     
                     if admin_recipe_response.status_code == 200:
                         admin_recipe_data = admin_recipe_response.json()
@@ -3677,7 +3677,7 @@ test,data,here"""
                 self.log("⚠️  Could not determine recipe author email - testing with admin access only")
                 
                 # Test admin access to recipe
-                admin_recipe_response = admin_session.get(f"{BASE_URL}/recipes/{recipe_id}?session_id={admin_user_id}")
+                admin_recipe_response = admin_session.get(f"{self.base_url}/recipes/{recipe_id}?session_id={admin_user_id}")
                 
                 if admin_recipe_response.status_code == 200:
                     self.log("✅ Recipe accessible to admin user")
@@ -3700,7 +3700,7 @@ test,data,here"""
             
             for login_attempt in ulla_login_attempts:
                 ulla_session = requests.Session()
-                ulla_login_response = ulla_session.post(f"{BASE_URL}/auth/login", json=login_attempt)
+                ulla_login_response = ulla_session.post(f"{self.base_url}/auth/login", json=login_attempt)
                 
                 if ulla_login_response.status_code == 200:
                     ulla_user_data = ulla_login_response.json().get("user", {})
@@ -3713,7 +3713,7 @@ test,data,here"""
             
             if ulla_logged_in:
                 # Get Ulla's recipes
-                ulla_recipes_response = ulla_session.get(f"{BASE_URL}/recipes?session_id={ulla_user_id}")
+                ulla_recipes_response = ulla_session.get(f"{self.base_url}/recipes?session_id={ulla_user_id}")
                 
                 if ulla_recipes_response.status_code == 200:
                     ulla_recipes = ulla_recipes_response.json()
@@ -3726,7 +3726,7 @@ test,data,here"""
                         ulla_recipe = ulla_own_recipes[0]
                         ulla_recipe_id = ulla_recipe.get('id')
                         
-                        ulla_detail_response = ulla_session.get(f"{BASE_URL}/recipes/{ulla_recipe_id}?session_id={ulla_user_id}")
+                        ulla_detail_response = ulla_session.get(f"{self.base_url}/recipes/{ulla_recipe_id}?session_id={ulla_user_id}")
                         
                         if ulla_detail_response.status_code == 200:
                             self.log(f"✅ Ulla can access her own recipe: '{ulla_recipe.get('name')}'")
@@ -3783,7 +3783,7 @@ test,data,here"""
                 "rejection_reason": "This is a test rejection reason to verify rejection reason display functionality"
             }
             
-            rejected_create_response = admin_session.post(f"{BASE_URL}/recipes", json=rejected_recipe_data)
+            rejected_create_response = admin_session.post(f"{self.base_url}/recipes", json=rejected_recipe_data)
             if rejected_create_response.status_code == 200:
                 rejected_recipe = rejected_create_response.json()
                 rejected_recipe_id = rejected_recipe.get('id')
@@ -3792,7 +3792,7 @@ test,data,here"""
                 self.log(f"   Created recipe rejection_reason: {rejected_recipe.get('rejection_reason')}")
                 
                 # Test accessing the rejected recipe as the author
-                rejected_access_response = admin_session.get(f"{BASE_URL}/recipes/{rejected_recipe_id}?session_id={admin_user_id}")
+                rejected_access_response = admin_session.get(f"{self.base_url}/recipes/{rejected_recipe_id}?session_id={admin_user_id}")
                 
                 if rejected_access_response.status_code == 200:
                     rejected_recipe_data = rejected_access_response.json()
@@ -3876,7 +3876,7 @@ test,data,here"""
                 "password": "admin123"
             }
             
-            login_response = self.session.post(f"{BASE_URL}/auth/login", json=login_data)
+            login_response = self.session.post(f"{self.base_url}/auth/login", json=login_data)
             
             if login_response.status_code != 200:
                 self.log(f"❌ Login failed: {login_response.status_code} - {login_response.text}")
@@ -3897,7 +3897,7 @@ test,data,here"""
             self.log("Step 3: Finding a suitable recipe for testing...")
             
             # First, get all recipes to find one with ingredients
-            recipes_response = self.session.get(f"{BASE_URL}/recipes?session_id={user_id}")
+            recipes_response = self.session.get(f"{self.base_url}/recipes?session_id={user_id}")
             
             if recipes_response.status_code != 200:
                 self.log(f"❌ Failed to get recipes: {recipes_response.status_code} - {recipes_response.text}")
@@ -3923,7 +3923,7 @@ test,data,here"""
             self.log(f"✅ Using recipe '{test_recipe['name']}' (ID: {recipe_id}) for testing")
             
             # Get the full recipe details
-            recipe_response = self.session.get(f"{BASE_URL}/recipes/{recipe_id}?session_id={user_id}")
+            recipe_response = self.session.get(f"{self.base_url}/recipes/{recipe_id}?session_id={user_id}")
             
             if recipe_response.status_code != 200:
                 self.log(f"❌ Failed to get recipe details: {recipe_response.status_code} - {recipe_response.text}")
@@ -3953,7 +3953,7 @@ test,data,here"""
                     "linked_recipe_name": recipe['name']
                 }
                 
-                add_response = self.session.post(f"{BASE_URL}/shopping-list", json=shopping_item)
+                add_response = self.session.post(f"{self.base_url}/shopping-list", json=shopping_item)
                 
                 if add_response.status_code == 200:
                     added_item = add_response.json()
@@ -3971,7 +3971,7 @@ test,data,here"""
             # Test 5a: GET /api/shopping-list/{user.id} (effectiveSessionId)
             self.log("Test 5a: GET /api/shopping-list/{user.id} (effectiveSessionId)...")
             
-            get_response_user_id = self.session.get(f"{BASE_URL}/shopping-list/{user_id}")
+            get_response_user_id = self.session.get(f"{self.base_url}/shopping-list/{user_id}")
             
             if get_response_user_id.status_code == 200:
                 items_user_id = get_response_user_id.json()
@@ -3995,7 +3995,7 @@ test,data,here"""
             # Test 5b: GET /api/shopping-list/{original_session_token}
             self.log("Test 5b: GET /api/shopping-list/{original_session_token}...")
             
-            get_response_session_token = self.session.get(f"{BASE_URL}/shopping-list/{session_token}")
+            get_response_session_token = self.session.get(f"{self.base_url}/shopping-list/{session_token}")
             
             if get_response_session_token.status_code == 200:
                 items_session_token = get_response_session_token.json()
@@ -4103,13 +4103,13 @@ test,data,here"""
                     "linked_recipe_name": recipe['name']
                 }
                 
-                test_add_response = self.session.post(f"{BASE_URL}/shopping-list", json=test_item)
+                test_add_response = self.session.post(f"{self.base_url}/shopping-list", json=test_item)
                 
                 if test_add_response.status_code == 200:
                     self.log("✅ Successfully added item using session_token as session_id")
                     
                     # Now check if it appears when retrieving with session_token
-                    test_get_response = self.session.get(f"{BASE_URL}/shopping-list/{session_token}")
+                    test_get_response = self.session.get(f"{self.base_url}/shopping-list/{session_token}")
                     
                     if test_get_response.status_code == 200:
                         test_items = test_get_response.json()
@@ -4188,7 +4188,7 @@ test,data,here"""
         
         # First login as Ulla
         ulla_session = requests.Session()
-        login_response = ulla_session.post(f"{BASE_URL}/auth/login", json={
+        login_response = ulla_session.post(f"{self.base_url}/auth/login", json={
             "email": ULLA_EMAIL,
             "password": ULLA_PASSWORD
         })
@@ -4205,7 +4205,7 @@ test,data,here"""
         
         # Test accessing Ulla's specific recipe
         recipe_id = "8765bbda-2477-497a-8e01-d127647ba0d9"
-        recipe_url = f"{BASE_URL}/recipes/{recipe_id}?session_id={ulla_session_id}"
+        recipe_url = f"{self.base_url}/recipes/{recipe_id}?session_id={ulla_session_id}"
         
         recipe_response = ulla_session.get(recipe_url)
         
@@ -4245,7 +4245,7 @@ test,data,here"""
         
         # Login as admin (kimesav@gmail.com)
         admin_session = requests.Session()
-        login_response = admin_session.post(f"{BASE_URL}/auth/login", json={
+        login_response = admin_session.post(f"{self.base_url}/auth/login", json={
             "email": KIMESAV_EMAIL,
             "password": KIMESAV_PASSWORD
         })
@@ -4260,7 +4260,7 @@ test,data,here"""
         self.log(f"✅ Admin logged in successfully - Role: {admin_user.get('role')}")
         
         # Test admin pending recipes endpoint
-        pending_url = f"{BASE_URL}/admin/pending-recipes"
+        pending_url = f"{self.base_url}/admin/pending-recipes"
         pending_response = admin_session.get(pending_url)
         
         if pending_response.status_code == 200:
@@ -4298,7 +4298,7 @@ test,data,here"""
         guest_session = requests.Session()
         
         # Test getting all recipes as guest
-        recipes_url = f"{BASE_URL}/recipes"
+        recipes_url = f"{self.base_url}/recipes"
         recipes_response = guest_session.get(recipes_url)
         
         if recipes_response.status_code == 200:
@@ -4364,7 +4364,7 @@ test,data,here"""
         
         # Login as Ulla
         ulla_session = requests.Session()
-        login_response = ulla_session.post(f"{BASE_URL}/auth/login", json={
+        login_response = ulla_session.post(f"{self.base_url}/auth/login", json={
             "email": ULLA_EMAIL,
             "password": ULLA_PASSWORD
         })
@@ -4392,7 +4392,7 @@ test,data,here"""
             "linked_recipe_name": "Ulla's Test Recipe"
         }
         
-        add_response = ulla_session.post(f"{BASE_URL}/shopping-list", json=shopping_item)
+        add_response = ulla_session.post(f"{self.base_url}/shopping-list", json=shopping_item)
         
         if add_response.status_code == 200:
             add_data = add_response.json()
@@ -4407,7 +4407,7 @@ test,data,here"""
         # Test 2: Get items from shopping list (GET /api/shopping-list/{session_id})
         self.log("Step 2: Getting items from shopping list...")
         
-        get_response = ulla_session.get(f"{BASE_URL}/shopping-list/{ulla_session_id}")
+        get_response = ulla_session.get(f"{self.base_url}/shopping-list/{ulla_session_id}")
         
         if get_response.status_code == 200:
             items_data = get_response.json()
@@ -4674,7 +4674,7 @@ test,data,here"""
             # Test 1: Check if recipes exist in database
             self.log("Test 1: Checking if recipes exist in database...")
             
-            response = self.session.get(f"{BASE_URL}/recipes")
+            response = self.session.get(f"{self.base_url}/recipes")
             
             if response.status_code == 200:
                 recipes = response.json()
@@ -4703,7 +4703,7 @@ test,data,here"""
                 "password": "dummy_password_for_test"  # We expect this to fail, but tells us if user exists
             }
             
-            ulla_response = self.session.post(f"{BASE_URL}/auth/login", json=ulla_login_data)
+            ulla_response = self.session.post(f"{self.base_url}/auth/login", json=ulla_login_data)
             
             if ulla_response.status_code == 401:
                 # 401 means user exists but wrong password
@@ -4727,13 +4727,13 @@ test,data,here"""
             
             admin_logged_in = False
             for creds in admin_credentials:
-                admin_login_response = self.session.post(f"{BASE_URL}/auth/login", json=creds)
+                admin_login_response = self.session.post(f"{self.base_url}/auth/login", json=creds)
                 if admin_login_response.status_code == 200:
                     self.log(f"✅ Admin login successful with {creds['email']}")
                     admin_logged_in = True
                     
                     # Try to get members
-                    members_response = self.session.get(f"{BASE_URL}/admin/members")
+                    members_response = self.session.get(f"{self.base_url}/admin/members")
                     if members_response.status_code == 200:
                         members = members_response.json()
                         member_count = len(members)
@@ -4764,7 +4764,7 @@ test,data,here"""
                     "name": "DB Test User"
                 }
                 
-                signup_response = self.session.post(f"{BASE_URL}/auth/signup", json=test_signup)
+                signup_response = self.session.post(f"{self.base_url}/auth/signup", json=test_signup)
                 if signup_response.status_code == 200:
                     self.log("✅ Database is working - can create users")
                 elif signup_response.status_code == 400 and "already registered" in signup_response.text:
@@ -4776,14 +4776,14 @@ test,data,here"""
             self.log("Test 4: Testing other endpoints to verify database has content...")
             
             # Try to get pantry items (should work even if empty)
-            pantry_response = self.session.get(f"{BASE_URL}/pantry/dummy_session")
+            pantry_response = self.session.get(f"{self.base_url}/pantry/dummy_session")
             if pantry_response.status_code == 200:
                 self.log("✅ Pantry endpoint working")
             else:
                 self.log(f"⚠️  Pantry endpoint: {pantry_response.status_code}")
             
             # Try to get machines (should work even if empty)
-            machines_response = self.session.get(f"{BASE_URL}/machines/dummy_session")
+            machines_response = self.session.get(f"{self.base_url}/machines/dummy_session")
             if machines_response.status_code == 200:
                 self.log("✅ Machines endpoint working")
             else:
@@ -4820,8 +4820,8 @@ test,data,here"""
         self.log("=== TESTING DUAL ENVIRONMENT SHOPPING LIST FUNCTIONALITY ===")
         
         environments = [
-            ("Preview", PREVIEW_BASE_URL),
-            ("Production", PRODUCTION_BASE_URL)
+            ("Preview", PREVIEW_self.base_url),
+            ("Production", PRODUCTION_self.base_url)
         ]
         
         results = {}
