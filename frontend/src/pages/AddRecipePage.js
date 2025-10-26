@@ -329,24 +329,6 @@ const AddRecipePage = ({ sessionId }) => {
             </div>
 
             <div>
-              <Label>Farve (valgfri)</Label>
-              <select
-                value={recipe.color}
-                onChange={(e) => setRecipe({...recipe, color: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-200 rounded-md"
-              >
-                <option value="red">Rød</option>
-                <option value="blue">Blå</option>
-                <option value="green">Grøn</option>
-                <option value="yellow">Gul</option>
-                <option value="orange">Orange</option>
-                <option value="pink">Pink</option>
-                <option value="purple">Lilla</option>
-                <option value="brown">Brun</option>
-              </select>
-            </div>
-
-            <div>
               <Label className="flex items-center gap-2">
                 Sukkergrad (°Bx)
                 <a
