@@ -4443,6 +4443,176 @@ test,data,here"""
             self.log(f"❌ Failed to get shopping list: {get_response.status_code} - {get_response.text}")
             return False
 
+    def test_custom_domain_login(self):
+        """Test login from custom domain perspective with CORS headers"""
+        self.log("=== TESTING CUSTOM DOMAIN LOGIN ===")
+        
+        # Test configuration from review request
+        backend_url = "https://slushice-recipes.emergent.host/api/auth/login"
+        custom_domain_origin = "https://slushbook.itopgaver.dk"
+        test_email = "kimesav@gmail.com"
+        test_password = "admin123"
+        
+        try:
+            # Test 1: Login with custom domain headers (simulating request from slushbook.itopgaver.dk)
+            self.log("Test 1: Login with custom domain Origin header...")
+            
+            headers = {
+                "Origin": custom_domain_origin,
+                "Content-Type": "application/json",
+                "User-Agent": "Mozilla/5.0 (Custom Domain Test)"
+            }
+            
+            login_data = {
+                "email": test_email,
+                "password": test_password
+            }
+            
+            # Use requests directly to have full control over headers
+            custom_session = requests.Session()
+            
+            response = custom_session.post(
+                backend_url,
+                json=login_data,
+                headers=headers
+            )
+            
+            self.log(f"Response Status: {response.status_code}")
+            self.log(f"Response Headers: {dict(response.headers)}")
+            
+            if response.status_code == 200:
+                data = response.json()
+                session_token = data.get("session_token")
+                user_data = data.get("user", {})
+                
+                self.log(f"✅ Login successful with custom domain Origin")
+                self.log(f"   - Session token: {session_token[:20] if session_token else 'None'}...")
+                self.log(f"   - User: {user_data.get('name')} ({user_data.get('email')})")
+                self.log(f"   - Role: {user_data.get('role')}")
+                
+                # Check CORS headers in response
+                cors_headers = {
+                    "Access-Control-Allow-Origin": response.headers.get("Access-Control-Allow-Origin"),
+                    "Access-Control-Allow-Credentials": response.headers.get("Access-Control-Allow-Credentials"),
+                    "Access-Control-Allow-Methods": response.headers.get("Access-Control-Allow-Methods"),
+                    "Access-Control-Allow-Headers": response.headers.get("Access-Control-Allow-Headers")
+                }
+                
+                self.log(f"✅ CORS Headers in response:")
+                for header, value in cors_headers.items():
+                    if value:
+                        self.log(f"   - {header}: {value}")
+                    else:
+                        self.log(f"   - {header}: NOT SET")
+                
+                # Check if custom domain is allowed
+                allowed_origin = response.headers.get("Access-Control-Allow-Origin")
+                if allowed_origin == custom_domain_origin:
+                    self.log(f"✅ Custom domain {custom_domain_origin} is explicitly allowed")
+                elif allowed_origin == "*":
+                    self.log(f"✅ All origins allowed (wildcard)")
+                else:
+                    self.log(f"⚠️  Custom domain may not be allowed. Allowed origin: {allowed_origin}")
+                
+            elif response.status_code == 401:
+                self.log(f"❌ Login failed with 401 Unauthorized")
+                self.log(f"   - Response: {response.text}")
+                self.log(f"   - This indicates invalid credentials, not CORS issue")
+                return False
+                
+            elif response.status_code == 403:
+                self.log(f"❌ Login failed with 403 Forbidden")
+                self.log(f"   - Response: {response.text}")
+                self.log(f"   - This may indicate CORS rejection")
+                return False
+                
+            else:
+                self.log(f"❌ Login failed with status {response.status_code}")
+                self.log(f"   - Response: {response.text}")
+                return False
+            
+            # Test 2: Direct login without custom headers (baseline test)
+            self.log("\nTest 2: Direct login without custom Origin header...")
+            
+            direct_session = requests.Session()
+            direct_response = direct_session.post(
+                backend_url,
+                json=login_data
+            )
+            
+            self.log(f"Direct Response Status: {direct_response.status_code}")
+            
+            if direct_response.status_code == 200:
+                direct_data = direct_response.json()
+                self.log(f"✅ Direct login successful (baseline verification)")
+                self.log(f"   - User: {direct_data.get('user', {}).get('email')}")
+            else:
+                self.log(f"❌ Direct login failed: {direct_response.status_code} - {direct_response.text}")
+                return False
+            
+            # Test 3: CORS preflight request simulation
+            self.log("\nTest 3: CORS preflight request simulation...")
+            
+            preflight_headers = {
+                "Origin": custom_domain_origin,
+                "Access-Control-Request-Method": "POST",
+                "Access-Control-Request-Headers": "Content-Type"
+            }
+            
+            preflight_response = requests.options(
+                backend_url,
+                headers=preflight_headers
+            )
+            
+            self.log(f"Preflight Response Status: {preflight_response.status_code}")
+            self.log(f"Preflight Response Headers: {dict(preflight_response.headers)}")
+            
+            if preflight_response.status_code in [200, 204]:
+                self.log(f"✅ CORS preflight request handled")
+                
+                # Check preflight response headers
+                preflight_cors = {
+                    "Access-Control-Allow-Origin": preflight_response.headers.get("Access-Control-Allow-Origin"),
+                    "Access-Control-Allow-Methods": preflight_response.headers.get("Access-Control-Allow-Methods"),
+                    "Access-Control-Allow-Headers": preflight_response.headers.get("Access-Control-Allow-Headers")
+                }
+                
+                for header, value in preflight_cors.items():
+                    if value:
+                        self.log(f"   - {header}: {value}")
+                
+            else:
+                self.log(f"⚠️  CORS preflight may not be properly configured: {preflight_response.status_code}")
+            
+            # Test 4: Check backend CORS configuration
+            self.log("\nTest 4: Backend CORS configuration check...")
+            
+            # Check if the custom domain is in the CORS_ORIGINS environment variable
+            # We can infer this from the response headers
+            
+            test_origins = [
+                custom_domain_origin,
+                "https://slushice-recipes.emergent.host",
+                "https://flavor-sync.preview.emergentagent.com"
+            ]
+            
+            for origin in test_origins:
+                test_headers = {"Origin": origin}
+                test_response = requests.get(
+                    "https://slushice-recipes.emergent.host/api/",  # Simple endpoint
+                    headers=test_headers
+                )
+                
+                allowed_origin = test_response.headers.get("Access-Control-Allow-Origin")
+                self.log(f"   - Origin {origin}: Allowed={allowed_origin}")
+            
+            self.log(f"\n✅ Custom domain login test completed successfully")
+            return True
+            
+        except Exception as e:
+            self.log(f"❌ Custom domain login test failed with exception: {str(e)}")
+            return False
+
     def run_all_tests(self):
         """Run all backend tests"""
         self.log("Starting SLUSHBOOK Backend System Tests")
