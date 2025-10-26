@@ -55,7 +55,7 @@ class BackendTester:
             self.log(f"✅ Signup successful - User ID: {self.user_id}")
             
             # Verify user created in database by trying to login
-            login_response = self.session.post(f"{BASE_URL}/auth/login", json={
+            login_response = self.session.post(f"{self.base_url}/auth/login", json={
                 "email": TEST_EMAIL,
                 "password": TEST_PASSWORD
             })
