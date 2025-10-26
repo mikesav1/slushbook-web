@@ -28,8 +28,28 @@ import MembersPage from "./pages/MembersPage";
 import BrixInfoPage from "./pages/BrixInfoPage";
 import AdminLinksPage from "./pages/AdminLinksPage";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+// Dynamically determine backend URL based on current hostname
+const getBackendUrl = () => {
+  const hostname = window.location.hostname;
+  
+  // If on production domain, use production backend
+  if (hostname === 'slushice-recipes.emergent.host') {
+    return 'https://slushice-recipes.emergent.host';
+  }
+  
+  // If on preview domain, use preview backend
+  if (hostname === 'flavor-sync.preview.emergentagent.com') {
+    return 'https://flavor-sync.preview.emergentagent.com';
+  }
+  
+  // Fallback to env variable or preview
+  return process.env.REACT_APP_BACKEND_URL || 'https://flavor-sync.preview.emergentagent.com';
+};
+
+const BACKEND_URL = getBackendUrl();
 export const API = `${BACKEND_URL}/api`;
+
+console.log('[App] Backend URL:', BACKEND_URL);
 
 // Navigation Component
 const Navigation = () => {
