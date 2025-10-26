@@ -389,7 +389,7 @@ const AppContent = ({ sessionId }) => {
             {/* App Routes */}
             <Route path="/" element={<HomePage sessionId={effectiveSessionId} />} />
             <Route path="/recipes" element={<RecipesPage sessionId={effectiveSessionId} />} />
-            <Route path="/recipe/:id" element={<RecipeDetailPage sessionId={effectiveSessionId} />} />
+            <Route path="/recipes/:id" element={<RecipeDetailPage sessionId={effectiveSessionId} />} />
             <Route path="/pantry" element={<PantryPage sessionId={effectiveSessionId} />} />
             <Route path="/match" element={<MatchFinderPage sessionId={effectiveSessionId} />} />
             <Route path="/shopping" element={<ShoppingListPage sessionId={effectiveSessionId} />} />
