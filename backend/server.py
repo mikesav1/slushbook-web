@@ -1434,15 +1434,35 @@ async def get_recipe(recipe_id: str, session_id: Optional[str] = None, request: 
 
 @api_router.delete("/recipes/{recipe_id}")
 async def delete_recipe(recipe_id: str, request: Request):
-    """Delete a recipe (admin only)"""
+    """Delete a recipe (admin or recipe author)"""
     # Get current user
     user = await get_current_user(request, None, db)
     
-    # Check if user is admin
-    if not user or user.role != "admin":
+    if not user:
+        raise HTTPException(
+            status_code=401,
+            detail="Du skal være logget ind for at slette opskrifter"
+        )
+    
+    # Check if recipe exists and get it
+    recipe = await db.recipes.find_one({"id": recipe_id})
+    if not recipe:
+        recipe = await db.user_recipes.find_one({"id": recipe_id})
+    
+    if not recipe:
+        raise HTTPException(
+            status_code=404,
+            detail="Opskrift ikke fundet"
+        )
+    
+    # Check if user is admin OR the recipe author
+    is_admin = user.role == "admin"
+    is_author = recipe.get("author") == user.id or recipe.get("author") == user.email
+    
+    if not (is_admin or is_author):
         raise HTTPException(
             status_code=403,
-            detail="Kun administratorer kan slette opskrifter"
+            detail="Du kan kun slette dine egne opskrifter"
         )
     
     # Delete recipe from main recipes collection
@@ -1451,12 +1471,6 @@ async def delete_recipe(recipe_id: str, request: Request):
     # Also try to delete from user_recipes if it exists there
     if result.deleted_count == 0:
         result = await db.user_recipes.delete_one({"id": recipe_id})
-    
-    if result.deleted_count == 0:
-        raise HTTPException(
-            status_code=404,
-            detail="Opskrift ikke fundet"
-        )
     
     # Clean up related data
     await db.favorites.delete_many({"recipe_id": recipe_id})
