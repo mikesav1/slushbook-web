@@ -4632,25 +4632,30 @@ test,data,here"""
             return False
 
 def main():
-    """Run database migration login verification test"""
+    """Run recipe delete functionality test for recipe author"""
     tester = BackendTester()
     
     print("=" * 80)
-    print("SLUSHBOOK DATABASE MIGRATION LOGIN VERIFICATION")
-    print("Testing login after migration from test_database to flavor_sync")
+    print("SLUSHBOOK RECIPE DELETE BY AUTHOR TEST")
+    print("Testing delete recipe functionality for recipe author")
     print("Backend URL:", BASE_URL)
     print("=" * 80)
     
-    # Run the specific database migration login test
-    success = tester.test_database_migration_login_verification()
+    # Run the specific recipe delete test
+    success = tester.test_recipe_delete_by_author()
     
     print(f"\n{'='*80}")
     if success:
-        print("DATABASE MIGRATION LOGIN VERIFICATION: ✅ PASSED")
-        print("Both users can authenticate and receive session tokens")
+        print("RECIPE DELETE BY AUTHOR TEST: ✅ PASSED")
+        print("Ulla can successfully delete her own recipe")
+        print("- Recipe deletion succeeded (200 or 204)")
+        print("- No 'Kun administratorer kan slette' error")
+        print("- Recipe properly removed from system")
     else:
-        print("DATABASE MIGRATION LOGIN VERIFICATION: ❌ FAILED")
-        print("Users cannot authenticate - migration appears incomplete")
+        print("RECIPE DELETE BY AUTHOR TEST: ❌ FAILED")
+        print("Recipe author cannot delete their own recipe")
+        print("- Check authentication and authorization logic")
+        print("- Verify recipe authorship matching")
     print(f"{'='*80}")
     
     return success
