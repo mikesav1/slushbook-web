@@ -78,10 +78,10 @@ const RecipeCard = ({ recipe, sessionId, showMatchInfo, onLockedClick }) => {
           <img 
             src={recipe.image_url} 
             alt={recipe.name}
-            className="w-full h-full object-cover"
+            className={`w-full h-full object-cover ${isLocked ? 'blur-sm' : ''}`}
           />
         ) : (
-          <div className={`w-full h-full bg-gradient-to-br ${getColorClass(recipe.color)}`}></div>
+          <div className={`w-full h-full bg-gradient-to-br ${getColorClass(recipe.color)} ${isLocked ? 'blur-sm' : ''}`}></div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
         <div className="absolute top-4 right-4 flex gap-2">
