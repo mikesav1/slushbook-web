@@ -4107,21 +4107,21 @@ test,data,here"""
             return False
 
 def main():
-    """Run login diagnostics tests"""
+    """Run database fix login verification test"""
     tester = BackendTester()
     
     print("=" * 60)
-    print("SLUSHBOOK LOGIN DIAGNOSTICS")
+    print("SLUSHBOOK DATABASE FIX LOGIN VERIFICATION")
     print("=" * 60)
     
-    # Run comprehensive login diagnostics
-    success = tester.test_login_comprehensive_diagnostics()
+    # Run the specific database fix login test
+    success = tester.test_database_fix_login_verification()
     
     print(f"\n{'='*60}")
     if success:
-        print("LOGIN DIAGNOSTICS: ✅ PASSED")
+        print("DATABASE FIX LOGIN VERIFICATION: ✅ PASSED")
     else:
-        print("LOGIN DIAGNOSTICS: ❌ FAILED")
+        print("DATABASE FIX LOGIN VERIFICATION: ❌ FAILED")
     print(f"{'='*60}")
     
     return success
