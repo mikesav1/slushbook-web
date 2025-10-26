@@ -1040,6 +1040,272 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             
         return True
 
+    def test_specific_user_login(self, email, passwords_to_try):
+        """Test login for a specific user with multiple password attempts"""
+        self.log(f"Testing login for user: {email}")
+        
+        # First check if user exists by trying login with a dummy password
+        dummy_response = self.session.post(f"{BASE_URL}/auth/login", json={
+            "email": email,
+            "password": "dummy_password_that_should_not_work"
+        })
+        
+        if dummy_response.status_code == 401:
+            response_text = dummy_response.text.lower()
+            if "invalid email or password" in response_text:
+                self.log(f"✅ User {email} exists in database (401 with invalid credentials)")
+            else:
+                self.log(f"❌ Unexpected 401 response for {email}: {dummy_response.text}")
+                return False, None
+        elif dummy_response.status_code == 404:
+            self.log(f"❌ User {email} does not exist in database")
+            return False, None
+        else:
+            self.log(f"⚠️  Unexpected response for user existence check: {dummy_response.status_code}")
+        
+        # Try common passwords
+        for password in passwords_to_try:
+            self.log(f"Trying password: {password}")
+            
+            login_response = self.session.post(f"{BASE_URL}/auth/login", json={
+                "email": email,
+                "password": password
+            })
+            
+            if login_response.status_code == 200:
+                data = login_response.json()
+                session_token = data.get("session_token")
+                user_data = data.get("user", {})
+                
+                self.log(f"✅ LOGIN SUCCESS for {email} with password: {password}")
+                self.log(f"✅ Session token: {session_token[:20] if session_token else 'None'}...")
+                self.log(f"✅ User data: {user_data}")
+                
+                return True, session_token
+                
+            elif login_response.status_code == 401:
+                self.log(f"❌ Password '{password}' failed for {email}")
+            else:
+                self.log(f"❌ Unexpected response for {email}/{password}: {login_response.status_code} - {login_response.text}")
+        
+        self.log(f"❌ All password attempts failed for {email}")
+        return False, None
+
+    def test_admin_login(self):
+        """Test admin login with admin@slushbook.dk"""
+        self.log("=== TESTING ADMIN LOGIN ===")
+        success, session_token = self.test_specific_user_login(ADMIN_EMAIL, COMMON_PASSWORDS)
+        
+        if success and session_token:
+            # Test session validation
+            self.log("Testing admin session validation...")
+            auth_response = self.session.get(f"{BASE_URL}/auth/me")
+            
+            if auth_response.status_code == 200:
+                user_data = auth_response.json()
+                self.log(f"✅ Admin session validation successful: {user_data}")
+                
+                # Check if user has admin role
+                if user_data.get('role') == 'admin':
+                    self.log("✅ Admin user has correct admin role")
+                else:
+                    self.log(f"⚠️  Admin user role is: {user_data.get('role')} (expected: admin)")
+                    
+                return True
+            else:
+                self.log(f"❌ Admin session validation failed: {auth_response.status_code} - {auth_response.text}")
+                return False
+        
+        return success
+
+    def test_ulla_login(self):
+        """Test ulla login with ulla@test.dk"""
+        self.log("=== TESTING ULLA LOGIN ===")
+        success, session_token = self.test_specific_user_login(ULLA_EMAIL, COMMON_PASSWORDS)
+        
+        if success and session_token:
+            # Test session validation
+            self.log("Testing ulla session validation...")
+            auth_response = self.session.get(f"{BASE_URL}/auth/me")
+            
+            if auth_response.status_code == 200:
+                user_data = auth_response.json()
+                self.log(f"✅ Ulla session validation successful: {user_data}")
+                return True
+            else:
+                self.log(f"❌ Ulla session validation failed: {auth_response.status_code} - {auth_response.text}")
+                return False
+        
+        return success
+
+    def test_password_hashing_verification(self):
+        """Test that password hashing is working correctly"""
+        self.log("=== TESTING PASSWORD HASHING ===")
+        
+        # Create a test user with known password
+        test_email = f"hash.test.{int(time.time())}@example.com"
+        test_password = "knownpassword123"
+        
+        # Create user
+        signup_response = self.session.post(f"{BASE_URL}/auth/signup", json={
+            "email": test_email,
+            "password": test_password,
+            "name": "Hash Test User"
+        })
+        
+        if signup_response.status_code != 200:
+            self.log(f"❌ Failed to create test user for password hashing test: {signup_response.status_code}")
+            return False
+        
+        self.log("✅ Test user created for password hashing verification")
+        
+        # Test correct password
+        correct_login = self.session.post(f"{BASE_URL}/auth/login", json={
+            "email": test_email,
+            "password": test_password
+        })
+        
+        if correct_login.status_code == 200:
+            self.log("✅ Correct password login successful - password hashing works")
+        else:
+            self.log(f"❌ Correct password login failed: {correct_login.status_code} - {correct_login.text}")
+            return False
+        
+        # Test incorrect password
+        wrong_login = self.session.post(f"{BASE_URL}/auth/login", json={
+            "email": test_email,
+            "password": "wrongpassword"
+        })
+        
+        if wrong_login.status_code == 401:
+            self.log("✅ Incorrect password correctly rejected - password verification works")
+        else:
+            self.log(f"❌ Incorrect password not rejected: {wrong_login.status_code}")
+            return False
+        
+        return True
+
+    def test_session_creation_and_validation(self):
+        """Test that session creation and validation is working"""
+        self.log("=== TESTING SESSION CREATION AND VALIDATION ===")
+        
+        # Use existing test user or create new one
+        test_email = f"session.test.{int(time.time())}@example.com"
+        test_password = "sessiontest123"
+        
+        # Create user
+        signup_response = self.session.post(f"{BASE_URL}/auth/signup", json={
+            "email": test_email,
+            "password": test_password,
+            "name": "Session Test User"
+        })
+        
+        if signup_response.status_code != 200:
+            self.log(f"❌ Failed to create test user for session test: {signup_response.status_code}")
+            return False
+        
+        # Login and get session
+        login_response = self.session.post(f"{BASE_URL}/auth/login", json={
+            "email": test_email,
+            "password": test_password
+        })
+        
+        if login_response.status_code != 200:
+            self.log(f"❌ Login failed for session test: {login_response.status_code}")
+            return False
+        
+        session_data = login_response.json()
+        session_token = session_data.get("session_token")
+        
+        if not session_token:
+            self.log("❌ No session token returned from login")
+            return False
+        
+        self.log(f"✅ Session token created: {session_token[:20]}...")
+        
+        # Test session validation via /api/auth/me
+        auth_response = self.session.get(f"{BASE_URL}/auth/me")
+        
+        if auth_response.status_code == 200:
+            user_data = auth_response.json()
+            self.log(f"✅ Session validation successful via /api/auth/me: {user_data.get('email')}")
+            
+            # Verify user data matches
+            if user_data.get('email') == test_email:
+                self.log("✅ Session returns correct user data")
+            else:
+                self.log(f"❌ Session returns wrong user: expected {test_email}, got {user_data.get('email')}")
+                return False
+                
+        else:
+            self.log(f"❌ Session validation failed: {auth_response.status_code} - {auth_response.text}")
+            return False
+        
+        # Test session with explicit Authorization header
+        headers = {"Authorization": f"Bearer {session_token}"}
+        auth_header_response = self.session.get(f"{BASE_URL}/auth/me", headers=headers)
+        
+        if auth_header_response.status_code == 200:
+            self.log("✅ Session validation with Authorization header successful")
+        else:
+            self.log(f"❌ Session validation with Authorization header failed: {auth_header_response.status_code}")
+            return False
+        
+        return True
+
+    def test_login_comprehensive_diagnostics(self):
+        """Comprehensive login diagnostics for the reported issue"""
+        self.log("=== COMPREHENSIVE LOGIN DIAGNOSTICS ===")
+        
+        results = {
+            "admin_login": False,
+            "ulla_login": False,
+            "password_hashing": False,
+            "session_creation": False,
+            "auth_me_endpoint": False
+        }
+        
+        # Test 1: Admin login
+        self.log("\n--- Test 1: Admin Login ---")
+        results["admin_login"] = self.test_admin_login()
+        
+        # Test 2: Ulla login  
+        self.log("\n--- Test 2: Ulla Login ---")
+        results["ulla_login"] = self.test_ulla_login()
+        
+        # Test 3: Password hashing
+        self.log("\n--- Test 3: Password Hashing ---")
+        results["password_hashing"] = self.test_password_hashing_verification()
+        
+        # Test 4: Session creation
+        self.log("\n--- Test 4: Session Creation ---")
+        results["session_creation"] = self.test_session_creation_and_validation()
+        
+        # Test 5: Auth/me endpoint
+        self.log("\n--- Test 5: Auth/Me Endpoint ---")
+        # This is tested as part of session validation above
+        results["auth_me_endpoint"] = results["session_creation"]
+        
+        # Summary
+        self.log("\n=== LOGIN DIAGNOSTICS SUMMARY ===")
+        for test_name, result in results.items():
+            status = "✅ PASS" if result else "❌ FAIL"
+            self.log(f"{test_name}: {status}")
+        
+        # Overall assessment
+        critical_tests = ["password_hashing", "session_creation", "auth_me_endpoint"]
+        critical_failures = [test for test in critical_tests if not results[test]]
+        
+        if critical_failures:
+            self.log(f"\n❌ CRITICAL ISSUES FOUND: {', '.join(critical_failures)}")
+            return False
+        elif not results["admin_login"] and not results["ulla_login"]:
+            self.log("\n❌ BOTH ADMIN AND ULLA LOGIN FAILED - This is the reported issue!")
+            return False
+        else:
+            self.log("\n✅ LOGIN SYSTEM APPEARS TO BE WORKING")
+            return True
+
     def test_shopping_list_cookie_session_management(self):
         """Test NEW cookie-based session management for shopping list endpoints"""
         self.log("Testing NEW cookie-based session management for shopping list...")
