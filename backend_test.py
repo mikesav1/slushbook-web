@@ -47,7 +47,7 @@ class BackendTester:
             "name": TEST_NAME
         }
         
-        response = self.session.post(f"{BASE_URL}/auth/signup", json=signup_data)
+        response = self.session.post(f"{self.base_url}/auth/signup", json=signup_data)
         
         if response.status_code == 200:
             data = response.json()
