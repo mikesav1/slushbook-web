@@ -769,6 +769,12 @@ async def signup(request: SignupRequest):
     return {"message": "User created successfully", "user_id": user_id}
 
 
+# OPTIONS handler for CORS preflight
+@api_router.options("/auth/login")
+async def login_options():
+    """Handle CORS preflight for login"""
+    return {}
+
 @api_router.post("/auth/login")
 async def login(request: LoginRequest, response: Response):
     """Login with email/password"""
