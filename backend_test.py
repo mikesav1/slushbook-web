@@ -4815,6 +4815,236 @@ test,data,here"""
             self.log(f"❌ Database verification failed with exception: {str(e)}")
             return False
 
+    def test_dual_environment_shopping_list(self):
+        """Test shopping list functionality on both preview and production environments"""
+        self.log("=== TESTING DUAL ENVIRONMENT SHOPPING LIST FUNCTIONALITY ===")
+        
+        environments = [
+            ("Preview", PREVIEW_BASE_URL),
+            ("Production", PRODUCTION_BASE_URL)
+        ]
+        
+        results = {}
+        
+        for env_name, base_url in environments:
+            self.log(f"\n--- Testing {env_name} Environment ({base_url}) ---")
+            
+            # Create a fresh session for each environment
+            env_session = requests.Session()
+            
+            try:
+                # Step 1: Login as ulla@itopgaver.dk / mille0188
+                self.log(f"Step 1: Login as {ULLA_EMAIL} on {env_name}...")
+                
+                login_data = {
+                    "email": ULLA_EMAIL,
+                    "password": ULLA_PASSWORD
+                }
+                
+                login_response = env_session.post(f"{base_url}/auth/login", json=login_data)
+                
+                if login_response.status_code != 200:
+                    self.log(f"❌ Login failed on {env_name}: {login_response.status_code} - {login_response.text}")
+                    results[env_name] = {
+                        "login_success": False,
+                        "error": f"Login failed: {login_response.status_code}",
+                        "user_id": None,
+                        "session_token": None
+                    }
+                    continue
+                
+                login_data_response = login_response.json()
+                session_token = login_data_response.get("session_token")
+                user_data = login_data_response.get("user", {})
+                user_id = user_data.get("id")
+                user_email = user_data.get("email")
+                user_role = user_data.get("role")
+                
+                self.log(f"✅ Login successful on {env_name}")
+                self.log(f"   - User ID: {user_id}")
+                self.log(f"   - User Email: {user_email}")
+                self.log(f"   - User Role: {user_role}")
+                self.log(f"   - Session Token: {session_token[:20] if session_token else 'None'}...")
+                
+                # Step 2: Add item to shopping list
+                self.log(f"Step 2: Add item to shopping list on {env_name}...")
+                
+                shopping_item = {
+                    "session_id": user_id,  # Use user_id as session_id for logged-in users
+                    "ingredient_name": f"Test Ingredient {env_name}",
+                    "category_key": f"test-ingredient-{env_name.lower()}",
+                    "quantity": 100.0,
+                    "unit": "ml",
+                    "linked_recipe_id": f"test-recipe-{env_name.lower()}",
+                    "linked_recipe_name": f"Test Recipe {env_name}"
+                }
+                
+                add_response = env_session.post(f"{base_url}/shopping-list", json=shopping_item)
+                
+                if add_response.status_code != 200:
+                    self.log(f"❌ Add to shopping list failed on {env_name}: {add_response.status_code} - {add_response.text}")
+                    results[env_name] = {
+                        "login_success": True,
+                        "add_item_success": False,
+                        "error": f"Add item failed: {add_response.status_code}",
+                        "user_id": user_id,
+                        "session_token": session_token
+                    }
+                    continue
+                
+                add_data = add_response.json()
+                item_id = add_data.get("id")
+                
+                self.log(f"✅ Item added to shopping list on {env_name}")
+                self.log(f"   - Item ID: {item_id}")
+                self.log(f"   - Item Data: {add_data}")
+                
+                # Step 3: Get shopping list
+                self.log(f"Step 3: Get shopping list on {env_name}...")
+                
+                get_response = env_session.get(f"{base_url}/shopping-list/{user_id}")
+                
+                if get_response.status_code != 200:
+                    self.log(f"❌ Get shopping list failed on {env_name}: {get_response.status_code} - {get_response.text}")
+                    results[env_name] = {
+                        "login_success": True,
+                        "add_item_success": True,
+                        "get_list_success": False,
+                        "error": f"Get list failed: {get_response.status_code}",
+                        "user_id": user_id,
+                        "session_token": session_token,
+                        "added_item_id": item_id
+                    }
+                    continue
+                
+                shopping_list = get_response.json()
+                
+                self.log(f"✅ Shopping list retrieved on {env_name}")
+                self.log(f"   - Total items: {len(shopping_list)}")
+                
+                # Step 4: Verify our item is in the list
+                found_item = None
+                for item in shopping_list:
+                    if item.get("id") == item_id:
+                        found_item = item
+                        break
+                
+                if found_item:
+                    self.log(f"✅ Added item found in shopping list on {env_name}")
+                    self.log(f"   - Found Item: {found_item}")
+                else:
+                    self.log(f"❌ Added item NOT found in shopping list on {env_name}")
+                    self.log(f"   - Looking for item ID: {item_id}")
+                    self.log(f"   - Items in list: {[item.get('id') for item in shopping_list]}")
+                
+                # Store results
+                results[env_name] = {
+                    "login_success": True,
+                    "add_item_success": True,
+                    "get_list_success": True,
+                    "item_found_in_list": found_item is not None,
+                    "user_id": user_id,
+                    "session_token": session_token,
+                    "added_item_id": item_id,
+                    "shopping_list_count": len(shopping_list),
+                    "shopping_list": shopping_list,
+                    "found_item": found_item
+                }
+                
+            except Exception as e:
+                self.log(f"❌ Exception occurred testing {env_name}: {str(e)}")
+                results[env_name] = {
+                    "login_success": False,
+                    "error": f"Exception: {str(e)}"
+                }
+        
+        # Step 5: Compare results between environments
+        self.log(f"\n=== COMPARISON BETWEEN ENVIRONMENTS ===")
+        
+        if "Preview" in results and "Production" in results:
+            preview = results["Preview"]
+            production = results["Production"]
+            
+            # Compare user IDs
+            if preview.get("user_id") == production.get("user_id"):
+                self.log(f"✅ User IDs are the same: {preview.get('user_id')}")
+            else:
+                self.log(f"❌ User IDs are different:")
+                self.log(f"   - Preview: {preview.get('user_id')}")
+                self.log(f"   - Production: {production.get('user_id')}")
+            
+            # Compare login success
+            preview_login = preview.get("login_success", False)
+            production_login = production.get("login_success", False)
+            
+            if preview_login and production_login:
+                self.log("✅ Login works on both environments")
+            elif preview_login and not production_login:
+                self.log("❌ Login works on Preview but FAILS on Production")
+                self.log(f"   - Production error: {production.get('error')}")
+            elif not preview_login and production_login:
+                self.log("❌ Login works on Production but FAILS on Preview")
+                self.log(f"   - Preview error: {preview.get('error')}")
+            else:
+                self.log("❌ Login FAILS on both environments")
+                self.log(f"   - Preview error: {preview.get('error')}")
+                self.log(f"   - Production error: {production.get('error')}")
+            
+            # Compare shopping list functionality
+            preview_shopping = preview.get("item_found_in_list", False)
+            production_shopping = production.get("item_found_in_list", False)
+            
+            if preview_shopping and production_shopping:
+                self.log("✅ Shopping list functionality works on both environments")
+            elif preview_shopping and not production_shopping:
+                self.log("❌ Shopping list works on Preview but FAILS on Production")
+                self.log(f"   - Preview items: {preview.get('shopping_list_count', 0)}")
+                self.log(f"   - Production items: {production.get('shopping_list_count', 0)}")
+            elif not preview_shopping and production_shopping:
+                self.log("❌ Shopping list works on Production but FAILS on Preview")
+                self.log(f"   - Preview items: {preview.get('shopping_list_count', 0)}")
+                self.log(f"   - Production items: {production.get('shopping_list_count', 0)}")
+            else:
+                self.log("❌ Shopping list FAILS on both environments")
+            
+            # Compare session tokens (should be different but both should work)
+            preview_token = preview.get("session_token")
+            production_token = production.get("session_token")
+            
+            if preview_token and production_token:
+                if preview_token != production_token:
+                    self.log("✅ Session tokens are different (expected for separate environments)")
+                    self.log(f"   - Preview token: {preview_token[:20]}...")
+                    self.log(f"   - Production token: {production_token[:20]}...")
+                else:
+                    self.log("⚠️  Session tokens are identical (unexpected)")
+            
+        else:
+            self.log("❌ Cannot compare - missing results from one or both environments")
+        
+        # Final summary
+        self.log(f"\n=== FINAL SUMMARY ===")
+        for env_name, result in results.items():
+            self.log(f"{env_name} Environment:")
+            if result.get("login_success"):
+                self.log(f"  ✅ Login: SUCCESS")
+                if result.get("add_item_success"):
+                    self.log(f"  ✅ Add Item: SUCCESS")
+                    if result.get("get_list_success"):
+                        self.log(f"  ✅ Get List: SUCCESS")
+                        if result.get("item_found_in_list"):
+                            self.log(f"  ✅ Item Found: SUCCESS")
+                        else:
+                            self.log(f"  ❌ Item Found: FAILED")
+                    else:
+                        self.log(f"  ❌ Get List: FAILED")
+                else:
+                    self.log(f"  ❌ Add Item: FAILED")
+            else:
+                self.log(f"  ❌ Login: FAILED - {result.get('error', 'Unknown error')}")
+        
+        return results
+
 def main():
     """Run custom domain login test as requested"""
     tester = BackendTester()
