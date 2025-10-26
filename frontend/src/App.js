@@ -363,10 +363,14 @@ const AppContent = ({ sessionId }) => {
   const location = useLocation();
   
   // Use user.id as sessionId for logged-in users, otherwise use guest sessionId
-  const effectiveSessionId = (user && user.id) ? user.id : sessionId;
+  // More robust check: user must be object with id property
+  const effectiveSessionId = (user && typeof user === 'object' && user.id) ? user.id : sessionId;
   
   // Debug logging
   React.useEffect(() => {
+    console.log('[App] User object:', user);
+    console.log('[App] User type:', typeof user);
+    console.log('[App] User.id:', user?.id);
     console.log('[App] User:', user ? `${user.email} (id: ${user.id})` : 'Guest');
     console.log('[App] Guest sessionId:', sessionId);
     console.log('[App] Effective sessionId:', effectiveSessionId);
