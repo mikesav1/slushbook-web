@@ -3942,36 +3942,357 @@ test,data,here"""
             
         return True
 
+    def test_critical_endpoints_review_request(self):
+        """Test all critical endpoints from the review request"""
+        self.log("=" * 80)
+        self.log("TESTING CRITICAL ENDPOINTS FROM REVIEW REQUEST")
+        self.log("=" * 80)
+        
+        test_results = {}
+        
+        # Test 1: GET /api/recipes/{recipe_id} for Ulla's recipe
+        self.log("\n🔍 TEST 1: GET /api/recipes/{recipe_id} for Ulla's recipe")
+        test_results['ulla_recipe_access'] = self.test_ulla_recipe_access()
+        
+        # Test 2: GET /api/admin/pending-recipes as admin
+        self.log("\n👑 TEST 2: GET /api/admin/pending-recipes as admin")
+        test_results['admin_pending_recipes'] = self.test_admin_pending_recipes()
+        
+        # Test 3: GET /api/recipes as guest (free alcohol recipes)
+        self.log("\n🍺 TEST 3: GET /api/recipes as guest (free alcohol recipes)")
+        test_results['guest_free_alcohol_recipes'] = self.test_guest_free_alcohol_recipes()
+        
+        # Test 4: Shopping list functionality
+        self.log("\n🛒 TEST 4: Shopping list functionality")
+        test_results['shopping_list_functionality'] = self.test_shopping_list_functionality()
+        
+        # Summary
+        self.log("\n" + "=" * 80)
+        self.log("CRITICAL ENDPOINTS TEST RESULTS")
+        self.log("=" * 80)
+        
+        passed = 0
+        failed = 0
+        
+        for test_name, result in test_results.items():
+            status = "✅ PASS" if result else "❌ FAIL"
+            self.log(f"{test_name:30} {status}")
+            if result:
+                passed += 1
+            else:
+                failed += 1
+        
+        self.log(f"\nTotal: {passed + failed} critical tests")
+        self.log(f"Passed: {passed}")
+        self.log(f"Failed: {failed}")
+        
+        if failed == 0:
+            self.log("\n🎉 ALL CRITICAL TESTS PASSED!")
+        else:
+            self.log(f"\n⚠️  {failed} CRITICAL TESTS FAILED")
+        
+        return test_results
+    
+    def test_ulla_recipe_access(self):
+        """Test GET /api/recipes/{recipe_id} for Ulla's recipe: 8765bbda-2477-497a-8e01-d127647ba0d9"""
+        self.log("Testing Ulla's recipe access...")
+        
+        # First login as Ulla
+        ulla_session = requests.Session()
+        login_response = ulla_session.post(f"{BASE_URL}/auth/login", json={
+            "email": ULLA_EMAIL,
+            "password": ULLA_PASSWORD
+        })
+        
+        if login_response.status_code != 200:
+            self.log(f"❌ Ulla login failed: {login_response.status_code} - {login_response.text}")
+            return False
+        
+        login_data = login_response.json()
+        ulla_user = login_data.get("user", {})
+        ulla_session_id = ulla_user.get("id")
+        
+        self.log(f"✅ Ulla logged in successfully - User ID: {ulla_session_id}")
+        
+        # Test accessing Ulla's specific recipe
+        recipe_id = "8765bbda-2477-497a-8e01-d127647ba0d9"
+        recipe_url = f"{BASE_URL}/recipes/{recipe_id}?session_id={ulla_session_id}"
+        
+        recipe_response = ulla_session.get(recipe_url)
+        
+        if recipe_response.status_code == 200:
+            recipe_data = recipe_response.json()
+            self.log(f"✅ Recipe retrieved successfully")
+            self.log(f"   Recipe Name: {recipe_data.get('name', 'Unknown')}")
+            self.log(f"   Recipe Author: {recipe_data.get('author', 'Unknown')}")
+            self.log(f"   Recipe Status: {recipe_data.get('approval_status', 'Unknown')}")
+            self.log(f"   Is Published: {recipe_data.get('is_published', 'Unknown')}")
+            self.log(f"   Created At: {recipe_data.get('created_at', 'Unknown')}")
+            
+            # Verify recipe details
+            if recipe_data.get('name'):
+                self.log("✅ Recipe has name")
+            else:
+                self.log("❌ Recipe missing name")
+                return False
+            
+            if recipe_data.get('ingredients'):
+                self.log(f"✅ Recipe has {len(recipe_data['ingredients'])} ingredients")
+            else:
+                self.log("❌ Recipe missing ingredients")
+                return False
+            
+            return True
+        elif recipe_response.status_code == 404:
+            self.log(f"❌ Recipe not found (404) - Recipe may not exist or not accessible to Ulla")
+            return False
+        else:
+            self.log(f"❌ Recipe access failed: {recipe_response.status_code} - {recipe_response.text}")
+            return False
+    
+    def test_admin_pending_recipes(self):
+        """Test GET /api/admin/pending-recipes as admin - should return 16 recipes"""
+        self.log("Testing admin pending recipes access...")
+        
+        # Login as admin (kimesav@gmail.com)
+        admin_session = requests.Session()
+        login_response = admin_session.post(f"{BASE_URL}/auth/login", json={
+            "email": KIMESAV_EMAIL,
+            "password": KIMESAV_PASSWORD
+        })
+        
+        if login_response.status_code != 200:
+            self.log(f"❌ Admin login failed: {login_response.status_code} - {login_response.text}")
+            return False
+        
+        login_data = login_response.json()
+        admin_user = login_data.get("user", {})
+        
+        self.log(f"✅ Admin logged in successfully - Role: {admin_user.get('role')}")
+        
+        # Test admin pending recipes endpoint
+        pending_url = f"{BASE_URL}/admin/pending-recipes"
+        pending_response = admin_session.get(pending_url)
+        
+        if pending_response.status_code == 200:
+            recipes_data = pending_response.json()
+            recipe_count = len(recipes_data) if isinstance(recipes_data, list) else 0
+            
+            self.log(f"✅ Admin pending recipes retrieved successfully")
+            self.log(f"   Total recipes returned: {recipe_count}")
+            
+            # Check if we got the expected 16 recipes
+            if recipe_count == 16:
+                self.log("✅ Correct number of recipes returned (16)")
+            else:
+                self.log(f"⚠️  Expected 16 recipes, got {recipe_count}")
+            
+            # Log some details about the recipes
+            if isinstance(recipes_data, list) and len(recipes_data) > 0:
+                self.log("   Sample recipes:")
+                for i, recipe in enumerate(recipes_data[:3]):  # Show first 3
+                    name = recipe.get('name', 'Unknown')
+                    status = recipe.get('approval_status', 'Unknown')
+                    author = recipe.get('author', 'Unknown')
+                    self.log(f"     {i+1}. {name} - Status: {status} - Author: {author}")
+            
+            return True
+        else:
+            self.log(f"❌ Admin pending recipes failed: {pending_response.status_code} - {pending_response.text}")
+            return False
+    
+    def test_guest_free_alcohol_recipes(self):
+        """Test GET /api/recipes as guest - should return recipes including free alcohol ones"""
+        self.log("Testing guest access to free alcohol recipes...")
+        
+        # Use a fresh session (no login) to simulate guest access
+        guest_session = requests.Session()
+        
+        # Test getting all recipes as guest
+        recipes_url = f"{BASE_URL}/recipes"
+        recipes_response = guest_session.get(recipes_url)
+        
+        if recipes_response.status_code == 200:
+            recipes_data = recipes_response.json()
+            recipe_count = len(recipes_data) if isinstance(recipes_data, list) else 0
+            
+            self.log(f"✅ Guest recipes retrieved successfully")
+            self.log(f"   Total recipes returned: {recipe_count}")
+            
+            # Check for free alcohol recipes (is_free=true AND alcohol_flag=true)
+            free_alcohol_recipes = []
+            alcohol_recipes = []
+            free_recipes = []
+            
+            if isinstance(recipes_data, list):
+                for recipe in recipes_data:
+                    is_free = recipe.get('is_free', False)
+                    has_alcohol = recipe.get('alcohol_flag', False)
+                    
+                    if has_alcohol:
+                        alcohol_recipes.append(recipe)
+                    
+                    if is_free:
+                        free_recipes.append(recipe)
+                    
+                    if is_free and has_alcohol:
+                        free_alcohol_recipes.append(recipe)
+            
+            self.log(f"   Total alcohol recipes visible to guest: {len(alcohol_recipes)}")
+            self.log(f"   Total free recipes visible to guest: {len(free_recipes)}")
+            self.log(f"   Free alcohol recipes (is_free=true AND alcohol_flag=true): {len(free_alcohol_recipes)}")
+            
+            # Log details of free alcohol recipes
+            if free_alcohol_recipes:
+                self.log("   Free alcohol recipes found:")
+                for recipe in free_alcohol_recipes:
+                    name = recipe.get('name', 'Unknown')
+                    self.log(f"     - {name} (is_free: {recipe.get('is_free')}, alcohol_flag: {recipe.get('alcohol_flag')})")
+                self.log("✅ Guest can see free alcohol recipes")
+            else:
+                self.log("⚠️  No free alcohol recipes found (is_free=true AND alcohol_flag=true)")
+            
+            # Check if any alcohol recipes are visible at all
+            if alcohol_recipes:
+                self.log("✅ Guest can see some alcohol recipes")
+                self.log("   Sample alcohol recipes:")
+                for recipe in alcohol_recipes[:3]:  # Show first 3
+                    name = recipe.get('name', 'Unknown')
+                    is_free = recipe.get('is_free', False)
+                    self.log(f"     - {name} (is_free: {is_free})")
+            else:
+                self.log("❌ Guest cannot see any alcohol recipes")
+                return False
+            
+            return True
+        else:
+            self.log(f"❌ Guest recipes access failed: {recipes_response.status_code} - {recipes_response.text}")
+            return False
+    
+    def test_shopping_list_functionality(self):
+        """Test shopping list functionality - login as Ulla, add item, get items"""
+        self.log("Testing shopping list functionality...")
+        
+        # Login as Ulla
+        ulla_session = requests.Session()
+        login_response = ulla_session.post(f"{BASE_URL}/auth/login", json={
+            "email": ULLA_EMAIL,
+            "password": ULLA_PASSWORD
+        })
+        
+        if login_response.status_code != 200:
+            self.log(f"❌ Ulla login failed: {login_response.status_code} - {login_response.text}")
+            return False
+        
+        login_data = login_response.json()
+        ulla_user = login_data.get("user", {})
+        ulla_session_id = ulla_user.get("id")
+        
+        self.log(f"✅ Ulla logged in successfully - Session ID: {ulla_session_id}")
+        
+        # Test 1: Add item to shopping list (POST /api/shopping-list)
+        self.log("Step 1: Adding item to shopping list...")
+        
+        shopping_item = {
+            "session_id": ulla_session_id,
+            "ingredient_name": "Test Ingredient for Ulla",
+            "category_key": "test-ingredient",
+            "quantity": 250.0,
+            "unit": "ml",
+            "linked_recipe_id": "test-recipe-ulla",
+            "linked_recipe_name": "Ulla's Test Recipe"
+        }
+        
+        add_response = ulla_session.post(f"{BASE_URL}/shopping-list", json=shopping_item)
+        
+        if add_response.status_code == 200:
+            add_data = add_response.json()
+            item_id = add_data.get('id')
+            self.log(f"✅ Item added to shopping list - ID: {item_id}")
+            self.log(f"   Item name: {add_data.get('ingredient_name')}")
+            self.log(f"   Quantity: {add_data.get('quantity')} {add_data.get('unit')}")
+        else:
+            self.log(f"❌ Failed to add item to shopping list: {add_response.status_code} - {add_response.text}")
+            return False
+        
+        # Test 2: Get items from shopping list (GET /api/shopping-list/{session_id})
+        self.log("Step 2: Getting items from shopping list...")
+        
+        get_response = ulla_session.get(f"{BASE_URL}/shopping-list/{ulla_session_id}")
+        
+        if get_response.status_code == 200:
+            items_data = get_response.json()
+            item_count = len(items_data) if isinstance(items_data, list) else 0
+            
+            self.log(f"✅ Shopping list retrieved successfully")
+            self.log(f"   Total items in shopping list: {item_count}")
+            
+            # Verify our test item is in the list
+            test_item_found = False
+            if isinstance(items_data, list):
+                for item in items_data:
+                    if item.get('ingredient_name') == 'Test Ingredient for Ulla':
+                        test_item_found = True
+                        self.log(f"✅ Test item found in shopping list")
+                        self.log(f"   Item details: {item.get('ingredient_name')} - {item.get('quantity')} {item.get('unit')}")
+                        break
+            
+            if not test_item_found:
+                self.log("❌ Test item not found in shopping list")
+                return False
+            
+            # Log all items for debugging
+            if isinstance(items_data, list) and len(items_data) > 0:
+                self.log("   All shopping list items:")
+                for i, item in enumerate(items_data):
+                    name = item.get('ingredient_name', 'Unknown')
+                    quantity = item.get('quantity', 0)
+                    unit = item.get('unit', '')
+                    recipe = item.get('linked_recipe_name', 'No recipe')
+                    self.log(f"     {i+1}. {name} - {quantity} {unit} (from: {recipe})")
+            
+            return True
+        else:
+            self.log(f"❌ Failed to get shopping list: {get_response.status_code} - {get_response.text}")
+            return False
+
     def run_all_tests(self):
         """Run all backend tests"""
         self.log("Starting SLUSHBOOK Backend System Tests")
         self.log("=" * 60)
         
-        tests = [
+        # Run critical endpoints tests first
+        critical_results = self.test_critical_endpoints_review_request()
+        
+        # Run additional tests
+        additional_tests = [
             ("🛒 SHOPPING LIST COOKIE SESSION MANAGEMENT", self.test_shopping_list_cookie_session_management),
             ("🛒 SHOPPING LIST DEBUG - GIN HASH SLUSH ISSUE", self.test_shopping_list_gin_hash_slush_debug),
             ("🔐 USER RECIPE ACCESS & REJECTION REASONS", self.test_user_recipe_access_and_rejection_reasons)
         ]
         
-        results = {}
+        additional_results = {}
         
-        for test_name, test_func in tests:
+        for test_name, test_func in additional_tests:
             self.log(f"\n--- {test_name} ---")
             try:
-                results[test_name] = test_func()
+                additional_results[test_name] = test_func()
             except Exception as e:
                 self.log(f"❌ {test_name} failed with exception: {str(e)}")
-                results[test_name] = False
+                additional_results[test_name] = False
+        
+        # Combine all results
+        all_results = {**critical_results, **additional_results}
                 
         # Summary
         self.log("\n" + "=" * 60)
-        self.log("TEST SUMMARY")
+        self.log("FINAL TEST SUMMARY")
         self.log("=" * 60)
         
         passed = 0
-        total = len(results)
+        total = len(all_results)
         
-        for test_name, result in results.items():
+        for test_name, result in all_results.items():
             status = "✅ PASS" if result else "❌ FAIL"
             self.log(f"{test_name}: {status}")
             if result:
