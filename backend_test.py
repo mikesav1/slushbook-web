@@ -16,6 +16,11 @@ TEST_EMAIL = f"test.user.{int(time.time())}@example.com"
 TEST_PASSWORD = "testpass123"
 TEST_NAME = "Test User"
 
+# Specific users for login testing
+ADMIN_EMAIL = "admin@slushbook.dk"
+ULLA_EMAIL = "ulla@test.dk"
+COMMON_PASSWORDS = ["admin123", "password", "123456", "admin", "slushbook", "test123"]
+
 class BackendTester:
     def __init__(self):
         self.session = requests.Session()
