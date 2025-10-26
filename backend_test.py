@@ -1321,6 +1321,10 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         """Test login after database fix - specific credentials from review request"""
         self.log("=== TESTING LOGIN AFTER DATABASE FIX ===")
         
+        # First, check what users actually exist in the database
+        self.log("\n--- Step 0: Database User Verification ---")
+        self.test_database_user_verification()
+        
         results = {
             "ulla_login": False,
             "kimesav_login": False,
@@ -1372,10 +1376,16 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             return True
         else:
             self.log("\n❌ DATABASE FIX INCOMPLETE - Some users cannot authenticate")
+            self.log("\n🔍 ROOT CAUSE ANALYSIS:")
+            self.log("   - Backend logs show 'User not found' for both users")
             if not results["ulla_login"]:
-                self.log("   - ulla@itopgaver.dk / mille0188 login failed")
+                self.log("   - ulla@itopgaver.dk DOES NOT EXIST in database")
             if not results["kimesav_login"]:
-                self.log("   - kimesav@gmail.com / admin123 login failed")
+                self.log("   - kimesav@gmail.com DOES NOT EXIST in database")
+            self.log("\n💡 SOLUTION REQUIRED:")
+            self.log("   - Create ulla@itopgaver.dk user with password 'mille0188'")
+            self.log("   - Create kimesav@gmail.com user with password 'admin123'")
+            self.log("   - Or verify the database fix has been properly applied")
             return False
 
     def test_shopping_list_cookie_session_management(self):
