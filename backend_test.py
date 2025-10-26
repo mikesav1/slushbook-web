@@ -4814,30 +4814,32 @@ test,data,here"""
             return False
 
 def main():
-    """Run recipe delete functionality test for recipe author"""
+    """Run custom domain login test as requested"""
     tester = BackendTester()
     
     print("=" * 80)
-    print("SLUSHBOOK RECIPE DELETE BY AUTHOR TEST")
-    print("Testing delete recipe functionality for recipe author")
-    print("Backend URL:", BASE_URL)
+    print("SLUSHBOOK CUSTOM DOMAIN LOGIN TEST")
+    print("Testing login from custom domain perspective")
+    print("Backend URL: https://slushice-recipes.emergent.host/api")
+    print("Custom Domain: https://slushbook.itopgaver.dk")
     print("=" * 80)
     
-    # Run the specific recipe delete test
-    success = tester.test_recipe_delete_by_author()
+    # Run the custom domain login test
+    success = tester.test_custom_domain_login()
     
     print(f"\n{'='*80}")
     if success:
-        print("RECIPE DELETE BY AUTHOR TEST: ✅ PASSED")
-        print("Ulla can successfully delete her own recipe")
-        print("- Recipe deletion succeeded (200 or 204)")
-        print("- No 'Kun administratorer kan slette' error")
-        print("- Recipe properly removed from system")
+        print("CUSTOM DOMAIN LOGIN TEST: ✅ PASSED")
+        print("Login works from custom domain perspective")
+        print("- Login succeeded with Origin header")
+        print("- CORS configuration allows custom domain")
+        print("- No authentication or CORS errors")
     else:
-        print("RECIPE DELETE BY AUTHOR TEST: ❌ FAILED")
-        print("Recipe author cannot delete their own recipe")
-        print("- Check authentication and authorization logic")
-        print("- Verify recipe authorship matching")
+        print("CUSTOM DOMAIN LOGIN TEST: ❌ FAILED")
+        print("Login failed from custom domain perspective")
+        print("- Check CORS configuration")
+        print("- Verify authentication credentials")
+        print("- Check backend CORS_ORIGINS setting")
     print(f"{'='*80}")
     
     return success
