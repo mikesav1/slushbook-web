@@ -349,15 +349,16 @@ const AddRecipePage = ({ sessionId }) => {
             <div>
               <Label className="flex items-center gap-2">
                 Sukkergrad (°Bx)
-                <button
-                  type="button"
+                <a
+                  href="/brix-info"
+                  target="_blank"
                   className="text-cyan-600 hover:text-cyan-700"
-                  title="Sukkergrad måler hvor meget sukker der er i blandingen. For perfekt slush: 13-15°Bx. For lidt = hård is. For meget = fryser ikke."
+                  title="Klik for at læse mere om Brix måling"
                 >
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                   </svg>
-                </button>
+                </a>
               </Label>
               <Input
                 type="number"
@@ -366,7 +367,7 @@ const AddRecipePage = ({ sessionId }) => {
                 onChange={(e) => setRecipe({...recipe, target_brix: e.target.value})}
                 placeholder="13-15"
               />
-              <p className="text-xs text-gray-500 mt-1">Anbefalet: 13-15°Bx</p>
+              <p className="text-xs text-gray-500 mt-1">Anbefalet: 13-15°Bx. <a href="/brix-info" className="text-cyan-600 underline" target="_blank">Læs mere om Brix</a></p>
             </div>
 
             <div>
