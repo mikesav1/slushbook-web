@@ -4820,8 +4820,8 @@ test,data,here"""
         self.log("=== TESTING DUAL ENVIRONMENT SHOPPING LIST FUNCTIONALITY ===")
         
         environments = [
-            ("Preview", PREVIEW_self.base_url),
-            ("Production", PRODUCTION_self.base_url)
+            ("Preview", PREVIEW_BASE_URL),
+            ("Production", PRODUCTION_BASE_URL)
         ]
         
         results = {}
