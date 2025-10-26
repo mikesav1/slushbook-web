@@ -1320,15 +1320,17 @@ async def get_recipes(
         ]
     
     # Get system recipes with filtering based on user role and is_free status
-    # Guests can only see recipes with is_free=true OR recipes without is_free field (legacy support)
+    # IMPORTANT: Guests should see ALL recipes (including locked ones) to create "hook" for upgrading
+    # Frontend will display locked recipes with blur/overlay
     # Pro/Admin users can see all recipes
     if user and user.role in ["pro", "editor", "admin"]:
-        # Pro/Admin users see all system recipes
+        # Pro/Admin users see all system recipes (no filtering)
         system_recipes = await db.recipes.find({**query, "author": "system"}, {"_id": 0}).to_list(1000)
     else:
-        # Guest users only see free recipes
+        # Guest users see ALL recipes (including locked ones)
+        # Frontend will handle displaying locked state with blur/overlay
         system_recipes = await db.recipes.find(
-            {**query, "author": "system", "$or": [{"is_free": True}, {"is_free": {"$exists": False}}]},
+            {**query, "author": "system"},
             {"_id": 0}
         ).to_list(1000)
     
