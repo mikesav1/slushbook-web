@@ -1099,20 +1099,36 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         """Check what users actually exist in the database"""
         self.log("=== CHECKING WHAT USERS EXIST IN DATABASE ===")
         
-        # First, login as a known working admin to get access to admin endpoints
-        admin_login_data = {
-            "email": "kimesav@gmail.com",
-            "password": "admin123"
-        }
+        # Try to find a working admin user from previous test results
+        # Based on test_result.md, we know some users exist
+        potential_admins = [
+            ("kimesav@gmail.com", "admin123"),  # From test_result.md
+        ]
         
-        admin_session = requests.Session()
-        admin_login_response = admin_session.post(f"{BASE_URL}/auth/login", json=admin_login_data)
+        admin_session = None
+        working_admin = None
         
-        if admin_login_response.status_code != 200:
-            self.log(f"❌ Cannot login as kimesav@gmail.com to check users: {admin_login_response.status_code}")
+        for email, password in potential_admins:
+            self.log(f"Trying to login as {email} to access admin endpoints...")
+            
+            test_session = requests.Session()
+            login_response = test_session.post(f"{BASE_URL}/auth/login", json={
+                "email": email,
+                "password": password
+            })
+            
+            if login_response.status_code == 200:
+                self.log(f"✅ Successfully logged in as {email}")
+                admin_session = test_session
+                working_admin = email
+                break
+            else:
+                self.log(f"❌ Login failed for {email}: {login_response.status_code}")
+        
+        if not admin_session:
+            self.log("❌ Cannot access admin endpoints - no working admin credentials found")
+            self.log("⚠️  Unable to verify database users without admin access")
             return False
-        
-        self.log("✅ Logged in as kimesav@gmail.com to check database users")
         
         # Get all members
         members_response = admin_session.get(f"{BASE_URL}/admin/members")
@@ -1124,9 +1140,9 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         members = members_response.json()
         self.log(f"✅ Found {len(members)} total users in database:")
         
-        # Check for specific users
-        admin_user = None
+        # Check for specific users we're testing
         ulla_user = None
+        kimesav_user = None
         
         for member in members:
             email = member.get('email', '').lower()
@@ -1136,22 +1152,22 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             
             self.log(f"  - {email} ({name}) - Role: {role} - Created: {created_at}")
             
-            if email == 'admin@slushbook.dk':
-                admin_user = member
-            elif email == 'ulla@test.dk':
+            if email == 'ulla@itopgaver.dk':
                 ulla_user = member
+            elif email == 'kimesav@gmail.com':
+                kimesav_user = member
         
-        # Report findings
+        # Report findings for the specific users we're testing
         self.log("\n🔍 SPECIFIC USER CHECK:")
-        if admin_user:
-            self.log(f"✅ admin@slushbook.dk EXISTS: {admin_user}")
-        else:
-            self.log("❌ admin@slushbook.dk NOT FOUND in database")
-        
         if ulla_user:
-            self.log(f"✅ ulla@test.dk EXISTS: {ulla_user}")
+            self.log(f"✅ ulla@itopgaver.dk EXISTS: {ulla_user}")
         else:
-            self.log("❌ ulla@test.dk NOT FOUND in database")
+            self.log("❌ ulla@itopgaver.dk NOT FOUND in database")
+        
+        if kimesav_user:
+            self.log(f"✅ kimesav@gmail.com EXISTS: {kimesav_user}")
+        else:
+            self.log("❌ kimesav@gmail.com NOT FOUND in database")
         
         return True
 
