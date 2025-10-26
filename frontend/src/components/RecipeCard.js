@@ -55,7 +55,7 @@ const RecipeCard = ({ recipe, sessionId, showMatchInfo, onLockedClick }) => {
 
   return (
     <Link
-      to={`/recipe/${recipe.id}`}
+      to={`/recipes/${recipe.id}`}
       onClick={handleClick}
       data-testid={`recipe-card-${recipe.id}`}
       className={`flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all hover:scale-105 overflow-hidden border border-gray-100 ${
