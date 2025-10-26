@@ -538,6 +538,18 @@ test_plan:
         agent: "testing"
         comment: "🚨 URGENT LOGIN VERIFICATION COMPLETED SUCCESSFULLY: Both users can access the site without issues. ✅ DETAILED TESTING RESULTS: 1) ulla@itopgaver.dk/mille0188 - LOGIN SUCCESS (HTTP 200), session token generated and validated, user data returned correctly (Ulla Vase, pro role, ID: 393ffc7c-efa4-4947-99f4-2025a8994c3b). 2) kimesav@gmail.com/admin123 - LOGIN SUCCESS (HTTP 200), session token generated and validated, user data returned correctly (Admin, admin role, ID: cb593769-8075-4e75-86fb-804f0bbb0318). ✅ HTTP STATUS CODES: All login requests return 200 OK for valid credentials, 401 Unauthorized for invalid credentials. ✅ ERROR MESSAGES: Proper error handling with 'Invalid email or password' message for wrong credentials. ✅ BACKEND LOGS: No auth errors detected, logs show successful password verification and session creation. ✅ SESSION VALIDATION: Both users' session tokens work correctly with /api/auth/me endpoint. ✅ CONCLUSION: Login system is fully functional. User report of 'login still not working' appears to be incorrect - both users can authenticate successfully on the preview environment (https://flavor-sync.preview.emergentagent.com)."
 
+  - task: "Production Shopping List Session ID Mismatch - CRITICAL ISSUE"
+    implemented: true
+    working: false
+    file: "frontend/src/pages/ShoppingListPage.js, frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "🚨 CRITICAL ISSUE IDENTIFIED: Production shopping list appears empty but actually has 12 items! ROOT CAUSE: Session ID mismatch between frontend and backend. ❌ FRONTEND PROBLEM: localStorage.getItem('user') returns empty object {}, causing app to use guest session ID (880558b5-ccdc-43fb-8625-12780fd2f37e) instead of user ID (393ffc7c-efa4-4947-99f4-2025a8994c3b). ❌ SECONDARY ISSUE: /api/redirect-proxy/admin/mappings returns 500 error on production, preventing shopping list from loading. ✅ BACKEND DATA CONFIRMED: Production has 12 items for correct user ID, Preview has 3 items for same user ID. ✅ API ENDPOINTS WORK: Direct API calls with correct session ID return data successfully. 💡 SOLUTION NEEDED: Fix user context persistence in localStorage and resolve mappings API 500 error on production."
+
 agent_communication:
   - agent: "main"
     message: "Fixed critical bug in 'Add to list' functionality. Root cause: CSV-imported recipes had empty category_key values for ingredients. Implemented two fixes: 1) Frontend: Updated addMissingToShoppingList in RecipeDetailPage.js to generate category_key from ingredient name when missing/empty (backward compatibility). 2) Backend: Fixed CSV import in server.py to auto-generate category_key from ingredient names using slug-style formatting (lowercase, hyphens, normalized Danish characters). Ready for testing with both new CSV imports and existing recipes with empty category_keys."
