@@ -1407,6 +1407,181 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             self.log("   - Verify all user data has been properly migrated from test_database to flavor_sync")
             return False
 
+    def test_recipe_delete_by_author(self):
+        """Test delete recipe functionality for recipe author - Ulla's recipe"""
+        self.log("=== TESTING RECIPE DELETE BY AUTHOR ===")
+        
+        # Test data from review request
+        ulla_email = "ulla@itopgaver.dk"
+        ulla_password = "mille0188"
+        recipe_id = "8765bbda-2477-497a-8e01-d127647ba0d9"
+        expected_author_id = "393ffc7c-efa4-4947-99f4-2025a8994c3b"
+        recipe_name = "Dett er en test"
+        
+        try:
+            # Step 1: Login as Ulla
+            self.log(f"Step 1: Login as {ulla_email}...")
+            
+            login_data = {
+                "email": ulla_email,
+                "password": ulla_password
+            }
+            
+            # Use a fresh session for this test
+            test_session = requests.Session()
+            login_response = test_session.post(f"{BASE_URL}/auth/login", json=login_data)
+            
+            if login_response.status_code != 200:
+                self.log(f"❌ Login failed for Ulla: {login_response.status_code} - {login_response.text}")
+                return False
+            
+            login_data_response = login_response.json()
+            session_token = login_data_response.get("session_token")
+            user_data = login_data_response.get("user", {})
+            user_id = user_data.get("id")
+            user_role = user_data.get("role")
+            
+            self.log(f"✅ Login successful for Ulla")
+            self.log(f"   - Session token: {session_token[:20] if session_token else 'None'}...")
+            self.log(f"   - User ID: {user_id}")
+            self.log(f"   - User role: {user_role}")
+            
+            # Verify Ulla's user ID matches expected
+            if user_id == expected_author_id:
+                self.log(f"✅ Ulla's user ID matches expected author ID: {expected_author_id}")
+            else:
+                self.log(f"⚠️  Ulla's user ID ({user_id}) does not match expected ({expected_author_id})")
+                self.log("   - This may indicate the recipe author field uses a different identifier")
+            
+            # Step 2: Verify recipe exists and get recipe details
+            self.log(f"Step 2: Verify recipe exists - {recipe_id}...")
+            
+            recipe_response = test_session.get(f"{BASE_URL}/recipes/{recipe_id}")
+            
+            if recipe_response.status_code == 200:
+                recipe_data = recipe_response.json()
+                recipe_author = recipe_data.get("author")
+                recipe_actual_name = recipe_data.get("name")
+                
+                self.log(f"✅ Recipe found: '{recipe_actual_name}'")
+                self.log(f"   - Recipe ID: {recipe_id}")
+                self.log(f"   - Recipe author: {recipe_author}")
+                self.log(f"   - Expected author: {expected_author_id}")
+                
+                # Verify recipe name matches
+                if recipe_actual_name == recipe_name:
+                    self.log(f"✅ Recipe name matches expected: '{recipe_name}'")
+                else:
+                    self.log(f"⚠️  Recipe name mismatch - Expected: '{recipe_name}', Got: '{recipe_actual_name}'")
+                
+                # Verify authorship
+                if recipe_author == expected_author_id or recipe_author == ulla_email or recipe_author == user_id:
+                    self.log(f"✅ Recipe author verification passed")
+                else:
+                    self.log(f"❌ Recipe author mismatch - Recipe author: {recipe_author}, Ulla's ID: {user_id}")
+                    self.log("   - This may prevent deletion if backend checks authorship strictly")
+                
+            elif recipe_response.status_code == 404:
+                self.log(f"❌ Recipe not found: {recipe_id}")
+                self.log("   - Recipe may have been deleted or ID is incorrect")
+                return False
+            else:
+                self.log(f"❌ Failed to get recipe: {recipe_response.status_code} - {recipe_response.text}")
+                return False
+            
+            # Step 3: Attempt to delete the recipe
+            self.log(f"Step 3: Attempt to delete recipe {recipe_id}...")
+            
+            delete_response = test_session.delete(f"{BASE_URL}/recipes/{recipe_id}")
+            
+            self.log(f"DELETE request sent to: {BASE_URL}/recipes/{recipe_id}")
+            self.log(f"Response status: {delete_response.status_code}")
+            self.log(f"Response body: {delete_response.text}")
+            
+            # Check for success (200 or 204)
+            if delete_response.status_code in [200, 204]:
+                self.log(f"✅ Recipe deletion successful - Status: {delete_response.status_code}")
+                
+                # Parse response if it's JSON
+                try:
+                    response_data = delete_response.json()
+                    message = response_data.get("message", "No message")
+                    self.log(f"✅ Success message: {message}")
+                    
+                    # Verify it's not an admin-only error
+                    if "kun administratorer kan slette" in message.lower():
+                        self.log(f"❌ UNEXPECTED: Got admin-only error message despite successful status code")
+                        return False
+                    else:
+                        self.log(f"✅ No admin-only error message detected")
+                        
+                except:
+                    # Response might not be JSON (e.g., 204 No Content)
+                    self.log(f"✅ Response is not JSON (likely 204 No Content)")
+                
+            elif delete_response.status_code == 403:
+                self.log(f"❌ Recipe deletion forbidden (403)")
+                
+                # Check for specific error messages
+                try:
+                    error_data = delete_response.json()
+                    error_message = error_data.get("detail", "No error message")
+                    self.log(f"❌ Error message: {error_message}")
+                    
+                    if "kun administratorer kan slette" in error_message.lower():
+                        self.log(f"❌ CRITICAL: Got 'Kun administratorer kan slette' error - Recipe author cannot delete own recipe")
+                        return False
+                    elif "kun slette dine egne" in error_message.lower():
+                        self.log(f"❌ CRITICAL: Got 'can only delete own recipes' error - Authorship check failed")
+                        return False
+                    else:
+                        self.log(f"❌ Other authorization error: {error_message}")
+                        return False
+                        
+                except:
+                    self.log(f"❌ 403 response is not JSON: {delete_response.text}")
+                    return False
+                    
+            elif delete_response.status_code == 401:
+                self.log(f"❌ Recipe deletion unauthorized (401) - Authentication failed")
+                self.log(f"   - Session token may be invalid or expired")
+                return False
+                
+            elif delete_response.status_code == 404:
+                self.log(f"❌ Recipe not found for deletion (404)")
+                self.log(f"   - Recipe may have been already deleted or moved")
+                return False
+                
+            else:
+                self.log(f"❌ Unexpected response status: {delete_response.status_code}")
+                self.log(f"   - Response: {delete_response.text}")
+                return False
+            
+            # Step 4: Verify recipe is actually deleted
+            self.log(f"Step 4: Verify recipe is deleted...")
+            
+            verify_response = test_session.get(f"{BASE_URL}/recipes/{recipe_id}")
+            
+            if verify_response.status_code == 404:
+                self.log(f"✅ Recipe successfully deleted - No longer accessible")
+            elif verify_response.status_code == 200:
+                self.log(f"⚠️  Recipe still exists after deletion attempt")
+                self.log(f"   - This may indicate deletion failed or recipe is soft-deleted")
+                return False
+            else:
+                self.log(f"⚠️  Unexpected response when verifying deletion: {verify_response.status_code}")
+            
+            self.log(f"✅ RECIPE DELETE BY AUTHOR TEST COMPLETED SUCCESSFULLY")
+            self.log(f"   - Ulla can delete her own recipe '{recipe_name}'")
+            self.log(f"   - No 'Kun administratorer kan slette' error")
+            self.log(f"   - Recipe properly removed from system")
+            
+            return True
+            
+        except Exception as e:
+            self.log(f"❌ Recipe delete test failed with exception: {str(e)}")
+            return False
+
     def test_shopping_list_cookie_session_management(self):
         """Test NEW cookie-based session management for shopping list endpoints"""
         self.log("Testing NEW cookie-based session management for shopping list...")
