@@ -1569,8 +1569,8 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
                 self.log(f"   - Response: {delete_response.text}")
                 return False
             
-            # Step 4: Verify recipe is actually deleted
-            self.log(f"Step 4: Verify recipe is deleted...")
+            # Step 5: Verify recipe is actually deleted
+            self.log(f"Step 5: Verify recipe is deleted...")
             
             verify_response = test_session.get(f"{BASE_URL}/recipes/{recipe_id}")
             
