@@ -122,16 +122,23 @@ const ShoppingListPage = ({ sessionId }) => {
       // Clear supplier cache when fetching new mappings
       setSupplierCache({});
       
-      // Fetch all mappings with keywords
-      const mappingsResponse = await axios.get(`${ADMIN_REDIRECT_API}/mappings`, {
-        headers: { Authorization: `Bearer ${ADMIN_TOKEN}` }
-      });
-      setAllMappings(mappingsResponse.data);
+      // Fetch all mappings with keywords (non-blocking - continue even if this fails)
+      try {
+        const mappingsResponse = await axios.get(`${ADMIN_REDIRECT_API}/mappings`, {
+          headers: { Authorization: `Bearer ${ADMIN_TOKEN}` }
+        });
+        setAllMappings(mappingsResponse.data);
+        console.log('[ShoppingList] Mappings loaded:', mappingsResponse.data.length);
+      } catch (mappingsError) {
+        console.warn('[ShoppingList] Mappings API failed (non-critical):', mappingsError.message);
+        // Continue anyway - shopping list will work without buy buttons
+        setAllMappings([]);
+      }
       
-      // Fetch shopping list
+      // Fetch shopping list (this is the critical part)
       await fetchShoppingList();
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching shopping list:', error);
       setLoading(false);
     }
   };
