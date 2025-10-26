@@ -27,6 +27,12 @@ from auth import (
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
+# Debug CORS configuration
+cors_origins_str = os.environ.get('CORS_ORIGINS', '*')
+print(f"[DEBUG] CORS_ORIGINS from env: {cors_origins_str}")
+print(f"[DEBUG] CORS_ORIGINS split: {cors_origins_str.split(',')}")
+
+
 # Start redirect-service if not running
 try:
     startup_script = ROOT_DIR / 'start_redirect_service.sh'
