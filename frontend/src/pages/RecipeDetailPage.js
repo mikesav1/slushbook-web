@@ -676,19 +676,21 @@ const RecipeDetailPage = ({ sessionId }) => {
       </div>
 
       {/* Steps */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-        <h2 className="text-2xl font-bold mb-4">Fremgangsmåde</h2>
-        <ol className="space-y-3">
-          {recipe.steps.map((step, index) => (
-            <li key={index} className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-cyan-500 text-white rounded-full flex items-center justify-center font-bold">
-                {index + 1}
-              </span>
-              <p className="text-gray-700 pt-1">{step}</p>
-            </li>
-          ))}
-        </ol>
-      </div>
+      {recipe.steps && recipe.steps.length > 0 && (
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <h2 className="text-2xl font-bold mb-4">Fremgangsmåde</h2>
+          <ol className="space-y-3">
+            {recipe.steps.map((step, index) => (
+              <li key={index} className="flex gap-4">
+                <span className="flex-shrink-0 w-8 h-8 bg-cyan-500 text-white rounded-full flex items-center justify-center font-bold">
+                  {index + 1}
+                </span>
+                <p className="text-gray-700 pt-1">{step}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
     </div>
   );
 };
