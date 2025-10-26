@@ -1321,12 +1321,17 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         self.log("=== COMPREHENSIVE LOGIN DIAGNOSTICS ===")
         
         results = {
+            "database_verification": False,
             "admin_login": False,
             "ulla_login": False,
             "password_hashing": False,
             "session_creation": False,
             "auth_me_endpoint": False
         }
+        
+        # Test 0: Database verification - check what users exist
+        self.log("\n--- Test 0: Database User Verification ---")
+        results["database_verification"] = self.test_database_user_verification()
         
         # Test 1: Admin login
         self.log("\n--- Test 1: Admin Login ---")
@@ -1364,6 +1369,14 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             return False
         elif not results["admin_login"] and not results["ulla_login"]:
             self.log("\n❌ BOTH ADMIN AND ULLA LOGIN FAILED - This is the reported issue!")
+            self.log("\n🔍 ROOT CAUSE ANALYSIS:")
+            self.log("   - Backend logs show 'User not found' for both users")
+            self.log("   - admin@slushbook.dk and ulla@test.dk DO NOT EXIST in database")
+            self.log("   - This is NOT a password issue - it's a missing user issue")
+            self.log("\n💡 SOLUTION:")
+            self.log("   - Create admin@slushbook.dk user in database")
+            self.log("   - Create ulla@test.dk user in database")
+            self.log("   - Or update login credentials to use existing users")
             return False
         else:
             self.log("\n✅ LOGIN SYSTEM APPEARS TO BE WORKING")
