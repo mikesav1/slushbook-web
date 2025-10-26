@@ -11,7 +11,8 @@ import uuid
 from datetime import datetime, timezone, timedelta
 
 # Configuration
-BASE_URL = "https://flavor-sync.preview.emergentagent.com/api"  # Preview environment for testing
+PREVIEW_BASE_URL = "https://flavor-sync.preview.emergentagent.com/api"  # Preview environment
+PRODUCTION_BASE_URL = "https://slushice-recipes.emergent.host/api"  # Production environment
 TEST_EMAIL = f"test.user.{int(time.time())}@example.com"
 TEST_PASSWORD = "testpass123"
 TEST_NAME = "Test User"
