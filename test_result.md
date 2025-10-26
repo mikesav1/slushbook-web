@@ -423,7 +423,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Dual Environment Login Verification - Preview vs Production"
+    - "Dual Environment Shopping List Testing - Preview vs Production"
     - "Shopping List Session ID Mismatch Debug - Tilføj til liste Issue"
     - "Ulla Recipe Visibility Issue - Pending Recipes Not Shown"
   stuck_tasks: []
