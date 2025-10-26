@@ -4618,15 +4618,15 @@ test,data,here"""
         self.log("Starting SLUSHBOOK Backend System Tests")
         self.log("=" * 60)
         
-        # Run critical endpoints tests first
-        critical_results = self.test_critical_endpoints_review_request()
+        # Run the custom domain login test as requested
+        self.log("\n🌐 CUSTOM DOMAIN LOGIN TEST")
+        custom_domain_result = self.test_custom_domain_login()
         
-        # Run additional tests
-        additional_tests = [
-            ("🛒 SHOPPING LIST COOKIE SESSION MANAGEMENT", self.test_shopping_list_cookie_session_management),
-            ("🛒 SHOPPING LIST DEBUG - GIN HASH SLUSH ISSUE", self.test_shopping_list_gin_hash_slush_debug),
-            ("🔐 USER RECIPE ACCESS & REJECTION REASONS", self.test_user_recipe_access_and_rejection_reasons)
-        ]
+        # Create results dictionary
+        critical_results = {"🌐 CUSTOM DOMAIN LOGIN": custom_domain_result}
+        
+        # Run additional tests if needed
+        additional_tests = []
         
         additional_results = {}
         
