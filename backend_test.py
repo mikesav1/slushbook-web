@@ -1408,13 +1408,15 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             return False
 
     def test_recipe_delete_by_author(self):
-        """Test delete recipe functionality for recipe author - Create and delete test"""
+        """Test delete recipe functionality for recipe author - Comprehensive test"""
         self.log("=== TESTING RECIPE DELETE BY AUTHOR ===")
         
         # Test data from review request
         ulla_email = "ulla@itopgaver.dk"
         ulla_password = "mille0188"
         expected_author_id = "393ffc7c-efa4-4947-99f4-2025a8994c3b"
+        original_recipe_id = "8765bbda-2477-497a-8e01-d127647ba0d9"
+        original_recipe_name = "Dett er en test"
         
         try:
             # Step 1: Login as Ulla
