@@ -1333,9 +1333,10 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         
         return True
 
-    def test_database_fix_login_verification(self):
-        """Test login after database fix - specific credentials from review request"""
-        self.log("=== TESTING LOGIN AFTER DATABASE FIX ===")
+    def test_database_migration_login_verification(self):
+        """Test login after database migration from test_database to flavor_sync"""
+        self.log("=== TESTING LOGIN AFTER DATABASE MIGRATION ===")
+        self.log("Testing migration from test_database to flavor_sync database")
         
         # First, check what users actually exist in the database
         self.log("\n--- Step 0: Database User Verification ---")
@@ -1344,8 +1345,8 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         results = {
             "ulla_login": False,
             "kimesav_login": False,
-            "ulla_auth_check": False,
-            "kimesav_auth_check": False
+            "ulla_session_token": False,
+            "kimesav_session_token": False
         }
         
         # Test 1: Ulla login with ulla@itopgaver.dk / mille0188
@@ -1353,55 +1354,57 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         ulla_success, ulla_token = self.test_specific_user_login(ULLA_EMAIL, [ULLA_PASSWORD])
         results["ulla_login"] = ulla_success
         
-        if ulla_success:
-            # Test auth check for Ulla
-            self.log("Testing Ulla auth check...")
+        if ulla_success and ulla_token:
+            self.log("✅ Ulla login successful - testing session token...")
+            # Test session token validation
             auth_response = self.session.get(f"{BASE_URL}/auth/me")
             if auth_response.status_code == 200:
                 user_data = auth_response.json()
-                self.log(f"✅ Ulla auth check successful: {user_data}")
-                results["ulla_auth_check"] = True
+                self.log(f"✅ Ulla session token valid: {user_data}")
+                results["ulla_session_token"] = True
             else:
-                self.log(f"❌ Ulla auth check failed: {auth_response.status_code}")
+                self.log(f"❌ Ulla session token invalid: {auth_response.status_code}")
         
         # Test 2: Kimesav login with kimesav@gmail.com / admin123
         self.log("\n--- Test 2: Kimesav Login (kimesav@gmail.com / admin123) ---")
         kimesav_success, kimesav_token = self.test_specific_user_login(KIMESAV_EMAIL, [KIMESAV_PASSWORD])
         results["kimesav_login"] = kimesav_success
         
-        if kimesav_success:
-            # Test auth check for Kimesav
-            self.log("Testing Kimesav auth check...")
+        if kimesav_success and kimesav_token:
+            self.log("✅ Kimesav login successful - testing session token...")
+            # Test session token validation
             auth_response = self.session.get(f"{BASE_URL}/auth/me")
             if auth_response.status_code == 200:
                 user_data = auth_response.json()
-                self.log(f"✅ Kimesav auth check successful: {user_data}")
-                results["kimesav_auth_check"] = True
+                self.log(f"✅ Kimesav session token valid: {user_data}")
+                results["kimesav_session_token"] = True
             else:
-                self.log(f"❌ Kimesav auth check failed: {auth_response.status_code}")
+                self.log(f"❌ Kimesav session token invalid: {auth_response.status_code}")
         
         # Summary
-        self.log("\n=== DATABASE FIX LOGIN TEST SUMMARY ===")
+        self.log("\n=== DATABASE MIGRATION LOGIN TEST SUMMARY ===")
         for test_name, result in results.items():
             status = "✅ PASS" if result else "❌ FAIL"
             self.log(f"{test_name}: {status}")
         
         # Overall assessment
         if results["ulla_login"] and results["kimesav_login"]:
-            self.log("\n✅ DATABASE FIX SUCCESSFUL - Both users can authenticate")
+            self.log("\n✅ DATABASE MIGRATION SUCCESSFUL - Both users can authenticate and receive session tokens")
             return True
         else:
-            self.log("\n❌ DATABASE FIX INCOMPLETE - Some users cannot authenticate")
+            self.log("\n❌ DATABASE MIGRATION INCOMPLETE - Users cannot authenticate")
             self.log("\n🔍 ROOT CAUSE ANALYSIS:")
             self.log("   - Backend logs show 'User not found' for both users")
+            self.log("   - Database migration from test_database to flavor_sync appears incomplete")
             if not results["ulla_login"]:
-                self.log("   - ulla@itopgaver.dk DOES NOT EXIST in database")
+                self.log("   - ulla@itopgaver.dk DOES NOT EXIST in flavor_sync database")
             if not results["kimesav_login"]:
-                self.log("   - kimesav@gmail.com DOES NOT EXIST in database")
+                self.log("   - kimesav@gmail.com DOES NOT EXIST in flavor_sync database")
             self.log("\n💡 SOLUTION REQUIRED:")
-            self.log("   - Create ulla@itopgaver.dk user with password 'mille0188'")
-            self.log("   - Create kimesav@gmail.com user with password 'admin123'")
-            self.log("   - Or verify the database fix has been properly applied")
+            self.log("   - Complete the database migration by creating missing users:")
+            self.log("     * ulla@itopgaver.dk with password 'mille0188'")
+            self.log("     * kimesav@gmail.com with password 'admin123'")
+            self.log("   - Verify all user data has been properly migrated from test_database to flavor_sync")
             return False
 
     def test_shopping_list_cookie_session_management(self):
