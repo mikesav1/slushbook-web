@@ -4035,24 +4035,24 @@ test,data,here"""
             return False
 
 def main():
-    """Run shopping list debug test"""
+    """Run login diagnostics tests"""
     tester = BackendTester()
     
-    print("=" * 80)
-    print("SHOPPING LIST DEBUG TEST - GIN HASH SLUSH ISSUE")
-    print("=" * 80)
-    print(f"Testing against: {BASE_URL}")
-    print("=" * 80)
+    print("=" * 60)
+    print("SLUSHBOOK LOGIN DIAGNOSTICS")
+    print("=" * 60)
     
-    # Run the shopping list debug test
-    success = tester.test_shopping_list_gin_hash_slush_debug()
+    # Run comprehensive login diagnostics
+    success = tester.test_login_comprehensive_diagnostics()
     
+    print(f"\n{'='*60}")
     if success:
-        print("\n✅ SHOPPING LIST DEBUG TEST: PASSED - Backend functionality working correctly")
-        exit(0)
+        print("LOGIN DIAGNOSTICS: ✅ PASSED")
     else:
-        print("\n❌ SHOPPING LIST DEBUG TEST: FAILED - Issue found")
-        exit(1)
+        print("LOGIN DIAGNOSTICS: ❌ FAILED")
+    print(f"{'='*60}")
+    
+    return success
 
 if __name__ == "__main__":
     main()
