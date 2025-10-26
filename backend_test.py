@@ -5060,18 +5060,33 @@ def main():
     results = tester.test_dual_environment_shopping_list()
     
     print(f"\n{'='*80}")
-    if success:
-        print("CUSTOM DOMAIN LOGIN TEST: ✅ PASSED")
-        print("Login works from custom domain perspective")
-        print("- Login succeeded with Origin header")
-        print("- CORS configuration allows custom domain")
-        print("- No authentication or CORS errors")
+    
+    # Determine overall success
+    preview_success = results.get("Preview", {}).get("item_found_in_list", False)
+    production_success = results.get("Production", {}).get("item_found_in_list", False)
+    
+    if preview_success and production_success:
+        print("DUAL ENVIRONMENT SHOPPING LIST TEST: ✅ BOTH ENVIRONMENTS WORKING")
+        print("Shopping list functionality works on both Preview and Production")
+        success = True
+    elif preview_success and not production_success:
+        print("DUAL ENVIRONMENT SHOPPING LIST TEST: ⚠️  PREVIEW WORKS, PRODUCTION FAILS")
+        print("Shopping list works on Preview but fails on Production")
+        print("- Check Production environment configuration")
+        print("- Verify database connectivity on Production")
+        success = False
+    elif not preview_success and production_success:
+        print("DUAL ENVIRONMENT SHOPPING LIST TEST: ⚠️  PRODUCTION WORKS, PREVIEW FAILS")
+        print("Shopping list works on Production but fails on Preview")
+        print("- Check Preview environment configuration")
+        success = False
     else:
-        print("CUSTOM DOMAIN LOGIN TEST: ❌ FAILED")
-        print("Login failed from custom domain perspective")
-        print("- Check CORS configuration")
-        print("- Verify authentication credentials")
-        print("- Check backend CORS_ORIGINS setting")
+        print("DUAL ENVIRONMENT SHOPPING LIST TEST: ❌ BOTH ENVIRONMENTS FAILED")
+        print("Shopping list functionality fails on both environments")
+        print("- Check authentication credentials")
+        print("- Verify shopping list API endpoints")
+        success = False
+    
     print(f"{'='*80}")
     
     return success
