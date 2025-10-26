@@ -1326,6 +1326,7 @@ async def get_recipes(
     if user and user.role in ["pro", "editor", "admin"]:
         # Pro/Admin users see all system recipes (no filtering)
         system_recipes = await db.recipes.find({**query, "author": "system"}, {"_id": 0}).to_list(1000)
+        logger.info(f"[RECIPES] Pro/Admin user, returning {len(system_recipes)} system recipes")
     else:
         # Guest users see ALL recipes (including locked ones)
         # Frontend will handle displaying locked state with blur/overlay
@@ -1333,6 +1334,7 @@ async def get_recipes(
             {**query, "author": "system"},
             {"_id": 0}
         ).to_list(1000)
+        logger.info(f"[RECIPES] Guest user, returning {len(system_recipes)} system recipes (all including locked)")
     
     # Get published user recipes (is_published = true AND approved)
     published_user_recipes = await db.user_recipes.find(
