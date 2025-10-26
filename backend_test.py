@@ -1501,8 +1501,8 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
                 self.log(f"❌ Failed to create test recipe: {create_response.status_code} - {create_response.text}")
                 return False
             
-            # Step 3: Attempt to delete the recipe
-            self.log(f"Step 3: Attempt to delete recipe {recipe_id}...")
+            # Step 4: Attempt to delete the recipe
+            self.log(f"Step 4: Attempt to delete recipe {recipe_id}...")
             
             delete_response = test_session.delete(f"{BASE_URL}/recipes/{recipe_id}")
             
