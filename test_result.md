@@ -423,6 +423,7 @@ metadata:
 
 test_plan:
   current_focus:
+    - "Database Migration Login Verification - test_database to flavor_sync"
     - "Shopping List Session ID Mismatch Debug - Tilføj til liste Issue"
     - "Ulla Recipe Visibility Issue - Pending Recipes Not Shown"
   stuck_tasks: []
