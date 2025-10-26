@@ -1317,71 +1317,66 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         
         return True
 
-    def test_login_comprehensive_diagnostics(self):
-        """Comprehensive login diagnostics for the reported issue"""
-        self.log("=== COMPREHENSIVE LOGIN DIAGNOSTICS ===")
+    def test_database_fix_login_verification(self):
+        """Test login after database fix - specific credentials from review request"""
+        self.log("=== TESTING LOGIN AFTER DATABASE FIX ===")
         
         results = {
-            "database_verification": False,
-            "admin_login": False,
             "ulla_login": False,
-            "password_hashing": False,
-            "session_creation": False,
-            "auth_me_endpoint": False
+            "kimesav_login": False,
+            "ulla_auth_check": False,
+            "kimesav_auth_check": False
         }
         
-        # Test 0: Database verification - check what users exist
-        self.log("\n--- Test 0: Database User Verification ---")
-        results["database_verification"] = self.test_database_user_verification()
+        # Test 1: Ulla login with ulla@itopgaver.dk / mille0188
+        self.log("\n--- Test 1: Ulla Login (ulla@itopgaver.dk / mille0188) ---")
+        ulla_success, ulla_token = self.test_specific_user_login(ULLA_EMAIL, [ULLA_PASSWORD])
+        results["ulla_login"] = ulla_success
         
-        # Test 1: Admin login
-        self.log("\n--- Test 1: Admin Login ---")
-        results["admin_login"] = self.test_admin_login()
+        if ulla_success:
+            # Test auth check for Ulla
+            self.log("Testing Ulla auth check...")
+            auth_response = self.session.get(f"{BASE_URL}/auth/me")
+            if auth_response.status_code == 200:
+                user_data = auth_response.json()
+                self.log(f"✅ Ulla auth check successful: {user_data}")
+                results["ulla_auth_check"] = True
+            else:
+                self.log(f"❌ Ulla auth check failed: {auth_response.status_code}")
         
-        # Test 2: Ulla login  
-        self.log("\n--- Test 2: Ulla Login ---")
-        results["ulla_login"] = self.test_ulla_login()
+        # Test 2: Kimesav login with kimesav@gmail.com / admin123
+        self.log("\n--- Test 2: Kimesav Login (kimesav@gmail.com / admin123) ---")
+        kimesav_success, kimesav_token = self.test_specific_user_login(KIMESAV_EMAIL, [KIMESAV_PASSWORD])
+        results["kimesav_login"] = kimesav_success
         
-        # Test 3: Password hashing
-        self.log("\n--- Test 3: Password Hashing ---")
-        results["password_hashing"] = self.test_password_hashing_verification()
-        
-        # Test 4: Session creation
-        self.log("\n--- Test 4: Session Creation ---")
-        results["session_creation"] = self.test_session_creation_and_validation()
-        
-        # Test 5: Auth/me endpoint
-        self.log("\n--- Test 5: Auth/Me Endpoint ---")
-        # This is tested as part of session validation above
-        results["auth_me_endpoint"] = results["session_creation"]
+        if kimesav_success:
+            # Test auth check for Kimesav
+            self.log("Testing Kimesav auth check...")
+            auth_response = self.session.get(f"{BASE_URL}/auth/me")
+            if auth_response.status_code == 200:
+                user_data = auth_response.json()
+                self.log(f"✅ Kimesav auth check successful: {user_data}")
+                results["kimesav_auth_check"] = True
+            else:
+                self.log(f"❌ Kimesav auth check failed: {auth_response.status_code}")
         
         # Summary
-        self.log("\n=== LOGIN DIAGNOSTICS SUMMARY ===")
+        self.log("\n=== DATABASE FIX LOGIN TEST SUMMARY ===")
         for test_name, result in results.items():
             status = "✅ PASS" if result else "❌ FAIL"
             self.log(f"{test_name}: {status}")
         
         # Overall assessment
-        critical_tests = ["password_hashing", "session_creation", "auth_me_endpoint"]
-        critical_failures = [test for test in critical_tests if not results[test]]
-        
-        if critical_failures:
-            self.log(f"\n❌ CRITICAL ISSUES FOUND: {', '.join(critical_failures)}")
-            return False
-        elif not results["admin_login"] and not results["ulla_login"]:
-            self.log("\n❌ BOTH ADMIN AND ULLA LOGIN FAILED - This is the reported issue!")
-            self.log("\n🔍 ROOT CAUSE ANALYSIS:")
-            self.log("   - Backend logs show 'User not found' for both users")
-            self.log("   - admin@slushbook.dk and ulla@test.dk DO NOT EXIST in database")
-            self.log("   - This is NOT a password issue - it's a missing user issue")
-            self.log("\n💡 SOLUTION:")
-            self.log("   - Create admin@slushbook.dk user in database")
-            self.log("   - Create ulla@test.dk user in database")
-            self.log("   - Or update login credentials to use existing users")
-            return False
-        else:
-            self.log("\n✅ LOGIN SYSTEM APPEARS TO BE WORKING")
+        if results["ulla_login"] and results["kimesav_login"]:
+            self.log("\n✅ DATABASE FIX SUCCESSFUL - Both users can authenticate")
             return True
+        else:
+            self.log("\n❌ DATABASE FIX INCOMPLETE - Some users cannot authenticate")
+            if not results["ulla_login"]:
+                self.log("   - ulla@itopgaver.dk / mille0188 login failed")
+            if not results["kimesav_login"]:
+                self.log("   - kimesav@gmail.com / admin123 login failed")
+            return False
 
     def test_shopping_list_cookie_session_management(self):
         """Test NEW cookie-based session management for shopping list endpoints"""
