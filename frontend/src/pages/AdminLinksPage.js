@@ -698,14 +698,27 @@ const AdminLinksPage = () => {
       {/* Mappings Tab */}
       {activeTab === 'mappings' && (
         <div className="space-y-4">
-          <div className="flex justify-end">
-            <Button
-              onClick={() => setShowAddDialog(true)}
-              className="bg-gradient-to-r from-blue-500 to-cyan-500"
-            >
-              <FaPlus className="mr-2" />
-              Tilföj Nyt Link
-            </Button>
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex gap-2 items-center">
+              <Button
+                onClick={() => setShowAddDialog(true)}
+                className="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+              >
+                <FaPlus className="mr-2" />
+                Tilföj Nyt Link
+              </Button>
+              
+              {selectedMappings.length > 0 && (
+                <Button
+                  onClick={bulkDeleteMappings}
+                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+                  disabled={saving}
+                >
+                  <FaTrash className="mr-2" />
+                  Slet valgte ({selectedMappings.length})
+                </Button>
+              )}
+            </div>
           </div>
 
           {loading ? (
