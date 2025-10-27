@@ -359,7 +359,7 @@ const AdminLinksPage = () => {
       for (const id of selectedSuppliers) {
         try {
           await axios.delete(
-            `${REDIRECT_API}/admin/suppliers/${id}`,
+            `${REDIRECT_API}/admin/supplier/${id}`,
             { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
           );
           successCount++;
