@@ -161,8 +161,8 @@ const GuidePage = () => {
 
         {/* Tips & Tricks */}
         <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">
-            💡 Tips & Tricks
+          <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+            <FaLightbulb className="text-yellow-600" /> Tips & Tricks
           </h2>
           <div className="space-y-3 text-gray-700 ml-4">
             <ul className="list-disc pl-6 space-y-2">
