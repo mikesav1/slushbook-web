@@ -250,19 +250,19 @@ const MembersPage = () => {
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600">
                   Bruger
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600">
                   Email
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600">
                   Rolle
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600">
                   Oprettet
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600">
                   Handlinger
                 </th>
               </tr>
