@@ -2266,15 +2266,23 @@ async def toggle_recipe_free_status(recipe_id: str, request: Request):
     if not user or user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
     
-    # Get current recipe
-    recipe = await db.user_recipes.find_one({"id": recipe_id})
+    # Check both system recipes and user recipes
+    recipe = await db.recipes.find_one({"id": recipe_id})
+    collection_name = "recipes"
+    
+    if not recipe:
+        recipe = await db.user_recipes.find_one({"id": recipe_id})
+        collection_name = "user_recipes"
+    
     if not recipe:
         raise HTTPException(status_code=404, detail="Recipe not found")
     
     # Toggle is_free status
     new_free_status = not recipe.get('is_free', False)
     
-    result = await db.user_recipes.update_one(
+    # Update in the correct collection
+    collection = db.recipes if collection_name == "recipes" else db.user_recipes
+    result = await collection.update_one(
         {"id": recipe_id},
         {"$set": {"is_free": new_free_status}}
     )
@@ -2284,7 +2292,7 @@ async def toggle_recipe_free_status(recipe_id: str, request: Request):
     
     return {
         "success": True,
-        "message": f"Opskrift er nu {'gratis' if new_free_status else 'pro'}",
+        "message": f"Opskrift er nu {'gratis for gæster' if new_free_status else 'kun for pro brugere'}",
         "is_free": new_free_status
     }
 
