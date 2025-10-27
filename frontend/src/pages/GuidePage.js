@@ -176,8 +176,8 @@ const GuidePage = () => {
 
         {/* Support */}
         <section className="mb-8 bg-gradient-to-br from-cyan-50 to-blue-50 p-6 rounded-lg">
-          <h2 className="text-2xl font-bold mb-4">
-            ❓ Brug for hjælp?
+          <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+            <FaQuestionCircle className="text-cyan-600" /> Brug for hjælp?
           </h2>
           <p className="text-gray-700">
             Har du spørgsmål eller feedback? Kontakt os på{' '}
