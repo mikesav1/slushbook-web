@@ -369,7 +369,7 @@ const MembersPage = () => {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-lg">
                   <div>
                     <div className="text-xs text-gray-500 mb-1">Rolle</div>
-                    <div className="font-semibold capitalize">{userDetails.role}</div>
+                    <div className="font-semibold">{userDetails.role}</div>
                   </div>
                   <div>
                     <div className="text-xs text-gray-500 mb-1">Oprettet</div>
