@@ -30,8 +30,15 @@ const RecipesPage = ({ sessionId }) => {
     if (sortBy === 'rating') {
       // Sort by rating when coming from "Højest vurderet" button
       const sorted = [...recipes].sort((a, b) => {
-        const aRating = a.avg_rating || 0;
-        const bRating = b.avg_rating || 0;
+        // Recipes WITH ratings first
+        const aHasRating = (a.rating_avg || 0) > 0;
+        const bHasRating = (b.rating_avg || 0) > 0;
+        if (aHasRating && !bHasRating) return -1;
+        if (!aHasRating && bHasRating) return 1;
+        
+        // Then by rating value
+        const aRating = a.rating_avg || 0;
+        const bRating = b.rating_avg || 0;
         return bRating - aRating;
       });
       setRecipes(sorted);
