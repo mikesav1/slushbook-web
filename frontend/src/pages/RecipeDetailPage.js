@@ -360,7 +360,7 @@ const RecipeDetailPage = ({ sessionId }) => {
             )}
             
             <div className="mb-4">
-              <h1 className="text-3xl md:text-4xl font-bold mb-3">{recipe.name}</h1>
+              <h1 className="text-3xl md:text-4xl font-bold mb-3">{toSentenceCase(recipe.name)}</h1>
               <div className="flex flex-wrap gap-2 mb-4">
                 <button
                   onClick={() => window.location.href = '/brix-info'}
