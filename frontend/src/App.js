@@ -161,7 +161,7 @@ const Navigation = () => {
                     {/* Admin Section */}
                     {user.role === 'admin' && (
                       <>
-                        <div className="px-4 py-2 mt-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-t border-gray-100">
+                        <div className="px-4 py-2 mt-2 text-xs font-semibold text-gray-500 tracking-wider border-t border-gray-100">
                           Admin
                         </div>
                         <Link
