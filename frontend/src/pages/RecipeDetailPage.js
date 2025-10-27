@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'sonner';
-import { FaHeart, FaRegHeart, FaStar, FaWineBottle, FaShoppingCart, FaArrowLeft, FaBalanceScale, FaTrash } from 'react-icons/fa';
+import { FaHeart, FaRegHeart, FaStar, FaWineBottle, FaShoppingCart, FaArrowLeft, FaBalanceScale, FaTrash, FaTimes } from 'react-icons/fa';
 import { API } from '../App';
 import { Button } from '../components/ui/button';
 import { Label } from '../components/ui/label';
