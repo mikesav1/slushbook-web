@@ -5449,29 +5449,49 @@ test,data,here"""
         return results
 
 def main():
-    """Run critical issues comparison tests"""
-    print("🚨 SLUSHBOOK Critical Issues Testing")
-    print("=" * 60)
-    print("Testing differences between Preview and Production environments")
-    print(f"Preview: {PREVIEW_BASE_URL}")
-    print(f"Production: {PRODUCTION_BASE_URL}")
+    """Run water filter and admin sandbox tests as requested"""
+    print("🧪 SLUSHBOOK Water Filter & Admin Sandbox Test")
     print("=" * 60)
     
-    # Create tester instance (will be used for running comparison tests)
-    tester = BackendTester(PREVIEW_BASE_URL)  # Base URL doesn't matter for comparison tests
+    # Use production environment as specified in review request
+    production_url = "https://slushice-recipes.emergent.host/api"
     
-    # Run the critical issues comparison
-    results = tester.run_critical_issues_comparison()
+    print(f"\n🌐 Testing Production Environment: {production_url}")
+    print("-" * 60)
     
-    # Exit with appropriate code
-    failed_tests = len([r for r in results.values() if not r])
+    tester = BackendTester(production_url)
     
-    if failed_tests == 0:
-        print("\n🎉 All critical issues tests passed!")
-        return True
+    # Run specific tests requested in review
+    tests = [
+        ("Water Filter Implementation", tester.test_water_filter_implementation),
+        ("Admin Sandbox Count", tester.test_admin_sandbox_count)
+    ]
+    
+    passed = 0
+    failed = 0
+    
+    for test_name, test_func in tests:
+        print(f"\n🔬 Running: {test_name}")
+        print("-" * 40)
+        try:
+            if test_func():
+                print(f"✅ {test_name} - PASSED")
+                passed += 1
+            else:
+                print(f"❌ {test_name} - FAILED")
+                failed += 1
+        except Exception as e:
+            print(f"💥 {test_name} - Exception: {str(e)}")
+            failed += 1
+    
+    print(f"\n📊 Final Results: {passed} passed, {failed} failed")
+    
+    if failed == 0:
+        print("🎉 All tests passed!")
     else:
-        print(f"\n💥 {failed_tests} critical issues found!")
-        return False
+        print("⚠️  Some tests failed - check output above for details")
+    
+    return failed == 0
 
 if __name__ == "__main__":
     main()
