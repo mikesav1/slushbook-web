@@ -1409,54 +1409,422 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             self.log("   - Verify all user data has been properly migrated from test_database to flavor_sync")
             return False
 
-    def test_recipe_delete_by_author(self):
-        """Test delete recipe functionality for recipe author - Comprehensive test"""
-        self.log("=== TESTING RECIPE DELETE BY AUTHOR ===")
+    def test_critical_issue_1_admin_sandbox_comparison(self):
+        """Test Issue 1: Admin Sandbox - Empty on Production vs Preview"""
+        self.log("=== CRITICAL ISSUE 1: ADMIN SANDBOX COMPARISON ===")
         
-        # Test data from review request
-        ulla_email = "ulla@itopgaver.dk"
-        ulla_password = "mille0188"
-        expected_author_id = "393ffc7c-efa4-4947-99f4-2025a8994c3b"
-        original_recipe_id = "8765bbda-2477-497a-8e01-d127647ba0d9"
-        original_recipe_name = "Dett er en test"
+        admin_email = "kimesav@gmail.com"
+        admin_password = "admin123"
+        
+        results = {
+            "preview_recipes": 0,
+            "production_recipes": 0,
+            "preview_success": False,
+            "production_success": False
+        }
+        
+        # Test Preview Environment
+        self.log("--- Testing PREVIEW Environment ---")
+        preview_tester = BackendTester(PREVIEW_BASE_URL)
         
         try:
-            # Step 1: Login as Ulla
-            self.log(f"Step 1: Login as {ulla_email}...")
+            # Login as admin on preview
+            login_response = preview_tester.session.post(f"{PREVIEW_BASE_URL}/auth/login", json={
+                "email": admin_email,
+                "password": admin_password
+            })
             
-            login_data = {
+            if login_response.status_code == 200:
+                self.log("✅ Preview: Admin login successful")
+                results["preview_success"] = True
+                
+                # Get pending recipes
+                pending_response = preview_tester.session.get(f"{PREVIEW_BASE_URL}/admin/pending-recipes")
+                
+                if pending_response.status_code == 200:
+                    preview_recipes = pending_response.json()
+                    results["preview_recipes"] = len(preview_recipes)
+                    self.log(f"✅ Preview: Found {len(preview_recipes)} recipes in admin sandbox")
+                    
+                    # Log first few recipes for debugging
+                    for i, recipe in enumerate(preview_recipes[:3]):
+                        self.log(f"   Recipe {i+1}: {recipe.get('name', 'Unknown')} (Status: {recipe.get('approval_status', 'Unknown')})")
+                else:
+                    self.log(f"❌ Preview: Failed to get pending recipes: {pending_response.status_code}")
+            else:
+                self.log(f"❌ Preview: Admin login failed: {login_response.status_code}")
+                
+        except Exception as e:
+            self.log(f"❌ Preview: Exception occurred: {str(e)}")
+        
+        # Test Production Environment
+        self.log("--- Testing PRODUCTION Environment ---")
+        production_tester = BackendTester(PRODUCTION_BASE_URL)
+        
+        try:
+            # Login as admin on production
+            login_response = production_tester.session.post(f"{PRODUCTION_BASE_URL}/auth/login", json={
+                "email": admin_email,
+                "password": admin_password
+            })
+            
+            if login_response.status_code == 200:
+                self.log("✅ Production: Admin login successful")
+                results["production_success"] = True
+                
+                # Get pending recipes
+                pending_response = production_tester.session.get(f"{PRODUCTION_BASE_URL}/admin/pending-recipes")
+                
+                if pending_response.status_code == 200:
+                    production_recipes = pending_response.json()
+                    results["production_recipes"] = len(production_recipes)
+                    self.log(f"✅ Production: Found {len(production_recipes)} recipes in admin sandbox")
+                    
+                    # Log first few recipes for debugging
+                    for i, recipe in enumerate(production_recipes[:3]):
+                        self.log(f"   Recipe {i+1}: {recipe.get('name', 'Unknown')} (Status: {recipe.get('approval_status', 'Unknown')})")
+                else:
+                    self.log(f"❌ Production: Failed to get pending recipes: {pending_response.status_code}")
+            else:
+                self.log(f"❌ Production: Admin login failed: {login_response.status_code}")
+                
+        except Exception as e:
+            self.log(f"❌ Production: Exception occurred: {str(e)}")
+        
+        # Compare Results
+        self.log("--- COMPARISON RESULTS ---")
+        self.log(f"Preview recipes: {results['preview_recipes']}")
+        self.log(f"Production recipes: {results['production_recipes']}")
+        
+        if results["preview_success"] and results["production_success"]:
+            difference = results["preview_recipes"] - results["production_recipes"]
+            if difference == 0:
+                self.log("✅ Both environments have the same number of recipes")
+                return True
+            else:
+                self.log(f"❌ DIFFERENCE FOUND: Preview has {difference} more recipes than Production")
+                self.log("🔍 This confirms the reported issue - Production admin sandbox is missing recipes")
+                return False
+        else:
+            self.log("❌ Could not complete comparison due to login failures")
+            return False
+
+    def test_critical_issue_2_shopping_list_missing_items(self):
+        """Test Issue 2: Shopping List Missing Items - Ulla's case"""
+        self.log("=== CRITICAL ISSUE 2: SHOPPING LIST MISSING ITEMS ===")
+        
+        ulla_email = "ulla@itopgaver.dk"
+        ulla_password = "mille0188"
+        
+        # Test on Production Environment (where issue is reported)
+        self.log("--- Testing on PRODUCTION Environment ---")
+        production_tester = BackendTester(PRODUCTION_BASE_URL)
+        
+        try:
+            # Login as Ulla
+            login_response = production_tester.session.post(f"{PRODUCTION_BASE_URL}/auth/login", json={
                 "email": ulla_email,
                 "password": ulla_password
-            }
-            
-            # Use a fresh session for this test
-            test_session = requests.Session()
-            login_response = test_session.post(f"{self.base_url}/auth/login", json=login_data)
+            })
             
             if login_response.status_code != 200:
-                self.log(f"❌ Login failed for Ulla: {login_response.status_code} - {login_response.text}")
+                self.log(f"❌ Ulla login failed: {login_response.status_code}")
                 return False
             
-            login_data_response = login_response.json()
-            session_token = login_data_response.get("session_token")
-            user_data = login_data_response.get("user", {})
+            user_data = login_response.json().get("user", {})
             user_id = user_data.get("id")
-            user_role = user_data.get("role")
+            self.log(f"✅ Ulla login successful - User ID: {user_id}")
             
-            self.log(f"✅ Login successful for Ulla")
-            self.log(f"   - Session token: {session_token[:20] if session_token else 'None'}...")
-            self.log(f"   - User ID: {user_id}")
-            self.log(f"   - User role: {user_role}")
+            # Check current shopping list
+            current_list_response = production_tester.session.get(f"{PRODUCTION_BASE_URL}/shopping-list/{user_id}")
             
-            # Verify Ulla's user ID matches expected
-            if user_id == expected_author_id:
-                self.log(f"✅ Ulla's user ID matches expected author ID: {expected_author_id}")
+            if current_list_response.status_code == 200:
+                current_items = current_list_response.json()
+                self.log(f"✅ Current shopping list has {len(current_items)} items")
+                
+                # Log current items
+                for item in current_items:
+                    self.log(f"   - {item.get('ingredient_name', 'Unknown')} ({item.get('quantity', 0)} {item.get('unit', '')})")
             else:
-                self.log(f"⚠️  Ulla's user ID ({user_id}) does not match expected ({expected_author_id})")
-                self.log("   - This may indicate the recipe author field uses a different identifier")
+                self.log(f"❌ Failed to get current shopping list: {current_list_response.status_code}")
+                return False
             
-            # Step 2: Create a test recipe to delete
-            self.log(f"Step 2: Create a test recipe for deletion testing...")
+            # Test adding 3 items including "vand" (water)
+            self.log("--- Testing: Add 3 items including 'vand' ---")
+            
+            test_items = [
+                {
+                    "session_id": user_id,
+                    "ingredient_name": "vand",
+                    "category_key": "base.vand",
+                    "quantity": 500.0,
+                    "unit": "ml",
+                    "linked_recipe_id": "test-recipe-1",
+                    "linked_recipe_name": "Test Recipe 1"
+                },
+                {
+                    "session_id": user_id,
+                    "ingredient_name": "sukker",
+                    "category_key": "base.sukker",
+                    "quantity": 100.0,
+                    "unit": "g",
+                    "linked_recipe_id": "test-recipe-2",
+                    "linked_recipe_name": "Test Recipe 2"
+                },
+                {
+                    "session_id": user_id,
+                    "ingredient_name": "citron",
+                    "category_key": "citrus.citron",
+                    "quantity": 2.0,
+                    "unit": "stk",
+                    "linked_recipe_id": "test-recipe-3",
+                    "linked_recipe_name": "Test Recipe 3"
+                }
+            ]
+            
+            added_items = []
+            
+            # Add each item
+            for i, item in enumerate(test_items):
+                self.log(f"Adding item {i+1}: {item['ingredient_name']}")
+                
+                add_response = production_tester.session.post(f"{PRODUCTION_BASE_URL}/shopping-list", json=item)
+                
+                if add_response.status_code == 200:
+                    added_item = add_response.json()
+                    added_items.append(added_item)
+                    self.log(f"✅ Added: {item['ingredient_name']} (ID: {added_item.get('id')})")
+                else:
+                    self.log(f"❌ Failed to add {item['ingredient_name']}: {add_response.status_code}")
+            
+            # Check shopping list after adding items
+            self.log("--- Checking shopping list after adding items ---")
+            
+            final_list_response = production_tester.session.get(f"{PRODUCTION_BASE_URL}/shopping-list/{user_id}")
+            
+            if final_list_response.status_code == 200:
+                final_items = final_list_response.json()
+                self.log(f"✅ Final shopping list has {len(final_items)} items")
+                
+                # Check if all 3 items are present
+                added_names = [item['ingredient_name'] for item in test_items]
+                found_names = []
+                
+                for item in final_items:
+                    item_name = item.get('ingredient_name', '')
+                    if item_name in added_names:
+                        found_names.append(item_name)
+                        self.log(f"   ✅ Found: {item_name}")
+                
+                missing_names = [name for name in added_names if name not in found_names]
+                
+                if len(missing_names) == 0:
+                    self.log("✅ All 3 items found in shopping list")
+                    return True
+                else:
+                    self.log(f"❌ MISSING ITEMS: {missing_names}")
+                    self.log("🔍 This confirms the reported issue - items are disappearing from shopping list")
+                    
+                    # Check if "vand" specifically causes issues
+                    if "vand" in found_names and len(missing_names) > 0:
+                        self.log("🔍 'vand' is present but other items are missing - confirms the reported behavior")
+                    
+                    return False
+            else:
+                self.log(f"❌ Failed to get final shopping list: {final_list_response.status_code}")
+                return False
+                
+        except Exception as e:
+            self.log(f"❌ Exception occurred: {str(e)}")
+            return False
+
+    def test_critical_issue_3_vand_isvand_filter(self):
+        """Test Issue 3: Vand/Isvand Filter Not Working"""
+        self.log("=== CRITICAL ISSUE 3: VAND/ISVAND FILTER TEST ===")
+        
+        ulla_email = "ulla@itopgaver.dk"
+        ulla_password = "mille0188"
+        
+        # Test on both environments to compare behavior
+        environments = [
+            ("Preview", PREVIEW_BASE_URL),
+            ("Production", PRODUCTION_BASE_URL)
+        ]
+        
+        results = {}
+        
+        for env_name, base_url in environments:
+            self.log(f"--- Testing {env_name} Environment ---")
+            
+            tester = BackendTester(base_url)
+            
+            try:
+                # Login as Ulla
+                login_response = tester.session.post(f"{base_url}/auth/login", json={
+                    "email": ulla_email,
+                    "password": ulla_password
+                })
+                
+                if login_response.status_code != 200:
+                    self.log(f"❌ {env_name}: Login failed: {login_response.status_code}")
+                    results[env_name] = {"success": False, "error": "Login failed"}
+                    continue
+                
+                user_data = login_response.json().get("user", {})
+                user_id = user_data.get("id")
+                self.log(f"✅ {env_name}: Login successful")
+                
+                # Test adding water items that should be filtered
+                water_items = [
+                    {
+                        "session_id": user_id,
+                        "ingredient_name": "vand",
+                        "category_key": "base.vand",
+                        "quantity": 500.0,
+                        "unit": "ml",
+                        "linked_recipe_id": "test-water-1",
+                        "linked_recipe_name": "Water Test 1"
+                    },
+                    {
+                        "session_id": user_id,
+                        "ingredient_name": "isvand",
+                        "category_key": "base.isvand",
+                        "quantity": 300.0,
+                        "unit": "ml",
+                        "linked_recipe_id": "test-water-2",
+                        "linked_recipe_name": "Ice Water Test 2"
+                    },
+                    {
+                        "session_id": user_id,
+                        "ingredient_name": "knust is",
+                        "category_key": "base.is",
+                        "quantity": 200.0,
+                        "unit": "ml",
+                        "linked_recipe_id": "test-water-3",
+                        "linked_recipe_name": "Ice Test 3"
+                    }
+                ]
+                
+                added_water_items = []
+                
+                for item in water_items:
+                    self.log(f"{env_name}: Testing filter for '{item['ingredient_name']}'")
+                    
+                    add_response = tester.session.post(f"{base_url}/shopping-list", json=item)
+                    
+                    if add_response.status_code == 200:
+                        added_item = add_response.json()
+                        added_water_items.append(added_item)
+                        self.log(f"❌ {env_name}: '{item['ingredient_name']}' was ADDED (should be filtered)")
+                    else:
+                        self.log(f"✅ {env_name}: '{item['ingredient_name']}' was FILTERED OUT (correct behavior)")
+                
+                # Check if water items appear in shopping list
+                list_response = tester.session.get(f"{base_url}/shopping-list/{user_id}")
+                
+                if list_response.status_code == 200:
+                    shopping_items = list_response.json()
+                    
+                    water_found = []
+                    for item in shopping_items:
+                        item_name = item.get('ingredient_name', '').lower()
+                        if any(water_name in item_name for water_name in ['vand', 'isvand', 'knust is']):
+                            water_found.append(item_name)
+                    
+                    results[env_name] = {
+                        "success": True,
+                        "water_items_added": len(added_water_items),
+                        "water_items_in_list": len(water_found),
+                        "water_items_found": water_found
+                    }
+                    
+                    if len(water_found) > 0:
+                        self.log(f"❌ {env_name}: Water items found in shopping list: {water_found}")
+                        self.log(f"🔍 {env_name}: Filter is NOT working - water items should be excluded")
+                    else:
+                        self.log(f"✅ {env_name}: No water items in shopping list - filter working correctly")
+                        
+                else:
+                    self.log(f"❌ {env_name}: Failed to get shopping list: {list_response.status_code}")
+                    results[env_name] = {"success": False, "error": "Failed to get shopping list"}
+                    
+            except Exception as e:
+                self.log(f"❌ {env_name}: Exception occurred: {str(e)}")
+                results[env_name] = {"success": False, "error": str(e)}
+        
+        # Compare results between environments
+        self.log("--- FILTER COMPARISON RESULTS ---")
+        
+        for env_name, result in results.items():
+            if result.get("success"):
+                water_count = result.get("water_items_in_list", 0)
+                self.log(f"{env_name}: {water_count} water items in shopping list")
+                if water_count > 0:
+                    self.log(f"   Items: {result.get('water_items_found', [])}")
+            else:
+                self.log(f"{env_name}: Test failed - {result.get('error', 'Unknown error')}")
+        
+        # Determine if there's a difference between environments
+        if len(results) == 2:
+            preview_water = results.get("Preview", {}).get("water_items_in_list", -1)
+            production_water = results.get("Production", {}).get("water_items_in_list", -1)
+            
+            if preview_water >= 0 and production_water >= 0:
+                if preview_water != production_water:
+                    self.log(f"❌ DIFFERENCE FOUND: Preview has {preview_water} water items, Production has {production_water}")
+                    return False
+                elif preview_water > 0:
+                    self.log(f"❌ FILTER NOT WORKING: Both environments allow water items ({preview_water} items)")
+                    return False
+                else:
+                    self.log("✅ Filter working correctly on both environments")
+                    return True
+        
+        return False
+
+    def run_critical_issues_comparison(self):
+        """Run all 3 critical issues tests comparing Preview vs Production"""
+        self.log("🚨 STARTING CRITICAL ISSUES COMPARISON TESTING 🚨")
+        self.log("Testing differences between Preview and Production environments")
+        self.log(f"Preview URL: {PREVIEW_BASE_URL}")
+        self.log(f"Production URL: {PRODUCTION_BASE_URL}")
+        
+        results = {
+            "issue_1_admin_sandbox": False,
+            "issue_2_shopping_list": False,
+            "issue_3_water_filter": False
+        }
+        
+        # Test Issue 1: Admin Sandbox Empty on Production
+        self.log("\n" + "="*60)
+        results["issue_1_admin_sandbox"] = self.test_critical_issue_1_admin_sandbox_comparison()
+        
+        # Test Issue 2: Shopping List Missing Items
+        self.log("\n" + "="*60)
+        results["issue_2_shopping_list"] = self.test_critical_issue_2_shopping_list_missing_items()
+        
+        # Test Issue 3: Vand/Isvand Filter Not Working
+        self.log("\n" + "="*60)
+        results["issue_3_water_filter"] = self.test_critical_issue_3_vand_isvand_filter()
+        
+        # Final Summary
+        self.log("\n" + "="*60)
+        self.log("🔍 CRITICAL ISSUES TEST SUMMARY")
+        self.log("="*60)
+        
+        for issue, passed in results.items():
+            status = "✅ RESOLVED" if passed else "❌ CONFIRMED"
+            self.log(f"{issue}: {status}")
+        
+        total_issues = len([r for r in results.values() if not r])
+        
+        if total_issues == 0:
+            self.log("\n✅ ALL ISSUES RESOLVED - No differences found between environments")
+        else:
+            self.log(f"\n❌ {total_issues} CRITICAL ISSUES CONFIRMED")
+            self.log("🔧 These issues require immediate attention to fix production environment")
+        
+        return results
             
             test_recipe_data = {
                 "name": "Test Recipe for Deletion",
