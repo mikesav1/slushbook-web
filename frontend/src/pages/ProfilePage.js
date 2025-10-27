@@ -97,7 +97,7 @@ const ProfilePage = () => {
           </div>
           <div>
             <h1 className="text-3xl font-bold">Min profil</h1>
-            <p className="text-gray-600 capitalize">{user.role} bruger</p>
+            <p className="text-gray-600">{user.role} bruger</p>
           </div>
         </div>
 
