@@ -2567,13 +2567,14 @@ async def redirect_proxy(path: str, request: Request):
                 )
             
             # Return response
+            logger.info(f"Proxy response status: {response.status_code}")
             return Response(
                 content=response.content,
                 status_code=response.status_code,
                 headers=dict(response.headers)
             )
     except Exception as e:
-        logger.error(f"Proxy error: {e}")
+        logger.error(f"Proxy error: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
 
 # Include router
