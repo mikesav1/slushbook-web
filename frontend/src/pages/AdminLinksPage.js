@@ -843,7 +843,7 @@ const AdminLinksPage = () => {
                               ? 'bg-green-500 text-white'
                               : 'bg-gray-400 text-white'
                           }`}>
-                            {option.supplier.toUpperCase()}
+                            {option.supplier}
                           </span>
                           <span className={`text-sm font-medium ${
                             option.status === 'active' ? 'text-green-700' : 'text-gray-500'
