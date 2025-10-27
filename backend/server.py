@@ -1924,6 +1924,26 @@ async def get_shopping_list(session_id: str):
 
 @api_router.post("/shopping-list", response_model=ShoppingListItem)
 async def add_shopping_list_item(item_data: ShoppingListItemCreate):
+    # Filter out water-related items (they're assumed to always be available)
+    water_items = ['vand', 'isvand', 'knust is', 'istern', 'isterninger']
+    ingredient_lower = item_data.ingredient_name.lower().strip()
+    
+    if ingredient_lower in water_items:
+        # Silently skip water items - return a dummy response
+        # Frontend won't know it was skipped
+        return ShoppingListItem(
+            id=str(uuid.uuid4()),
+            session_id=item_data.session_id,
+            ingredient_name=item_data.ingredient_name,
+            category_key=item_data.category_key,
+            quantity=item_data.quantity,
+            unit=item_data.unit,
+            linked_recipe_id=item_data.linked_recipe_id,
+            linked_recipe_name=item_data.linked_recipe_name,
+            checked=False,
+            added_at=datetime.now(timezone.utc)
+        )
+    
     # Check if exists
     existing = await db.shopping_list.find_one({
         "session_id": item_data.session_id,
