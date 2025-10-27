@@ -129,7 +129,7 @@ const HomePage = ({ sessionId }) => {
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 text-black" style={{
                 textShadow: '2px 2px 8px rgba(0,0,0,0.3)'
               }}>
-                Find Den perfekte
+                Find den perfekte
               </h1>
               <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6" style={{
                 background: 'linear-gradient(90deg, #FFD700 0%, #FFA500 40%, rgba(255,215,0,0.3) 80%, rgba(255,215,0,0) 100%)',
@@ -138,7 +138,7 @@ const HomePage = ({ sessionId }) => {
                 backgroundClip: 'text',
                 filter: 'drop-shadow(2px 2px 8px rgba(0,0,0,0.3))'
               }}>
-                Slushice Opskrifter
+                Slushice opskrifter
               </h2>
               
               <p className="text-lg md:text-xl text-gray-800 mb-8" style={{
