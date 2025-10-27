@@ -1,6 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaArrowLeft, FaBook, FaMagic, FaShoppingCart, FaCog } from 'react-icons/fa';
+import { 
+  FaArrowLeft, 
+  FaBook, 
+  FaMagic, 
+  FaShoppingCart, 
+  FaCog,
+  FaRocket,
+  FaQuestionCircle,
+  FaLightbulb,
+  FaTint,
+  FaChartLine
+} from 'react-icons/fa';
 
 const GuidePage = () => {
   return (
