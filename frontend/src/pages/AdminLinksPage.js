@@ -733,6 +733,19 @@ const AdminLinksPage = () => {
         </div>
       ) : (
         <div className="space-y-4">
+          {mappings.length > 0 && (
+            <div className="flex items-center gap-2 mb-4">
+              <input
+                type="checkbox"
+                checked={selectedMappings.length === mappings.length && mappings.length > 0}
+                onChange={toggleSelectAllMappings}
+                className="w-4 h-4 text-cyan-600 rounded cursor-pointer"
+              />
+              <label className="text-sm text-gray-600">
+                Vælg alle ({mappings.length} mappings)
+              </label>
+            </div>
+          )}
           {mappings.map((mapping) => (
             <div key={mapping.mapping.id} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
               <div className="flex items-start justify-between mb-4">
