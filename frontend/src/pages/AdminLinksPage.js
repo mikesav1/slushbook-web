@@ -264,6 +264,127 @@ const AdminLinksPage = () => {
     setShowDeleteConfirm(true);
   };
 
+  // Bulk delete functions
+  const toggleSelectAllMappings = () => {
+    if (selectedMappings.length === mappings.length) {
+      setSelectedMappings([]);
+    } else {
+      setSelectedMappings(mappings.map(m => m.id));
+    }
+  };
+
+  const toggleSelectMapping = (id) => {
+    setSelectedMappings(prev => 
+      prev.includes(id) 
+        ? prev.filter(i => i !== id)
+        : [...prev, id]
+    );
+  };
+
+  const bulkDeleteMappings = async () => {
+    if (selectedMappings.length === 0) {
+      toast.error('Vælg mindst én mapping at slette');
+      return;
+    }
+
+    if (!window.confirm(`Er du sikker på at du vil slette ${selectedMappings.length} mappings?`)) {
+      return;
+    }
+
+    try {
+      setSaving(true);
+      let successCount = 0;
+      let failCount = 0;
+
+      for (const id of selectedMappings) {
+        try {
+          await axios.delete(
+            `${REDIRECT_API}/admin/mapping/${id}`,
+            { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
+          );
+          successCount++;
+        } catch (error) {
+          console.error(`Failed to delete ${id}:`, error);
+          failCount++;
+        }
+      }
+
+      if (successCount > 0) {
+        toast.success(`${successCount} mappings slettet!`);
+        fetchMappings();
+        setSelectedMappings([]);
+      }
+      if (failCount > 0) {
+        toast.error(`${failCount} mappings kunne ikke slettes`);
+      }
+    } catch (error) {
+      console.error('Error in bulk delete:', error);
+      toast.error('Fejl ved sletning');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const toggleSelectAllSuppliers = () => {
+    if (selectedSuppliers.length === suppliers.length) {
+      setSelectedSuppliers([]);
+    } else {
+      setSelectedSuppliers(suppliers.map(s => s.id));
+    }
+  };
+
+  const toggleSelectSupplier = (id) => {
+    setSelectedSuppliers(prev => 
+      prev.includes(id) 
+        ? prev.filter(i => i !== id)
+        : [...prev, id]
+    );
+  };
+
+  const bulkDeleteSuppliers = async () => {
+    if (selectedSuppliers.length === 0) {
+      toast.error('Vælg mindst én leverandør at slette');
+      return;
+    }
+
+    if (!window.confirm(`Er du sikker på at du vil slette ${selectedSuppliers.length} leverandører?`)) {
+      return;
+    }
+
+    try {
+      setSaving(true);
+      let successCount = 0;
+      let failCount = 0;
+
+      for (const id of selectedSuppliers) {
+        try {
+          await axios.delete(
+            `${REDIRECT_API}/admin/supplier/${id}`,
+            { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
+          );
+          successCount++;
+        } catch (error) {
+          console.error(`Failed to delete ${id}:`, error);
+          failCount++;
+        }
+      }
+
+      if (successCount > 0) {
+        toast.success(`${successCount} leverandører slettet!`);
+        fetchSuppliers();
+        setSelectedSuppliers([]);
+      }
+      if (failCount > 0) {
+        toast.error(`${failCount} leverandører kunne ikke slettes`);
+      }
+    } catch (error) {
+      console.error('Error in bulk delete:', error);
+      toast.error('Fejl ved sletning');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const updateMapping = async (mappingData) => {
     try {
       setSaving(true);
