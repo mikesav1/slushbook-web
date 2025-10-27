@@ -27,6 +27,7 @@ import ProfilePage from "./pages/ProfilePage";
 import MembersPage from "./pages/MembersPage";
 import BrixInfoPage from "./pages/BrixInfoPage";
 import AdminLinksPage from "./pages/AdminLinksPage";
+import GuidePage from "./pages/GuidePage";
 
 // Dynamically determine backend URL based on current hostname
 const getBackendUrl = () => {
