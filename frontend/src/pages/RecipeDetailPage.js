@@ -352,8 +352,8 @@ const RecipeDetailPage = ({ sessionId }) => {
                   className="w-16 h-16 rounded-full border-2 border-gray-200 shadow-md bg-white p-2"
                 />
                 <div>
-                  <p className="text-xs text-gray-500 uppercase font-semibold">Type</p>
-                  <p className="text-lg font-bold text-gray-800 capitalize">{recipe.type}</p>
+                  <p className="text-xs text-gray-500 font-semibold">Type</p>
+                  <p className="text-lg font-bold text-gray-800">{recipe.type}</p>
                 </div>
               </div>
             )}
