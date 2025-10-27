@@ -240,7 +240,7 @@ const AddRecipePage = ({ sessionId }) => {
       </button>
 
       <div>
-        <h1 className="text-4xl font-bold mb-2">Tilføj Opskrift</h1>
+        <h1 className="text-4xl font-bold mb-2">Tilføj opskrift</h1>
         <p className="text-gray-600">Opret din egen slushice opskrift</p>
       </div>
 
