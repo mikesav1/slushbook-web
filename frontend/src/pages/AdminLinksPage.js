@@ -23,6 +23,8 @@ const AdminLinksPage = () => {
   const [editingSupplier, setEditingSupplier] = useState(null);
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState('mappings'); // 'mappings' or 'suppliers'
+  const [selectedMappings, setSelectedMappings] = useState([]); // For bulk delete
+  const [selectedSuppliers, setSelectedSuppliers] = useState([]); // For bulk delete
   const fileInputRef = useRef(null);
   
   // Use proxy through backend instead of direct localhost
