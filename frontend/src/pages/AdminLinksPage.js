@@ -736,7 +736,14 @@ const AdminLinksPage = () => {
           {mappings.map((mapping) => (
             <div key={mapping.mapping.id} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
               <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
+                <div className="flex items-start gap-3">
+                  <input
+                    type="checkbox"
+                    checked={selectedMappings.includes(mapping.mapping.id)}
+                    onChange={() => toggleSelectMapping(mapping.mapping.id)}
+                    className="w-4 h-4 text-cyan-600 rounded cursor-pointer mt-1"
+                  />
+                  <div className="flex-1">
                   <h3 className="font-bold text-xl text-gray-800">{mapping.mapping.name}</h3>
                   <p className="text-sm text-gray-500 font-mono mt-1">ID: {mapping.mapping.id}</p>
                   {mapping.mapping.ean && (
