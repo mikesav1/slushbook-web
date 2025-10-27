@@ -1925,10 +1925,13 @@ async def get_shopping_list(session_id: str):
 @api_router.post("/shopping-list", response_model=ShoppingListItem)
 async def add_shopping_list_item(item_data: ShoppingListItemCreate):
     # Filter out water-related items (they're assumed to always be available)
-    water_items = ['vand', 'isvand', 'knust is', 'istern', 'isterninger']
+    water_items = ['vand', 'isvand', 'knust is', 'istern', 'isterninger', 'vand/knust is']
     ingredient_lower = item_data.ingredient_name.lower().strip()
     
-    if ingredient_lower in water_items:
+    # Also check if ingredient contains any water-related terms
+    should_skip = ingredient_lower in water_items or any(water_term in ingredient_lower for water_term in ['vand', 'knust is'])
+    
+    if should_skip:
         # Silently skip water items - return a dummy response
         # Frontend won't know it was skipped
         return ShoppingListItem(
