@@ -295,18 +295,28 @@ const AdminLinksPage = () => {
       setSaving(true);
       let successCount = 0;
       let failCount = 0;
+      const errors = [];
 
       for (const id of selectedMappings) {
         try {
+          console.log(`[BulkDelete] Attempting to delete mapping: ${id}`);
           await axios.delete(
             `${REDIRECT_API}/admin/mapping/${id}`,
             { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
           );
+          console.log(`[BulkDelete] Successfully deleted: ${id}`);
           successCount++;
         } catch (error) {
-          console.error(`Failed to delete ${id}:`, error);
+          console.error(`[BulkDelete] Failed to delete ${id}:`, error);
+          console.error(`[BulkDelete] Error details:`, error.response?.data);
+          errors.push({ id, error: error.response?.data?.error || error.message });
           failCount++;
         }
+      }
+
+      console.log(`[BulkDelete] Results: ${successCount} success, ${failCount} failed`);
+      if (errors.length > 0) {
+        console.log(`[BulkDelete] Errors:`, errors);
       }
 
       if (successCount > 0) {
@@ -315,7 +325,7 @@ const AdminLinksPage = () => {
         setSelectedMappings([]);
       }
       if (failCount > 0) {
-        toast.error(`${failCount} mappings kunne ikke slettes`);
+        toast.error(`${failCount} mappings kunne ikke slettes. Tjek console for detaljer.`);
       }
     } catch (error) {
       console.error('Error in bulk delete:', error);
