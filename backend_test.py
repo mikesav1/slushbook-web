@@ -5414,50 +5414,29 @@ test,data,here"""
         return results
 
 def main():
-    """Run dual environment shopping list test as requested"""
-    tester = BackendTester()
+    """Run critical issues comparison tests"""
+    print("🚨 SLUSHBOOK Critical Issues Testing")
+    print("=" * 60)
+    print("Testing differences between Preview and Production environments")
+    print(f"Preview: {PREVIEW_BASE_URL}")
+    print(f"Production: {PRODUCTION_BASE_URL}")
+    print("=" * 60)
     
-    print("=" * 80)
-    print("SLUSHBOOK DUAL ENVIRONMENT SHOPPING LIST TEST")
-    print("Testing shopping list functionality on both environments")
-    print("Preview URL: https://flavor-sync.preview.emergentagent.com/api")
-    print("Production URL: https://slushice-recipes.emergent.host/api")
-    print("=" * 80)
+    # Create tester instance (will be used for running comparison tests)
+    tester = BackendTester(PREVIEW_BASE_URL)  # Base URL doesn't matter for comparison tests
     
-    # Run the dual environment shopping list test
-    results = tester.test_dual_environment_shopping_list()
+    # Run the critical issues comparison
+    results = tester.run_critical_issues_comparison()
     
-    print(f"\n{'='*80}")
+    # Exit with appropriate code
+    failed_tests = len([r for r in results.values() if not r])
     
-    # Determine overall success
-    preview_success = results.get("Preview", {}).get("item_found_in_list", False)
-    production_success = results.get("Production", {}).get("item_found_in_list", False)
-    
-    if preview_success and production_success:
-        print("DUAL ENVIRONMENT SHOPPING LIST TEST: ✅ BOTH ENVIRONMENTS WORKING")
-        print("Shopping list functionality works on both Preview and Production")
-        success = True
-    elif preview_success and not production_success:
-        print("DUAL ENVIRONMENT SHOPPING LIST TEST: ⚠️  PREVIEW WORKS, PRODUCTION FAILS")
-        print("Shopping list works on Preview but fails on Production")
-        print("- Check Production environment configuration")
-        print("- Verify database connectivity on Production")
-        success = False
-    elif not preview_success and production_success:
-        print("DUAL ENVIRONMENT SHOPPING LIST TEST: ⚠️  PRODUCTION WORKS, PREVIEW FAILS")
-        print("Shopping list works on Production but fails on Preview")
-        print("- Check Preview environment configuration")
-        success = False
+    if failed_tests == 0:
+        print("\n🎉 All critical issues tests passed!")
+        return True
     else:
-        print("DUAL ENVIRONMENT SHOPPING LIST TEST: ❌ BOTH ENVIRONMENTS FAILED")
-        print("Shopping list functionality fails on both environments")
-        print("- Check authentication credentials")
-        print("- Verify shopping list API endpoints")
-        success = False
-    
-    print(f"{'='*80}")
-    
-    return success
+        print(f"\n💥 {failed_tests} critical issues found!")
+        return False
 
 if __name__ == "__main__":
     main()
