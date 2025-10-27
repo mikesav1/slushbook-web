@@ -220,7 +220,7 @@ const EditRecipePage = ({ sessionId }) => {
       </button>
 
       <div>
-        <h1 className="text-4xl font-bold mb-2">Rediger Opskrift</h1>
+        <h1 className="text-4xl font-bold mb-2">Rediger opskrift</h1>
         <p className="text-gray-600">{recipe.name}</p>
       </div>
 
