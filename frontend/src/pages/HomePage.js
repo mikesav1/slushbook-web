@@ -62,9 +62,15 @@ const HomePage = ({ sessionId }) => {
           if (aIsFree && !bIsFree) return -1;
           if (!aIsFree && bIsFree) return 1;
           
+          // Recipes WITH ratings prioritized
+          const aHasRating = (a.rating_avg || 0) > 0;
+          const bHasRating = (b.rating_avg || 0) > 0;
+          if (aHasRating && !bHasRating) return -1;
+          if (!aHasRating && bHasRating) return 1;
+          
           // Then by rating
-          const ratingA = a.average_rating || 0;
-          const ratingB = b.average_rating || 0;
+          const ratingA = a.rating_avg || 0;
+          const ratingB = b.rating_avg || 0;
           if (ratingB !== ratingA) {
             return ratingB - ratingA; // Higher rating first
           }
