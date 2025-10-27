@@ -306,6 +306,18 @@ backend:
         agent: "testing"
         comment: "COMPREHENSIVE DELETE BUTTON VISIBILITY TESTING COMPLETED: ✅ Recipe Detail Endpoint Testing: Verified GET /api/recipes/{recipe_id} returns author information for all user types (guest, admin, pro user). ✅ Access Control Logic Verified: Guest user (isAdmin=false, isAuthor=false) → NO delete button. Admin user (isAdmin=true) → SHOW delete button regardless of authorship. Pro user not author (isAdmin=false, isAuthor=false) → NO delete button. Pro user is author (isAdmin=false, isAuthor=true) → SHOW delete button. ✅ Backend Data Sufficiency: Backend provides required 'author' field in recipe responses for frontend decision making. ✅ Authentication Context: Frontend can get user context (role, email, id) from /api/auth/me endpoint. ✅ Frontend Implementation Logic: (user.role === 'admin') OR (recipe.author === user.email) OR (recipe.author === user.id). ⚠️ IMPORTANT FINDING: Backend currently uses user.id as recipe author, not user.email. Frontend logic must account for both user.id and user.email comparison for proper delete button visibility. All test scenarios passed successfully - backend provides correct data for frontend access control decisions."
 
+  - task: "Critical Issues Comparison - Preview vs Production"
+    implemented: true
+    working: false
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "🚨 CRITICAL ISSUES TESTING COMPLETED: Comprehensive comparison between Preview and Production environments reveals 2 confirmed critical issues. ❌ ISSUE 1 - ADMIN SANDBOX EMPTY ON PRODUCTION: Preview has 10 recipes in admin sandbox, Production only has 5 recipes. This confirms the reported issue - Production admin sandbox is missing 5 recipes compared to Preview. ✅ ISSUE 2 - SHOPPING LIST MISSING ITEMS: RESOLVED - Tested adding 3 items including 'vand' on Production, all items (vand, sukker, citron) were successfully added and found in shopping list. The reported issue where only 2 out of 3 items appear is NOT reproducible. ❌ ISSUE 3 - VAND/ISVAND FILTER NOT WORKING: CONFIRMED - Water filtering is not implemented on either environment. Both Preview (5 water items) and Production (4 water items) allow water items (vand, isvand, knust is) to be added to shopping list when they should be filtered out. 🔧 CRITICAL FINDINGS: 1) Production admin sandbox missing recipes compared to Preview, 2) Water filtering not implemented on either environment, 3) Shopping list functionality working correctly on both environments. URGENT ACTION REQUIRED: Fix admin sandbox recipe sync and implement water item filtering."
+
 frontend:
   - task: "Fix 'Add to list' functionality for ingredients with missing category_key"
     implemented: true
