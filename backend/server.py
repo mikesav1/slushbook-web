@@ -2526,6 +2526,8 @@ async def redirect_proxy(path: str, request: Request):
             
             # Make request to redirect service
             url = f"{REDIRECT_SERVICE_URL}/{path}"
+            logger.info(f"Forwarding to URL: {url}")
+            logger.info(f"Method: {request.method}, Headers: {list(headers.keys())}")
             
             # Handle multipart/form-data for file uploads
             if 'multipart/form-data' in headers.get('content-type', ''):
