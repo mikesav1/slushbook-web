@@ -130,7 +130,7 @@ const RecipeCard = ({ recipe, sessionId, showMatchInfo, onLockedClick }) => {
 
       {/* Content */}
       <div className="p-5 flex flex-col flex-grow">
-        <h3 className="font-bold text-lg mb-2 line-clamp-1">{recipe.name}</h3>
+        <h3 className="font-bold text-lg mb-2 line-clamp-1">{toSentenceCase(recipe.name)}</h3>
         <p className="text-sm text-gray-600 mb-3 line-clamp-2">{recipe.description}</p>
 
         {/* Match Info */}
