@@ -177,7 +177,7 @@ const HomePage = ({ sessionId }) => {
         <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
           <div className="flex items-center gap-4">
             <h2 className="text-2xl font-bold">
-              {sortBy === 'latest' ? 'Seneste Opskrifter' : 'Mest Populære'}
+              {sortBy === 'latest' ? 'Seneste opskrifter' : 'Mest populære'}
             </h2>
             <div className="flex bg-gray-100 rounded-lg p-1">
               <button
