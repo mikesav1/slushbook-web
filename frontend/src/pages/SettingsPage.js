@@ -364,13 +364,43 @@ const SettingsPage = ({ sessionId }) => {
 
       {/* About */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-        <h2 className="text-2xl font-bold mb-2">Om SLUSHBOOK</h2>
-        <p className="text-gray-600 mb-4">
-          SLUSHBOOK hjælper dig med at finde og lave de perfekte slushice opskrifter. Match med dine ingredienser, skalér automatisk til din maskine, og gem dine favoritter.
-        </p>
-        <p className="text-sm text-gray-500">
-          Version 1.0.0 • Made with ❤️ for slushice entusiaster
-        </p>
+        <h2 className="text-2xl font-bold mb-4">Om SLUSHBOOK</h2>
+        <div className="space-y-4 text-gray-700">
+          <p>
+            SLUSHBOOK er din digitale opskriftsbog og værktøjskasse til alt, hvad der har med slushice at gøre. 
+            Uanset om du er nybegynder eller erfaren entusiast, hjælper appen dig med at finde, tilpasse og gemme 
+            opskrifter, så de passer præcist til din maskine og dine ingredienser.
+          </p>
+          
+          <div className="pl-4">
+            <p className="font-semibold mb-2">Du kan:</p>
+            <ul className="list-disc pl-5 space-y-1">
+              <li>Matche dine egne ingredienser med eksisterende opskrifter</li>
+              <li>Skalere mængder automatisk til din ønskede volumen (f.eks. 2 eller 6 liter)</li>
+              <li>Tilføje og gemme dine egne favoritter</li>
+              <li>Få inspiration fra andres opskrifter – og dele dine egne</li>
+            </ul>
+          </div>
+          
+          <p>
+            Appen udvikles løbende, og vi arbejder hele tiden på at tilføje nye funktioner og forbedringer.
+          </p>
+          
+          <div className="pt-2">
+            <a 
+              href="/guide" 
+              className="inline-flex items-center text-cyan-600 hover:text-cyan-700 font-semibold hover:underline"
+            >
+              📖 Læs den fulde vejledning til SLUSHBOOK her →
+            </a>
+          </div>
+        </div>
+        
+        <div className="mt-6 pt-4 border-t border-gray-200">
+          <p className="text-sm text-gray-500">
+            Version 1.0.0 – Skabt med ❤️ for slushice-entusiaster
+          </p>
+        </div>
       </div>
 
       {/* Administrator Section - Only for admin */}
