@@ -389,9 +389,9 @@ const SettingsPage = ({ sessionId }) => {
           <div className="pt-2">
             <a 
               href="/guide" 
-              className="inline-flex items-center text-cyan-600 hover:text-cyan-700 font-semibold hover:underline"
+              className="inline-flex items-center gap-2 text-cyan-600 hover:text-cyan-700 font-semibold hover:underline"
             >
-              📖 Læs den fulde vejledning til SLUSHBOOK her →
+              <FaBook /> Læs den fulde vejledning til SLUSHBOOK her →
             </a>
           </div>
         </div>
