@@ -823,7 +823,7 @@ const AdminLinksPage = () => {
 
               {/* Options/Links */}
               <div className="space-y-3 mt-4">
-                <h4 className="font-semibold text-gray-700 text-sm uppercase tracking-wide">
+                <h4 className="font-semibold text-gray-700 text-sm tracking-wide">
                   Leverandør Links ({mapping.options.length})
                 </h4>
                 {mapping.options.map((option) => (
