@@ -136,8 +136,8 @@ const GuidePage = () => {
 
         {/* BRIX */}
         <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">
-            🧊 Hvad er BRIX?
+          <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+            <FaTint className="text-blue-600" /> Hvad er BRIX?
           </h2>
           <div className="space-y-3 text-gray-700 ml-4">
             <p>
