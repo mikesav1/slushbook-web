@@ -128,7 +128,7 @@ const Navigation = () => {
                   </div>
                   <div className="text-left">
                     <div className="text-sm font-medium text-white">{user.name}</div>
-                    <div className="text-xs text-white/70 capitalize">{user.role}</div>
+                    <div className="text-xs text-white/70">{user.role}</div>
                   </div>
                   <svg className="w-4 h-4 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
