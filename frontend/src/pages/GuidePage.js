@@ -27,8 +27,8 @@ const GuidePage = () => {
       </div>
 
       <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-        <h1 className="text-4xl font-bold mb-4 text-gray-800">
-          📖 Vejledning til SLUSHBOOK
+        <h1 className="text-4xl font-bold mb-4 text-gray-800 flex items-center gap-3">
+          <FaBook className="text-cyan-600" /> Vejledning til SLUSHBOOK
         </h1>
         <p className="text-lg text-gray-600 mb-8">
           Kom godt i gang med SLUSHBOOK og lær at bruge alle funktionerne
@@ -37,7 +37,7 @@ const GuidePage = () => {
         {/* Quick Start */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-            🚀 Hurtig Start
+            <FaRocket className="text-cyan-600" /> Hurtig Start
           </h2>
           <div className="space-y-3 text-gray-700">
             <p>
