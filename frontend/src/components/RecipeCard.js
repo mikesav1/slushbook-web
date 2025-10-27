@@ -5,6 +5,7 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import { API } from '../App';
 import { useAuth } from '../context/AuthContext';
+import { toSentenceCase } from '../utils/textUtils';
 
 const RecipeCard = ({ recipe, sessionId, showMatchInfo, onLockedClick }) => {
   const [isFavorite, setIsFavorite] = useState(recipe.is_favorite || false);
