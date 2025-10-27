@@ -435,9 +435,8 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Production Shopping List Session ID Mismatch - CRITICAL ISSUE IDENTIFIED"
-    - "Mappings API 500 Error on Production"
-    - "User Context Lost in LocalStorage"
+    - "Water Filter Implementation - CRITICAL ISSUE"
+    - "Admin Sandbox Recipe Count Mismatch"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
