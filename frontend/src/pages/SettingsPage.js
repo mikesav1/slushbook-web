@@ -184,7 +184,7 @@ const SettingsPage = ({ sessionId }) => {
       {/* My Recipes */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold">Mine Opskrifter</h2>
+          <h2 className="text-2xl font-bold">Mine opskrifter</h2>
           <Link to="/add-recipe">
             <Button
               disabled={!canAddRecipe}
