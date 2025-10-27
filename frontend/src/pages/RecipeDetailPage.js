@@ -7,6 +7,7 @@ import { API } from '../App';
 import { Button } from '../components/ui/button';
 import { Label } from '../components/ui/label';
 import { useAuth } from '../context/AuthContext';
+import { toSentenceCase } from '../utils/textUtils';
 
 const RecipeDetailPage = ({ sessionId }) => {
   const { id } = useParams();
