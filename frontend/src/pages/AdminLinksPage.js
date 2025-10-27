@@ -269,11 +269,14 @@ const AdminLinksPage = () => {
     if (selectedMappings.length === mappings.length) {
       setSelectedMappings([]);
     } else {
-      setSelectedMappings(mappings.map(m => m.id));
+      // Use _id field (MongoDB default) instead of id
+      setSelectedMappings(mappings.map(m => m._id || m.id));
+      console.log('[BulkSelect] Selected mappings:', mappings.map(m => m._id || m.id));
     }
   };
 
   const toggleSelectMapping = (id) => {
+    console.log('[BulkSelect] Toggling mapping:', id);
     setSelectedMappings(prev => 
       prev.includes(id) 
         ? prev.filter(i => i !== id)
@@ -297,15 +300,22 @@ const AdminLinksPage = () => {
       let failCount = 0;
       const errors = [];
 
-      for (const id of selectedMappings) {
+      // Add delay between requests to avoid rate limiting
+      for (let i = 0; i < selectedMappings.length; i++) {
+        const id = selectedMappings[i];
         try {
-          console.log(`[BulkDelete] Attempting to delete mapping: ${id}`);
+          console.log(`[BulkDelete] Deleting ${i + 1}/${selectedMappings.length}: ${id}`);
           await axios.delete(
             `${REDIRECT_API}/admin/mapping/${id}`,
             { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
           );
           console.log(`[BulkDelete] Successfully deleted: ${id}`);
           successCount++;
+          
+          // Add 200ms delay to avoid rate limiting
+          if (i < selectedMappings.length - 1) {
+            await new Promise(resolve => setTimeout(resolve, 200));
+          }
         } catch (error) {
           console.error(`[BulkDelete] Failed to delete ${id}:`, error);
           console.error(`[BulkDelete] Error details:`, error.response?.data);
