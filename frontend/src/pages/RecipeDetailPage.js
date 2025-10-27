@@ -129,10 +129,22 @@ const RecipeDetailPage = ({ sessionId }) => {
   };
 
   const isAuthor = () => {
-    if (!recipe || !user) {
-      console.log('[RecipeDetail] isAuthor: false - recipe or user missing', { recipe: !!recipe, user: !!user });
+    if (!recipe) {
+      console.log('[RecipeDetail] isAuthor: false - no recipe');
       return false;
     }
+    
+    // Admin can edit all recipes
+    if (user && user.role === 'admin') {
+      console.log('[RecipeDetail] isAuthor: true - user is admin');
+      return true;
+    }
+    
+    if (!user) {
+      console.log('[RecipeDetail] isAuthor: false - no user');
+      return false;
+    }
+    
     // Check if current user is the recipe author
     // Backend uses user.id as recipe author, so check both user.id and user.email
     const result = recipe.author === user.id || recipe.author === user.email || recipe.author === sessionId;
