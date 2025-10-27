@@ -171,7 +171,7 @@ const AdminPage = ({ sessionId }) => {
   return (
     <div className="max-w-6xl mx-auto space-y-6 fade-in" data-testid="admin-page">
       <div>
-        <h1 className="text-4xl font-bold mb-2">Admin Panel</h1>
+        <h1 className="text-4xl font-bold mb-2">Admin panel</h1>
         <p className="text-gray-600">Administrer opskrifter, brands og produkter</p>
       </div>
 
