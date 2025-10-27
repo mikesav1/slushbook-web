@@ -144,7 +144,7 @@ const Navigation = () => {
                     </div>
                     
                     {/* Bruger Platformen Section */}
-                    <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    <div className="px-4 py-2 text-xs font-semibold text-gray-500 tracking-wider">
                       Bruger platformen
                     </div>
                     <Link
