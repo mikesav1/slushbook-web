@@ -1409,6 +1409,179 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             self.log("   - Verify all user data has been properly migrated from test_database to flavor_sync")
             return False
 
+    def test_water_filter_implementation(self):
+        """Test water filter implementation - vand and isvand should be filtered out"""
+        self.log("=== TESTING WATER FILTER IMPLEMENTATION ===")
+        
+        admin_email = "kimesav@gmail.com"
+        admin_password = "admin123"
+        
+        try:
+            # Login as admin
+            login_response = self.session.post(f"{self.base_url}/auth/login", json={
+                "email": admin_email,
+                "password": admin_password
+            })
+            
+            if login_response.status_code != 200:
+                self.log(f"❌ Admin login failed: {login_response.status_code} - {login_response.text}")
+                return False
+            
+            login_data = login_response.json()
+            user_data = login_data.get("user", {})
+            user_id = user_data.get("id")
+            
+            self.log(f"✅ Admin login successful - User ID: {user_id}")
+            
+            # Get initial shopping list count
+            initial_response = self.session.get(f"{self.base_url}/shopping-list/{user_id}")
+            if initial_response.status_code == 200:
+                initial_items = initial_response.json()
+                initial_count = len(initial_items)
+                self.log(f"📊 Initial shopping list count: {initial_count} items")
+            else:
+                self.log(f"❌ Failed to get initial shopping list: {initial_response.status_code}")
+                return False
+            
+            # Test 1: Try to add "vand" to shopping list
+            self.log("--- Test 1: Adding 'vand' to shopping list ---")
+            vand_item = {
+                "session_id": user_id,
+                "ingredient_name": "vand",
+                "category_key": "base.vand",
+                "quantity": 500.0,
+                "unit": "ml",
+                "linked_recipe_id": "test-recipe-water",
+                "linked_recipe_name": "Water Filter Test"
+            }
+            
+            vand_response = self.session.post(f"{self.base_url}/shopping-list", json=vand_item)
+            
+            if vand_response.status_code == 200:
+                self.log("✅ 'vand' addition returned success (200)")
+                vand_data = vand_response.json()
+                self.log(f"   Response: {vand_data}")
+            else:
+                self.log(f"❌ 'vand' addition failed: {vand_response.status_code} - {vand_response.text}")
+                return False
+            
+            # Test 2: Try to add "isvand" to shopping list
+            self.log("--- Test 2: Adding 'isvand' to shopping list ---")
+            isvand_item = {
+                "session_id": user_id,
+                "ingredient_name": "isvand",
+                "category_key": "base.isvand",
+                "quantity": 300.0,
+                "unit": "ml",
+                "linked_recipe_id": "test-recipe-water",
+                "linked_recipe_name": "Water Filter Test"
+            }
+            
+            isvand_response = self.session.post(f"{self.base_url}/shopping-list", json=isvand_item)
+            
+            if isvand_response.status_code == 200:
+                self.log("✅ 'isvand' addition returned success (200)")
+                isvand_data = isvand_response.json()
+                self.log(f"   Response: {isvand_data}")
+            else:
+                self.log(f"❌ 'isvand' addition failed: {isvand_response.status_code} - {isvand_response.text}")
+                return False
+            
+            # Test 3: Verify items are NOT actually saved to database
+            self.log("--- Test 3: Verifying water items are NOT saved to database ---")
+            final_response = self.session.get(f"{self.base_url}/shopping-list/{user_id}")
+            
+            if final_response.status_code == 200:
+                final_items = final_response.json()
+                final_count = len(final_items)
+                self.log(f"📊 Final shopping list count: {final_count} items")
+                
+                # Check if vand or isvand items exist in the list
+                water_items_found = []
+                for item in final_items:
+                    ingredient_name = item.get('ingredient_name', '').lower()
+                    if 'vand' in ingredient_name or 'isvand' in ingredient_name:
+                        water_items_found.append(item)
+                
+                if len(water_items_found) == 0:
+                    self.log("✅ WATER FILTER WORKING: No water items found in shopping list")
+                    
+                    # Verify count didn't increase
+                    if final_count == initial_count:
+                        self.log("✅ Shopping list count unchanged - water items were filtered out")
+                        return True
+                    else:
+                        self.log(f"⚠️  Shopping list count changed from {initial_count} to {final_count}")
+                        self.log("   This could indicate other items were added/removed during test")
+                        return True  # Still consider success if no water items found
+                else:
+                    self.log(f"❌ WATER FILTER NOT WORKING: Found {len(water_items_found)} water items:")
+                    for item in water_items_found:
+                        self.log(f"   - {item.get('ingredient_name')} (ID: {item.get('id')})")
+                    return False
+            else:
+                self.log(f"❌ Failed to get final shopping list: {final_response.status_code}")
+                return False
+                
+        except Exception as e:
+            self.log(f"❌ Water filter test failed with exception: {str(e)}")
+            return False
+
+    def test_admin_sandbox_count(self):
+        """Test admin sandbox count - should match preview (10 recipes)"""
+        self.log("=== TESTING ADMIN SANDBOX COUNT ===")
+        
+        admin_email = "kimesav@gmail.com"
+        admin_password = "admin123"
+        
+        try:
+            # Login as admin
+            login_response = self.session.post(f"{self.base_url}/auth/login", json={
+                "email": admin_email,
+                "password": admin_password
+            })
+            
+            if login_response.status_code != 200:
+                self.log(f"❌ Admin login failed: {login_response.status_code} - {login_response.text}")
+                return False
+            
+            login_data = login_response.json()
+            user_data = login_data.get("user", {})
+            
+            self.log(f"✅ Admin login successful - User: {user_data.get('name')} ({user_data.get('email')})")
+            
+            # Get pending recipes from admin sandbox
+            pending_response = self.session.get(f"{self.base_url}/admin/pending-recipes")
+            
+            if pending_response.status_code == 200:
+                recipes = pending_response.json()
+                recipe_count = len(recipes)
+                
+                self.log(f"📊 Admin sandbox recipe count: {recipe_count}")
+                
+                # Log details of recipes for debugging
+                self.log("📋 Recipe details:")
+                for i, recipe in enumerate(recipes[:10]):  # Show first 10
+                    name = recipe.get('name', 'Unknown')
+                    status = recipe.get('approval_status', 'Unknown')
+                    author = recipe.get('author', 'Unknown')
+                    self.log(f"   {i+1}. {name} - Status: {status} - Author: {author}")
+                
+                if recipe_count >= 10:
+                    self.log("✅ Admin sandbox has expected recipe count (≥10)")
+                    return True
+                else:
+                    self.log(f"❌ Admin sandbox has fewer recipes than expected: {recipe_count} (expected: ≥10)")
+                    return False
+                    
+            else:
+                self.log(f"❌ Failed to get admin pending recipes: {pending_response.status_code} - {pending_response.text}")
+                return False
+                
+        except Exception as e:
+            self.log(f"❌ Admin sandbox count test failed with exception: {str(e)}")
+            return False
+
     def test_critical_issue_1_admin_sandbox_comparison(self):
         """Test Issue 1: Admin Sandbox - Empty on Production vs Preview"""
         self.log("=== CRITICAL ISSUE 1: ADMIN SANDBOX COMPARISON ===")
