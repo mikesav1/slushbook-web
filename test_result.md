@@ -561,6 +561,30 @@ test_plan:
         agent: "testing"
         comment: "🚨 CRITICAL ISSUE IDENTIFIED: Production shopping list appears empty but actually has 12 items! ROOT CAUSE: Session ID mismatch between frontend and backend. ❌ FRONTEND PROBLEM: localStorage.getItem('user') returns empty object {}, causing app to use guest session ID (880558b5-ccdc-43fb-8625-12780fd2f37e) instead of user ID (393ffc7c-efa4-4947-99f4-2025a8994c3b). ❌ SECONDARY ISSUE: /api/redirect-proxy/admin/mappings returns 500 error on production, preventing shopping list from loading. ✅ BACKEND DATA CONFIRMED: Production has 12 items for correct user ID, Preview has 3 items for same user ID. ✅ API ENDPOINTS WORK: Direct API calls with correct session ID return data successfully. 💡 SOLUTION NEEDED: Fix user context persistence in localStorage and resolve mappings API 500 error on production."
 
+  - task: "Water Filter Implementation - CRITICAL ISSUE"
+    implemented: false
+    working: false
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "🚨 WATER FILTER NOT IMPLEMENTED: Comprehensive testing confirms water filtering is completely missing from the backend. ❌ CRITICAL FINDINGS: 1) Added 'vand' to shopping list - SUCCESS (200) but item was SAVED to database (ID: 5b97417a-4ad6-4656-ab00-469baeba2916), 2) Added 'isvand' to shopping list - SUCCESS (200) but item was SAVED to database (ID: 217fda61-82a5-4cc4-ab40-3000bb71ed9c), 3) Found 3 total water items in shopping list including existing 'Isvand' item. ❌ ROOT CAUSE: No water filtering logic exists in POST /api/shopping-list endpoint. Water items (vand, isvand, knust is) are being added normally instead of being filtered out. ❌ IMPACT: Users can add water items to shopping list when they should be automatically filtered. 💡 SOLUTION REQUIRED: Implement water filtering in backend shopping list endpoint to reject water-related ingredients (vand, isvand, knust is, etc.) and return success message without saving to database."
+
+  - task: "Admin Sandbox Recipe Count Verification"
+    implemented: true
+    working: false
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ ADMIN SANDBOX COUNT MISMATCH CONFIRMED: Production environment has significantly fewer recipes than expected. ✅ ADMIN LOGIN: Successfully logged in as kimesav@gmail.com/admin123 on production. ❌ RECIPE COUNT: Found only 5 recipes in admin sandbox (expected: ≥10 to match preview). 📋 RECIPES FOUND: 1) Mudslice Slush (Author: 1de05497-57be-4434-9003-e5136fbe3795), 2) Gin Hash Slush (Author: 1de05497-57be-4434-9003-e5136fbe3795), 3) test1nyver - Status: rejected (Author: 393ffc7c-efa4-4947-99f4-2025a8994c3b), 4) Test2har lavet en men ikke synlig - Status: rejected (Author: 393ffc7c-efa4-4947-99f4-2025a8994c3b), 5) Backward Compatibility Test - Status: approved (Author: 40520009-e78c-46f0-95ea-81198e369a4c). ❌ CONCLUSION: Production admin sandbox is missing 5+ recipes compared to preview environment. This confirms the reported issue that admin sandbox appears incomplete on production."
+
 agent_communication:
   - agent: "main"
     message: "Fixed critical bug in 'Add to list' functionality. Root cause: CSV-imported recipes had empty category_key values for ingredients. Implemented two fixes: 1) Frontend: Updated addMissingToShoppingList in RecipeDetailPage.js to generate category_key from ingredient name when missing/empty (backward compatibility). 2) Backend: Fixed CSV import in server.py to auto-generate category_key from ingredient names using slug-style formatting (lowercase, hyphens, normalized Danish characters). Ready for testing with both new CSV imports and existing recipes with empty category_keys."
