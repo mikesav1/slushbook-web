@@ -191,7 +191,7 @@ const SettingsPage = ({ sessionId }) => {
               data-testid="add-recipe-button"
               className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700"
             >
-              <FaPlus className="mr-2" /> Tilføj Opskrift
+              <FaPlus className="mr-2" /> Tilføj opskrift
             </Button>
           </Link>
         </div>
