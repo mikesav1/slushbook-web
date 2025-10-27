@@ -54,17 +54,17 @@ const RecipesPage = ({ sessionId }) => {
       
       let sortedRecipes;
       if (sortBy === 'rating') {
-        // Sort by rating (highest first), but free recipes before locked ones
+        // Sort by rating (highest first), prioritizing recipes WITH ratings
         sortedRecipes = response.data.sort((a, b) => {
-          // Free recipes first (is_free=true or missing is_free field means free)
-          const aIsFree = a.is_free !== false;
-          const bIsFree = b.is_free !== false;
-          if (aIsFree && !bIsFree) return -1;
-          if (!aIsFree && bIsFree) return 1;
+          // Recipes WITH ratings first
+          const aHasRating = (a.rating_avg || 0) > 0;
+          const bHasRating = (b.rating_avg || 0) > 0;
+          if (aHasRating && !bHasRating) return -1;
+          if (!aHasRating && bHasRating) return 1;
           
-          // Then by rating
-          const aRating = a.avg_rating || 0;
-          const bRating = b.avg_rating || 0;
+          // Then sort by rating value (highest first)
+          const aRating = a.rating_avg || 0;
+          const bRating = b.rating_avg || 0;
           return bRating - aRating;
         });
       } else {
