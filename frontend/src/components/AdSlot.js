@@ -84,7 +84,7 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
 
   // Different styles based on placement
   const placementStyles = {
-    bottom_banner: 'fixed bottom-0 left-0 right-0 z-40 shadow-lg',
+    bottom_banner: 'fixed left-0 right-0 z-45 shadow-lg lg:bottom-0 bottom-16',
     recipe_list: 'w-full my-4',
     homepage_hero: 'w-full max-w-6xl mx-auto my-6',
     sidebar: 'w-full'
