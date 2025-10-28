@@ -32,6 +32,7 @@ const AddRecipePage = ({ sessionId }) => {
   const [tagInput, setTagInput] = useState('');
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [imageRightsConfirmed, setImageRightsConfirmed] = useState(false);
 
   useEffect(() => {
     checkLimits();
