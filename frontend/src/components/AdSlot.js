@@ -12,6 +12,7 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
   const { user } = useAuth();
   const [ad, setAd] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [availableAds, setAvailableAds] = useState([]);
 
   useEffect(() => {
     // Don't show ads to logged-in users
@@ -20,10 +21,17 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
       return;
     }
 
-    fetchAd();
+    fetchAds();
+    
+    // Rotate ads every 30 seconds
+    const rotationInterval = setInterval(() => {
+      rotateAd();
+    }, 30000); // 30 seconds
+
+    return () => clearInterval(rotationInterval);
   }, [user, placement]);
 
-  const fetchAd = async () => {
+  const fetchAds = async () => {
     try {
       // Detect country from browser (fallback to 'DK')
       const country = getCountryCode();
@@ -35,8 +43,9 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
         }
       });
 
-      // Pick random ad if multiple available
       if (response.data && response.data.length > 0) {
+        setAvailableAds(response.data);
+        // Pick random ad initially
         const randomAd = response.data[Math.floor(Math.random() * response.data.length)];
         setAd(randomAd);
       }
@@ -44,6 +53,17 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
       console.error('Error fetching ad:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const rotateAd = () => {
+    if (availableAds.length > 1) {
+      // Pick a different ad than current
+      const otherAds = availableAds.filter(a => a.id !== ad?.id);
+      if (otherAds.length > 0) {
+        const newAd = otherAds[Math.floor(Math.random() * otherAds.length)];
+        setAd(newAd);
+      }
     }
   };
 
