@@ -1037,13 +1037,17 @@ async def get_all_members(request: Request):
     # Get all users
     users = await db.users.find({}).to_list(length=None)
     
-    # Remove password hashes and add id field
+    # Remove password hashes, add id field, and add recipe count
     for u in users:
         u.pop("hashed_password", None)
         # Use email as id if id doesn't exist
         if "id" not in u:
             u["id"] = u.get("email")
         u["_id"] = str(u.get("_id", ""))
+        
+        # Add recipe count
+        recipe_count = await db.user_recipes.count_documents({"author": u.get("email")})
+        u["recipe_count"] = recipe_count
     
     return users
 
