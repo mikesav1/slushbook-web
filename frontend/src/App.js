@@ -31,7 +31,9 @@ import GuidePage from "./pages/GuidePage";
 
 // Use backend URL from environment variable
 // This is set during build and configured per environment
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://slushice-recipes.emergent.host';
+// For localhost development: http://localhost:8001
+// For production deployment: https://slushice-recipes.emergent.host (set during deployment)
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 export const API = `${BACKEND_URL}/api`;
 
 console.log('[App] Backend URL:', BACKEND_URL);
