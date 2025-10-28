@@ -246,9 +246,6 @@ const HomePage = ({ sessionId }) => {
           </p>
         </div>
       </div>
-
-      {/* Advertisement Slot for guests */}
-      <AdSlot placement="bottom_banner" />
     </div>
   );
 };
