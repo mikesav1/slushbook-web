@@ -5,6 +5,7 @@ import { FaMagic, FaBook, FaFire } from 'react-icons/fa';
 import { API } from '../App';
 import RecipeCard from '../components/RecipeCard';
 import UpgradeModal from '../components/UpgradeModal';
+import AdSlot from '../components/AdSlot';
 
 const HomePage = ({ sessionId }) => {
   const [featuredRecipes, setFeaturedRecipes] = useState([]);
