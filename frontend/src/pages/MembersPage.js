@@ -394,8 +394,8 @@ const MembersPage = () => {
                   <div>
                     <div className="text-xs text-gray-500 mb-1">Sidst Aktiv</div>
                     <div className="font-semibold">
-                      {userDetails.last_active 
-                        ? new Date(userDetails.last_active).toLocaleDateString('da-DK')
+                      {userDetails.last_login 
+                        ? new Date(userDetails.last_login).toLocaleDateString('da-DK')
                         : 'Aldrig'}
                     </div>
                   </div>
