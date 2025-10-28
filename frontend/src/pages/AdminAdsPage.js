@@ -131,7 +131,28 @@ const AdminAdsPage = () => {
       title: ad.title || '',
       description: ad.description || ''
     });
+    setImagePreview(ad.image);
+    setImageFile(null);
     setShowModal(true);
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        toast.error('Billedet er for stort. Max 5MB.');
+        return;
+      }
+      
+      setImageFile(file);
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const resetForm = () => {
@@ -144,6 +165,8 @@ const AdminAdsPage = () => {
       title: '',
       description: ''
     });
+    setImageFile(null);
+    setImagePreview(null);
   };
 
   const openCreateModal = () => {
