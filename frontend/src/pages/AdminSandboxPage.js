@@ -373,10 +373,46 @@ const AdminSandboxPage = ({ sessionId }) => {
               Angiv venligst en grund til afvisning af <strong>{selectedRecipe?.name}</strong>. 
               Brugeren vil modtage denne besked.
             </p>
+            
+            {/* Quick Reason Buttons */}
+            <div className="mb-4">
+              <p className="text-sm font-semibold text-gray-700 mb-2">Hurtig valg:</p>
+              <div className="grid grid-cols-1 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setRejectReason('Copyright krænkelse: Billedet eller indholdet overtræder ophavsretten')}
+                  className="text-left px-3 py-2 text-sm bg-red-50 hover:bg-red-100 border border-red-200 rounded"
+                >
+                  🚫 Copyright krænkelse
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRejectReason('Lignende opskrift findes allerede i systemet')}
+                  className="text-left px-3 py-2 text-sm bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded"
+                >
+                  📋 Duplikat opskrift
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRejectReason('Mangelfuld beskrivelse eller manglende ingredienser')}
+                  className="text-left px-3 py-2 text-sm bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded"
+                >
+                  📝 Ufuldstændig information
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRejectReason('Upassende indhold eller spam')}
+                  className="text-left px-3 py-2 text-sm bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded"
+                >
+                  ⚠️ Upassende indhold
+                </button>
+              </div>
+            </div>
+            
             <textarea
               value={rejectReason}
               onChange={(e) => setRejectReason(e.target.value)}
-              placeholder="F.eks. 'Lignende opskrift findes allerede' eller 'Mangelfuld beskrivelse'"
+              placeholder="Eller skriv din egen begrundelse..."
               className="w-full px-4 py-3 border rounded-lg mb-4 min-h-[100px]"
             />
             <div className="flex gap-3">
