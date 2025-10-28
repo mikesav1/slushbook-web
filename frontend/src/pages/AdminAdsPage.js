@@ -22,6 +22,9 @@ const AdminAdsPage = () => {
     title: '',
     description: ''
   });
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (!isAdmin()) {
