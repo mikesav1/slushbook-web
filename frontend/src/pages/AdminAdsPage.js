@@ -3,7 +3,7 @@ import axios from 'axios';
 import { API } from '../App';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-hot-toast';
+import { toast } from 'sonner';
 import { FaAd, FaPlus, FaEdit, FaTrash, FaEye, FaEyeSlash, FaMousePointer, FaGlobe } from 'react-icons/fa';
 
 const AdminAdsPage = () => {
