@@ -29,13 +29,34 @@ import BrixInfoPage from "./pages/BrixInfoPage";
 import AdminLinksPage from "./pages/AdminLinksPage";
 import GuidePage from "./pages/GuidePage";
 
-// Use backend URL from environment variable
-// This is set during build and configured per environment
-// For localhost development: http://localhost:8001
-// For production deployment: https://slushice-recipes.emergent.host (set during deployment)
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+// Dynamic backend URL detection based on current hostname
+// This allows the same build to work in preview, production, and localhost
+const getBackendUrl = () => {
+  const hostname = window.location.hostname;
+  
+  // Production domains - use production backend
+  if (hostname === 'slushice-recipes.emergent.host' || hostname === 'slushbook.itopgaver.dk') {
+    return 'https://slushice-recipes.emergent.host';
+  }
+  
+  // Preview domain - use preview backend
+  if (hostname.includes('.preview.emergentagent.com')) {
+    return `https://${hostname}`;
+  }
+  
+  // Localhost development
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return 'http://localhost:8001';
+  }
+  
+  // Fallback to environment variable or localhost
+  return process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+};
+
+const BACKEND_URL = getBackendUrl();
 export const API = `${BACKEND_URL}/api`;
 
+console.log('[App] Hostname:', window.location.hostname);
 console.log('[App] Backend URL:', BACKEND_URL);
 
 // Navigation Component
