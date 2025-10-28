@@ -19,16 +19,12 @@ const MembersPage = () => {
   const [roleFilter, setRoleFilter] = useState('all');
 
   useEffect(() => {
-    // Wait for auth to finish loading before checking admin status
+    // Wait for auth to finish loading
     if (authLoading) return;
     
-    if (!isAdmin()) {
-      toast.error('Kun admin har adgang til denne side');
-      navigate('/');
-      return;
-    }
+    // Try to fetch members - backend will handle authorization
     fetchMembers();
-  }, [authLoading, isAdmin]);
+  }, [authLoading]);
 
   const fetchMembers = async () => {
     try {
