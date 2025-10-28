@@ -451,6 +451,9 @@ const AppContent = ({ sessionId }) => {
         </main>
       </div>
 
+      {/* Global Ad Slot for guests - shows on all pages */}
+      <AdSlot placement="bottom_banner" />
+
       {/* Mobile Bottom Navigation */}
       {!isAuthPage && (
         <div className="lg:hidden border-t border-gray-200 bg-white fixed bottom-0 left-0 right-0 z-50 shadow-lg">
