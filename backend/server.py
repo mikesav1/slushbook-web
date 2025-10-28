@@ -831,6 +831,12 @@ async def login(request: LoginRequest, response: Response):
     
     await db.user_sessions.insert_one(session)
     
+    # Update last_login timestamp
+    await db.users.update_one(
+        {"id": user_doc["id"]},
+        {"$set": {"last_login": datetime.now(timezone.utc)}}
+    )
+    
     # Set cookie
     response.set_cookie(
         key="session_token",
