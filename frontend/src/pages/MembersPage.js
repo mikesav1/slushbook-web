@@ -11,7 +11,7 @@ import { Label } from '../components/ui/label';
 import { Button } from '../components/ui/button';
 
 const MembersPage = () => {
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,13 +19,16 @@ const MembersPage = () => {
   const [roleFilter, setRoleFilter] = useState('all');
 
   useEffect(() => {
+    // Wait for auth to finish loading before checking admin status
+    if (authLoading) return;
+    
     if (!isAdmin()) {
       toast.error('Kun admin har adgang til denne side');
       navigate('/');
       return;
     }
     fetchMembers();
-  }, []);
+  }, [authLoading, isAdmin]);
 
   const fetchMembers = async () => {
     try {
