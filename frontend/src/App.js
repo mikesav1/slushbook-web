@@ -443,7 +443,7 @@ const AppContent = ({ sessionId }) => {
       {/* Mobile Bottom Navigation */}
       {!isAuthPage && (
         <div className="lg:hidden border-t border-gray-200 bg-white fixed bottom-0 left-0 right-0 z-50 shadow-lg">
-          <div className="grid grid-cols-4 gap-1 p-2">
+          <div className="grid grid-cols-5 gap-1 p-2">
             {/* Hjem */}
             <Link
               to="/"
@@ -451,7 +451,7 @@ const AppContent = ({ sessionId }) => {
                 location.pathname === '/' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
               }`}
             >
-              <FaHome size={20} />
+              <FaHome size={18} />
               <span className="text-xs font-medium">Hjem</span>
             </Link>
             
@@ -462,18 +462,29 @@ const AppContent = ({ sessionId }) => {
                 location.pathname === '/recipes' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
               }`}
             >
-              <FaBook size={20} />
+              <FaBook size={18} />
               <span className="text-xs font-medium">Opskrifter</span>
             </Link>
             
-            {/* Liste (Shopping) - ONLY for logged in users or Pro */}
+            {/* Match */}
+            <Link
+              to="/match"
+              className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
+                location.pathname === '/match' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
+              }`}
+            >
+              <FaMagic size={18} />
+              <span className="text-xs font-medium">Match</span>
+            </Link>
+            
+            {/* Liste (Shopping) */}
             <Link
               to="/shopping"
               className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
                 location.pathname === '/shopping' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
               }`}
             >
-              <FaShoppingCart size={20} />
+              <FaShoppingCart size={18} />
               <span className="text-xs font-medium">Liste</span>
             </Link>
             
@@ -484,7 +495,7 @@ const AppContent = ({ sessionId }) => {
                 location.pathname === '/profile' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
               }`}
             >
-              <FaCog size={20} />
+              <FaCog size={18} />
               <span className="text-xs font-medium">Profil</span>
             </Link>
           </div>
