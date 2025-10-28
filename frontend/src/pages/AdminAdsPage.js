@@ -359,27 +359,82 @@ const AdminAdsPage = () => {
             </h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Image URL */}
+              {/* Image Upload */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Billede URL *
+                  Reklame Billede *
                 </label>
-                <input
-                  type="url"
-                  required
-                  value={formData.image}
-                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                  placeholder="https://example.com/ad-image.jpg"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                />
-                {formData.image && (
-                  <img
-                    src={formData.image}
-                    alt="Preview"
-                    className="mt-2 h-24 rounded"
-                    onError={(e) => e.target.style.display = 'none'}
-                  />
+                
+                {/* Image Preview */}
+                {imagePreview && (
+                  <div className="mb-3 relative">
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="w-full h-48 object-cover rounded-lg border"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setImageFile(null);
+                        setImagePreview(null);
+                        setFormData({ ...formData, image: '' });
+                      }}
+                      className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600"
+                    >
+                      <FaTrash size={12} />
+                    </button>
+                  </div>
                 )}
+                
+                {/* Upload Section */}
+                {!imagePreview && (
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center mb-3">
+                    <div className="text-gray-400 mb-2">
+                      <svg className="mx-auto h-12 w-12" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                    <p className="text-gray-600 mb-1">Upload reklame billede</p>
+                    <p className="text-xs text-gray-500">Maks 5MB - JPG, PNG</p>
+                  </div>
+                )}
+                
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="w-full"
+                />
+                
+                {/* Dimension Guidelines */}
+                <div className="mt-2 bg-blue-50 border border-blue-200 rounded p-3">
+                  <p className="text-xs font-semibold text-blue-900 mb-1">📐 Anbefalede dimensioner:</p>
+                  <ul className="text-xs text-blue-800 space-y-1">
+                    <li>• <strong>Bottom Banner:</strong> 1200 x 200px (6:1)</li>
+                    <li>• <strong>Recipe List:</strong> 800 x 200px (4:1)</li>
+                    <li>• <strong>Homepage Hero:</strong> 1400 x 400px (7:2)</li>
+                    <li>• <strong>Sidebar:</strong> 300 x 600px (1:2)</li>
+                  </ul>
+                </div>
+                
+                {/* Optional: URL fallback */}
+                <div className="mt-3">
+                  <label className="text-xs text-gray-500">Eller indtast billede URL:</label>
+                  <input
+                    type="url"
+                    value={formData.image}
+                    onChange={(e) => {
+                      setFormData({ ...formData, image: e.target.value });
+                      if (e.target.value) {
+                        setImagePreview(e.target.value);
+                        setImageFile(null);
+                      }
+                    }}
+                    placeholder="https://example.com/ad.jpg"
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                  />
+                </div>
               </div>
 
               {/* Link */}
