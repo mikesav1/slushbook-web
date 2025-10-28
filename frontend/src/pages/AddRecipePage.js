@@ -285,6 +285,13 @@ const AddRecipePage = ({ sessionId }) => {
                 onChange={handleImageChange}
                 className="w-full"
               />
+              {/* Copyright Warning */}
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                <p className="text-xs text-amber-800">
+                  ⚠️ <strong>Vigtigt om copyright:</strong> Brug kun egne billeder eller billeder du har rettigheder til. 
+                  Du må ikke uploade billeder fra internettet uden tilladelse fra rettighedshaveren.
+                </p>
+              </div>
             </div>
           </div>
           
