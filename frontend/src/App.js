@@ -45,11 +45,11 @@ const getBackendUrl = () => {
   
   // If on preview domain, use preview backend
   if (hostname === 'flavor-sync.preview.emergentagent.com') {
-    return 'https://slushbook-repair.preview.emergentagent.com';
+    return 'https://icepro-debug.preview.emergentagent.com';
   }
   
   // Fallback to env variable or preview
-  return process.env.REACT_APP_BACKEND_URL || 'https://slushbook-repair.preview.emergentagent.com';
+  return process.env.REACT_APP_BACKEND_URL || 'https://icepro-debug.preview.emergentagent.com';
 };
 
 const BACKEND_URL = getBackendUrl();

@@ -1,127 +1,73 @@
 <analysis>
-The previous AI engineer's work primarily focused on addressing critical bugs and implementing new features for the Slushice application, navigating persistent deployment and environment issues. Key efforts included fixing a Tilføj til liste (Add to list) bug related to  and implementing a robust CSV import/export for supplier links. A significant, recurring challenge was the 's incompatibility with the deployment environment (SQLite vs. MongoDB), which necessitated a migration to MongoDB, leading to a complex series of debugging steps involving supervisor configurations, port conflicts, and inter-service communication via environment variables.
-
-Furthermore, the engineer tackled mobile navigation issues, ensuring login/signup visibility and correct menu items. Recipe visibility for specific users (Ulla's recipe) and within the admin sandbox was a frequent point of contention, leading to fixes in backend filtering logic for , , and  fields. A persistent login failure on the deployed environment was eventually traced to differing database states between preview and production, and browser cache issues on mobile. The trajectory concludes with the user reporting the Tilføj til liste bug again and an issue with recipe delete button visibility, which the engineer is about to address.
+The trajectory details an extensive debugging and feature implementation process for the Slushice app. Initial efforts focused on fixing critical login, shopping list, and recipe management issues, often stemming from misconfigured environment variables (, , ) and infrastructure-level problems (CDN caching, port conflicts). The AI engineer systematically addressed these, including dynamic URL detection, recipe deletion for Pro users, guest blur features, and a new guide page. Significant time was spent on the Admin Links page, fixing bulk deletion, and resolving the  inadvertently using . Later, the engineer fixed shopping list filtering, implemented recipe sorting by rating, and standardized Danish text formatting across the frontend. The persistent challenge has been the production environment, which continues to exhibit infrastructure-related discrepancies (CORS, routing, database sync) compared to the functional preview, leading to a back-and-forth with Emergent Support regarding deployment and database synchronization.
 </analysis>
 
 <product_requirements>
-The Slushice app is a comprehensive recipe platform supporting Guest, Pro, Editor, and Admin roles. Key features include a Brix Information Page, an affiliate redirect service (Power-flavours) with an admin UI for managing product mappings and suppliers (add, edit, delete, toggle active status), and shopping list integration. The homepage features a video background and featured recipes. Recipe scaling and role-based access control are implemented, with Pro users having full access and publishing capabilities. Admin login is functional, and the login/signup pages have a redesigned UI.
-
-Recently implemented features and their current status:
-1.  **CSV Recipe Import/Export:** Admin-only function for product links/suppliers. The  was migrated from SQLite to MongoDB to resolve deployment issues and backend proxying was configured. Frontend  was updated to handle imports, but the Add to list functionality is still buggy.
-2.  **Admin Recipe Sandbox:** Administrators can approve/reject user-submitted recipes. Frontend  and backend endpoints are in place. Visibility issues for user's own recipes and pending sandbox recipes have been addressed by fixing backend filtering logic to account for , , and  fields.
-3.  **Password Field Enhancements:** Show password toggle and auto-clear on focus for login, signup, and reset password forms.
-4.  **Admin Ingredients Management:** A dedicated admin page to manage a master list of ingredients (add, edit, delete, import seed data).
-5.  **Enhanced User Platform (MembersPage):** Admin view for user statistics and management, including a View Details modal. Member deletion functionality works via backend but was reported as not visible/functional by the user, later confirmed to be a user-side issue of not being able to delete themselves.
-6.  **Responsive Menu Fixes & Mobile Experience:** Mobile navigation menu breakpoints were adjusted. Log ind and Tilmeld dig buttons were made visible for guests. Ingredienser and Favoritter were moved into a settings dropdown accessible via a gear icon. Log ud was added to the bottom navigation bar. Initial mobile login issues related to browser cache were resolved.
-7.  **Admin Recipe Delete:** Administrators can delete recipes. The delete button visibility for non-admin/non-owner users is pending.
-8.  **Public/Private Recipe Toggle:** Users can mark recipes as public/private, and an admin UI to Toggle Free/Pro status was added on .
-9.  **Homepage Enhancements:** A Højest vurderet (Highest rated) button linking to sorted recipes was added, replacing a previous Brix information link.
+The Slushice app is a multi-role recipe platform (Guest, Pro, Editor, Admin) featuring a Brix Info Page and an affiliate redirect service for product mappings. Recent efforts focused on stabilizing core functionalities and enhancing UX. This included: fixing login failed issues, ensuring database consistency ( to ), and dynamic . Shopping list now filters vand, isvand, knust is. Recipe management allows Pro users to delete their recipes and Admin to edit all; routing for  was fixed. Guest users see free recipes normally and locked recipes blurred. Admin interfaces for product links (with bulk delete, CSV import/export, and data consistency fixes) and user-submitted recipes were improved. UI/UX enhancements added an Om SLUSHBOOK section, a Guide Page with React Icons, and a favicon. Critically, all text formatting was updated to Danish typographic standards (sentence case), and the Highest Rated sorting was implemented. A feature to allow admins to toggle Free/Pro status for recipes was also implemented. Persistent production CDN caching and custom domain CORS issues remain. Future work will involve multi-language and country-specific supplier adaptations.
 </product_requirements>
 
 <key_technical_concepts>
--   **React.js (Frontend):** UI, Context API (AuthContext), React Router.
--   **FastAPI (Backend):** API endpoints, MongoDB, HTTPX for proxying, .
--   **MongoDB:** Main app data persistence,  for IDs,  migration to MongoDB.
--   **Node.js/Express (Redirect Service):** Standalone service, migrated from  to  driver.
--   **TypeScript:** Type safety for Node.js service,  for file uploads.
--   **Tailwind CSS & Shadcn UI:** Responsive styling.
--   **Environment Variables:** Strict usage (REACT\_APP\_BACKEND\_URL, MONGO\_URL, REDIRECT\_SERVICE\_URL).
--   **CORS & Backend Proxying:** Crucial for inter-service communication and multipart/form-data.
--   **Access Control:** Role-based conditional rendering and API guarding.
--   **Supervisor:** Persistent service management,  for auto-starting.
+- **React.js:** Frontend UI, Context API, React Router.
+- **FastAPI:** Backend API, authentication, MongoDB interaction.
+- **MongoDB:** Primary database for app data and redirect service.
+- **Node.js/TypeScript (Redirect Service):** Handles product links.
+- **Environment Variables:** Critical for , , .
+- **CORS & Cookies:** For authentication and cross-origin requests.
+- **Supervisor:** Manages backend/frontend processes.
+- **Axios:** HTTP client.
+- **React Icons:** Professional UI icons.
+- **Dynamic URL Detection:** Frontend adapts to deployment environment.
 </key_technical_concepts>
 
 <code_architecture>
 
--   :
-    -   **Importance:** Main FastAPI application, API definitions.
-    -   **Changes:**
-        -   Updated  to set  for .
-        -   Modified  to filter for  for public recipes, and include user's own / recipes by  and  (email).
-        -   Fixed  endpoint to use  environment variable for inter-service communication.
-        -   Added  for admin to change  status.
-        -   Added  execution on startup to address deployment issues.
-        -   CSV import logic was improved by the testing agent to handle special characters.
--   :
-    -   **Importance:** Authentication logic.
-    -   **Changes:**  model updated for  for MongoDB objects.
--   :
-    -   **Importance:** Environment variables for backend.
-    -   **Changes:** Added  to reference the redirect service.
--   🚀 Starting redirect-service if not already running...
-✅ Redirect-service already running (NEW FILE):
-    -   **Importance:** Shell script to start the .
-    -   **Changes:** Created to ensure  is started by the backend's supervisor, including yarn install v1.22.22
-[1/4] Resolving packages...
-[2/4] Fetching packages...
-[3/4] Linking dependencies...
-[4/4] Building fresh packages...
-success Saved lockfile.
-Done in 0.20s. and  commands.
--   :
-    -   **Importance:** Global routing and layout, main navigation.
-    -   **Changes:**
-        -   Mobile top navigation: Replaced user name/role with a gear icon. Clicking the gear now opens a dropdown menu.
-        -   Mobile bottom navigation: Added Log ud button. Moved Ingredienser and Favoritter from bottom navigation into the gear dropdown. Added Log ind and Tilmeld dig buttons to mobile top navigation for logged-out users.
--   :
-    -   **Importance:** Main landing page.
-    -   **Changes:** Replaced Læs om Brix link with a Højest vurderet (Highest rated) button that links to recipes sorted by rating.
--   :
-    -   **Importance:** Displays detailed recipe info.
-    -   **Changes:** Added a Toggle Free/Pro button for admin users to change  status. Removed local  function. The logic for delete button visibility is pending.
--   :
-    -   **Importance:** Lists recipes.
-    -   **Changes:** Added an Egne opskrifter (Own recipes) filter button and implemented client-side sorting by rating.
--   :
-    -   **Importance:** Admin interface for managing affiliate product links/suppliers.
-    -   **Changes:** Improved error handling and success messages for CSV import to avoid false positives.
--   :
-    -   **Importance:** User login interface.
-    -   **Changes:** Password field enhancements (show/hide toggle, auto-clear on focus). Confirmed  is set for login requests.
--   , :
-    -   **Importance:** User authentication interfaces.
-    -   **Changes:** Password field enhancements (show/hide toggle, auto-clear on focus).
--   :
-    -   **Importance:** Node.js project dependencies for the redirect service.
-    -   **Changes:** Updated dependencies: removed , added  and . Added  script for graceful shutdown.
--   :
-    -   **Importance:** Environment variables for redirect service.
-    -   **Changes:** Added  and  for MongoDB connection.
--   :
-    -   **Importance:** Database schema for redirect service.
-    -   **Changes:** Migrated from SQLite to MongoDB connection logic.
--   :
-    -   **Importance:** Database interaction logic for redirect service.
-    -   **Changes:** Rewritten to use MongoDB operations instead of SQLite.
--   :
-    -   **Importance:** Main entry point for redirect service.
-    -   **Changes:** Initialized MongoDB connection, implemented graceful shutdown.
--   :
-    -   **Importance:** Admin API endpoints for redirect service.
-    -   **Changes:** Updated to use async/await for MongoDB operations; fixed TypeScript errors in CSV import handling.
+-   : Main FastAPI application, defines API endpoints.
+    -   **Changes:**  in  switched to .  was modified to robustly filter vand, isvand, knust is.  modified to allow recipe authors (Pro users) to delete.  initialization moved.  was corrected to update both  and  collections. Debug logging for  was added and refined.
+-   : Environment variables for backend.
+    -   **Changes:**  updated to .  updated.  had quotes removed.
+-   : Global routing, layout, and main navigation.
+    -   **Changes:** Implemented dynamic  detection.  updated to .  route added. Hardcoded hero text Find Den perfekte Slushice Opskrifter changed to Find din perfekte Slushice Opskrift and other  calls for titles were removed.
+-   : Global CSS file.
+    -   **Changes:** Added a global CSS rule  to prevent automatic Title Case for headings.
+-   : Renders individual recipe cards.
+    -   **Changes:**  href updated. CSS classes added for visual hook (blur/dim) for  recipes. Integrated  from  for .
+-   : Admin interface for managing affiliate product links.
+    -   **Changes:** Implemented bulk delete functionality. Logic updated to use . Removed  class from table headers.
+-   : Displays detailed recipe information.
+    -   **Changes:**  modified to allow  users to edit any recipe. Added optional chaining for . Imported  icon. Integrated  from  for . The Toggle Free/Pro button (already present) was fixed to correctly interact with the backend endpoint.
+-   : Lists all recipes, with filtering.
+    -   **Changes:** Sorting logic was updated to use  (backend's field) for the Højest vurderet (Highest rated) functionality.
+-   : User settings and app information.
+    -   **Changes:** Om SLUSHBOOK section updated with detailed description and a link to . Emojis replaced with React Icons. Removed  from section titles.
+-    (NEW FILE): Provides a detailed guide for the app's usage.
+    -   **Changes:** Created this new page with detailed instructions, replacing emojis with React Icons.
+-   : Landing page of the application.
+    -   **Changes:** The sorting for Populære (Popular) recipes was configured to use . Hardcoded main hero texts were updated to Find din perfekte and Slushice Opskrift, and other instances of unwanted capitalization were removed.
+-   : Admin interface for managing members.
+    -   **Changes:** Contains an  check that previously prevented API calls if session cookies were not correctly handled.
+-    (NEW FILE):
+    -   **Importance:** Provides utility functions for text manipulation.
+    -   **Changes:** Created  function to convert Title Case strings to Danish sentence case.
+-   : Environment variables for the redirect service.
+    -   **Changes:**  updated to  to ensure it reads from the correct database.
 </code_architecture>
 
 <pending_tasks>
--   **Tilføj til liste functionality bug:** The  function in  is still reported as not working, despite backend validation.
--   **Recipe Delete Button Visibility:** The delete button on  is still visible to non-admin/non-owner users. The user explicitly requested to fix this.
--   **Full Google OAuth Integration:** Only a placeholder is present for Google login.
--   **Pro-User Sharing Feature:** The ability for Pro users to share with other users is not yet implemented.
--   **Full Vendor Admin UI:** The  remains a placeholder for broader vendor management.
--   **Slushice Rules Validation:** Automatic BRIX/alcohol percentage calculation with warnings and suggestions during recipe creation is still pending.
--   **TEST MODE clarity:** User concern about TEST MODE - Reset Token display on .
--   **App Store & Google Play Preparation:** Building production builds, app icons, splash screens, permissions, store listings, code signing, and device testing.
--   **Image & Video Rights:** Acquiring commercial licenses for existing media.
+- **Production CDN Cache & CORS:** Infrastructure-level issues on  and .
+- **CSV Upload (Product/Supplier Lists):** The core CSV *import* functionality was initially on hold.
+- **Full Google OAuth Integration:** Only a placeholder exists.
+- **Pro-User Sharing Feature:** Not yet implemented.
+- **Full Vendor Admin UI:**  remains a placeholder.
+- **Slushice Rules Validation:** Automatic BRIX/alcohol calculation pending.
+- **App Store/Google Play Preparation:** Production builds, icons, etc.
+- **Internationalization:** Multi-language support and country-specific suppliers (on hold until production stable).
+- **Emergent Support Interaction:** Resolving production database synchronization via Replace Deployment (ongoing).
 </pending_tasks>
 
 <current_work>
-Immediately before this summary request, the AI engineer was tackling two reported issues from the user:
-1.  **Tilføj til liste functionality bug (re-surfaced):** The user reported that while the app says an item is added to the list, it's not visible in the actual shopping list. The AI previously confirmed the backend for this feature was working correctly, implying a frontend issue.
-2.  **Recipe Delete Button Visibility:** The user reported that the delete button on recipe detail pages is still visible to users who are not administrators or the owner of the recipe, and explicitly requested it to be restricted.
-
-The AI engineer has just acknowledged these two problems and has stated the intention to start by fixing the delete button visibility ().
+Immediately before this summary, the AI engineer and the user were actively engaged in resolving critical production deployment issues, specifically concerning database synchronization after multiple attempts at fixing product link and member display problems. Despite successful testing on the preview environment, the production deployment ( and ) exhibited inconsistencies: product links and members data were either missing or displaying errors, and uploaded CSV data for mappings was not persisting to the database. This led to extensive debugging, including checking service logs, environment configurations, and repeated interaction with Emergent Support. Support initially suggested a Redeploy, which partially fixed the Members page on the main production domain but not product links, and the custom domain remained problematic (cookie/SameSite issues, 403 errors). Support then recommended a Replace Deployment with a New Database option to synchronize the preview's data with production. However, the user reported that this specific Replace Deployment option was not available in their UI, only Re-Deploy, which lacked the crucial database selection. The current work halted at clarifying this UI discrepancy with Emergent Support, specifically asking how to perform the Replace Deployment with the New Database option to ensure all the preview data and code changes are fully transferred to production.
 </current_work>
 
 <optional_next_step>
-Fix the recipe delete button visibility on  to ensure it's only visible to admin users and the owner of the specific recipe.
+Await instructions from Emergent Support on how to perform a Replace Deployment with the New Database option.
 </optional_next_step>
