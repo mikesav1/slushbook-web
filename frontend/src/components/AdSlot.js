@@ -13,14 +13,10 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
   const [ad, setAd] = useState(null);
   const [loading, setLoading] = useState(true);
   const [availableAds, setAvailableAds] = useState([]);
-  const [isClosed, setIsClosed] = useState(() => {
-    // Check if ad was closed in localStorage
-    return localStorage.getItem('adClosed') === 'true';
-  });
 
   useEffect(() => {
-    // Don't show ads to logged-in users or if closed
-    if (user || isClosed) {
+    // Don't show ads to logged-in users
+    if (user) {
       setLoading(false);
       return;
     }
@@ -33,14 +29,7 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
     }, 30000); // 30 seconds
 
     return () => clearInterval(rotationInterval);
-  }, [user, placement, isClosed]);
-
-  const handleClose = () => {
-    // Save closed state to localStorage
-    localStorage.setItem('adClosed', 'true');
-    setIsClosed(true);
-    setAd(null);
-  };
+  }, [user, placement]);
 
   const fetchAds = async () => {
     try {
