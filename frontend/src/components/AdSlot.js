@@ -137,10 +137,7 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
         {/* Close button for bottom banner */}
         {isBottomBanner && (
           <button
-            onClick={(e) => {
-              e.preventDefault();
-              setAd(null);
-            }}
+            onClick={handleClose}
             className="absolute top-2 right-2 z-50 bg-gray-800 bg-opacity-70 text-white rounded-full p-1 hover:bg-opacity-90"
             aria-label="Luk reklame"
           >
