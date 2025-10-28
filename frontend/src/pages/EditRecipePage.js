@@ -564,15 +564,15 @@ const EditRecipePage = ({ sessionId }) => {
             </button>
           </div>
           
-          {/* Copyright Confirmation for ALL Public Recipes */}
-          {recipe.is_published && (
+          {/* Copyright Confirmation ONLY if image is uploaded */}
+          {recipe.is_published && imageFile && (
             <div className="mt-4 pt-4 border-t border-gray-200">
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
                 <p className="text-sm text-amber-800 mb-2">
-                  ⚠️ <strong>Vigtigt:</strong> Ved at gøre denne opskrift offentlig, deler du den med alle brugere.
+                  ⚠️ <strong>Vigtigt om billede:</strong> Du har uploadet et billede til denne opskrift.
                 </p>
                 <p className="text-xs text-amber-700">
-                  Hvis du har uploadet et billede, skal du sikre dig at du har rettighederne til det.
+                  Sørg for at du har rettighederne til billedet før du deler opskriften offentligt.
                 </p>
               </div>
               <label className="flex items-start gap-3 cursor-pointer">
@@ -583,8 +583,8 @@ const EditRecipePage = ({ sessionId }) => {
                   className="mt-1 w-4 h-4 text-cyan-600 rounded focus:ring-cyan-500"
                 />
                 <span className="text-sm text-gray-700">
-                  Jeg bekræfter at jeg har rettighederne til alt indhold (inkl. billeder) i denne opskrift, 
-                  og at det er lovligt at dele offentligt. <span className="text-red-600">*</span>
+                  Jeg bekræfter at jeg har rettighederne til det uploadede billede. 
+                  <span className="text-red-600">*</span>
                 </span>
               </label>
             </div>
@@ -602,7 +602,7 @@ const EditRecipePage = ({ sessionId }) => {
           </Button>
           <Button
             type="submit"
-            disabled={saving || (recipe.is_published && !imageRightsConfirmed)}
+            disabled={saving || (recipe.is_published && imageFile && !imageRightsConfirmed)}
             className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700"
           >
             {saving ? 'Gemmer...' : 'Gem Ændringer'}
