@@ -203,7 +203,7 @@ const AddRecipePage = ({ sessionId }) => {
         }))
       });
       toast.success('Opskrift oprettet!');
-      navigate(`/recipe/${response.data.id}`);
+      navigate(`/recipes/${response.data.id}`);
     } catch (error) {
       console.error('Error creating recipe:', error);
       if (error.response?.status === 403) {
