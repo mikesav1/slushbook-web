@@ -97,8 +97,8 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
     }
   };
 
-  // Don't render if user is logged in, no ad, loading, or closed
-  if (user || !ad || loading || isClosed) {
+  // Don't render if user is logged in, no ad, or loading
+  if (user || !ad || loading) {
     return null;
   }
 
