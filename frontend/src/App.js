@@ -28,6 +28,7 @@ import MembersPage from "./pages/MembersPage";
 import BrixInfoPage from "./pages/BrixInfoPage";
 import AdminLinksPage from "./pages/AdminLinksPage";
 import AdminAdsPage from "./pages/AdminAdsPage";
+import AdSlot from "./components/AdSlot";
 import GuidePage from "./pages/GuidePage";
 
 // Dynamic backend URL detection based on current hostname
