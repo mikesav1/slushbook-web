@@ -2116,7 +2116,7 @@ async def upload_image(file: UploadFile = File(...)):
     with open(file_path, 'wb') as f:
         shutil.copyfileobj(file.file, f)
     
-    return {"image_url": f"/api/images/{filename}"}
+    return {"url": f"/api/images/{filename}", "image_url": f"/api/images/{filename}"}
 
 @api_router.get("/images/{filename}")
 async def get_image(filename: str):
