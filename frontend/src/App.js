@@ -202,6 +202,14 @@ const Navigation = () => {
                           Leverandør Links
                         </Link>
                         <Link
+                          to="/admin/ads"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                        >
+                          <FaAd className="w-4 h-4" />
+                          Reklamer
+                        </Link>
+                        <Link
                           to="/admin"
                           onClick={() => setIsUserMenuOpen(false)}
                           className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
