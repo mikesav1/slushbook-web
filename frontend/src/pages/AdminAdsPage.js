@@ -535,9 +535,10 @@ const AdminAdsPage = () => {
               <div className="flex gap-3 pt-4">
                 <button
                   type="submit"
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg hover:from-cyan-600 hover:to-cyan-700 font-medium"
+                  disabled={uploading || (!imageFile && !formData.image)}
+                  className="flex-1 px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg hover:from-cyan-600 hover:to-cyan-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {editingAd ? 'Gem Ændringer' : 'Opret Reklame'}
+                  {uploading ? 'Uploader...' : editingAd ? 'Gem Ændringer' : 'Opret Reklame'}
                 </button>
                 <button
                   type="button"
@@ -546,7 +547,8 @@ const AdminAdsPage = () => {
                     setEditingAd(null);
                     resetForm();
                   }}
-                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium"
+                  disabled={uploading}
+                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium disabled:opacity-50"
                 >
                   Annuller
                 </button>
