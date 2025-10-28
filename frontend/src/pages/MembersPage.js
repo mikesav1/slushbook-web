@@ -28,13 +28,28 @@ const MembersPage = () => {
 
   const fetchMembers = async () => {
     try {
+      // Get session_token from localStorage for authentication
+      const sessionToken = localStorage.getItem('session_token');
+      const headers = {};
+      if (sessionToken) {
+        headers['Authorization'] = `Bearer ${sessionToken}`;
+      }
+      
       const response = await axios.get(`${API}/admin/members`, {
-        withCredentials: true
+        withCredentials: true,
+        headers
       });
       setMembers(response.data);
     } catch (error) {
       console.error('Error fetching members:', error);
-      toast.error('Kunne ikke hente medlemmer');
+      
+      // If 403, user is not admin - redirect to home
+      if (error.response?.status === 403) {
+        toast.error('Kun admin har adgang til denne side');
+        navigate('/');
+      } else {
+        toast.error('Kunne ikke hente medlemmer');
+      }
     } finally {
       setLoading(false);
     }
