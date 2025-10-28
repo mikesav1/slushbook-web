@@ -14,8 +14,16 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuth = async () => {
     try {
+      // Get session_token from localStorage as fallback if cookies don't work
+      const sessionToken = localStorage.getItem('session_token');
+      const headers = {};
+      if (sessionToken) {
+        headers['Authorization'] = `Bearer ${sessionToken}`;
+      }
+      
       const response = await axios.get(`${API}/auth/me`, {
-        withCredentials: true
+        withCredentials: true,
+        headers
       });
       setUser(response.data);
       console.log('[AuthContext] User loaded from /auth/me:', response.data.email);
