@@ -74,9 +74,6 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
       } catch (error) {
         console.error('Error tracking click:', error);
       }
-
-      // Open link in new tab
-      window.open(ad.link, '_blank', 'noopener,noreferrer');
     }
   };
 
@@ -100,10 +97,13 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
         Sponsoreret
       </div>
 
-      {/* Ad Content */}
-      <div
+      {/* Ad Content - using <a> tag for better mobile support */}
+      <a
+        href={ad.link}
+        target="_blank"
+        rel="noopener noreferrer"
         onClick={handleClick}
-        className="cursor-pointer rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow bg-white border border-gray-200"
+        className="block cursor-pointer rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow bg-white border border-gray-200 active:scale-[0.98] transition-transform"
       >
         {/* Image */}
         <img
@@ -123,7 +123,7 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
             )}
           </div>
         )}
-      </div>
+      </a>
     </div>
   );
 };
