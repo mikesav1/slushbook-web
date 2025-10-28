@@ -29,30 +29,9 @@ import BrixInfoPage from "./pages/BrixInfoPage";
 import AdminLinksPage from "./pages/AdminLinksPage";
 import GuidePage from "./pages/GuidePage";
 
-// Dynamically determine backend URL based on current hostname
-const getBackendUrl = () => {
-  const hostname = window.location.hostname;
-  
-  // If on production domain, use production backend
-  if (hostname === 'slushice-recipes.emergent.host') {
-    return 'https://slushice-recipes.emergent.host';
-  }
-  
-  // If on custom domain (slushbook.itopgaver.dk), use production backend
-  if (hostname === 'slushbook.itopgaver.dk') {
-    return 'https://slushice-recipes.emergent.host';
-  }
-  
-  // If on preview domain, use preview backend
-  if (hostname === 'flavor-sync.preview.emergentagent.com') {
-    return 'https://icepro-debug.preview.emergentagent.com';
-  }
-  
-  // Fallback to env variable or preview
-  return process.env.REACT_APP_BACKEND_URL || 'https://icepro-debug.preview.emergentagent.com';
-};
-
-const BACKEND_URL = getBackendUrl();
+// Use backend URL from environment variable
+// This is set during build and configured per environment
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://slushice-recipes.emergent.host';
 export const API = `${BACKEND_URL}/api`;
 
 console.log('[App] Backend URL:', BACKEND_URL);
