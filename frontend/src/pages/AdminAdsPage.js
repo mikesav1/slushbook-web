@@ -55,17 +55,37 @@ const AdminAdsPage = () => {
     e.preventDefault();
     
     try {
+      setUploading(true);
+      
+      // Upload image first if file is selected
+      let imageUrl = formData.image;
+      if (imageFile) {
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', imageFile);
+        
+        const uploadResponse = await axios.post(`${API}/upload`, uploadFormData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        
+        imageUrl = uploadResponse.data.url;
+      }
+      
       const sessionToken = localStorage.getItem('session_token');
       const config = {
         withCredentials: true,
         headers: sessionToken ? { 'Authorization': `Bearer ${sessionToken}` } : {}
       };
 
+      const adData = {
+        ...formData,
+        image: imageUrl
+      };
+
       if (editingAd) {
-        await axios.put(`${API}/admin/ads/${editingAd.id}`, formData, config);
+        await axios.put(`${API}/admin/ads/${editingAd.id}`, adData, config);
         toast.success('Reklame opdateret!');
       } else {
-        await axios.post(`${API}/admin/ads`, formData, config);
+        await axios.post(`${API}/admin/ads`, adData, config);
         toast.success('Reklame oprettet!');
       }
 
@@ -76,6 +96,8 @@ const AdminAdsPage = () => {
     } catch (error) {
       console.error('Error saving ad:', error);
       toast.error('Kunne ikke gemme reklame');
+    } finally {
+      setUploading(false);
     }
   };
 
