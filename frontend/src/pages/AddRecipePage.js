@@ -566,7 +566,14 @@ const AddRecipePage = ({ sessionId }) => {
             </div>
             <button
               type="button"
-              onClick={() => setRecipe({...recipe, is_published: !recipe.is_published})}
+              onClick={() => {
+                const newPublishedState = !recipe.is_published;
+                setRecipe({...recipe, is_published: newPublishedState});
+                // Reset confirmation when toggling off
+                if (!newPublishedState) {
+                  setImageRightsConfirmed(false);
+                }
+              }}
               className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors ${
                 recipe.is_published ? 'bg-green-500' : 'bg-gray-300'
               }`}
@@ -579,9 +586,17 @@ const AddRecipePage = ({ sessionId }) => {
             </button>
           </div>
           
-          {/* Copyright Confirmation for Public Recipes */}
-          {recipe.is_published && imageFile && (
+          {/* Copyright Confirmation for ALL Public Recipes */}
+          {recipe.is_published && (
             <div className="mt-4 pt-4 border-t border-gray-200">
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+                <p className="text-sm text-amber-800 mb-2">
+                  ⚠️ <strong>Vigtigt:</strong> Ved at gøre denne opskrift offentlig, deler du den med alle brugere.
+                </p>
+                <p className="text-xs text-amber-700">
+                  Hvis du har uploadet et billede, skal du sikre dig at du har rettighederne til det.
+                </p>
+              </div>
               <label className="flex items-start gap-3 cursor-pointer">
                 <input
                   type="checkbox"
@@ -590,8 +605,8 @@ const AddRecipePage = ({ sessionId }) => {
                   className="mt-1 w-4 h-4 text-cyan-600 rounded focus:ring-cyan-500"
                 />
                 <span className="text-sm text-gray-700">
-                  Jeg bekræfter at jeg har rettighederne til det uploadede billede, og at det er lovligt at dele offentligt. 
-                  <span className="text-red-600">*</span>
+                  Jeg bekræfter at jeg har rettighederne til alt indhold (inkl. billeder) i denne opskrift, 
+                  og at det er lovligt at dele offentligt. <span className="text-red-600">*</span>
                 </span>
               </label>
             </div>
@@ -609,7 +624,7 @@ const AddRecipePage = ({ sessionId }) => {
           </Button>
           <Button
             type="submit"
-            disabled={loading || (recipe.is_published && imageFile && !imageRightsConfirmed)}
+            disabled={loading || (recipe.is_published && !imageRightsConfirmed)}
             data-testid="submit-recipe"
             className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700"
           >
