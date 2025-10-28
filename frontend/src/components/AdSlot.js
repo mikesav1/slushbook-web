@@ -84,46 +84,80 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
 
   // Different styles based on placement
   const placementStyles = {
-    bottom_banner: 'w-full max-w-4xl mx-auto my-8',
+    bottom_banner: 'fixed bottom-0 left-0 right-0 z-40 shadow-lg',
     recipe_list: 'w-full my-4',
     homepage_hero: 'w-full max-w-6xl mx-auto my-6',
     sidebar: 'w-full'
   };
 
+  const isBottomBanner = placement === 'bottom_banner';
+
   return (
-    <div className={`${placementStyles[placement]} relative group`}>
+    <div className={`${placementStyles[placement]} ${isBottomBanner ? 'bg-white' : 'relative group'}`}>
       {/* Sponsored Label */}
-      <div className="text-xs text-gray-400 mb-1 text-center">
-        Sponsoreret
-      </div>
+      {!isBottomBanner && (
+        <div className="text-xs text-gray-400 mb-1 text-center">
+          Sponsoreret
+        </div>
+      )}
 
-      {/* Ad Content - using <a> tag for better mobile support */}
-      <a
-        href={ad.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={handleClick}
-        className="block cursor-pointer rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow bg-white border border-gray-200 active:scale-[0.98] transition-transform"
-      >
-        {/* Image */}
-        <img
-          src={ad.image}
-          alt={ad.title || 'Reklame'}
-          className="w-full h-auto object-cover"
-        />
+      {/* Ad Content Container */}
+      <div className={`${isBottomBanner ? 'max-w-7xl mx-auto px-4 py-2' : ''}`}>
+        {/* Close button for bottom banner */}
+        {isBottomBanner && (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              setAd(null);
+            }}
+            className="absolute top-2 right-2 z-50 bg-gray-800 bg-opacity-70 text-white rounded-full p-1 hover:bg-opacity-90"
+            aria-label="Luk reklame"
+          >
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </button>
+        )}
 
-        {/* Optional Title/Description */}
-        {(ad.title || ad.description) && (
-          <div className="p-4">
-            {ad.title && (
-              <h3 className="font-semibold text-gray-800 mb-1">{ad.title}</h3>
-            )}
-            {ad.description && (
-              <p className="text-sm text-gray-600">{ad.description}</p>
-            )}
+        {/* Sponsored label for bottom banner */}
+        {isBottomBanner && (
+          <div className="text-xs text-gray-400 mb-1 text-center">
+            Sponsoreret
           </div>
         )}
-      </a>
+
+        {/* Ad Content - using <a> tag for better mobile support */}
+        <a
+          href={ad.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={handleClick}
+          className={`block cursor-pointer rounded-lg overflow-hidden ${
+            isBottomBanner 
+              ? 'shadow-md' 
+              : 'shadow-md hover:shadow-lg transition-shadow'
+          } bg-white border border-gray-200 active:scale-[0.98] transition-transform`}
+        >
+          {/* Image */}
+          <img
+            src={ad.image}
+            alt={ad.title || 'Reklame'}
+            className={`w-full h-auto object-cover ${isBottomBanner ? 'max-h-20' : ''}`}
+          />
+
+          {/* Optional Title/Description (only for non-bottom banners) */}
+          {!isBottomBanner && (ad.title || ad.description) && (
+            <div className="p-4">
+              {ad.title && (
+                <h3 className="font-semibold text-gray-800 mb-1">{ad.title}</h3>
+              )}
+              {ad.description && (
+                <p className="text-sm text-gray-600">{ad.description}</p>
+              )}
+            </div>
+          )}
+        </a>
+      </div>
     </div>
   );
 };
