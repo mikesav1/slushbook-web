@@ -531,7 +531,7 @@ const EditRecipePage = ({ sessionId }) => {
 
         {/* Publish Toggle */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex-1">
               <h3 className="text-lg font-bold text-gray-800 mb-1">
                 {recipe.is_published ? '🌍 Offentlig opskrift' : '🔒 Privat opskrift'}
@@ -556,6 +556,24 @@ const EditRecipePage = ({ sessionId }) => {
               />
             </button>
           </div>
+          
+          {/* Copyright Confirmation for Public Recipes */}
+          {recipe.is_published && imageFile && (
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <label className="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={imageRightsConfirmed}
+                  onChange={(e) => setImageRightsConfirmed(e.target.checked)}
+                  className="mt-1 w-4 h-4 text-cyan-600 rounded focus:ring-cyan-500"
+                />
+                <span className="text-sm text-gray-700">
+                  Jeg bekræfter at jeg har rettighederne til det uploadede billede, og at det er lovligt at dele offentligt. 
+                  <span className="text-red-600">*</span>
+                </span>
+              </label>
+            </div>
+          )}
         </div>
 
         {/* Submit */}
@@ -569,7 +587,7 @@ const EditRecipePage = ({ sessionId }) => {
           </Button>
           <Button
             type="submit"
-            disabled={saving}
+            disabled={saving || (recipe.is_published && imageFile && !imageRightsConfirmed)}
             className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700"
           >
             {saving ? 'Gemmer...' : 'Gem Ændringer'}
