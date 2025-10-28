@@ -189,7 +189,7 @@ const EditRecipePage = ({ sessionId }) => {
         }))
       });
       toast.success('Opskrift opdateret!');
-      navigate(`/recipe/${id}`);
+      navigate(`/recipes/${id}`);
     } catch (error) {
       console.error('Error updating recipe:', error);
       toast.error('Kunne ikke opdatere opskrift');
