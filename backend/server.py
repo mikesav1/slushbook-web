@@ -2630,6 +2630,118 @@ async def redirect_proxy(path: str, request: Request):
         logger.error(f"Proxy error: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
 
+
+# ==========================================
+# ADVERTISEMENT ENDPOINTS
+# ==========================================
+
+@api_router.get("/ads")
+async def get_ads(country: Optional[str] = None, placement: Optional[str] = None):
+    """Get active ads for guests, optionally filtered by country and placement"""
+    query = {"active": True}
+    
+    if country:
+        query["country"] = country
+    if placement:
+        query["placement"] = placement
+    
+    ads = await db.ads.find(query).to_list(length=None)
+    
+    # Convert ObjectId to string and increment impressions
+    for ad in ads:
+        ad["_id"] = str(ad["_id"])
+        # Increment impression count
+        await db.ads.update_one(
+            {"id": ad["id"]},
+            {"$inc": {"impressions": 1}}
+        )
+    
+    return ads
+
+
+@api_router.post("/ads/{ad_id}/click")
+async def track_ad_click(ad_id: str):
+    """Track ad click for analytics"""
+    result = await db.ads.update_one(
+        {"id": ad_id},
+        {"$inc": {"clicks": 1}}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Ad not found")
+    
+    return {"message": "Click tracked"}
+
+
+@api_router.get("/admin/ads")
+async def get_all_ads(request: Request):
+    """Get all ads (admin only)"""
+    user = await get_current_user(request, None, db)
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Kun admin har adgang")
+    
+    ads = await db.ads.find({}).sort("created_at", -1).to_list(length=None)
+    
+    for ad in ads:
+        ad["_id"] = str(ad["_id"])
+    
+    return ads
+
+
+@api_router.post("/admin/ads")
+async def create_ad(ad_data: AdCreate, request: Request):
+    """Create new ad (admin only)"""
+    user = await get_current_user(request, None, db)
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Kun admin har adgang")
+    
+    ad = Advertisement(
+        **ad_data.dict(),
+        created_at=datetime.now(timezone.utc),
+        updated_at=datetime.now(timezone.utc)
+    )
+    
+    await db.ads.insert_one(ad.dict())
+    
+    return {"message": "Reklame oprettet", "id": ad.id}
+
+
+@api_router.put("/admin/ads/{ad_id}")
+async def update_ad(ad_id: str, ad_data: AdUpdate, request: Request):
+    """Update ad (admin only)"""
+    user = await get_current_user(request, None, db)
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Kun admin har adgang")
+    
+    update_data = {k: v for k, v in ad_data.dict().items() if v is not None}
+    update_data["updated_at"] = datetime.now(timezone.utc)
+    
+    result = await db.ads.update_one(
+        {"id": ad_id},
+        {"$set": update_data}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Reklame ikke fundet")
+    
+    return {"message": "Reklame opdateret"}
+
+
+@api_router.delete("/admin/ads/{ad_id}")
+async def delete_ad(ad_id: str, request: Request):
+    """Delete ad (admin only)"""
+    user = await get_current_user(request, None, db)
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Kun admin har adgang")
+    
+    result = await db.ads.delete_one({"id": ad_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Reklame ikke fundet")
+    
+    return {"message": "Reklame slettet"}
+
+
 # Include router
 app.include_router(api_router)
 
