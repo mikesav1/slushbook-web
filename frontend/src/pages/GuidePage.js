@@ -78,6 +78,28 @@ const GuidePage = () => {
               <p>
                 Gratis brugere kan tilføje op til 2 opskrifter. Pro brugere har ubegrænset adgang.
               </p>
+              
+              {/* Copyright Notice */}
+              <div className="mt-4 bg-amber-50 border-l-4 border-amber-400 p-4 rounded">
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">⚠️</span>
+                  <div>
+                    <h4 className="font-bold text-amber-900 mb-2">Vigtigt om billeder og copyright</h4>
+                    <p className="text-sm text-amber-800 mb-2">
+                      Når du uploader billeder til dine opskrifter, skal du være opmærksom på følgende:
+                    </p>
+                    <ul className="list-disc pl-5 text-sm text-amber-800 space-y-1">
+                      <li><strong>Brug kun egne billeder</strong> eller billeder du har rettighederne til</li>
+                      <li>Du må <strong>ikke</strong> uploade billeder fra internettet uden tilladelse fra rettighedshaveren</li>
+                      <li>Når du gør en opskrift <strong>offentlig</strong>, skal du bekræfte at du har rettighederne til billedet</li>
+                      <li>Private opskrifter kræver ingen særlig bekræftelse</li>
+                    </ul>
+                    <p className="text-xs text-amber-700 mt-3 italic">
+                      Ved at dele opskrifter med egne billeder beskytter du både dig selv og SLUSHBOOK mod copyright-krænkelser.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
