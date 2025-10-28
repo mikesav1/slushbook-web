@@ -535,7 +535,7 @@ const AdminAdsPage = () => {
               <div className="flex gap-3 pt-4">
                 <button
                   type="submit"
-                  disabled={uploading || (!imageFile && !formData.image)}
+                  disabled={uploading}
                   className="flex-1 px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg hover:from-cyan-600 hover:to-cyan-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {uploading ? 'Uploader...' : editingAd ? 'Gem Ændringer' : 'Opret Reklame'}
