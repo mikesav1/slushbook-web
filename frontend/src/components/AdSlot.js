@@ -26,10 +26,10 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
 
     fetchAds();
     
-    // Rotate ads every 30 seconds
+    // Rotate ads every 15 seconds
     const rotationInterval = setInterval(() => {
       rotateAd();
-    }, 30000); // 30 seconds
+    }, 15000); // 15 seconds
 
     return () => clearInterval(rotationInterval);
   }, [user, placement]);
