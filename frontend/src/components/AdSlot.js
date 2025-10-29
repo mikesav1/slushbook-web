@@ -146,7 +146,7 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
           <img
             src={ad.image}
             alt={ad.title || 'Reklame'}
-            className={`w-full h-auto object-cover ${isBottomBanner ? 'max-h-32' : ''}`}
+            className={`w-full h-auto object-cover ${isBottomBanner ? 'max-h-32 md:max-h-40 lg:max-h-48' : ''}`}
           />
 
           {/* Optional Title/Description (only for non-bottom banners) */}
