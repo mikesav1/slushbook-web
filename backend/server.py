@@ -14,6 +14,9 @@ from datetime import datetime, timezone, timedelta
 import shutil
 import httpx
 import subprocess
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Import auth module
 from auth import (
@@ -26,6 +29,16 @@ from auth import (
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
+
+# Configure Cloudinary
+cloudinary.config(
+    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.environ.get('CLOUDINARY_API_KEY'),
+    api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
+    secure=True  # Use HTTPS URLs
+)
+
+print(f"[INFO] Cloudinary configured: {os.environ.get('CLOUDINARY_CLOUD_NAME')}")
 
 # Debug CORS configuration
 cors_origins_str = os.environ.get('CORS_ORIGINS', '*')
