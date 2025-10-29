@@ -10,7 +10,7 @@ import time
 from datetime import datetime
 
 # Configuration
-BASE_URL = "https://slushbar.preview.emergentagent.com/api"
+BASE_URL = "https://responsive-ads.preview.emergentagent.com/api"
 
 def log(message):
     print(f"[{datetime.now().strftime('%H:%M:%S')}] {message}")
