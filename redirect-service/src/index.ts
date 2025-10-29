@@ -11,7 +11,9 @@ import { initDb, getDb } from './db';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || 'http://localhost:3000';
+const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || '*';  // Allow all origins if not specified
+
+console.log(`[Redirect Service] PORT: ${PORT}, ALLOWED_ORIGIN: ${ALLOWED_ORIGIN}`);
 
 // Middleware
 app.use(express.json());
