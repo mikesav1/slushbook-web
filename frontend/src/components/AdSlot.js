@@ -123,17 +123,16 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
   const isBottomBanner = placement === 'bottom_banner';
 
   return (
-    <div className={`${placementStyles[placement]} ${isBottomBanner ? '' : 'relative group'}`}>
-      {/* Ad Content Container - Full width with background */}
-      <div 
-        className={`${isBottomBanner ? 'w-full' : ''} relative`}
-        style={{
-          backgroundImage: 'url(/ad-background.jpeg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          minHeight: isBottomBanner ? '128px' : 'auto'
-        }}
-      >
+    <div 
+      className={`${placementStyles[placement]} ${isBottomBanner ? '' : 'relative group'}`}
+      style={isBottomBanner ? {
+        backgroundImage: 'url(/ad-background.jpeg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      } : {}}
+    >
+      {/* Ad Content Container */}
+      <div className={`${isBottomBanner ? 'max-w-7xl mx-auto px-4 py-2' : ''} relative`}>
         {/* Next Ad Button - Only show if multiple ads available */}
         {availableAds.length > 1 && isBottomBanner && (
           <button
@@ -141,7 +140,7 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
               e.preventDefault();
               rotateAd();
             }}
-            className="absolute right-4 top-4 z-10 bg-white/90 hover:bg-white text-gray-600 hover:text-gray-800 rounded-full p-2 shadow-md transition-all active:scale-95"
+            className="absolute right-6 top-3 z-10 bg-white/90 hover:bg-white text-gray-600 hover:text-gray-800 rounded-full p-2 shadow-md transition-all active:scale-95"
             title="Næste reklame"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -156,11 +155,11 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
           target="_blank"
           rel="noopener noreferrer"
           onClick={handleClick}
-          className={`block cursor-pointer overflow-hidden ${
+          className={`block cursor-pointer rounded-lg overflow-hidden ${
             isBottomBanner 
-              ? '' 
-              : 'rounded-lg shadow-md hover:shadow-lg transition-shadow'
-          } active:scale-[0.98] transition-transform`}
+              ? 'shadow-md' 
+              : 'shadow-md hover:shadow-lg transition-shadow'
+          } bg-white border border-gray-200 active:scale-[0.98] transition-transform`}
         >
           {/* Image - Full width */}
           <img
