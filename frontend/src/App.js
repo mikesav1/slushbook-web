@@ -270,7 +270,7 @@ const Navigation = () => {
                 </Link>
                 
                 <Link
-                  to="/recipes?filter=favorites"
+                  to="/favorites"
                   onClick={() => setIsUserMenuOpen(false)}
                   className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
                 >
