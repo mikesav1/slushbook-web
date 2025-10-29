@@ -54,6 +54,12 @@ const AdminAdsPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Validate that either a file is selected or URL is provided
+    if (!imageFile && !formData.image) {
+      toast.error('Vælg venligst et billede eller indtast en URL');
+      return;
+    }
+    
     try {
       setUploading(true);
       
@@ -95,7 +101,7 @@ const AdminAdsPage = () => {
       fetchAds();
     } catch (error) {
       console.error('Error saving ad:', error);
-      toast.error('Kunne ikke gemme reklame');
+      toast.error(error.response?.data?.detail || 'Kunne ikke gemme reklame');
     } finally {
       setUploading(false);
     }
