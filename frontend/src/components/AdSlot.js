@@ -72,10 +72,44 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
       });
 
       if (response.data && response.data.length > 0) {
-        setAvailableAds(response.data);
-        // Pick random ad initially
-        const randomAd = response.data[Math.floor(Math.random() * response.data.length)];
-        setAd(randomAd);
+        console.log(`Fetched ${response.data.length} ads for placement: ${placement}`);
+        
+        // Preload images to catch errors early
+        const adsWithValidImages = await Promise.all(
+          response.data.map(async (ad) => {
+            return new Promise((resolve) => {
+              const img = new Image();
+              img.onload = () => {
+                console.log('✓ Ad image loaded:', ad.title, ad.image);
+                resolve(ad);
+              };
+              img.onerror = () => {
+                console.error('✗ Ad image failed:', ad.title, ad.image);
+                // Still include ad, but mark for fallback
+                ad._imageError = true;
+                resolve(ad);
+              };
+              img.src = ad.image;
+              
+              // Timeout after 5 seconds
+              setTimeout(() => {
+                if (!img.complete) {
+                  console.warn('⏱ Ad image timeout:', ad.title, ad.image);
+                  ad._imageError = true;
+                  resolve(ad);
+                }
+              }, 5000);
+            });
+          })
+        );
+        
+        setAvailableAds(adsWithValidImages);
+        
+        // Set initial ad (prefer one without image errors)
+        const goodAd = adsWithValidImages.find(a => !a._imageError) || adsWithValidImages[0];
+        setAd(goodAd);
+      } else {
+        console.log('No ads available for placement:', placement);
       }
     } catch (error) {
       console.error('Error fetching ad:', error);
