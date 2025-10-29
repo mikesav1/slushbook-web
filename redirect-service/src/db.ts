@@ -41,7 +41,9 @@ export const initDb = async (): Promise<Db> => {
   const mappingCount = await db.collection('redirect_mappings').countDocuments();
   const optionCount = await db.collection('redirect_options').countDocuments();
   
-  if (mappingCount === 0 && optionCount === 0) {
+  console.log(`Database seed check - mappings: ${mappingCount}, options: ${optionCount}`);
+  
+  if (mappingCount === 0 || optionCount === 0) {
     try {
       const fs = require('fs');
       const path = require('path');
