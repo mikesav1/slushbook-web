@@ -169,6 +169,17 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
             alt={ad.title || 'Reklame'}
             className={`w-full h-auto object-cover ${isBottomBanner ? 'max-h-32 md:max-h-40 lg:max-h-48' : ''}`}
             style={{ display: 'block' }}
+            onError={(e) => {
+              console.error('Ad image failed to load:', ad.image);
+              e.target.style.display = 'none';
+              // Show fallback
+              const fallback = document.createElement('div');
+              fallback.className = 'w-full h-32 bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white';
+              fallback.textContent = ad.title || 'Reklame';
+              e.target.parentNode.appendChild(fallback);
+            }}
+            loading="eager"
+            crossOrigin="anonymous"
           />
 
           {/* Optional Title/Description (only for non-bottom banners) */}
