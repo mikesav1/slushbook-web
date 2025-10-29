@@ -125,7 +125,23 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
   return (
     <div className={`${placementStyles[placement]} ${isBottomBanner ? 'bg-white' : 'relative group'}`}>
       {/* Ad Content Container */}
-      <div className={`${isBottomBanner ? 'max-w-7xl mx-auto px-4 py-2' : ''}`}>
+      <div className={`${isBottomBanner ? 'max-w-7xl mx-auto px-4 py-2' : ''} relative`}>
+        {/* Next Ad Button - Only show if multiple ads available */}
+        {availableAds.length > 1 && isBottomBanner && (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              rotateAd();
+            }}
+            className="absolute right-2 top-2 z-10 bg-white/90 hover:bg-white text-gray-600 hover:text-gray-800 rounded-full p-2 shadow-md transition-all active:scale-95"
+            title="Næste reklame"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        )}
+
         {/* Ad Content - using <a> tag for better mobile support */}
         <a
           href={ad.link}
