@@ -2117,19 +2117,46 @@ async def track_product_click(product_id: str):
 # Image upload
 @api_router.post("/upload")
 async def upload_image(file: UploadFile = File(...)):
+    """Upload image to Cloudinary cloud storage"""
     if not file.content_type or not file.content_type.startswith('image/'):
         raise HTTPException(status_code=400, detail="Only images allowed")
     
-    # Generate unique filename
-    ext = file.filename.split('.')[-1] if '.' in file.filename else 'jpg'
-    filename = f"{uuid.uuid4()}.{ext}"
-    file_path = UPLOADS_DIR / filename
-    
-    # Save file
-    with open(file_path, 'wb') as f:
-        shutil.copyfileobj(file.file, f)
-    
-    return {"url": f"/api/images/{filename}", "image_url": f"/api/images/{filename}"}
+    try:
+        # Read file content
+        file_content = await file.read()
+        
+        # Validate file size (5MB limit)
+        MAX_FILE_SIZE = 5 * 1024 * 1024
+        if len(file_content) > MAX_FILE_SIZE:
+            raise HTTPException(
+                status_code=413,
+                detail=f"File size exceeds maximum allowed size of {MAX_FILE_SIZE / 1024 / 1024}MB"
+            )
+        
+        # Upload to Cloudinary
+        result = cloudinary.uploader.upload(
+            file_content,
+            folder="slushbook/advertisements",  # Organize in folder
+            resource_type="auto",  # Auto-detect image type
+            quality="auto",  # Optimize quality
+        )
+        
+        return {
+            "url": result.get("secure_url"),  # HTTPS URL
+            "image_url": result.get("secure_url"),  # For backwards compatibility
+            "public_id": result.get("public_id"),  # For future deletion
+            "width": result.get("width"),
+            "height": result.get("height"),
+            "format": result.get("format"),
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to upload image: {str(e)}"
+        )
 
 @api_router.get("/images/{filename}")
 async def get_image(filename: str):
