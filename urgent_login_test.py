@@ -8,7 +8,7 @@ import json
 from datetime import datetime
 
 # Configuration
-BASE_URL = "https://icepro-debug.preview.emergentagent.com/api"
+BASE_URL = "https://slushbar.preview.emergentagent.com/api"
 
 def log(message):
     print(f"[{datetime.now().strftime('%H:%M:%S')}] {message}")
