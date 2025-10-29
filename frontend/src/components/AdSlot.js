@@ -36,18 +36,26 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
 
     // Rotate ads every 15 seconds
     const rotationInterval = setInterval(() => {
-      setAd(currentAd => {
-        if (availableAds.length > 1) {
-          // Pick a different ad than current
-          const otherAds = availableAds.filter(a => a.id !== currentAd?.id);
-          if (otherAds.length > 0) {
-            const newAd = otherAds[Math.floor(Math.random() * otherAds.length)];
-            console.log('Rotating ad:', newAd.title || newAd.id);
-            return newAd;
+      setAnimating(true); // Start zoom animation
+      
+      setTimeout(() => {
+        setAd(currentAd => {
+          if (availableAds.length > 1) {
+            // Pick a different ad than current
+            const otherAds = availableAds.filter(a => a.id !== currentAd?.id);
+            if (otherAds.length > 0) {
+              const newAd = otherAds[Math.floor(Math.random() * otherAds.length)];
+              console.log('Rotating ad:', newAd.title || newAd.id);
+              return newAd;
+            }
           }
-        }
-        return currentAd;
-      });
+          return currentAd;
+        });
+        
+        // Reset animation after ad changes
+        setTimeout(() => setAnimating(false), 50);
+      }, 300); // Brief delay before changing ad
+      
     }, 15000); // 15 seconds
 
     return () => clearInterval(rotationInterval);
