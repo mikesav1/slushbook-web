@@ -125,7 +125,14 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
   return (
     <div className={`${placementStyles[placement]} ${isBottomBanner ? 'bg-white' : 'relative group'}`}>
       {/* Ad Content Container */}
-      <div className={`${isBottomBanner ? 'max-w-7xl mx-auto px-4 py-2' : ''} relative`}>
+      <div 
+        className={`${isBottomBanner ? 'max-w-7xl mx-auto px-4 py-2' : ''} relative`}
+        style={{
+          backgroundImage: 'url(/ad-background.jpeg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      >
         {/* Next Ad Button - Only show if multiple ads available */}
         {availableAds.length > 1 && isBottomBanner && (
           <button
@@ -152,7 +159,7 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
             isBottomBanner 
               ? 'shadow-md' 
               : 'shadow-md hover:shadow-lg transition-shadow'
-          } bg-white border border-gray-200 active:scale-[0.98] transition-transform`}
+          } bg-transparent border border-white/30 active:scale-[0.98] transition-transform`}
         >
           {/* Image */}
           <img
@@ -163,7 +170,7 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
 
           {/* Optional Title/Description (only for non-bottom banners) */}
           {!isBottomBanner && (ad.title || ad.description) && (
-            <div className="p-4">
+            <div className="p-4 bg-white/90">
               {ad.title && (
                 <h3 className="font-semibold text-gray-800 mb-1">{ad.title}</h3>
               )}
