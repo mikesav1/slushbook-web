@@ -28,7 +28,8 @@ IMAGE_UPDATES = {
 async def fix_images():
     mongo_url = os.getenv('MONGO_URL', 'mongodb://localhost:27017')
     client = AsyncIOMotorClient(mongo_url)
-    db = client['test_database']
+    db_name = os.getenv('DB_NAME', 'test_database')
+    db = client[db_name]
     
     print("🔄 Starting image fix...\n")
     print("="*80)
