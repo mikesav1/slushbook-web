@@ -434,6 +434,12 @@ const AdminAdsPage = () => {
                     placeholder="https://example.com/ad.jpg"
                     className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                   />
+                  <p className="mt-2 text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded p-2">
+                    ⚠️ <strong>Vigtigt:</strong> Uploadede billeder forsvinder ved deployment. Brug i stedet direkte URL til billeder hostet på:<br/>
+                    • Imgur (imgur.com/upload)<br/>
+                    • ImgBB (imgbb.com)<br/>
+                    • Eller dit eget website
+                  </p>
                 </div>
               </div>
 
