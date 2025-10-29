@@ -130,6 +130,8 @@ const SettingsPage = ({ sessionId }) => {
     { name: 'SPM Pictor 12L', volumes: [12000] },
     { name: 'SPM Pictor 2x12L', volumes: [12000, 12000] },
     { name: 'UGOLINI 10L', volumes: [10000] },
+    { name: 'Ninja', volumes: [1890] },
+    { name: 'Casper Sobzyk', volumes: [3000] },
     { name: 'Custom 6L', volumes: [6000] }
   ];
 
