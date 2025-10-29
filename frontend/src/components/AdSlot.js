@@ -123,14 +123,15 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
   const isBottomBanner = placement === 'bottom_banner';
 
   return (
-    <div className={`${placementStyles[placement]} ${isBottomBanner ? 'bg-white' : 'relative group'}`}>
-      {/* Ad Content Container */}
+    <div className={`${placementStyles[placement]} ${isBottomBanner ? '' : 'relative group'}`}>
+      {/* Ad Content Container - Full width with background */}
       <div 
-        className={`${isBottomBanner ? 'max-w-7xl mx-auto px-4 py-2' : ''} relative`}
+        className={`${isBottomBanner ? 'w-full' : ''} relative`}
         style={{
           backgroundImage: 'url(/ad-background.jpeg)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center'
+          backgroundPosition: 'center',
+          minHeight: isBottomBanner ? '128px' : 'auto'
         }}
       >
         {/* Next Ad Button - Only show if multiple ads available */}
@@ -140,7 +141,7 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
               e.preventDefault();
               rotateAd();
             }}
-            className="absolute right-2 top-2 z-10 bg-white/90 hover:bg-white text-gray-600 hover:text-gray-800 rounded-full p-2 shadow-md transition-all active:scale-95"
+            className="absolute right-4 top-4 z-10 bg-white/90 hover:bg-white text-gray-600 hover:text-gray-800 rounded-full p-2 shadow-md transition-all active:scale-95"
             title="Næste reklame"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -155,17 +156,18 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
           target="_blank"
           rel="noopener noreferrer"
           onClick={handleClick}
-          className={`block cursor-pointer rounded-lg overflow-hidden ${
+          className={`block cursor-pointer overflow-hidden ${
             isBottomBanner 
-              ? 'shadow-md' 
-              : 'shadow-md hover:shadow-lg transition-shadow'
-          } bg-transparent border border-white/30 active:scale-[0.98] transition-transform`}
+              ? '' 
+              : 'rounded-lg shadow-md hover:shadow-lg transition-shadow'
+          } active:scale-[0.98] transition-transform`}
         >
-          {/* Image */}
+          {/* Image - Full width */}
           <img
             src={ad.image}
             alt={ad.title || 'Reklame'}
             className={`w-full h-auto object-cover ${isBottomBanner ? 'max-h-32 md:max-h-40 lg:max-h-48' : ''}`}
+            style={{ display: 'block' }}
           />
 
           {/* Optional Title/Description (only for non-bottom banners) */}
