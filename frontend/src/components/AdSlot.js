@@ -25,14 +25,32 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
     }
 
     fetchAds();
-    
+  }, [user, placement]);
+
+  // Separate effect for rotation - runs when availableAds change
+  useEffect(() => {
+    if (user || availableAds.length <= 1) {
+      return;
+    }
+
     // Rotate ads every 15 seconds
     const rotationInterval = setInterval(() => {
-      rotateAd();
+      setAd(currentAd => {
+        if (availableAds.length > 1) {
+          // Pick a different ad than current
+          const otherAds = availableAds.filter(a => a.id !== currentAd?.id);
+          if (otherAds.length > 0) {
+            const newAd = otherAds[Math.floor(Math.random() * otherAds.length)];
+            console.log('Rotating ad:', newAd.title || newAd.id);
+            return newAd;
+          }
+        }
+        return currentAd;
+      });
     }, 15000); // 15 seconds
 
     return () => clearInterval(rotationInterval);
-  }, [user, placement]);
+  }, [user, availableAds]);
 
   // Rotate ad on navigation/location change
   useEffect(() => {
