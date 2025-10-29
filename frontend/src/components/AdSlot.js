@@ -204,7 +204,13 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
             isBottomBanner 
               ? 'shadow-md' 
               : 'shadow-md hover:shadow-lg transition-shadow'
-          } bg-white border border-gray-200 active:scale-[0.98] transition-transform`}
+          } bg-white border border-gray-200 active:scale-[0.98] ${
+            animating ? 'animate-zoom-in' : ''
+          }`}
+          style={{
+            transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            transform: animating ? 'scale(0)' : 'scale(1)'
+          }}
         >
           {/* Image - Full width with better error handling */}
           {!ad._imageError ? (
