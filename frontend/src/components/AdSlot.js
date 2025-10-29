@@ -2,14 +2,17 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API } from '../App';
 import { useAuth } from '../context/AuthContext';
+import { useLocation } from 'react-router-dom';
 
 /**
  * AdSlot Component
  * Displays advertisements only for guest users (not logged in)
  * Supports geo-targeting and different placements
+ * Rotates ads automatically every 30 seconds and on navigation
  */
 const AdSlot = ({ placement = 'bottom_banner' }) => {
   const { user } = useAuth();
+  const location = useLocation(); // Detect navigation changes
   const [ad, setAd] = useState(null);
   const [loading, setLoading] = useState(true);
   const [availableAds, setAvailableAds] = useState([]);
@@ -30,6 +33,13 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
 
     return () => clearInterval(rotationInterval);
   }, [user, placement]);
+
+  // Rotate ad on navigation/location change
+  useEffect(() => {
+    if (!user && availableAds.length > 1) {
+      rotateAd();
+    }
+  }, [location.pathname]);
 
   const fetchAds = async () => {
     try {
