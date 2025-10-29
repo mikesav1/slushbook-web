@@ -26,7 +26,8 @@ const UpgradeModal = ({ isOpen, onClose, reason = 'general' }) => {
   const message = messages[reason] || messages.general;
 
   const handleUpgrade = () => {
-    window.open('https://slushbook.dk/upgrade', '_blank');
+    const upgradeUrl = process.env.REACT_APP_UPGRADE_URL || 'https://slushbook.dk/upgrade';
+    window.open(upgradeUrl, '_blank');
   };
 
   return (
