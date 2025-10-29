@@ -16,6 +16,7 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
   const [ad, setAd] = useState(null);
   const [loading, setLoading] = useState(true);
   const [availableAds, setAvailableAds] = useState([]);
+  const [animating, setAnimating] = useState(false);
 
   useEffect(() => {
     // Don't show ads to logged-in users
