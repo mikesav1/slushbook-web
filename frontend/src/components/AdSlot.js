@@ -197,24 +197,25 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
               : 'shadow-md hover:shadow-lg transition-shadow'
           } bg-white border border-gray-200 active:scale-[0.98] transition-transform`}
         >
-          {/* Image - Full width */}
-          <img
-            src={ad.image}
-            alt={ad.title || 'Reklame'}
-            className={`w-full h-auto object-cover ${isBottomBanner ? 'max-h-32 md:max-h-40 lg:max-h-48' : ''}`}
-            style={{ display: 'block' }}
-            onError={(e) => {
-              console.error('Ad image failed to load:', ad.image);
-              e.target.style.display = 'none';
-              // Show fallback
-              const fallback = document.createElement('div');
-              fallback.className = 'w-full h-32 bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white';
-              fallback.textContent = ad.title || 'Reklame';
-              e.target.parentNode.appendChild(fallback);
-            }}
-            loading="eager"
-            crossOrigin="anonymous"
-          />
+          {/* Image - Full width with better error handling */}
+          {!ad._imageError ? (
+            <img
+              src={ad.image}
+              alt={ad.title || 'Reklame'}
+              className={`w-full h-auto object-cover ${isBottomBanner ? 'max-h-32 md:max-h-40 lg:max-h-48' : ''}`}
+              style={{ display: 'block' }}
+              onError={(e) => {
+                console.error('Ad image failed to load during display:', ad.image);
+                e.target.style.display = 'none';
+              }}
+              loading="eager"
+            />
+          ) : (
+            // Fallback for failed images
+            <div className={`w-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white font-semibold ${isBottomBanner ? 'h-32 md:h-40 lg:h-48' : 'h-48'}`}>
+              {ad.title || 'Reklame'}
+            </div>
+          )}
 
           {/* Optional Title/Description (only for non-bottom banners) */}
           {!isBottomBanner && (ad.title || ad.description) && (
