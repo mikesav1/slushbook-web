@@ -114,22 +114,8 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
 
   return (
     <div className={`${placementStyles[placement]} ${isBottomBanner ? 'bg-white' : 'relative group'}`}>
-      {/* Sponsored Label */}
-      {!isBottomBanner && (
-        <div className="text-xs text-gray-400 mb-1 text-center">
-          Sponsoreret
-        </div>
-      )}
-
       {/* Ad Content Container */}
       <div className={`${isBottomBanner ? 'max-w-7xl mx-auto px-4 py-2' : ''}`}>
-        {/* Sponsored label for bottom banner */}
-        {isBottomBanner && (
-          <div className="text-xs text-gray-400 mb-1 text-center">
-            Sponsoreret
-          </div>
-        )}
-
         {/* Ad Content - using <a> tag for better mobile support */}
         <a
           href={ad.link}
