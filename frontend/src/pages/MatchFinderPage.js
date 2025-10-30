@@ -205,27 +205,6 @@ const MatchFinderPage = ({ sessionId }) => {
           )}
         </div>
       )}
-                  <RecipeCard
-                    key={item.recipe.id}
-                    recipe={item.recipe}
-                    sessionId={sessionId}
-                    showMatchInfo={item}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* No matches at all */}
-          {matches.can_make_now?.length === 0 && matches.almost?.length === 0 && matches.need_more?.length === 0 && (
-            <div className="empty-state">
-              <div className="empty-state-icon">🤷</div>
-              <h3 className="text-xl font-bold mb-2">Ingen matches fundet</h3>
-              <p className="text-gray-600">Prøv at tilføje flere ingredienser</p>
-            </div>
-          )}
-        </div>
-      )}
 
       {!matches && !loading && (
         <div className="text-center py-12">
