@@ -1803,20 +1803,19 @@ async def match_recipes(request: MatchRequest):
     # Sort by score
     matches.sort(key=lambda x: x['match']['score'], reverse=True)
     
-    # Categorize
-    can_make = [m for m in matches if m['match']['can_make_now']]
-    almost = [m for m in matches if m['match']['almost']]
-    # Only show "need_more" if user has at least 1 ingredient
-    need_more = [m for m in matches 
-                 if not m['match']['can_make_now'] 
-                 and not m['match']['almost']
-                 and len(m['match']['have']) > 0]  # Must have at least 1 ingredient
+    # Categorize - Show recipes where user has AT LEAST ONE ingredient
+    # Sort by how many ingredients they have (most matches first)
+    recipes_with_matches = [m for m in matches if len(m['match']['have']) > 0]
+    recipes_with_matches.sort(key=lambda x: (len(x['match']['have']), -len(x['match']['missing'])), reverse=True)
+    
+    can_make = [m for m in recipes_with_matches if m['match']['can_make_now']]
+    has_some = [m for m in recipes_with_matches if not m['match']['can_make_now']]
     
     return {
-        "can_make_now": can_make[:10],
-        "almost": almost[:10],
-        "need_more": need_more[:10],
-        "total_matches": len(matches)
+        "can_make_now": can_make[:50],  # Increased limit
+        "almost": has_some[:50],  # These are recipes where user has some ingredients
+        "need_more": [],  # Not used
+        "total_matches": len(recipes_with_matches)
     }
 
 # Scaling
