@@ -210,7 +210,8 @@ const PantryPage = ({ sessionId }) => {
             </form>
           </DialogContent>
         </Dialog>
-      </div>
+            </div>
+          </div>
 
       {/* Quick Add */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
