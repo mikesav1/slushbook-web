@@ -170,12 +170,12 @@ const MatchFinderPage = ({ sessionId }) => {
 
       {matches && (
         <div className="space-y-8">
-          {/* Can Make Now */}
-          {matches.can_make_now && matches.can_make_now.length > 0 && (
+          {/* Can Make Now - ONLY show recipes user can make with their exact ingredients */}
+          {matches.can_make_now && matches.can_make_now.length > 0 ? (
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                <h2 className="text-2xl font-bold">Kan Laves Nu ✓</h2>
+                <h2 className="text-2xl font-bold">Opskrifter du kan lave</h2>
                 <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
                   {matches.can_make_now.length}
                 </span>
@@ -191,43 +191,20 @@ const MatchFinderPage = ({ sessionId }) => {
                 ))}
               </div>
             </div>
-          )}
-
-          {/* Almost */}
-          {matches.almost && matches.almost.length > 0 && (
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                <h2 className="text-2xl font-bold">Næsten I Mål</h2>
-                <span className="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  {matches.almost.length}
-                </span>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                {matches.almost.map((item) => (
-                  <RecipeCard
-                    key={item.recipe.id}
-                    recipe={item.recipe}
-                    sessionId={sessionId}
-                    showMatchInfo={item}
-                  />
-                ))}
-              </div>
+          ) : (
+            <div className="bg-white rounded-2xl p-12 text-center border-2 border-dashed border-gray-200">
+              <div className="text-6xl mb-4">🔍</div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-3">Ingen matches fundet</h3>
+              <p className="text-gray-600 mb-6">
+                Der er ingen opskrifter du kan lave med disse ingredienser.
+              </p>
+              <p className="text-sm text-gray-500">
+                Prøv at tilføje flere ingredienser til dit pantry
+              </p>
             </div>
           )}
-
-          {/* Need More */}
-          {matches.need_more && matches.need_more.length > 0 && (
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                <h2 className="text-2xl font-bold">Behøver Mere</h2>
-                <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  {matches.need_more.length}
-                </span>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                {matches.need_more.slice(0, 10).map((item) => (
+        </div>
+      )}
                   <RecipeCard
                     key={item.recipe.id}
                     recipe={item.recipe}
