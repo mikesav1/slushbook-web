@@ -20,9 +20,21 @@ const MatchFinderPage = ({ sessionId }) => {
   const checkPantry = async () => {
     try {
       const response = await axios.get(`${API}/pantry/${sessionId}`);
+      setPantryItems(response.data);
       setPantryCount(response.data.length);
     } catch (error) {
       console.error('Error checking pantry:', error);
+    }
+  };
+
+  const removeIngredient = async (ingredientId) => {
+    try {
+      await axios.delete(`${API}/pantry/${sessionId}/${ingredientId}`);
+      toast.success('Ingrediens fjernet');
+      checkPantry(); // Refresh
+    } catch (error) {
+      console.error('Error removing ingredient:', error);
+      toast.error('Kunne ikke fjerne ingrediens');
     }
   };
 
