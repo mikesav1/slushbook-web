@@ -147,10 +147,10 @@ const PantryPage = ({ sessionId }) => {
                     <FaPlus className="mr-2" /> Tilføj Ingrediens
                   </Button>
                 </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Tilføj Ingrediens</DialogTitle>
-            </DialogHeader>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Tilføj Ingrediens</DialogTitle>
+                  </DialogHeader>
             <form onSubmit={addItem} className="space-y-4">
               <div>
                 <Label>Navn *</Label>
