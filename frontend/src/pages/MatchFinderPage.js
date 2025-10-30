@@ -60,7 +60,11 @@ const MatchFinderPage = ({ sessionId }) => {
         session_id: sessionId
       });
       setMatches(response.data);
-      toast.success('Match fundet!');
+      
+      // Save matches to sessionStorage
+      sessionStorage.setItem(`matches_${sessionId}`, JSON.stringify(response.data));
+      
+      toast.success(`Fandt ${response.data.can_make_now?.length || 0} matches!`);
     } catch (error) {
       console.error('Error finding matches:', error);
       toast.error('Kunne ikke finde matches');
