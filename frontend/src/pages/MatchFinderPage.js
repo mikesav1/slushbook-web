@@ -15,6 +15,16 @@ const MatchFinderPage = ({ sessionId }) => {
 
   useEffect(() => {
     checkPantry();
+    
+    // Restore previous match results if they exist
+    const savedMatches = sessionStorage.getItem(`matches_${sessionId}`);
+    if (savedMatches) {
+      try {
+        setMatches(JSON.parse(savedMatches));
+      } catch (e) {
+        console.error('Error restoring matches:', e);
+      }
+    }
   }, [sessionId]);
 
   const checkPantry = async () => {
