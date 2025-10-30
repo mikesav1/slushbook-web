@@ -68,6 +68,7 @@ const AdminAdsPage = () => {
       if (imageFile) {
         const uploadFormData = new FormData();
         uploadFormData.append('file', imageFile);
+        uploadFormData.append('folder', 'advertisements');  // Store in advertisements folder
         
         const uploadResponse = await axios.post(`${API}/upload`, uploadFormData, {
           headers: { 'Content-Type': 'multipart/form-data' }
