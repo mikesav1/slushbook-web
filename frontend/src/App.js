@@ -370,7 +370,6 @@ const AppContent = ({ sessionId }) => {
   const navItems = [
     { path: "/", icon: FaHome, label: "Hjem" },
     { path: "/recipes", icon: FaBook, label: "Opskrifter" },
-    ...(user ? [{ path: "/pantry", icon: FaBoxOpen, label: "Ingredienser" }] : []),
     { path: "/match", icon: FaMagic, label: "Match" },
     ...(user ? [{ path: "/shopping", icon: FaShoppingCart, label: "Liste" }] : []),
     ...(user ? [{ path: "/favorites", icon: FaHeart, label: "Favoritter" }] : []),
