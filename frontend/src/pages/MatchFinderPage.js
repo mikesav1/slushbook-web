@@ -56,9 +56,18 @@ const MatchFinderPage = ({ sessionId }) => {
 
     setLoading(true);
     try {
-      const response = await axios.post(`${API}/match`, {
+      // Add cache busting
+      const response = await axios.post(`${API}/match?_t=${Date.now()}`, {
         session_id: sessionId
       });
+      
+      console.log('Match Results:', {
+        can_make: response.data.can_make_now?.length,
+        almost: response.data.almost?.length,
+        need_more: response.data.need_more?.length,
+        pantry_items: pantryItems.map(i => i.ingredient_name)
+      });
+      
       setMatches(response.data);
       
       // Save matches to sessionStorage
