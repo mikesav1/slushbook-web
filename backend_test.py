@@ -5681,22 +5681,21 @@ test,data,here"""
         return True
 
 def main():
-    """Run water filter and admin sandbox tests as requested"""
-    print("🧪 SLUSHBOOK Water Filter & Admin Sandbox Test")
+    """Run advertisement creation endpoint test as requested"""
+    print("🧪 SLUSHBOOK Advertisement Creation Endpoint Test")
     print("=" * 60)
     
-    # Use production environment as specified in review request
-    production_url = "https://slushice-recipes.emergent.host/api"
+    # Use preview environment for testing (has working admin credentials)
+    preview_url = "https://redirect-service-1.preview.emergentagent.com/api"
     
-    print(f"\n🌐 Testing Production Environment: {production_url}")
+    print(f"\n🌐 Testing Preview Environment: {preview_url}")
     print("-" * 60)
     
-    tester = BackendTester(production_url)
+    tester = BackendTester(preview_url)
     
-    # Run specific tests requested in review
+    # Run advertisement creation test as requested in review
     tests = [
-        ("Water Filter Implementation", tester.test_water_filter_implementation),
-        ("Admin Sandbox Count", tester.test_admin_sandbox_count)
+        ("Advertisement Creation Endpoint", tester.test_advertisement_creation_endpoint)
     ]
     
     passed = 0
