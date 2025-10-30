@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 
 const PantryPage = ({ sessionId }) => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [pantryItems, setPantryItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
