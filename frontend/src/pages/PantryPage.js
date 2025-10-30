@@ -76,9 +76,9 @@ const PantryPage = ({ sessionId }) => {
     }
   };
 
-  const deleteItem = async (ingredientName) => {
+  const deleteItem = async (itemId) => {
     try {
-      await axios.delete(`${API}/pantry/${sessionId}/${encodeURIComponent(ingredientName)}`);
+      await axios.delete(`${API}/pantry/${sessionId}/${itemId}`);
       toast.success('Ingrediens fjernet');
       fetchPantry();
     } catch (error) {
