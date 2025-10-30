@@ -1796,7 +1796,11 @@ async def match_recipes(request: MatchRequest):
     # Categorize
     can_make = [m for m in matches if m['match']['can_make_now']]
     almost = [m for m in matches if m['match']['almost']]
-    need_more = [m for m in matches if not m['match']['can_make_now'] and not m['match']['almost']]
+    # Only show "need_more" if user has at least 1 ingredient
+    need_more = [m for m in matches 
+                 if not m['match']['can_make_now'] 
+                 and not m['match']['almost']
+                 and len(m['match']['have']) > 0]  # Must have at least 1 ingredient
     
     return {
         "can_make_now": can_make[:10],
