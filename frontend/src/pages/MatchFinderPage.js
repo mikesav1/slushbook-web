@@ -170,36 +170,62 @@ const MatchFinderPage = ({ sessionId }) => {
 
       {matches && (
         <div className="space-y-8">
-          {/* Can Make Now - ONLY show recipes user can make with their exact ingredients */}
-          {matches.can_make_now && matches.can_make_now.length > 0 ? (
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                <h2 className="text-2xl font-bold">Opskrifter du kan lave</h2>
-                <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  {matches.can_make_now.length}
-                </span>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                {matches.can_make_now.map((item) => (
-                  <RecipeCard
-                    key={item.recipe.id}
-                    recipe={item.recipe}
-                    sessionId={sessionId}
-                    showMatchInfo={item}
-                  />
-                ))}
-              </div>
-            </div>
+          {/* All recipes with user's ingredients - sorted by match count */}
+          {(matches.can_make_now && matches.can_make_now.length > 0) || (matches.almost && matches.almost.length > 0) ? (
+            <>
+              {/* Perfect matches first */}
+              {matches.can_make_now && matches.can_make_now.length > 0 && (
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <h2 className="text-2xl font-bold">Har alle ingredienser ✓</h2>
+                    <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
+                      {matches.can_make_now.length}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                    {matches.can_make_now.map((item) => (
+                      <RecipeCard
+                        key={item.recipe.id}
+                        recipe={item.recipe}
+                        sessionId={sessionId}
+                        showMatchInfo={item}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* Recipes with some ingredients */}
+              {matches.almost && matches.almost.length > 0 && (
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-3 h-3 bg-cyan-500 rounded-full"></div>
+                    <h2 className="text-2xl font-bold">Bruger dine ingredienser</h2>
+                    <span className="bg-cyan-100 text-cyan-700 px-3 py-1 rounded-full text-sm font-semibold">
+                      {matches.almost.length}
+                    </span>
+                  </div>
+                  <p className="text-gray-600 mb-4">Klik på en opskrift for at se hvad du mangler</p>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                    {matches.almost.map((item) => (
+                      <RecipeCard
+                        key={item.recipe.id}
+                        recipe={item.recipe}
+                        sessionId={sessionId}
+                        showMatchInfo={item}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
           ) : (
             <div className="bg-white rounded-2xl p-12 text-center border-2 border-dashed border-gray-200">
               <div className="text-6xl mb-4">🔍</div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-3">Ingen matches fundet</h3>
+              <h3 className="text-2xl font-bold text-gray-800 mb-3">Ingen opskrifter bruger disse ingredienser</h3>
               <p className="text-gray-600 mb-6">
-                Der er ingen opskrifter du kan lave med disse ingredienser.
-              </p>
-              <p className="text-sm text-gray-500">
-                Prøv at tilføje flere ingredienser til dit pantry
+                Prøv at tilføje andre ingredienser til dit pantry
               </p>
             </div>
           )}
