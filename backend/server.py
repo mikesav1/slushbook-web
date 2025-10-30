@@ -1748,11 +1748,11 @@ async def add_pantry_item(item_data: PantryItemCreate):
     
     return item
 
-@api_router.delete("/pantry/{session_id}/{ingredient_name}")
-async def delete_pantry_item(session_id: str, ingredient_name: str):
+@api_router.delete("/pantry/{session_id}/{item_id}")
+async def delete_pantry_item(session_id: str, item_id: str):
     result = await db.user_pantry.delete_one({
         "session_id": session_id,
-        "ingredient_name": ingredient_name
+        "id": item_id
     })
     
     if result.deleted_count == 0:
