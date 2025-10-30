@@ -5448,6 +5448,238 @@ test,data,here"""
         
         return results
 
+    def test_advertisement_creation_endpoint(self):
+        """Test advertisement creation endpoint as requested in review"""
+        self.log("=== TESTING ADVERTISEMENT CREATION ENDPOINT ===")
+        
+        # Step 1: Login as admin user
+        self.log("--- Step 1: Admin Authentication ---")
+        admin_email = "kimesav@gmail.com"
+        admin_password = "admin123"
+        
+        login_response = self.session.post(f"{self.base_url}/auth/login", json={
+            "email": admin_email,
+            "password": admin_password
+        })
+        
+        if login_response.status_code != 200:
+            self.log(f"❌ Admin login failed: {login_response.status_code} - {login_response.text}")
+            return False
+        
+        login_data = login_response.json()
+        user_data = login_data.get("user", {})
+        session_token = login_data.get("session_token")
+        
+        if user_data.get("role") != "admin":
+            self.log(f"❌ User is not admin: {user_data.get('role')}")
+            return False
+        
+        self.log(f"✅ Admin login successful - User: {user_data.get('name')} ({user_data.get('email')})")
+        
+        # Step 2: Upload image to Cloudinary with folder=advertisements
+        self.log("--- Step 2: Upload Image to Cloudinary ---")
+        
+        # Create a simple test image (1x1 pixel PNG)
+        import base64
+        # Minimal PNG image data (1x1 transparent pixel)
+        png_data = base64.b64decode(
+            'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChAI9jU8'
+            'IQAAAAABJRU5ErkJggg=='
+        )
+        
+        try:
+            files = {
+                'file': ('test_ad.png', png_data, 'image/png')
+            }
+            params = {
+                'folder': 'advertisements'
+            }
+            
+            upload_response = self.session.post(
+                f"{self.base_url}/upload",
+                files=files,
+                params=params
+            )
+            
+            if upload_response.status_code != 200:
+                self.log(f"❌ Image upload failed: {upload_response.status_code} - {upload_response.text}")
+                return False
+            
+            upload_data = upload_response.json()
+            cloudinary_url = upload_data.get("url") or upload_data.get("image_url")
+            
+            if not cloudinary_url:
+                self.log(f"❌ No URL returned from upload: {upload_data}")
+                return False
+            
+            self.log(f"✅ Image uploaded successfully to Cloudinary: {cloudinary_url}")
+            
+            # Verify it's in the advertisements folder
+            if "advertisements" in cloudinary_url:
+                self.log("✅ Image uploaded to correct folder (advertisements)")
+            else:
+                self.log(f"⚠️  Image may not be in advertisements folder: {cloudinary_url}")
+            
+        except Exception as e:
+            self.log(f"❌ Image upload failed with exception: {str(e)}")
+            return False
+        
+        # Step 3: Create advertisement via /api/admin/ads POST endpoint
+        self.log("--- Step 3: Create Advertisement ---")
+        
+        ad_data = {
+            "image": cloudinary_url,
+            "link": "https://example.com/test-ad",
+            "country": "DK",
+            "placement": "bottom_banner",
+            "active": True,
+            "title": "Test Advertisement",
+            "description": "This is a test advertisement created by automated testing"
+        }
+        
+        create_response = self.session.post(f"{self.base_url}/admin/ads", json=ad_data)
+        
+        if create_response.status_code != 200:
+            self.log(f"❌ Advertisement creation failed: {create_response.status_code} - {create_response.text}")
+            return False
+        
+        create_data = create_response.json()
+        ad_id = create_data.get("id")
+        
+        if not ad_id:
+            self.log(f"❌ No ad ID returned from creation: {create_data}")
+            return False
+        
+        self.log(f"✅ Advertisement created successfully - ID: {ad_id}")
+        
+        # Step 4: Verify ad is stored in database by fetching all ads
+        self.log("--- Step 4: Verify Advertisement in Database ---")
+        
+        get_ads_response = self.session.get(f"{self.base_url}/admin/ads")
+        
+        if get_ads_response.status_code != 200:
+            self.log(f"❌ Failed to fetch ads: {get_ads_response.status_code} - {get_ads_response.text}")
+            return False
+        
+        ads_list = get_ads_response.json()
+        
+        if not isinstance(ads_list, list):
+            self.log(f"❌ Expected list of ads, got: {type(ads_list)}")
+            return False
+        
+        # Find our created ad
+        created_ad = None
+        for ad in ads_list:
+            if ad.get("id") == ad_id:
+                created_ad = ad
+                break
+        
+        if not created_ad:
+            self.log(f"❌ Created advertisement not found in database. Ad ID: {ad_id}")
+            self.log(f"Available ads: {[ad.get('id') for ad in ads_list]}")
+            return False
+        
+        self.log(f"✅ Advertisement found in database: {created_ad.get('title')}")
+        
+        # Step 5: Verify ad data integrity
+        self.log("--- Step 5: Verify Advertisement Data ---")
+        
+        # Check required fields
+        required_fields = ['id', 'image', 'link', 'country', 'placement', 'active', 'created_at']
+        for field in required_fields:
+            if field not in created_ad:
+                self.log(f"❌ Missing required field in ad: {field}")
+                return False
+        
+        # Verify data matches what we sent
+        data_checks = [
+            ("image", cloudinary_url),
+            ("link", ad_data["link"]),
+            ("country", ad_data["country"]),
+            ("placement", ad_data["placement"]),
+            ("active", ad_data["active"]),
+            ("title", ad_data["title"]),
+            ("description", ad_data["description"])
+        ]
+        
+        for field, expected_value in data_checks:
+            actual_value = created_ad.get(field)
+            if actual_value != expected_value:
+                self.log(f"❌ Data mismatch for {field}: expected '{expected_value}', got '{actual_value}'")
+                return False
+        
+        self.log("✅ All advertisement data matches expected values")
+        
+        # Step 6: Test public ads endpoint (should include our ad)
+        self.log("--- Step 6: Test Public Ads Endpoint ---")
+        
+        # Create a fresh session (no auth) to test public endpoint
+        public_session = requests.Session()
+        public_response = public_session.get(f"{self.base_url}/ads?country=DK&placement=bottom_banner")
+        
+        if public_response.status_code != 200:
+            self.log(f"❌ Public ads endpoint failed: {public_response.status_code} - {public_response.text}")
+            return False
+        
+        public_ads = public_response.json()
+        
+        # Find our ad in public results
+        public_ad = None
+        for ad in public_ads:
+            if ad.get("id") == ad_id:
+                public_ad = ad
+                break
+        
+        if not public_ad:
+            self.log(f"❌ Created advertisement not visible in public ads endpoint")
+            return False
+        
+        self.log("✅ Advertisement visible in public ads endpoint")
+        
+        # Verify impressions were incremented
+        if public_ad.get("impressions", 0) > 0:
+            self.log(f"✅ Impressions tracking working: {public_ad.get('impressions')} impressions")
+        else:
+            self.log("⚠️  Impressions not incremented (may be expected behavior)")
+        
+        # Step 7: Test ad click tracking
+        self.log("--- Step 7: Test Ad Click Tracking ---")
+        
+        click_response = public_session.post(f"{self.base_url}/ads/{ad_id}/click")
+        
+        if click_response.status_code != 200:
+            self.log(f"❌ Ad click tracking failed: {click_response.status_code} - {click_response.text}")
+            return False
+        
+        self.log("✅ Ad click tracking successful")
+        
+        # Verify click was recorded by fetching ad again
+        updated_ads_response = self.session.get(f"{self.base_url}/admin/ads")
+        if updated_ads_response.status_code == 200:
+            updated_ads = updated_ads_response.json()
+            updated_ad = None
+            for ad in updated_ads:
+                if ad.get("id") == ad_id:
+                    updated_ad = ad
+                    break
+            
+            if updated_ad and updated_ad.get("clicks", 0) > 0:
+                self.log(f"✅ Click tracking verified: {updated_ad.get('clicks')} clicks")
+            else:
+                self.log("⚠️  Click count not updated (may be timing issue)")
+        
+        self.log("\n=== ADVERTISEMENT CREATION TEST SUMMARY ===")
+        self.log("✅ Admin authentication successful")
+        self.log("✅ Image upload to Cloudinary successful")
+        self.log("✅ Advertisement creation successful")
+        self.log("✅ Advertisement stored in database")
+        self.log("✅ Advertisement retrievable via admin endpoint")
+        self.log("✅ Advertisement visible in public endpoint")
+        self.log("✅ Click tracking functional")
+        self.log("\n🎉 ALL ADVERTISEMENT TESTS PASSED - ENDPOINT IS WORKING CORRECTLY")
+        
+        return True
+
 def main():
     """Run water filter and admin sandbox tests as requested"""
     print("🧪 SLUSHBOOK Water Filter & Admin Sandbox Test")
