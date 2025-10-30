@@ -260,9 +260,10 @@ const PantryPage = ({ sessionId }) => {
                 <p className="text-xs text-gray-400 mt-1">{item.category_key}</p>
               </div>
               <button
-                onClick={() => deleteItem(item.ingredient_name)}
-                data-testid={`delete-${item.ingredient_name}`}
+                onClick={() => deleteItem(item.id)}
+                data-testid={`delete-${item.id}`}
                 className="p-3 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                title="Slet ingrediens"
               >
                 <FaTrash />
               </button>
