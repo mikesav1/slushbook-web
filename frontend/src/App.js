@@ -260,15 +260,6 @@ const Navigation = () => {
                 </Link>
                 
                 <Link
-                  to="/pantry"
-                  onClick={() => setIsUserMenuOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
-                >
-                  <FaSeedling className="w-4 h-4" />
-                  Ingredienser
-                </Link>
-                
-                <Link
                   to="/favorites"
                   onClick={() => setIsUserMenuOpen(false)}
                   className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
