@@ -103,7 +103,7 @@ const MatchFinderPage = ({ sessionId }) => {
               >
                 <span className="font-medium text-gray-800">{item.ingredient_name}</span>
                 <button
-                  onClick={() => removeIngredient(item.id)}
+                  onClick={() => removeIngredient(item.ingredient_name)}
                   className="text-gray-400 hover:text-red-500 transition-colors"
                   title="Fjern ingrediens"
                 >
