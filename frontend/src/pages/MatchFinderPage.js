@@ -101,7 +101,7 @@ const MatchFinderPage = ({ sessionId }) => {
                 key={item.id}
                 className="bg-white rounded-full px-4 py-2 flex items-center gap-2 shadow-sm border border-gray-200 hover:border-cyan-300 transition-all group"
               >
-                <span className="font-medium text-gray-800">{item.name}</span>
+                <span className="font-medium text-gray-800">{item.ingredient_name}</span>
                 <button
                   onClick={() => removeIngredient(item.id)}
                   className="text-gray-400 hover:text-red-500 transition-colors"
