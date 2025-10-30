@@ -27,9 +27,9 @@ const MatchFinderPage = ({ sessionId }) => {
     }
   };
 
-  const removeIngredient = async (ingredientName) => {
+  const removeIngredient = async (itemId) => {
     try {
-      await axios.delete(`${API}/pantry/${sessionId}/${encodeURIComponent(ingredientName)}`);
+      await axios.delete(`${API}/pantry/${sessionId}/${itemId}`);
       toast.success('Ingrediens fjernet');
       checkPantry(); // Refresh
     } catch (error) {
