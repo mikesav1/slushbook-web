@@ -2129,8 +2129,13 @@ async def track_product_click(product_id: str):
 
 # Image upload
 @api_router.post("/upload")
-async def upload_image(file: UploadFile = File(...)):
-    """Upload image to Cloudinary cloud storage"""
+async def upload_image(file: UploadFile = File(...), folder: str = "recipes"):
+    """Upload image to Cloudinary cloud storage
+    
+    Args:
+        file: The image file to upload
+        folder: Cloudinary subfolder (recipes, advertisements, etc.)
+    """
     if not file.content_type or not file.content_type.startswith('image/'):
         raise HTTPException(status_code=400, detail="Only images allowed")
     
@@ -2146,10 +2151,10 @@ async def upload_image(file: UploadFile = File(...)):
                 detail=f"File size exceeds maximum allowed size of {MAX_FILE_SIZE / 1024 / 1024}MB"
             )
         
-        # Upload to Cloudinary
+        # Upload to Cloudinary with dynamic folder
         result = cloudinary.uploader.upload(
             file_content,
-            folder="slushbook/advertisements",  # Organize in folder
+            folder=f"slushbook/{folder}",  # Organize in subfolders
             resource_type="auto",  # Auto-detect image type
             quality="auto",  # Optimize quality
         )
