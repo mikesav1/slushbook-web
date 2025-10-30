@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
-import { FaMagic, FaBoxOpen } from 'react-icons/fa';
+import { FaMagic, FaBoxOpen, FaTimes, FaPlus } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { API } from '../App';
 import RecipeCard from '../components/RecipeCard';
@@ -11,6 +11,7 @@ const MatchFinderPage = ({ sessionId }) => {
   const [matches, setMatches] = useState(null);
   const [loading, setLoading] = useState(false);
   const [pantryCount, setPantryCount] = useState(0);
+  const [pantryItems, setPantryItems] = useState([]);
 
   useEffect(() => {
     checkPantry();
