@@ -722,10 +722,28 @@ def calculate_match_score(recipe: Dict, pantry_items: List[Dict]) -> Dict:
         if ingredient['role'] == 'garnish':
             continue
         
-        matched = (
-            ingredient['name'].lower() in pantry_names or
-            ingredient['category_key'] in pantry_categories
-        )
+        # Prefer exact name match over category match
+        name_matched = ingredient['name'].lower() in pantry_names
+        
+        # Only use category match if it's exact or very close
+        # This prevents jordbær sirup from matching hindbær sirup
+        category_matched = False
+        if not name_matched and ingredient.get('category_key'):
+            # Exact category match
+            if ingredient['category_key'] in pantry_categories:
+                # Additional check: if it's a specific flavor, names should be similar
+                ingredient_words = set(ingredient['name'].lower().split())
+                for pantry_item in pantry_items:
+                    if pantry_item['category_key'] == ingredient['category_key']:
+                        pantry_words = set(pantry_item['ingredient_name'].lower().split())
+                        # If they share at least one meaningful word (not "sirup", "sodavand", etc)
+                        common_words = ingredient_words & pantry_words
+                        common_words = common_words - {'sirup', 'sodavand', 'saft', 'juice', 'vand'}
+                        if common_words:
+                            category_matched = True
+                            break
+        
+        matched = name_matched or category_matched
         
         if matched:
             if ingredient['role'] == 'required':
