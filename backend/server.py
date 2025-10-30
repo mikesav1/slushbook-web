@@ -715,18 +715,27 @@ def calculate_match_score(recipe: Dict, pantry_items: List[Dict]) -> Dict:
     missing = []
     have = []
     
-    # Build exact matching sets
-    pantry_names_lower = {item['ingredient_name'].lower() for item in pantry_items}
+    # Build pantry items with normalized names (lowercase, no extra spaces)
+    pantry_items_normalized = []
+    for item in pantry_items:
+        normalized_name = ' '.join(item['ingredient_name'].lower().split())
+        pantry_items_normalized.append({
+            'original': item['ingredient_name'],
+            'normalized': normalized_name,
+            'category': item.get('category_key', '')
+        })
     
     for ingredient in recipe['ingredients']:
         if ingredient['role'] == 'garnish':
             continue
         
-        ingredient_name_lower = ingredient['name'].lower()
+        ingredient_name_normalized = ' '.join(ingredient['name'].lower().split())
         
-        # Only use exact name matching - no fuzzy category matching
-        # This prevents "jordbær sirup" from matching "citron sirup"
-        matched = ingredient_name_lower in pantry_names_lower
+        # Try exact normalized match first
+        matched = any(
+            ingredient_name_normalized == pantry_item['normalized']
+            for pantry_item in pantry_items_normalized
+        )
         
         if matched:
             if ingredient['role'] == 'required':
