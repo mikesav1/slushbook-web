@@ -128,17 +128,25 @@ const PantryPage = ({ sessionId }) => {
         </div>
       ) : (
         <>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-6">
             <div>
-          <h1 className="text-4xl font-bold mb-2">Mine ingredienser</h1>
-          <p className="text-gray-600">Administrer dine ingredienser</p>
-        </div>
-        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-          <DialogTrigger asChild>
-            <Button data-testid="add-pantry-button" className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700">
-              <FaPlus className="mr-2" /> Tilføj Ingrediens
-            </Button>
-          </DialogTrigger>
+              <h1 className="text-4xl font-bold mb-2">Mine ingredienser</h1>
+              <p className="text-gray-600">Administrer dine ingredienser</p>
+            </div>
+            <div className="flex gap-3">
+              <Button 
+                onClick={() => navigate('/match')}
+                variant="outline"
+                className="border-cyan-500 text-cyan-600 hover:bg-cyan-50"
+              >
+                <FaMagic className="mr-2" /> Find Match
+              </Button>
+              <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button data-testid="add-pantry-button" className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700">
+                    <FaPlus className="mr-2" /> Tilføj Ingrediens
+                  </Button>
+                </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Tilføj Ingrediens</DialogTitle>
