@@ -510,12 +510,12 @@ async def export_csv(auth: bool = Depends(verify_admin_token)):
         logger.error(f"Error exporting CSV: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.post("/import-csv")
+@router.post("/import-product-csv")
 async def import_csv(
     file: UploadFile = File(...),
     auth: bool = Depends(verify_admin_token)
 ):
-    """Import mappings and options from CSV"""
+    """Import product mappings and options from CSV"""
     try:
         if not file:
             raise HTTPException(status_code=400, detail="No file uploaded")
