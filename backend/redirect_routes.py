@@ -256,12 +256,10 @@ async def create_option(request: CreateOptionRequest, auth: bool = Depends(verif
 async def update_option(
     option_id: str,
     request: UpdateOptionRequest,
-    _: bool = Header(default=None, alias="Authorization", include_in_schema=False)
+    auth: bool = Depends(verify_admin_token)
 ):
     """Update an option"""
     try:
-        verify_admin_token(_)
-        
         updates = {k: v for k, v in request.model_dump().items() if v is not None}
         if not updates:
             raise HTTPException(status_code=400, detail="No updates provided")
