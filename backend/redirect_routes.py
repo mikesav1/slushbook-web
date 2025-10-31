@@ -167,10 +167,9 @@ async def create_mapping(request: CreateMappingRequest, auth: bool = Depends(ver
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/mappings")
-async def get_mappings(_: bool = Header(default=None, alias="Authorization", include_in_schema=False)):
+async def get_mappings(auth: bool = Depends(verify_admin_token)):
     """Get all mappings"""
     try:
-        verify_admin_token(_)
         mappings = await db.redirect_mappings.find({}, {"_id": 0}).to_list(length=None)
         return mappings
     except HTTPException:
@@ -180,7 +179,7 @@ async def get_mappings(_: bool = Header(default=None, alias="Authorization", inc
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/mapping/{mapping_id}")
-async def get_mapping(mapping_id: str, _: bool = Header(default=None, alias="Authorization", include_in_schema=False)):
+async def get_mapping(mapping_id: str, auth: bool = Depends(verify_admin_token)):
     """Get a specific mapping with its options"""
     try:
         verify_admin_token(_)
