@@ -2807,8 +2807,13 @@ async def delete_ad(ad_id: str, request: Request):
     return {"message": "Reklame slettet"}
 
 
-# Include router
+# Set database for redirect routes
+redirect_routes.set_db(db)
+
+# Include routers
 app.include_router(api_router)
+app.include_router(redirect_routes.router)  # Admin routes: /api/admin/*
+app.include_router(redirect_routes.go_router)  # Redirect routes: /api/go/*
 
 # Logging
 logging.basicConfig(
