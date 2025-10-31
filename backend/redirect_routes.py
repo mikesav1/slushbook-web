@@ -386,11 +386,9 @@ async def update_supplier(
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.delete("/suppliers/{supplier_id}")
-async def delete_supplier(supplier_id: str, _: bool = Header(default=None, alias="Authorization", include_in_schema=False)):
+async def delete_supplier(supplier_id: str, auth: bool = Depends(verify_admin_token)):
     """Delete a supplier"""
     try:
-        verify_admin_token(_)
-        
         result = await db.redirect_suppliers.delete_one({"id": supplier_id})
         
         if result.deleted_count == 0:
