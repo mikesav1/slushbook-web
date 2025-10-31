@@ -27,6 +27,9 @@ from auth import (
     can_edit_recipe, can_view_recipe, can_create_recipe
 )
 
+# Import redirect routes
+import redirect_routes
+
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
