@@ -226,11 +226,9 @@ async def delete_mapping(mapping_id: str, auth: bool = Depends(verify_admin_toke
 # ==========================================
 
 @router.post("/option")
-async def create_option(request: CreateOptionRequest, _: bool = Header(default=None, alias="Authorization", include_in_schema=False)):
+async def create_option(request: CreateOptionRequest, auth: bool = Depends(verify_admin_token)):
     """Create a new option"""
     try:
-        verify_admin_token(_)
-        
         option_dict = request.option.model_dump(by_alias=True)
         option_dict["updatedAt"] = datetime.now(timezone.utc).isoformat()
         
