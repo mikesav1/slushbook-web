@@ -105,7 +105,7 @@ class UpdateOptionRequest(BaseModel):
 
 ADMIN_TOKEN = "dev-token-change-in-production"
 
-def verify_admin_token(authorization: Optional[str] = Header(None)):
+async def verify_admin_token(authorization: Optional[str] = Header(None)):
     """Verify admin token from Authorization header"""
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing or invalid authorization header")
