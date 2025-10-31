@@ -39,9 +39,9 @@ const ShoppingListPage = ({ sessionId }) => {
   const [supplierCache, setSupplierCache] = useState({});
   const [allMappings, setAllMappings] = useState([]);
 
-  // Use backend proxy instead of direct localhost
-  const REDIRECT_API = `${API}/redirect-proxy/go`;
-  const ADMIN_REDIRECT_API = `${API}/redirect-proxy/admin`;
+  // Use direct API endpoints (no proxy needed)
+  const REDIRECT_API = `${API}/go`;
+  const ADMIN_REDIRECT_API = `${API}/admin`;
   const ADMIN_TOKEN = 'dev-token-change-in-production';
   
   const getMappingId = (ingredientName) => {
