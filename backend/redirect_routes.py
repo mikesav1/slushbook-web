@@ -202,11 +202,9 @@ async def get_mapping(mapping_id: str, auth: bool = Depends(verify_admin_token))
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.delete("/mapping/{mapping_id}")
-async def delete_mapping(mapping_id: str, _: bool = Header(default=None, alias="Authorization", include_in_schema=False)):
+async def delete_mapping(mapping_id: str, auth: bool = Depends(verify_admin_token)):
     """Delete a mapping and all its options"""
     try:
-        verify_admin_token(_)
-        
         # Delete all options first
         await db.redirect_options.delete_many({"mappingId": mapping_id})
         
