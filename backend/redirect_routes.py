@@ -406,11 +406,9 @@ async def delete_supplier(supplier_id: str, auth: bool = Depends(verify_admin_to
 # ==========================================
 
 @router.post("/link-health")
-async def check_link_health(_: bool = Header(default=None, alias="Authorization", include_in_schema=False)):
+async def check_link_health(auth: bool = Depends(verify_admin_token)):
     """Check health of all active links and mark broken ones as inactive"""
     try:
-        verify_admin_token(_)
-        
         active_options = await db.redirect_options.find(
             {"status": "active"},
             {"_id": 0}
