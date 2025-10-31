@@ -510,7 +510,7 @@ const AdminLinksPage = () => {
       formData.append('file', importFile);
       
       const response = await axios.post(
-        `${REDIRECT_API}/admin/import-csv`,
+        `${REDIRECT_API}/admin/import-product-csv`,
         formData,
         {
           headers: {
