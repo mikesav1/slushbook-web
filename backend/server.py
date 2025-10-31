@@ -49,13 +49,7 @@ print(f"[DEBUG] CORS_ORIGINS from env: {cors_origins_str}")
 print(f"[DEBUG] CORS_ORIGINS split: {cors_origins_str.split(',')}")
 
 
-# Start redirect-service if not running
-try:
-    startup_script = ROOT_DIR / 'start_redirect_service.sh'
-    if startup_script.exists():
-        subprocess.run(['bash', str(startup_script)], check=False)
-except Exception as e:
-    print(f"Warning: Could not start redirect-service: {e}")
+# NOTE: Redirect-service startup removed - now using integrated FastAPI routes
 
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
