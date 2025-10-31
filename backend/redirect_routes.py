@@ -121,7 +121,7 @@ async def verify_admin_token(authorization: Optional[str] = Header(None)):
 # ==========================================
 
 @router.post("/mapping")
-async def create_mapping(request: CreateMappingRequest, _: bool = Header(default=None, alias="Authorization", include_in_schema=False)):
+async def create_mapping(request: CreateMappingRequest, auth: bool = Depends(verify_admin_token)):
     """Create or update a mapping with optional options"""
     try:
         verify_admin_token(_)
