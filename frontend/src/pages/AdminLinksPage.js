@@ -27,8 +27,8 @@ const AdminLinksPage = () => {
   const [selectedSuppliers, setSelectedSuppliers] = useState([]); // For bulk delete
   const fileInputRef = useRef(null);
   
-  // Use proxy through backend instead of direct localhost
-  const REDIRECT_API = `${API}/redirect-proxy`;
+  // Use direct API endpoints instead of proxy
+  const REDIRECT_API = `${API}`;
   const ADMIN_TOKEN = 'dev-token-change-in-production';
 
   useEffect(() => {
