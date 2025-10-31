@@ -461,11 +461,9 @@ async def check_link_health(auth: bool = Depends(verify_admin_token)):
 # ==========================================
 
 @router.get("/export-csv")
-async def export_csv(_: bool = Header(default=None, alias="Authorization", include_in_schema=False)):
+async def export_csv(auth: bool = Depends(verify_admin_token)):
     """Export all mappings and options to CSV"""
     try:
-        verify_admin_token(_)
-        
         mappings = await db.redirect_mappings.find({}, {"_id": 0}).to_list(length=None)
         
         # Create CSV in memory
