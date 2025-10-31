@@ -182,8 +182,6 @@ async def get_mappings(auth: bool = Depends(verify_admin_token)):
 async def get_mapping(mapping_id: str, auth: bool = Depends(verify_admin_token)):
     """Get a specific mapping with its options"""
     try:
-        verify_admin_token(_)
-        
         mapping = await db.redirect_mappings.find_one({"id": mapping_id}, {"_id": 0})
         if not mapping:
             raise HTTPException(status_code=404, detail="Mapping not found")
