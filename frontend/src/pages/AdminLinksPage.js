@@ -474,7 +474,7 @@ const AdminLinksPage = () => {
   const exportCSV = async () => {
     try {
       const response = await axios.get(
-        `${REDIRECT_API}/admin/export-csv`,
+        `${REDIRECT_API}/admin/export-product-csv`,
         { 
           headers: { Authorization: `Bearer ${ADMIN_TOKEN}` },
           responseType: 'blob'
