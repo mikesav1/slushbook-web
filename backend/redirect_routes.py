@@ -460,9 +460,9 @@ async def check_link_health(auth: bool = Depends(verify_admin_token)):
 # CSV IMPORT/EXPORT
 # ==========================================
 
-@router.get("/export-csv")
+@router.get("/export-product-csv")
 async def export_csv(auth: bool = Depends(verify_admin_token)):
-    """Export all mappings and options to CSV"""
+    """Export all product mappings and options to CSV"""
     try:
         mappings = await db.redirect_mappings.find({}, {"_id": 0}).to_list(length=None)
         
