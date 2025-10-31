@@ -3,7 +3,7 @@ Redirect Service Routes - Migrated from Node.js to FastAPI
 Handles product link mappings, suppliers, and redirect functionality
 """
 
-from fastapi import APIRouter, HTTPException, UploadFile, File, Header, Response
+from fastapi import APIRouter, HTTPException, UploadFile, File, Header, Response, Depends
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
 from datetime import datetime, timezone
