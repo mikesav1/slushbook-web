@@ -91,16 +91,16 @@ const MatchFinderPage = ({ sessionId }) => {
 
       {/* Ingredients Display & Actions */}
       <div className="bg-gradient-to-br from-cyan-50 to-coral-50 rounded-2xl p-6">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
           <div>
             <h3 className="text-2xl font-bold mb-1">Dine Ingredienser</h3>
             <p className="text-gray-600">
               Du har <span className="font-bold text-cyan-600">{pantryCount}</span> ingrediens{pantryCount !== 1 ? 'er' : ''}
             </p>
           </div>
-          <div className="flex gap-2">
-            <Link to="/pantry">
-              <Button variant="outline" size="sm">
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <Link to="/pantry" className="w-full sm:w-auto">
+              <Button variant="outline" size="sm" className="w-full">
                 <FaPlus className="mr-2" /> Tilføj Flere
               </Button>
             </Link>
@@ -108,7 +108,7 @@ const MatchFinderPage = ({ sessionId }) => {
               onClick={findMatches}
               disabled={loading || pantryCount === 0}
               data-testid="find-match-button"
-              className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700"
+              className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 w-full sm:w-auto"
             >
               <FaMagic className="mr-2" />
               {loading ? 'Søger...' : 'Find matches'}
