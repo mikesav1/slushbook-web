@@ -353,12 +353,10 @@ async def create_supplier(request: CreateSupplierRequest, auth: bool = Depends(v
 async def update_supplier(
     supplier_id: str,
     request: UpdateSupplierRequest,
-    _: bool = Header(default=None, alias="Authorization", include_in_schema=False)
+    auth: bool = Depends(verify_admin_token)
 ):
     """Update a supplier"""
     try:
-        verify_admin_token(_)
-        
         updates = {}
         if request.name is not None:
             updates["name"] = request.name
