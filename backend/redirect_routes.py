@@ -124,7 +124,7 @@ async def verify_admin_token(authorization: Optional[str] = Header(None)):
 async def create_mapping(request: CreateMappingRequest, auth: bool = Depends(verify_admin_token)):
     """Create or update a mapping with optional options"""
     try:
-        verify_admin_token(_)
+        verify_admin_token()
         
         mapping_dict = request.mapping.model_dump()
         
