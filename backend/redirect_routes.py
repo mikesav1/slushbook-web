@@ -284,11 +284,9 @@ async def update_option(
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.delete("/option/{option_id}")
-async def delete_option(option_id: str, _: bool = Header(default=None, alias="Authorization", include_in_schema=False)):
+async def delete_option(option_id: str, auth: bool = Depends(verify_admin_token)):
     """Delete an option"""
     try:
-        verify_admin_token(_)
-        
         result = await db.redirect_options.delete_one({"id": option_id})
         
         if result.deleted_count == 0:
