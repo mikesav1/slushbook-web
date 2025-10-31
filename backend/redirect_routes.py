@@ -513,12 +513,10 @@ async def export_csv(auth: bool = Depends(verify_admin_token)):
 @router.post("/import-csv")
 async def import_csv(
     file: UploadFile = File(...),
-    _: bool = Header(default=None, alias="Authorization", include_in_schema=False)
+    auth: bool = Depends(verify_admin_token)
 ):
     """Import mappings and options from CSV"""
     try:
-        verify_admin_token(_)
-        
         if not file:
             raise HTTPException(status_code=400, detail="No file uploaded")
         
