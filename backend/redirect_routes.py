@@ -317,11 +317,9 @@ async def get_suppliers():
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/suppliers")
-async def create_supplier(request: CreateSupplierRequest, _: bool = Header(default=None, alias="Authorization", include_in_schema=False)):
+async def create_supplier(request: CreateSupplierRequest, auth: bool = Depends(verify_admin_token)):
     """Create a new supplier"""
     try:
-        verify_admin_token(_)
-        
         if not request.name:
             raise HTTPException(status_code=400, detail="Name is required")
         
