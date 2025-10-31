@@ -72,8 +72,8 @@ const RecipeDetailPage = ({ sessionId }) => {
   const [allMappings, setAllMappings] = useState([]);
   const [supplierCache, setSupplierCache] = useState({});
   
-  const REDIRECT_API = `${API}/redirect-proxy/go`;
-  const ADMIN_REDIRECT_API = `${API}/redirect-proxy/admin`;
+  const REDIRECT_API = `${API}/go`;
+  const ADMIN_REDIRECT_API = `${API}/admin`;
   const ADMIN_TOKEN = 'dev-token-change-in-production';
 
   useEffect(() => {
