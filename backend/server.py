@@ -2623,77 +2623,8 @@ async def seed_ingredients(request: Request):
     
     return {"success": True, "message": f"Oprettet {created} ingredienser", "count": created}
 
-# Proxy endpoints for redirect service
-REDIRECT_SERVICE_URL = os.environ.get('REDIRECT_SERVICE_URL')
-if not REDIRECT_SERVICE_URL:
-    logger.error("REDIRECT_SERVICE_URL environment variable is required but not set!")
-    REDIRECT_SERVICE_URL = 'http://localhost:3001'  # Fallback for local dev only
-    logger.warning(f"Using fallback REDIRECT_SERVICE_URL: {REDIRECT_SERVICE_URL}")
-
-@api_router.api_route("/redirect-proxy/{path:path}", methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"])
-async def redirect_proxy(path: str, request: Request):
-    """Proxy requests to redirect service to avoid CORS issues"""
-    try:
-        logger.info(f"Proxy request to: {path}")
-        async with httpx.AsyncClient(timeout=60.0) as client:
-            # Forward headers
-            headers = dict(request.headers)
-            # Remove host header as it will be set by httpx
-            headers.pop('host', None)
-            headers.pop('content-length', None)  # Let httpx set this
-            
-            # Make request to redirect service
-            url = f"{REDIRECT_SERVICE_URL}/{path}"
-            logger.info(f"Forwarding to URL: {url}")
-            logger.info(f"Method: {request.method}, Headers: {list(headers.keys())}")
-            
-            # Handle multipart/form-data for file uploads
-            if 'multipart/form-data' in headers.get('content-type', ''):
-                # Get the form data
-                form = await request.form()
-                files = {}
-                data = {}
-                
-                for field_name, field_value in form.items():
-                    if hasattr(field_value, 'file'):
-                        # It's a file
-                        files[field_name] = (field_value.filename, field_value.file, field_value.content_type)
-                    else:
-                        # It's a regular form field
-                        data[field_name] = field_value
-                
-                response = await client.request(
-                    method=request.method,
-                    url=url,
-                    headers={k: v for k, v in headers.items() if k.lower() != 'content-type'},
-                    files=files if files else None,
-                    data=data if data else None,
-                    params=dict(request.query_params)
-                )
-            else:
-                # Get request body if present
-                body = None
-                if request.method in ["POST", "PATCH"]:
-                    body = await request.body()
-                
-                response = await client.request(
-                    method=request.method,
-                    url=url,
-                    headers=headers,
-                    content=body,
-                    params=dict(request.query_params)
-                )
-            
-            # Return response
-            logger.info(f"Proxy response status: {response.status_code}")
-            return Response(
-                content=response.content,
-                status_code=response.status_code,
-                headers=dict(response.headers)
-            )
-    except Exception as e:
-        logger.error(f"Proxy error: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
+# NOTE: Redirect service proxy removed - now using direct FastAPI routes in redirect_routes.py
+# All redirect functionality is now handled by /api/admin/* and /api/go/* endpoints
 
 
 # ==========================================
