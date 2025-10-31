@@ -2757,7 +2757,7 @@ logger = logging.getLogger(__name__)
 @app.on_event("startup")
 async def startup_event():
     await seed_recipes()
-    logger.info(f"SLUSHBOOK API started with REDIRECT_SERVICE_URL: {REDIRECT_SERVICE_URL}")
+    logger.info("SLUSHBOOK API started with integrated redirect service")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
