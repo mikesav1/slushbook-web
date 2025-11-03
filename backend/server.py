@@ -2338,15 +2338,17 @@ async def confirm_recipe_import(recipes: List[dict]):
 
 @api_router.get("/admin/pending-recipes")
 async def get_pending_recipes(request: Request):
-    """Get ALL user-submitted recipes for admin review"""
+    """Get ALL user-submitted recipes for admin review (excluding hidden)"""
     user = await get_current_user(request, None, db)
     
     if not user or user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
     
-    # Get ALL user recipes (both private and published) from user_recipes
-    # Admin should be able to see and manage all user-created recipes
-    cursor = db.user_recipes.find({}, {"_id": 0})
+    # Get ALL user recipes that are not hidden from sandbox
+    cursor = db.user_recipes.find(
+        {"hidden_from_sandbox": {"$ne": True}},
+        {"_id": 0}
+    )
     recipes = await cursor.to_list(length=None)
     
     # Parse datetime fields
