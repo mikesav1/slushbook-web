@@ -252,9 +252,11 @@ const AdminSandboxPage = ({ sessionId }) => {
             /* Alle tab: Blandet visning - pending som kort, godkendte/afviste som kompakt */
             <>
               {/* Pending opskrifter - fuld kort visning */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {filteredRecipes.filter(r => r.approval_status === 'pending').map((recipe) => (
-          {filteredRecipes.map((recipe) => (
+              {filteredRecipes.filter(r => r.approval_status === 'pending').length > 0 && (
+                <div>
+                  <h2 className="text-lg font-bold mb-4">Afventer Godkendelse</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    {filteredRecipes.filter(r => r.approval_status === 'pending').map((recipe) => (
             <div
               key={recipe.id}
               className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all"
