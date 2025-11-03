@@ -195,8 +195,8 @@ const AdminSandboxPage = ({ sessionId }) => {
         </div>
       ) : (
         <>
-          {/* Kompakt liste for Godkendte, Afviste og Alle */}
-          {(activeTab === 'approved' || activeTab === 'rejected' || activeTab === 'all') ? (
+          {/* Kompakt liste kun for Godkendte og Afviste */}
+          {(activeTab === 'approved' || activeTab === 'rejected') ? (
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100">
               <div className="divide-y divide-gray-100">
                 {filteredRecipes.map((recipe) => (
@@ -228,26 +228,20 @@ const AdminSandboxPage = ({ sessionId }) => {
                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                           recipe.approval_status === 'approved' 
                             ? 'bg-green-100 text-green-700' 
-                            : recipe.approval_status === 'rejected'
-                            ? 'bg-red-100 text-red-700'
-                            : 'bg-yellow-100 text-yellow-700'
+                            : 'bg-red-100 text-red-700'
                         }`}>
-                          {recipe.approval_status === 'approved' && '✓ Godkendt'}
-                          {recipe.approval_status === 'rejected' && '✗ Afvist'}
-                          {recipe.approval_status === 'pending' && '⏳ Afventer'}
+                          {recipe.approval_status === 'approved' ? '✓ Godkendt' : '✗ Afvist'}
                         </span>
-                        {(recipe.approval_status === 'approved' || recipe.approval_status === 'rejected') && (
-                          <Button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              hideFromSandbox(recipe.id);
-                            }}
-                            variant="outline"
-                            className="text-xs px-2 py-1 h-auto border-gray-300 hover:bg-gray-100"
-                          >
-                            Fjern fra liste
-                          </Button>
-                        )}
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            hideFromSandbox(recipe.id);
+                          }}
+                          variant="outline"
+                          className="text-xs px-2 py-1 h-auto border-gray-300 hover:bg-gray-100"
+                        >
+                          Fjern fra liste
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -255,7 +249,7 @@ const AdminSandboxPage = ({ sessionId }) => {
               </div>
             </div>
           ) : (
-            /* Fuld kort visning kun for Afventer */
+            /* Fuld kort visning for Alle og Afventer (indeholder nye opskrifter) */
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {filteredRecipes.map((recipe) => (
             <div
