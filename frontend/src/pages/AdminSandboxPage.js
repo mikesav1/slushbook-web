@@ -303,6 +303,8 @@ const AdminSandboxPage = ({ sessionId }) => {
             </div>
           ))}
         </div>
+          )}
+        </>
       )}
 
       {/* Preview Dialog */}
