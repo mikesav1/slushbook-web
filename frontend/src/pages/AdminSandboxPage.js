@@ -195,7 +195,7 @@ const AdminSandboxPage = ({ sessionId }) => {
         </div>
       ) : (
         <>
-          {/* Kompakt liste kun for Godkendte og Afviste */}
+          {/* Kompakt liste for Godkendte og Afviste tabs */}
           {(activeTab === 'approved' || activeTab === 'rejected') ? (
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100">
               <div className="divide-y divide-gray-100">
@@ -209,9 +209,9 @@ const AdminSandboxPage = ({ sessionId }) => {
                         src={recipe.image_url}
                         alt={recipe.name}
                         className="w-16 h-16 object-cover rounded-lg flex-shrink-0 cursor-pointer"
-                        onClick={() => navigate(`/recipes/${recipe.id}`)}
+                        onClick={() => window.open(`/recipes/${recipe.id}`, '_blank')}
                       />
-                      <div className="flex-1 min-w-0 cursor-pointer" onClick={() => navigate(`/recipes/${recipe.id}`)}>
+                      <div className="flex-1 min-w-0 cursor-pointer" onClick={() => window.open(`/recipes/${recipe.id}`, '_blank')}>
                         <h3 className="font-semibold text-lg truncate">{recipe.name}</h3>
                         <div className="flex items-center gap-3 text-xs text-gray-500 mt-1">
                           <span>👤 {recipe.author_name}</span>
@@ -248,9 +248,12 @@ const AdminSandboxPage = ({ sessionId }) => {
                 ))}
               </div>
             </div>
-          ) : (
-            /* Fuld kort visning for Alle og Afventer (indeholder nye opskrifter) */
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          ) : activeTab === 'all' ? (
+            /* Alle tab: Blandet visning - pending som kort, godkendte/afviste som kompakt */
+            <>
+              {/* Pending opskrifter - fuld kort visning */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {filteredRecipes.filter(r => r.approval_status === 'pending').map((recipe) => (
           {filteredRecipes.map((recipe) => (
             <div
               key={recipe.id}
