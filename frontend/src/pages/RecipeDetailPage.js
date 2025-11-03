@@ -367,14 +367,49 @@ const RecipeDetailPage = ({ sessionId }) => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 fade-in" data-testid="recipe-detail-page">
-      {/* Back Button */}
-      <button
-        onClick={() => navigate(-1)}
-        data-testid="back-button"
-        className="flex items-center gap-2 text-cyan-600 hover:text-cyan-700 font-semibold"
-      >
-        <FaArrowLeft /> Tilbage
-      </button>
+      {/* Back Button & Admin Navigation */}
+      <div className="flex items-center justify-between">
+        <button
+          onClick={() => navigate(-1)}
+          data-testid="back-button"
+          className="flex items-center gap-2 text-cyan-600 hover:text-cyan-700 font-semibold"
+        >
+          <FaArrowLeft /> Tilbage
+        </button>
+
+        {/* Admin Navigation Buttons */}
+        {isAdmin && (
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => prevRecipeId && navigate(`/recipe/${prevRecipeId}`)}
+              disabled={!prevRecipeId}
+              className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+                prevRecipeId 
+                  ? 'bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white' 
+                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+              }`}
+            >
+              ← Forrige
+            </button>
+            <span className="text-sm text-gray-500">
+              {allRecipes.length > 0 && recipe && 
+                `${allRecipes.findIndex(r => r.id === id) + 1} / ${allRecipes.length}`
+              }
+            </span>
+            <button
+              onClick={() => nextRecipeId && navigate(`/recipe/${nextRecipeId}`)}
+              disabled={!nextRecipeId}
+              className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+                nextRecipeId 
+                  ? 'bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white' 
+                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+              }`}
+            >
+              Næste →
+            </button>
+          </div>
+        )}
+      </div>
 
       {/* Header - Two Column Layout */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
