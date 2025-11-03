@@ -396,6 +396,83 @@ const AdminSandboxPage = ({ sessionId }) => {
             /* Afventer tab: Fuld kort visning */
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {filteredRecipes.map((recipe) => (
+                <div
+                  key={recipe.id}
+                  className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all"
+                >
+                  <img
+                    src={recipe.image_url}
+                    alt={recipe.name}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-6">
+                    <h3 className="font-bold text-xl mb-2">{recipe.name}</h3>
+                    <p className="text-sm text-gray-600 mb-4 line-clamp-2">{recipe.description}</p>
+                    
+                    <div className="flex items-center gap-4 text-xs text-gray-500 mb-4">
+                      <span>👤 {recipe.author_name}</span>
+                      <span>📅 {new Date(recipe.created_at).toLocaleDateString('da-DK')}</span>
+                      <span>🥤 {recipe.ingredients?.length || 0} ingredienser</span>
+                    </div>
+
+                    {recipe.approval_status === 'rejected' && recipe.rejection_reason && (
+                      <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                        <p className="text-xs text-red-800">
+                          <strong>Afvist:</strong> {recipe.rejection_reason}
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="flex flex-col gap-2">
+                      <Button
+                        onClick={() => {
+                          setSelectedRecipe(recipe);
+                          setShowPreviewDialog(true);
+                        }}
+                        className="w-full bg-blue-500 hover:bg-blue-600"
+                      >
+                        <FaEye className="mr-2" />
+                        Preview
+                      </Button>
+                      
+                      <Button
+                        onClick={() => findSimilar(recipe.id)}
+                        disabled={loadingSimilar[recipe.id]}
+                        className="w-full bg-purple-500 hover:bg-purple-600"
+                      >
+                        <FaSearch className="mr-2" />
+                        {loadingSimilar[recipe.id] ? 'Søger...' : 'Tjek for Dublet'}
+                      </Button>
+
+                      {recipe.approval_status === 'pending' && (
+                        <div className="flex gap-2 mt-2">
+                          <Button
+                            onClick={() => approveRecipe(recipe.id)}
+                            className="flex-1 bg-green-500 hover:bg-green-600 text-sm"
+                          >
+                            <FaCheck className="mr-1" />
+                            Godkend
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              setSelectedRecipe(recipe);
+                              setShowRejectDialog(true);
+                            }}
+                            className="flex-1 bg-red-500 hover:bg-red-600 text-sm"
+                          >
+                            <FaTimes className="mr-1" />
+                            Afvis
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
 
       {/* Preview Dialog */}
       {showPreviewDialog && selectedRecipe && (
