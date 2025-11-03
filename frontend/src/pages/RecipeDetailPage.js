@@ -42,22 +42,34 @@ const RecipeDetailPage = ({ sessionId }) => {
       );
       setAllRecipes(sorted);
       
+      console.log(`[Admin Nav] Total recipes: ${sorted.length}, Current ID: ${id}`);
+      
       // Find current recipe index
       const currentIndex = sorted.findIndex(r => r.id === id);
+      console.log(`[Admin Nav] Current index: ${currentIndex}`);
+      
       if (currentIndex !== -1) {
         // Set next recipe
         if (currentIndex < sorted.length - 1) {
-          setNextRecipeId(sorted[currentIndex + 1].id);
+          const nextId = sorted[currentIndex + 1].id;
+          setNextRecipeId(nextId);
+          console.log(`[Admin Nav] Next recipe ID: ${nextId}, Name: ${sorted[currentIndex + 1].name}`);
         } else {
           setNextRecipeId(null); // Last recipe
+          console.log(`[Admin Nav] Last recipe, no next`);
         }
         
         // Set previous recipe
         if (currentIndex > 0) {
-          setPrevRecipeId(sorted[currentIndex - 1].id);
+          const prevId = sorted[currentIndex - 1].id;
+          setPrevRecipeId(prevId);
+          console.log(`[Admin Nav] Prev recipe ID: ${prevId}, Name: ${sorted[currentIndex - 1].name}`);
         } else {
           setPrevRecipeId(null); // First recipe
+          console.log(`[Admin Nav] First recipe, no prev`);
         }
+      } else {
+        console.log(`[Admin Nav] Current recipe not found in list!`);
       }
     } catch (error) {
       console.error('Error fetching all recipes:', error);
