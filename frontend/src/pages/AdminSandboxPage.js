@@ -181,7 +181,53 @@ const AdminSandboxPage = ({ sessionId }) => {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <>
+          {/* Kompakt liste for Godkendte og Afviste */}
+          {(activeTab === 'approved' || activeTab === 'rejected') ? (
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100">
+              <div className="divide-y divide-gray-100">
+                {filteredRecipes.map((recipe) => (
+                  <div
+                    key={recipe.id}
+                    className="p-4 hover:bg-gray-50 transition-colors cursor-pointer"
+                    onClick={() => navigate(`/recipes/${recipe.id}`)}
+                  >
+                    <div className="flex items-center gap-4">
+                      <img
+                        src={recipe.image_url}
+                        alt={recipe.name}
+                        className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-lg truncate">{recipe.name}</h3>
+                        <div className="flex items-center gap-3 text-xs text-gray-500 mt-1">
+                          <span>👤 {recipe.author_name}</span>
+                          <span>📅 {new Date(recipe.created_at).toLocaleDateString('da-DK')}</span>
+                          <span>🥤 {recipe.ingredients?.length || 0} ingredienser</span>
+                        </div>
+                        {recipe.approval_status === 'rejected' && recipe.rejection_reason && (
+                          <p className="text-xs text-red-600 mt-1 truncate">
+                            <strong>Afvist:</strong> {recipe.rejection_reason}
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex-shrink-0">
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          recipe.approval_status === 'approved' 
+                            ? 'bg-green-100 text-green-700' 
+                            : 'bg-red-100 text-red-700'
+                        }`}>
+                          {recipe.approval_status === 'approved' ? '✓ Godkendt' : '✗ Afvist'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            /* Fuld kort visning for Alle og Afventer */
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {filteredRecipes.map((recipe) => (
             <div
               key={recipe.id}
