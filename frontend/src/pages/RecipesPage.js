@@ -72,12 +72,21 @@ const RecipesPage = ({ sessionId }) => {
       
       const response = await axios.get(`${API}/recipes?${params}`);
       
-      // Check if we should sort by rating
+      // Check if we should sort by rating from URL
       const urlParams = new URLSearchParams(window.location.search);
-      const sortBy = urlParams.get('sort');
+      const sortByParam = urlParams.get('sort');
       
       let sortedRecipes;
-      if (sortBy === 'rating') {
+      
+      // Sort based on sortBy state or URL param
+      const activeSortBy = sortByParam || sortBy;
+      
+      if (activeSortBy === 'alphabetical') {
+        // Sort alphabetically by name (A-Z)
+        sortedRecipes = response.data.sort((a, b) => 
+          a.name.localeCompare(b.name, 'da')
+        );
+      } else if (activeSortBy === 'rating') {
         // Sort by rating (highest first), prioritizing recipes WITH ratings
         sortedRecipes = response.data.sort((a, b) => {
           // Recipes WITH ratings first
@@ -101,6 +110,15 @@ const RecipesPage = ({ sessionId }) => {
           if (!aIsFree && bIsFree) return 1;
           
           // Then own recipes
+          const aIsOwn = a.author === sessionId;
+          const bIsOwn = b.author === sessionId;
+          if (aIsOwn && !bIsOwn) return -1;
+          if (!aIsOwn && bIsOwn) return 1;
+          
+          // Then sort by created date (newest first)
+          return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+        });
+      }
           const aIsOwn = a.author === sessionId;
           const bIsOwn = b.author === sessionId;
           if (aIsOwn && !bIsOwn) return -1;
