@@ -405,6 +405,31 @@ const MembersPage = () => {
                   </div>
                 </div>
 
+                {/* TEMPORARY: View Statistics for Testing Period */}
+                {userDetails.view_stats && (
+                  <div className="bg-yellow-50 border-2 border-yellow-200 p-4 rounded-lg">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-lg">📊</span>
+                      <h3 className="font-bold text-lg">Visningsstatistik (TEST-PERIODE)</h3>
+                      <span className="text-xs bg-yellow-200 text-yellow-800 px-2 py-1 rounded">Midlertidig</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="bg-white p-3 rounded">
+                        <div className="text-xs text-gray-500 mb-1">Unikke Opskrifter Besøgt</div>
+                        <div className="text-2xl font-bold text-cyan-600">
+                          {userDetails.view_stats.unique_recipes_viewed}
+                        </div>
+                      </div>
+                      <div className="bg-white p-3 rounded">
+                        <div className="text-xs text-gray-500 mb-1">Total Antal Visninger</div>
+                        <div className="text-2xl font-bold text-cyan-600">
+                          {userDetails.view_stats.total_views}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Actions/Activity Log */}
                 <div>
                   <h3 className="font-bold text-lg mb-3">Handlinger</h3>
