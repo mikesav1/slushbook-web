@@ -1144,11 +1144,25 @@ async def get_member_details(user_id: str, request: Request):
     # Sort activities by timestamp (newest first)
     activities.sort(key=lambda x: x["timestamp"], reverse=True)
     
+    # ===== TEMPORARY: Get recipe view statistics for testing period =====
+    # TODO: Remove this before final production release
+    view_stats = {"unique_recipes_viewed": 0, "total_views": 0}
+    if target_user.get("email"):
+        # Get all views for this user
+        views = await db.recipe_views.find({"user_email": target_user["email"]}).to_list(length=None)
+        view_stats["total_views"] = len(views)
+        
+        # Count unique recipes
+        unique_recipes = set([v["recipe_id"] for v in views])
+        view_stats["unique_recipes_viewed"] = len(unique_recipes)
+    # ===== END TEMPORARY =====
+    
     return {
         **target_user,
         "recipes": recipes,
         "favorites": favorites,
-        "activities": activities[:20]  # Limit to 20 most recent activities
+        "activities": activities[:20],  # Limit to 20 most recent activities
+        "view_stats": view_stats  # Temporary field for testing
     }
 
 
