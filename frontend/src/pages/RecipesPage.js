@@ -7,10 +7,12 @@ import UpgradeModal from '../components/UpgradeModal';
 import { useAuth } from '../context/AuthContext';
 
 const RecipesPage = ({ sessionId }) => {
+  const { user } = useAuth();
   const [recipes, setRecipes] = useState([]);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState('default'); // default, alphabetical, rating
   // Load filters from localStorage or use defaults
   const [alcoholFilter, setAlcoholFilter] = useState(() => {
     return localStorage.getItem('recipeAlcoholFilter') || 'both';
