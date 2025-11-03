@@ -2443,6 +2443,25 @@ async def reject_recipe(recipe_id: str, request: Request):
     
     return {"success": True, "message": "Opskrift afvist"}
 
+@api_router.post("/admin/hide-from-sandbox/{recipe_id}")
+async def hide_from_sandbox(recipe_id: str, request: Request):
+    """Hide approved/rejected recipe from sandbox view"""
+    user = await get_current_user(request, None, db)
+    
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    # Add hidden_from_sandbox flag
+    result = await db.user_recipes.update_one(
+        {"id": recipe_id},
+        {"$set": {"hidden_from_sandbox": True}}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Recipe not found")
+    
+    return {"success": True, "message": "Opskrift fjernet fra sandkasse"}
+
 @api_router.get("/admin/find-similar/{recipe_id}")
 async def find_similar_recipes(recipe_id: str, request: Request):
     """Find similar recipes based on name and ingredients"""
