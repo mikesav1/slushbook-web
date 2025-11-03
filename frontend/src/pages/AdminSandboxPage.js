@@ -84,6 +84,19 @@ const AdminSandboxPage = ({ sessionId }) => {
     }
   };
 
+  const hideFromSandbox = async (recipeId) => {
+    try {
+      await axios.post(`${API}/admin/hide-from-sandbox/${recipeId}`, {}, {
+        withCredentials: true
+      });
+      toast.success('Opskrift fjernet fra sandkasse');
+      fetchAllRecipes();
+    } catch (error) {
+      console.error('Error hiding recipe:', error);
+      toast.error('Kunne ikke fjerne opskrift');
+    }
+  };
+
   const findSimilar = async (recipeId) => {
     try {
       setLoadingSimilar(prev => ({ ...prev, [recipeId]: true }));
