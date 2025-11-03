@@ -28,7 +28,41 @@ const RecipeDetailPage = ({ sessionId }) => {
     fetchRecipe();
     fetchMachines();
     fetchProducts();
-  }, [id, sessionId]);
+    if (isAdmin) {
+      fetchAllRecipesForNavigation();
+    }
+  }, [id, sessionId, isAdmin]);
+
+  const fetchAllRecipesForNavigation = async () => {
+    try {
+      const response = await axios.get(`${API}/recipes?session_id=${sessionId}&alcohol=both`);
+      // Sort alphabetically for admin navigation
+      const sorted = response.data.sort((a, b) => 
+        a.name.localeCompare(b.name, 'da')
+      );
+      setAllRecipes(sorted);
+      
+      // Find current recipe index
+      const currentIndex = sorted.findIndex(r => r.id === id);
+      if (currentIndex !== -1) {
+        // Set next recipe
+        if (currentIndex < sorted.length - 1) {
+          setNextRecipeId(sorted[currentIndex + 1].id);
+        } else {
+          setNextRecipeId(null); // Last recipe
+        }
+        
+        // Set previous recipe
+        if (currentIndex > 0) {
+          setPrevRecipeId(sorted[currentIndex - 1].id);
+        } else {
+          setPrevRecipeId(null); // First recipe
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching all recipes:', error);
+    }
+  };
 
   const fetchRecipe = async () => {
     try {
