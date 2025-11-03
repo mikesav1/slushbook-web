@@ -393,7 +393,10 @@ const RecipeDetailPage = ({ sessionId }) => {
         {isAdmin && (
           <div className="flex items-center gap-2">
             <button
-              onClick={() => prevRecipeId && navigate(`/recipes/${prevRecipeId}`)}
+              onClick={() => {
+                console.log(`[Admin Nav] Forrige clicked, prevRecipeId: ${prevRecipeId}`);
+                if (prevRecipeId) navigate(`/recipes/${prevRecipeId}`);
+              }}
               disabled={!prevRecipeId}
               className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
                 prevRecipeId 
@@ -409,7 +412,10 @@ const RecipeDetailPage = ({ sessionId }) => {
               }
             </span>
             <button
-              onClick={() => nextRecipeId && navigate(`/recipes/${nextRecipeId}`)}
+              onClick={() => {
+                console.log(`[Admin Nav] Næste clicked, nextRecipeId: ${nextRecipeId}`);
+                if (nextRecipeId) navigate(`/recipes/${nextRecipeId}`);
+              }}
               disabled={!nextRecipeId}
               className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
                 nextRecipeId 
