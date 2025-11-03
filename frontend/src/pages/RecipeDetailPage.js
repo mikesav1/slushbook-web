@@ -381,7 +381,7 @@ const RecipeDetailPage = ({ sessionId }) => {
         {isAdmin && (
           <div className="flex items-center gap-2">
             <button
-              onClick={() => prevRecipeId && navigate(`/recipe/${prevRecipeId}`)}
+              onClick={() => prevRecipeId && navigate(`/recipes/${prevRecipeId}`)}
               disabled={!prevRecipeId}
               className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
                 prevRecipeId 
@@ -397,7 +397,7 @@ const RecipeDetailPage = ({ sessionId }) => {
               }
             </span>
             <button
-              onClick={() => nextRecipeId && navigate(`/recipe/${nextRecipeId}`)}
+              onClick={() => nextRecipeId && navigate(`/recipes/${nextRecipeId}`)}
               disabled={!nextRecipeId}
               className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
                 nextRecipeId 
