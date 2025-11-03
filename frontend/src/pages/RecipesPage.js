@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaSearch, FaFilter, FaTimes } from 'react-icons/fa';
+import { FaSearch, FaFilter, FaTimes, FaSortAlphaDown } from 'react-icons/fa';
 import { API } from '../App';
 import RecipeCard from '../components/RecipeCard';
 import UpgradeModal from '../components/UpgradeModal';
+import { useAuth } from '../context/AuthContext';
 
 const RecipesPage = ({ sessionId }) => {
   const [recipes, setRecipes] = useState([]);
