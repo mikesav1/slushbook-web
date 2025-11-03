@@ -128,22 +128,22 @@ const PantryPage = ({ sessionId }) => {
         </div>
       ) : (
         <>
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div>
               <h1 className="text-4xl font-bold mb-2">Mine ingredienser</h1>
               <p className="text-gray-600">Administrer dine ingredienser</p>
             </div>
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
               <Button 
                 onClick={() => navigate('/match')}
                 variant="outline"
-                className="border-cyan-500 text-cyan-600 hover:bg-cyan-50"
+                className="border-cyan-500 text-cyan-600 hover:bg-cyan-50 w-full sm:w-auto"
               >
                 <FaMagic className="mr-2" /> Find Match
               </Button>
               <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button data-testid="add-pantry-button" className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700">
+                  <Button data-testid="add-pantry-button" className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 w-full sm:w-auto">
                     <FaPlus className="mr-2" /> Tilføj Ingrediens
                   </Button>
                 </DialogTrigger>
