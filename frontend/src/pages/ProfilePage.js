@@ -84,8 +84,64 @@ const ProfilePage = () => {
   };
 
   if (!user) {
-    navigate('/login');
-    return null;
+    return (
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+          <div className="text-center space-y-6">
+            <div className="w-20 h-20 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-full flex items-center justify-center text-white text-4xl font-bold mx-auto">
+              <FaUser />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold mb-2">Velkommen til SLUSHBOOK</h1>
+              <p className="text-gray-600">Log ind for at få adgang til din profil og ekstra funktioner</p>
+            </div>
+            
+            <div className="flex flex-col gap-3 max-w-md mx-auto">
+              <Button 
+                onClick={() => navigate('/login')}
+                className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 w-full"
+              >
+                Log ind
+              </Button>
+              <Button 
+                onClick={() => navigate('/signup')}
+                variant="outline"
+                className="w-full"
+              >
+                Opret konto
+              </Button>
+              <Button 
+                onClick={() => navigate('/guide')}
+                variant="outline"
+                className="border-cyan-500 text-cyan-600 hover:bg-cyan-50 w-full"
+              >
+                📖 Se vejledning
+              </Button>
+            </div>
+
+            <div className="pt-6 border-t border-gray-200">
+              <h3 className="font-semibold mb-3">Som gæst kan du:</h3>
+              <ul className="text-left space-y-2 text-gray-600 max-w-md mx-auto">
+                <li>✓ Browse alle opskrifter</li>
+                <li>✓ Se opskrift detaljer</li>
+                <li>✓ Læse vejledninger</li>
+              </ul>
+            </div>
+
+            <div className="pt-4">
+              <h3 className="font-semibold mb-3">Med Pro konto får du:</h3>
+              <ul className="text-left space-y-2 text-gray-600 max-w-md mx-auto">
+                <li>🌟 Opret dine egne opskrifter</li>
+                <li>🌟 Gem favoritter</li>
+                <li>🌟 Indkøbsliste</li>
+                <li>🌟 Match finder</li>
+                <li>🌟 Pantry system</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
