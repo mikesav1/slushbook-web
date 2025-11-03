@@ -1519,6 +1519,18 @@ async def get_recipe(recipe_id: str, session_id: Optional[str] = None, request: 
             {"$inc": {"view_count": 1}}
         )
     
+    # ===== TEMPORARY: Track recipe views for testing period =====
+    # TODO: Remove this before final production release
+    if user:
+        await db.recipe_views.insert_one({
+            "user_id": user.id,
+            "user_email": user.email,
+            "recipe_id": recipe_id,
+            "recipe_name": recipe.get('name', ''),
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        })
+    # ===== END TEMPORARY =====
+    
     return recipe
 
 @api_router.delete("/recipes/{recipe_id}")
