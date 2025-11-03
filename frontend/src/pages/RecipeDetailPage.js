@@ -484,15 +484,19 @@ const RecipeDetailPage = ({ sessionId }) => {
               </div>
             )}
             
-            {/* Pending Notice - Show if recipe is pending approval */}
-            {recipe.approval_status === 'pending' && recipe.is_published === true && (
+            {/* Pending Notice - Show ONLY to recipe author or admin */}
+            {recipe.approval_status === 'pending' && 
+             recipe.is_published === true && 
+             (isAdmin || recipe.author === sessionId) && (
               <div className="mb-4 p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded">
                 <div className="flex items-start">
                   <span className="text-yellow-500 mt-1 mr-3 flex-shrink-0 text-xl">⏳</span>
                   <div>
                     <h4 className="text-yellow-800 font-semibold mb-1">Afventer Godkendelse</h4>
                     <p className="text-yellow-700 text-sm">
-                      Din opskrift venter på godkendelse fra administrator.
+                      {isAdmin 
+                        ? 'Denne opskrift afventer godkendelse.'
+                        : 'Din opskrift venter på godkendelse fra administrator.'}
                     </p>
                   </div>
                 </div>
