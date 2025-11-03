@@ -329,11 +329,73 @@ const AdminSandboxPage = ({ sessionId }) => {
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-          )}
-        </>
-      )}
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Godkendte og Afviste opskrifter - kompakt liste */}
+              {filteredRecipes.filter(r => r.approval_status !== 'pending').length > 0 && (
+                <div>
+                  <h2 className="text-lg font-bold mb-4">Behandlede Opskrifter</h2>
+                  <div className="bg-white rounded-2xl shadow-sm border border-gray-100">
+                    <div className="divide-y divide-gray-100">
+                      {filteredRecipes.filter(r => r.approval_status !== 'pending').map((recipe) => (
+                        <div
+                          key={recipe.id}
+                          className="p-4 hover:bg-gray-50 transition-colors"
+                        >
+                          <div className="flex items-center gap-4">
+                            <img
+                              src={recipe.image_url}
+                              alt={recipe.name}
+                              className="w-16 h-16 object-cover rounded-lg flex-shrink-0 cursor-pointer"
+                              onClick={() => window.open(`/recipes/${recipe.id}`, '_blank')}
+                            />
+                            <div className="flex-1 min-w-0 cursor-pointer" onClick={() => window.open(`/recipes/${recipe.id}`, '_blank')}>
+                              <h3 className="font-semibold text-lg truncate">{recipe.name}</h3>
+                              <div className="flex items-center gap-3 text-xs text-gray-500 mt-1">
+                                <span>👤 {recipe.author_name}</span>
+                                <span>📅 {new Date(recipe.created_at).toLocaleDateString('da-DK')}</span>
+                                <span>🥤 {recipe.ingredients?.length || 0} ingredienser</span>
+                              </div>
+                              {recipe.approval_status === 'rejected' && recipe.rejection_reason && (
+                                <p className="text-xs text-red-600 mt-1 truncate">
+                                  <strong>Afvist:</strong> {recipe.rejection_reason}
+                                </p>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-2 flex-shrink-0">
+                              <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                recipe.approval_status === 'approved' 
+                                  ? 'bg-green-100 text-green-700' 
+                                  : 'bg-red-100 text-red-700'
+                              }`}>
+                                {recipe.approval_status === 'approved' ? '✓ Godkendt' : '✗ Afvist'}
+                              </span>
+                              <Button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  hideFromSandbox(recipe.id);
+                                }}
+                                variant="outline"
+                                className="text-xs px-2 py-1 h-auto border-gray-300 hover:bg-gray-100"
+                              >
+                                Fjern fra liste
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            /* Afventer tab: Fuld kort visning */
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {filteredRecipes.map((recipe) => (
 
       {/* Preview Dialog */}
       {showPreviewDialog && selectedRecipe && (
