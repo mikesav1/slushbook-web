@@ -119,15 +119,6 @@ const RecipesPage = ({ sessionId }) => {
           return new Date(b.created_at || 0) - new Date(a.created_at || 0);
         });
       }
-          const aIsOwn = a.author === sessionId;
-          const bIsOwn = b.author === sessionId;
-          if (aIsOwn && !bIsOwn) return -1;
-          if (!aIsOwn && bIsOwn) return 1;
-          
-          // Then sort by created date (newest first)
-          return new Date(b.created_at || 0) - new Date(a.created_at || 0);
-        });
-      }
       
       setRecipes(sortedRecipes);
     } catch (error) {
