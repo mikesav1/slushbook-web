@@ -71,6 +71,9 @@ const RecipeDetailPage = ({ sessionId }) => {
 
   const [allMappings, setAllMappings] = useState([]);
   const [supplierCache, setSupplierCache] = useState({});
+  const [allRecipes, setAllRecipes] = useState([]);
+  const [nextRecipeId, setNextRecipeId] = useState(null);
+  const [prevRecipeId, setPrevRecipeId] = useState(null);
   
   const REDIRECT_API = `${API}/go`;
   const ADMIN_REDIRECT_API = `${API}/admin`;
