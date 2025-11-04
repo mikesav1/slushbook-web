@@ -2435,6 +2435,7 @@ async def approve_recipe(recipe_id: str, request: Request):
         {"id": recipe_id},
         {"$set": {
             "approval_status": "approved",
+            "approved_at": datetime.now(timezone.utc).isoformat(),
             "rejection_reason": None
         }}
     )
