@@ -2444,6 +2444,37 @@ async def approve_recipe(recipe_id: str, request: Request):
     
     return {"success": True, "message": "Opskrift godkendt"}
 
+@api_router.post("/admin/bulk-approve-pending")
+async def bulk_approve_pending(request: Request):
+    """EMERGENCY: Approve all pending recipes at once (for fixing stuck statuses)"""
+    user = await get_current_user(request, None, db)
+    
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    # Find all pending recipes
+    pending_count = await db.user_recipes.count_documents({"approval_status": "pending"})
+    
+    if pending_count == 0:
+        return {"success": True, "message": "No pending recipes to approve", "count": 0}
+    
+    # Update all to approved
+    result = await db.user_recipes.update_many(
+        {"approval_status": "pending"},
+        {
+            "$set": {
+                "approval_status": "approved",
+                "approved_at": datetime.now(timezone.utc).isoformat()
+            }
+        }
+    )
+    
+    return {
+        "success": True, 
+        "message": f"Godkendt {result.modified_count} opskrifter", 
+        "count": result.modified_count
+    }
+
 @api_router.post("/admin/reject-recipe/{recipe_id}")
 async def reject_recipe(recipe_id: str, request: Request):
     """Reject a pending recipe with reason"""
