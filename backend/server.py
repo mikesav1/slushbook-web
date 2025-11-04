@@ -2453,14 +2453,16 @@ async def bulk_approve_pending(request: Request):
     if not user or user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
     
-    # Find all pending recipes
-    pending_count = await db.user_recipes.count_documents({"approval_status": "pending"})
+    # Check both user_recipes AND recipes collections
+    user_recipes_pending = await db.user_recipes.count_documents({"approval_status": "pending"})
+    system_recipes_pending = await db.recipes.count_documents({"approval_status": "pending"})
+    total_pending = user_recipes_pending + system_recipes_pending
     
-    if pending_count == 0:
+    if total_pending == 0:
         return {"success": True, "message": "No pending recipes to approve", "count": 0}
     
-    # Update all to approved
-    result = await db.user_recipes.update_many(
+    # Update user_recipes
+    result1 = await db.user_recipes.update_many(
         {"approval_status": "pending"},
         {
             "$set": {
@@ -2470,10 +2472,23 @@ async def bulk_approve_pending(request: Request):
         }
     )
     
+    # Update system recipes
+    result2 = await db.recipes.update_many(
+        {"approval_status": "pending"},
+        {
+            "$set": {
+                "approval_status": "approved",
+                "approved_at": datetime.now(timezone.utc).isoformat()
+            }
+        }
+    )
+    
+    total_updated = result1.modified_count + result2.modified_count
+    
     return {
         "success": True, 
-        "message": f"Godkendt {result.modified_count} opskrifter", 
-        "count": result.modified_count
+        "message": f"Godkendt {total_updated} opskrifter (user: {result1.modified_count}, system: {result2.modified_count})", 
+        "count": total_updated
     }
 
 @api_router.post("/admin/reject-recipe/{recipe_id}")
