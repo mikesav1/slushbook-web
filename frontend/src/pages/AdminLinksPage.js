@@ -1094,13 +1094,22 @@ const AdminLinksPage = () => {
                 e.preventDefault();
                 const formData = new FormData(e.target);
                 
+                // Get selected countries from checkboxes
+                const selectedCountries = [];
+                Object.keys(COUNTRIES).forEach(countryCode => {
+                  if (formData.get(`country_${countryCode}`) === 'on') {
+                    selectedCountries.push(countryCode);
+                  }
+                });
+                
                 if (editingOption.isNew) {
                   // Create new option
                   createOption(editingOption.mappingId, {
                     supplier: formData.get('supplier'),
                     title: formData.get('title'),
                     url: formData.get('url'),
-                    status: 'active'
+                    status: 'active',
+                    country_codes: selectedCountries.length > 0 ? selectedCountries : ['DK', 'US', 'GB']
                   });
                 } else {
                   // Update existing option
@@ -1108,7 +1117,8 @@ const AdminLinksPage = () => {
                     supplier: formData.get('supplier'),
                     title: formData.get('title'),
                     url: formData.get('url'),
-                    status: formData.get('status')
+                    status: formData.get('status'),
+                    country_codes: selectedCountries.length > 0 ? selectedCountries : ['DK', 'US', 'GB']
                   });
                 }
               }}
@@ -1151,6 +1161,34 @@ const AdminLinksPage = () => {
                   className="w-full px-4 py-2 border rounded-lg"
                 />
               </div>
+              
+              {/* Country Selection */}
+              <div>
+                <label className="block text-sm font-medium mb-2 flex items-center gap-2">
+                  <FaGlobe className="text-blue-500" />
+                  Tilgængelig i lande
+                </label>
+                <div className="grid grid-cols-2 gap-2 p-3 border rounded-lg bg-gray-50">
+                  {Object.entries(COUNTRIES).map(([code, country]) => (
+                    <label key={code} className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 p-2 rounded">
+                      <input
+                        type="checkbox"
+                        name={`country_${code}`}
+                        defaultChecked={editingOption.country_codes ? 
+                          editingOption.country_codes.includes(code) : 
+                          ['DK', 'US', 'GB'].includes(code)}
+                        className="w-4 h-4"
+                      />
+                      <span className="text-lg">{country.flag}</span>
+                      <span className="text-sm">{country.name}</span>
+                    </label>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  Vælg mindst ét land. Standard: DK, US, GB
+                </p>
+              </div>
+              
               {!editingOption.isNew && (
                 <div>
                   <label className="block text-sm font-medium mb-1">Status</label>
