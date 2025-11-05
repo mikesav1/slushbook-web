@@ -9,7 +9,7 @@ import subprocess
 from datetime import datetime
 
 # Configuration
-BASE_URL = "https://slush-media-fix.preview.emergentagent.com/api"
+BASE_URL = "https://recipe-navigator.preview.emergentagent.com/api"
 
 def log(message):
     print(f"[{datetime.now().strftime('%H:%M:%S')}] {message}")
