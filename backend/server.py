@@ -18,6 +18,9 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
+# Import geolocation service
+import geolocation_service
+
 # Import auth module
 from auth import (
     User, UserInDB, UserSession, PasswordReset,
