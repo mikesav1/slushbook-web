@@ -39,6 +39,7 @@ const ShoppingListPage = ({ sessionId }) => {
   const [loading, setLoading] = useState(true);
   const [supplierCache, setSupplierCache] = useState({});
   const [allMappings, setAllMappings] = useState([]);
+  const [userCountry, setUserCountry] = useState('DK');
 
   // Use direct API endpoints (no proxy needed)
   const REDIRECT_API = `${API}/go`;
