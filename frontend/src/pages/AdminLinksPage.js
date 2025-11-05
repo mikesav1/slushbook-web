@@ -234,7 +234,8 @@ const AdminLinksPage = () => {
           supplier: data.supplier,
           title: data.title,
           url: data.url,
-          status: 'active'
+          status: 'active',
+          country_codes: data.country_codes || ['DK', 'US', 'GB']
         }
       };
       
