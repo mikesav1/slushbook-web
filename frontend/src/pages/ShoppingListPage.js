@@ -70,6 +70,9 @@ const ShoppingListPage = ({ sessionId }) => {
 
   useEffect(() => {
     fetchMappingsAndShoppingList();
+    // Detect user country for product links
+    const country = getUserCountry();
+    setUserCountry(country);
   }, [sessionId]);
 
   const fetchSupplierInfo = async (mappingId) => {
