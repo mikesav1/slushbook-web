@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Investigate why Ulla's newly created recipe is not showing up in sandbox or on her recipes page. User ulla@itopgaver.dk created a new recipe but it's not visible anywhere: not in sandbox (admin approval page), not on her own recipes page, not when filtering 'Mine opskrifter'."
+user_problem_statement: "Implement internationalization feature for Slushbook: Phase 1 (Geolocation Foundation) and Phase 2 (Product Links by Country). Auto-detect user country via IP/browser language, allow multiple supplier links per product with country assignment, implement fallback logic (user country → DK → US → GB → fallback URL), update admin UI for country management, and update user-facing pages to pass country parameter."
 
 backend:
   - task: "Deployed Database Verification"
