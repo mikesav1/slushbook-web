@@ -2829,6 +2829,79 @@ async def delete_ad(ad_id: str, request: Request):
     return {"message": "Reklame slettet"}
 
 
+# ==========================================
+# GEOLOCATION & INTERNATIONALIZATION
+# ==========================================
+
+@api_router.get("/geolocation/detect")
+async def detect_user_location(request: Request):
+    """
+    Detect user's country and language preference
+    
+    Uses:
+    1. IP-based geolocation (primary)
+    2. Browser Accept-Language header (fallback)
+    
+    Returns country code and suggested language
+    """
+    # Get user's IP address
+    client_ip = request.client.host
+    
+    # Try IP-based detection first
+    country_code = await geolocation_service.detect_country_from_ip(client_ip)
+    
+    # Fallback to browser language if IP detection failed
+    if not country_code:
+        accept_language = request.headers.get("accept-language", "")
+        country_code = geolocation_service.parse_browser_language(accept_language)
+    
+    # Final fallback to Denmark
+    if not country_code:
+        country_code = "DK"
+    
+    # Get suggested language from country
+    language_code = geolocation_service.get_language_from_country(country_code)
+    
+    return {
+        "country_code": country_code,
+        "language_code": language_code,
+        "detection_method": "ip" if client_ip else "browser",
+        "fallback_countries": geolocation_service.FALLBACK_COUNTRIES
+    }
+
+@api_router.post("/user/preferences")
+async def update_user_preferences(
+    request: Request,
+    country_code: Optional[str] = None,
+    language_code: Optional[str] = None
+):
+    """
+    Update user's country and language preferences
+    
+    Saves to database if user is logged in
+    """
+    user = await get_current_user(request, None, db)
+    
+    body = await request.json()
+    country_code = body.get("country_code")
+    language_code = body.get("language_code")
+    
+    if user:
+        # Update user preferences in database
+        await db.users.update_one(
+            {"id": user.id},
+            {"$set": {
+                "country_preference": country_code,
+                "language_preference": language_code
+            }}
+        )
+        
+        return {"success": True, "message": "Preferences saved"}
+    else:
+        # For guests, return success (they'll use localStorage)
+        return {"success": True, "message": "Preferences set (localStorage only)"}
+
+
 # Set database for redirect routes
 redirect_routes.set_db(db)
 
