@@ -297,6 +297,7 @@ const ShoppingListPage = ({ sessionId }) => {
                           mappingId={mappingId}
                           redirectApi={REDIRECT_API}
                           fetchSupplier={fetchSupplierInfo}
+                          userCountry={userCountry}
                         />
                       )}
                     </div>
