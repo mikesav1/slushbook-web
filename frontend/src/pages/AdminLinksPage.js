@@ -862,6 +862,26 @@ const AdminLinksPage = () => {
                         >
                           {option.url}
                         </a>
+                        
+                        {/* Display Countries */}
+                        {option.country_codes && option.country_codes.length > 0 && (
+                          <div className="flex items-center gap-1 mt-2 flex-wrap">
+                            <FaGlobe className="text-gray-400" size={12} />
+                            {option.country_codes.map(code => {
+                              const country = COUNTRIES[code];
+                              return country ? (
+                                <span key={code} className="text-lg" title={country.name}>
+                                  {country.flag}
+                                </span>
+                              ) : (
+                                <span key={code} className="text-xs text-gray-500 px-1">
+                                  {code}
+                                </span>
+                              );
+                            })}
+                          </div>
+                        )}
+                        
                         {option.priceLastSeen && (
                           <p className="text-sm text-gray-600 mt-2">
                             Seneste pris: {option.priceLastSeen} kr.
