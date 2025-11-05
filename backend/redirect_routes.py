@@ -544,11 +544,14 @@ async def import_csv(
             try:
                 if len(row) < 6:
                     imported["errors"].append(
-                        f"Line {i}: Invalid format (expected 6 fields, got {len(row)})"
+                        f"Line {i}: Invalid format (expected at least 6 fields, got {len(row)})"
                     )
                     continue
                 
                 produkt_navn, keywords, ean, leverandor, url, title = row[:6]
+                
+                # Optional 7th field: countries (comma or semicolon separated)
+                countries = row[6] if len(row) > 6 else ""
                 
                 if not produkt_navn or not leverandor or not url or not title:
                     imported["errors"].append(f"Line {i}: Missing required fields")
@@ -570,6 +573,12 @@ async def import_csv(
                 
                 # Convert keywords from semicolon to comma
                 keywords_formatted = keywords.replace(";", ",") if keywords else ""
+                
+                # Parse countries (default to DK,US,GB if not specified)
+                if countries:
+                    country_codes = [c.strip().upper() for c in re.split(r'[,;]', countries) if c.strip()]
+                else:
+                    country_codes = ["DK", "US", "GB"]
                 
                 # Check if mapping exists
                 existing_mapping = await db.redirect_mappings.find_one({"id": mapping_id})
@@ -600,6 +609,7 @@ async def import_csv(
                     "url": url,
                     "status": "active",
                     "priceLastSeen": None,
+                    "country_codes": country_codes,
                     "updatedAt": datetime.now(timezone.utc).isoformat()
                 })
                 
