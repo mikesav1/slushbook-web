@@ -45,6 +45,7 @@ class Option(BaseModel):
     url: str
     status: str = "active"  # 'active' or 'inactive'
     priceLastSeen: Optional[float] = Field(None, alias="priceLastSeen")
+    country_codes: List[str] = Field(default_factory=lambda: ["DK", "US", "GB"])  # Countries where this link is available
     updatedAt: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
     class Config:
@@ -56,7 +57,8 @@ class Option(BaseModel):
                 "supplier": "bilka",
                 "title": "Product Title",
                 "url": "https://example.com/product",
-                "status": "active"
+                "status": "active",
+                "country_codes": ["DK", "US", "GB"]
             }
         }
 
