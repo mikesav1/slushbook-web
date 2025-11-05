@@ -100,6 +100,7 @@ class UpdateOptionRequest(BaseModel):
     status: Optional[str] = None
     url: Optional[str] = None
     priceLastSeen: Optional[float] = None
+    country_codes: Optional[List[str]] = None
 
 # ==========================================
 # AUTH MIDDLEWARE
