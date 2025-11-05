@@ -640,8 +640,23 @@ def add_utm(url: str) -> str:
     return f"{parsed.scheme}://{parsed.netloc}{parsed.path}?{new_query}"
 
 @go_router.get("/{mapping_id}")
-async def redirect_to_product(mapping_id: str, user_agent: Optional[str] = Header(None), referer: Optional[str] = Header(None)):
-    """Redirect to product link based on mapping ID"""
+async def redirect_to_product(
+    mapping_id: str, 
+    country: Optional[str] = None,
+    user_agent: Optional[str] = Header(None), 
+    referer: Optional[str] = Header(None)
+):
+    """
+    Redirect to product link based on mapping ID and user's country
+    
+    Country fallback order:
+    1. User's detected country
+    2. Denmark (DK)
+    3. United States (US)
+    4. United Kingdom (GB)
+    5. Any available option
+    6. Fallback URL
+    """
     try:
         # Log click
         import uuid
@@ -651,20 +666,50 @@ async def redirect_to_product(mapping_id: str, user_agent: Optional[str] = Heade
             "mappingId": mapping_id,
             "ts": datetime.now(timezone.utc).isoformat(),
             "userAgent": user_agent,
-            "referer": referer
+            "referer": referer,
+            "country": country
         })
         
-        # Find active option
-        option = await db.redirect_options.find_one(
+        # Get all active options for this mapping
+        options_cursor = db.redirect_options.find(
             {"mappingId": mapping_id, "status": "active"},
-            {"_id": 0},
-            sort=[("updatedAt", -1)]
-        )
+            {"_id": 0}
+        ).sort("updatedAt", -1)
         
-        if option:
-            target_url = add_utm(wrap_affiliate(option["url"]))
-        else:
+        options = await options_cursor.to_list(length=None)
+        
+        if not options:
+            # No options at all, use fallback
             target_url = add_utm(wrap_affiliate(FALLBACK_URL))
+        else:
+            # Country-based selection with fallback
+            selected_option = None
+            
+            # Define fallback order
+            fallback_order = []
+            if country:
+                fallback_order.append(country.upper())
+            fallback_order.extend(["DK", "US", "GB"])
+            
+            # Try each country in fallback order
+            for country_code in fallback_order:
+                for option in options:
+                    # Check if this option supports the country
+                    option_countries = option.get("country_codes", ["DK", "US", "GB"])
+                    if country_code in option_countries:
+                        selected_option = option
+                        logger.info(f"Selected option for country {country_code}: {option['supplier']}")
+                        break
+                
+                if selected_option:
+                    break
+            
+            # If still no match, use first available option
+            if not selected_option:
+                selected_option = options[0]
+                logger.info(f"No country match, using first option: {selected_option['supplier']}")
+            
+            target_url = add_utm(wrap_affiliate(selected_option["url"]))
         
         return Response(
             status_code=302,
