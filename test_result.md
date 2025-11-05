@@ -343,6 +343,42 @@ backend:
         comment: "🚨 CRITICAL ISSUES TESTING COMPLETED: Comprehensive comparison between Preview and Production environments reveals 2 confirmed critical issues. ❌ ISSUE 1 - ADMIN SANDBOX EMPTY ON PRODUCTION: Preview has 10 recipes in admin sandbox, Production only has 5 recipes. This confirms the reported issue - Production admin sandbox is missing 5 recipes compared to Preview. ✅ ISSUE 2 - SHOPPING LIST MISSING ITEMS: RESOLVED - Tested adding 3 items including 'vand' on Production, all items (vand, sukker, citron) were successfully added and found in shopping list. The reported issue where only 2 out of 3 items appear is NOT reproducible. ❌ ISSUE 3 - VAND/ISVAND FILTER NOT WORKING: CONFIRMED - Water filtering is not implemented on either environment. Both Preview (5 water items) and Production (4 water items) allow water items (vand, isvand, knust is) to be added to shopping list when they should be filtered out. 🔧 CRITICAL FINDINGS: 1) Production admin sandbox missing recipes compared to Preview, 2) Water filtering not implemented on either environment, 3) Shopping list functionality working correctly on both environments. URGENT ACTION REQUIRED: Fix admin sandbox recipe sync and implement water item filtering."
 
 frontend:
+  - task: "Internationalization - Geolocation Utils"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/utils/geolocation.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created geolocation utility functions: detectUserLocation() calls backend /geolocation/detect endpoint with localStorage caching, updateUserPreferences() saves to both localStorage and backend, getUserCountry()/getUserLanguage() retrieve from localStorage with 'DK'/'dk' fallback, getTranslation() helper for i18n object translation with fallback order (user lang → DK → EN-US → EN-UK → first available). Defines COUNTRIES and LANGUAGES constants with flags and names."
+
+  - task: "Internationalization - Admin UI for Country Assignment"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/AdminLinksPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Updated AdminLinksPage to support country assignment: Added country selection UI in option dialog with checkboxes for each country (DK, DE, FR, GB, US) with flags and names. Updated createOption() to send country_codes to backend (default ['DK', 'US', 'GB']). Updated option list display to show assigned countries with flag emojis and globe icon. Imported COUNTRIES from geolocation utils. Admin can now assign multiple countries per supplier link."
+
+  - task: "Internationalization - User-Facing Country Detection"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/RecipeDetailPage.js, frontend/src/pages/ShoppingListPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Updated RecipeDetailPage and ShoppingListPage to detect and use country: Added userCountry state (default 'DK'), called getUserCountry() on mount to detect from localStorage, updated 'Indkøb' links to include ?country={userCountry} parameter in URL (e.g., /go/product-slug?country=DK). BuyButton component in ShoppingListPage updated to accept and pass userCountry prop. Product links now localized based on user's detected country."
+
   - task: "Fix 'Add to list' functionality for ingredients with missing category_key"
     implemented: true
     working: true
