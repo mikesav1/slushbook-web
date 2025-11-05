@@ -781,7 +781,7 @@ const RecipeDetailPage = ({ sessionId }) => {
                 {/* Show redirect links for ALL users */}
                 {mappingId && (
                   <a
-                    href={`${REDIRECT_API}/${mappingId}`}
+                    href={`${REDIRECT_API}/${mappingId}?country=${userCountry}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-sm text-emerald-600 hover:text-emerald-700 font-medium hover:underline transition-colors"
