@@ -33,6 +33,9 @@ const RecipeDetailPage = ({ sessionId }) => {
     if (isAdmin) {
       fetchAllRecipesForNavigation();
     }
+    // Detect user country for product links
+    const country = getUserCountry();
+    setUserCountry(country);
   }, [id, sessionId, isAdmin]);
 
   const fetchAllRecipesForNavigation = async () => {
