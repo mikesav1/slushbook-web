@@ -4,9 +4,10 @@ import { toast } from 'sonner';
 import { FaTrash, FaShoppingCart, FaCheck } from 'react-icons/fa';
 import { API } from '../App';
 import { Button } from '../components/ui/button';
+import { getUserCountry } from '../utils/geolocation';
 
 // BuyButton component to display dynamic supplier
-const BuyButton = ({ mappingId, redirectApi, fetchSupplier }) => {
+const BuyButton = ({ mappingId, redirectApi, fetchSupplier, userCountry }) => {
   const [supplierInfo, setSupplierInfo] = useState(null);
 
   useEffect(() => {
@@ -19,7 +20,7 @@ const BuyButton = ({ mappingId, redirectApi, fetchSupplier }) => {
 
   return (
     <a
-      href={`${redirectApi}/${mappingId}`}
+      href={`${redirectApi}/${mappingId}?country=${userCountry}`}
       target="_blank"
       rel="noopener noreferrer"
       className="inline-flex items-center gap-2 text-sm text-emerald-600 hover:text-emerald-700 font-medium ml-10 hover:underline transition-colors"
