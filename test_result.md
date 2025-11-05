@@ -105,6 +105,30 @@
 user_problem_statement: "Implement internationalization feature for Slushbook: Phase 1 (Geolocation Foundation) and Phase 2 (Product Links by Country). Auto-detect user country via IP/browser language, allow multiple supplier links per product with country assignment, implement fallback logic (user country → DK → US → GB → fallback URL), update admin UI for country management, and update user-facing pages to pass country parameter."
 
 backend:
+  - task: "Internationalization - Geolocation Foundation"
+    implemented: true
+    working: "NA"
+    file: "backend/geolocation_service.py, backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented Phase 1 - Geolocation Foundation: Created geolocation_service.py with IP-based country detection using ipapi.co API (20k requests/month free tier). Added endpoints: GET /api/geolocation/detect (detects country from IP + browser Accept-Language header), POST /api/user/preferences (saves country/language for logged-in users). Supports fallback order: IP → Browser Language → Denmark. Country-to-language mapping for DK, DE, FR, GB, US implemented."
+
+  - task: "Internationalization - Product Links by Country"
+    implemented: true
+    working: "NA"
+    file: "backend/redirect_routes.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented Phase 2 - Product Links by Country: Updated Option model to include country_codes field (List[str], default ['DK', 'US', 'GB']). Modified /go/{mapping_id} endpoint to accept country parameter and implement fallback logic (user country → DK → US → GB → any available → fallback URL). Updated CSV import to parse optional 7th column for countries (comma/semicolon separated). Backend now supports multiple supplier links per product with country assignment."
+
   - task: "Deployed Database Verification"
     implemented: true
     working: true
