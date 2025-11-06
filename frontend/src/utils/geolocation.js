@@ -35,20 +35,20 @@ export async function detectUserLocation() {
     const savedLanguage = localStorage.getItem('user_language');
     const savedTimestamp = localStorage.getItem('user_country_timestamp');
     
-    // If cached and less than 1 hour old, use cached value
+    // If cached and less than 5 minutes old, use cached value
     if (savedCountry && savedLanguage && savedTimestamp) {
       const cacheAge = Date.now() - parseInt(savedTimestamp);
-      const oneHour = 60 * 60 * 1000; // 1 hour in milliseconds
+      const fiveMinutes = 5 * 60 * 1000; // 5 minutes in milliseconds
       
-      if (cacheAge < oneHour) {
-        console.log(`[Geolocation] Using cached country: ${savedCountry} (cached ${Math.round(cacheAge / 1000 / 60)} minutes ago)`);
+      if (cacheAge < fiveMinutes) {
+        console.log(`[Geolocation] Using cached country: ${savedCountry} (cached ${Math.round(cacheAge / 1000)} seconds ago)`);
         return {
           country_code: savedCountry,
           language_code: savedLanguage,
           source: 'localStorage'
         };
       } else {
-        console.log('[Geolocation] Cache expired, detecting fresh...');
+        console.log('[Geolocation] Cache expired (>5 min), detecting fresh...');
       }
     }
     
