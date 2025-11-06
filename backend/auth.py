@@ -60,6 +60,7 @@ class SignupRequest(BaseModel):
     email: EmailStr
     password: str
     name: str
+    country: str = "GB"  # Default to UK/English if not specified
 
 
 class LoginRequest(BaseModel):
