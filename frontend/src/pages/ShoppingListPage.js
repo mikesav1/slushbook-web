@@ -70,9 +70,14 @@ const ShoppingListPage = ({ sessionId }) => {
 
   useEffect(() => {
     fetchMappingsAndShoppingList();
-    // Detect user country for product links
-    const country = getUserCountry();
-    setUserCountry(country);
+    // Detect user country for product links via backend API (IP-based)
+    detectUserLocation().then(result => {
+      setUserCountry(result.country_code);
+      console.log('[ShoppingList] User country detected:', result.country_code, 'Source:', result.source);
+    }).catch(error => {
+      console.error('[ShoppingList] Country detection failed:', error);
+      setUserCountry('DK'); // Fallback to Denmark
+    });
   }, [sessionId]);
 
   const fetchSupplierInfo = async (mappingId) => {
