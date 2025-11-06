@@ -271,9 +271,9 @@ const AdminLinksPage = () => {
     if (selectedMappings.length === mappings.length) {
       setSelectedMappings([]);
     } else {
-      // Use _id field (MongoDB default) instead of id
-      setSelectedMappings(mappings.map(m => m._id || m.id));
-      console.log('[BulkSelect] Selected mappings:', mappings.map(m => m._id || m.id));
+      // Extract mapping.id from the {mapping, options} structure
+      setSelectedMappings(mappings.map(m => m.mapping.id));
+      console.log('[BulkSelect] Selected mappings:', mappings.map(m => m.mapping.id));
     }
   };
 
