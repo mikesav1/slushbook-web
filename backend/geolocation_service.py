@@ -40,6 +40,7 @@ async def detect_country_from_ip(ip_address: str) -> Optional[str]:
             logger.info(f"Localhost IP detected: {ip_address}, using fallback country DK")
             return "DK"
         
+        logger.info(f"Querying ipapi.co for IP: {ip_address}")
         async with httpx.AsyncClient(timeout=3.0) as client:
             response = await client.get(IPAPI_URL.format(ip=ip_address))
             
@@ -48,13 +49,13 @@ async def detect_country_from_ip(ip_address: str) -> Optional[str]:
                 country_code = data.get("country_code")
                 
                 if country_code:
-                    logger.info(f"Detected country {country_code} for IP {ip_address}")
+                    logger.info(f"✅ Detected country {country_code} for IP {ip_address}")
                     return country_code
                 else:
-                    logger.warning(f"No country_code in response for IP {ip_address}")
+                    logger.warning(f"⚠️ No country_code in response for IP {ip_address}. Response: {data}")
                     return None
             else:
-                logger.error(f"IP API returned status {response.status_code}")
+                logger.error(f"❌ IP API returned status {response.status_code} for IP {ip_address}")
                 return None
                 
     except httpx.TimeoutException:
