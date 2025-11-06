@@ -919,7 +919,9 @@ async def login(request: LoginRequest, response: Response):
             "email": user_doc["email"],
             "name": user_doc["name"],
             "role": user_doc["role"],
-            "picture": user_doc.get("picture")
+            "picture": user_doc.get("picture"),
+            "country": user_doc.get("country", "GB"),  # Include country preference
+            "language": user_doc.get("language", "en-us")  # Include language preference
         },
         "session_token": session_token
     }
