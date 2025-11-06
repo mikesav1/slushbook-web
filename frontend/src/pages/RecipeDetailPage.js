@@ -169,21 +169,21 @@ const RecipeDetailPage = ({ sessionId }) => {
           return mapping.id; // Exact match - return immediately
         }
         
-        // Second check: All ingredient words must be found in keywords
-        const allWordsFound = ingredientWords.every(word => 
-          allKeywords.some(keyword => keyword.includes(word))
-        );
-        
-        if (allWordsFound) {
-          // Calculate match score based on total keyword length (more specific = better)
-          const matchedKeywords = allKeywords.filter(keyword => 
-            ingredientWords.some(word => keyword.includes(word))
+        // Second check: All ingredient words must be found TOGETHER in ONE single keyword
+        // This prevents "appelsin juice" from matching when only "appelsin" and "orange juice" exist separately
+        for (const keyword of allKeywords) {
+          const allWordsFoundInThisKeyword = ingredientWords.every(word => 
+            keyword.includes(word)
           );
-          const score = matchedKeywords.join('').length;
           
-          if (score > bestMatchScore) {
-            bestMatch = mapping.id;
-            bestMatchScore = score;
+          if (allWordsFoundInThisKeyword) {
+            // Calculate match score based on keyword length (more specific = better)
+            const score = keyword.length;
+            
+            if (score > bestMatchScore) {
+              bestMatch = mapping.id;
+              bestMatchScore = score;
+            }
           }
         }
       }
