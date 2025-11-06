@@ -47,7 +47,8 @@ const SignupPage = () => {
       await axios.post(`${API}/auth/signup`, {
         name: formData.name,
         email: formData.email,
-        password: formData.password
+        password: formData.password,
+        country: formData.country
       });
 
       toast.success('Konto oprettet! Log venligst ind.');
