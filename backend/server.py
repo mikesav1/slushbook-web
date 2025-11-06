@@ -826,6 +826,10 @@ async def signup(request: SignupRequest):
     user_id = str(uuid.uuid4())
     hashed_password = get_password_hash(request.password)
     
+    # Validate country code - fallback to GB if invalid
+    valid_countries = ["DK", "DE", "FR", "GB", "US"]
+    country_code = request.country if request.country in valid_countries else "GB"
+    
     user = {
         "id": user_id,
         "email": request.email,
@@ -833,6 +837,8 @@ async def signup(request: SignupRequest):
         "role": "guest",  # Start as guest, can upgrade to pro
         "picture": None,
         "hashed_password": hashed_password,
+        "country": country_code,  # Save user's country preference
+        "language": "dk" if country_code == "DK" else "en-us",  # Set language based on country
         "created_at": datetime.now(timezone.utc).isoformat()
     }
     
