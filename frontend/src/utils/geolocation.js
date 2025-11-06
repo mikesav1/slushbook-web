@@ -128,6 +128,21 @@ export async function updateUserPreferences(countryCode, languageCode) {
 }
 
 /**
+ * Force refresh country detection (ignores cache)
+ * 
+ * @returns {Promise<{country_code: string, language_code: string}>}
+ */
+export async function refreshUserLocation() {
+  // Clear cache
+  localStorage.removeItem('user_country');
+  localStorage.removeItem('user_language');
+  localStorage.removeItem('user_country_timestamp');
+  
+  // Detect fresh
+  return detectUserLocation();
+}
+
+/**
  * Get user's current country preference
  * 
  * @returns {string} 2-letter country code
