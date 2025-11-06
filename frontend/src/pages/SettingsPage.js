@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
-import { FaCog, FaPlus, FaTrash, FaEdit, FaBook } from 'react-icons/fa';
+import { FaCog, FaPlus, FaTrash, FaEdit, FaBook, FaGlobe } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { API } from '../App';
 import { useAuth } from '../context/AuthContext';
@@ -9,6 +9,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
+import { COUNTRIES, getUserCountry, updateUserPreferences, refreshUserLocation } from '../utils/geolocation';
 
 const SettingsPage = ({ sessionId }) => {
   const { user, isAdmin, isPro, isEditor } = useAuth();
