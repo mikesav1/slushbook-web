@@ -30,19 +30,30 @@ export const LANGUAGES = {
  */
 export async function detectUserLocation() {
   try {
-    // Check localStorage first
+    // Check localStorage cache with timestamp (cache for 1 hour)
     const savedCountry = localStorage.getItem('user_country');
     const savedLanguage = localStorage.getItem('user_language');
+    const savedTimestamp = localStorage.getItem('user_country_timestamp');
     
-    if (savedCountry && savedLanguage) {
-      return {
-        country_code: savedCountry,
-        language_code: savedLanguage,
-        source: 'localStorage'
-      };
+    // If cached and less than 1 hour old, use cached value
+    if (savedCountry && savedLanguage && savedTimestamp) {
+      const cacheAge = Date.now() - parseInt(savedTimestamp);
+      const oneHour = 60 * 60 * 1000; // 1 hour in milliseconds
+      
+      if (cacheAge < oneHour) {
+        console.log(`[Geolocation] Using cached country: ${savedCountry} (cached ${Math.round(cacheAge / 1000 / 60)} minutes ago)`);
+        return {
+          country_code: savedCountry,
+          language_code: savedLanguage,
+          source: 'localStorage'
+        };
+      } else {
+        console.log('[Geolocation] Cache expired, detecting fresh...');
+      }
     }
     
     // Call backend for automatic detection
+    console.log('[Geolocation] Calling backend API for fresh detection...');
     const response = await fetch(`${API}/api/geolocation/detect`, {
       credentials: 'include'
     });
@@ -50,9 +61,12 @@ export async function detectUserLocation() {
     if (response.ok) {
       const data = await response.json();
       
-      // Save to localStorage
+      // Save to localStorage with timestamp
       localStorage.setItem('user_country', data.country_code);
       localStorage.setItem('user_language', data.language_code);
+      localStorage.setItem('user_country_timestamp', Date.now().toString());
+      
+      console.log(`[Geolocation] Detected and cached: ${data.country_code}`);
       
       return {
         country_code: data.country_code,
@@ -60,6 +74,7 @@ export async function detectUserLocation() {
         source: 'auto-detected'
       };
     } else {
+      console.error('[Geolocation] API call failed, using Denmark fallback');
       // Fallback to Denmark
       return {
         country_code: 'DK',
