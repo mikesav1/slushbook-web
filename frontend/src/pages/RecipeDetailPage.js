@@ -170,7 +170,7 @@ const RecipeDetailPage = ({ sessionId }) => {
         }
         
         // Second check: Match only if ingredient has SAME number of words as keyword
-        // This prevents "jordbær" (1 word) from matching "jordbær sirup" (2 words)
+        // AND each word matches exactly (not as substring)
         for (const keyword of allKeywords) {
           const keywordWords = keyword.split(/\s+/);
           
@@ -179,12 +179,13 @@ const RecipeDetailPage = ({ sessionId }) => {
             continue;
           }
           
-          // All ingredient words must be found in the keyword
-          const allWordsFoundInThisKeyword = ingredientWords.every(word => 
-            keyword.includes(word)
+          // All ingredient words must match exactly (as complete words, not substrings)
+          // This prevents "vand" from matching "vandmelon"
+          const allWordsMatch = ingredientWords.every(ingredientWord => 
+            keywordWords.some(keywordWord => keywordWord === ingredientWord)
           );
           
-          if (allWordsFoundInThisKeyword) {
+          if (allWordsMatch) {
             // Calculate match score based on keyword length (more specific = better)
             const score = keyword.length;
             
