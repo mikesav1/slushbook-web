@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { FaTrash, FaShoppingCart, FaCheck } from 'react-icons/fa';
 import { API } from '../App';
 import { Button } from '../components/ui/button';
-import { getUserCountry } from '../utils/geolocation';
+import { getUserCountry, detectUserLocation } from '../utils/geolocation';
 
 // BuyButton component to display dynamic supplier
 const BuyButton = ({ mappingId, redirectApi, fetchSupplier, userCountry }) => {
