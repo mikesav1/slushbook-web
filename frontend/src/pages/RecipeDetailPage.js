@@ -33,9 +33,14 @@ const RecipeDetailPage = ({ sessionId }) => {
     if (isAdmin) {
       fetchAllRecipesForNavigation();
     }
-    // Detect user country for product links
-    const country = getUserCountry();
-    setUserCountry(country);
+    // Detect user country for product links via backend API (IP-based)
+    detectUserLocation().then(result => {
+      setUserCountry(result.country_code);
+      console.log('[RecipeDetail] User country detected:', result.country_code, 'Source:', result.source);
+    }).catch(error => {
+      console.error('[RecipeDetail] Country detection failed:', error);
+      setUserCountry('DK'); // Fallback to Denmark
+    });
   }, [id, sessionId, isAdmin]);
 
   const fetchAllRecipesForNavigation = async () => {
