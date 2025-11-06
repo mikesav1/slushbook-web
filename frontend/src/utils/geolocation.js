@@ -43,7 +43,7 @@ export async function detectUserLocation() {
     }
     
     // Call backend for automatic detection
-    const response = await fetch(`${API}/geolocation/detect`, {
+    const response = await fetch(`${API}/api/geolocation/detect`, {
       credentials: 'include'
     });
     
