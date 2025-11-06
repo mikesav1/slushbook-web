@@ -92,7 +92,7 @@ export async function updateUserPreferences(countryCode, languageCode) {
     localStorage.setItem('user_language', languageCode);
     
     // Also save to backend (for logged-in users)
-    const response = await fetch(`${API}/user/preferences`, {
+    const response = await fetch(`${API}/api/user/preferences`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
