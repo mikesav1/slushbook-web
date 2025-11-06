@@ -473,8 +473,8 @@ async def export_csv(auth: bool = Depends(verify_admin_token)):
         output = io.StringIO()
         writer = csv.writer(output)
         
-        # Header
-        writer.writerow(['produkt_navn', 'keywords', 'ean', 'leverandør', 'url', 'title'])
+        # Header (added 'lande' as 7th column)
+        writer.writerow(['produkt_navn', 'keywords', 'ean', 'leverandør', 'url', 'title', 'lande'])
         
         for mapping in mappings:
             options = await db.redirect_options.find(
@@ -488,13 +488,18 @@ async def export_csv(auth: bool = Depends(verify_admin_token)):
             
             for option in options:
                 if option.get("status") == "active":
+                    # Get country_codes and format as comma-separated string
+                    country_codes = option.get("country_codes", ["DK", "US", "GB"])
+                    countries_str = ",".join(country_codes) if country_codes else "DK,US,GB"
+                    
                     writer.writerow([
                         mapping.get("name", ""),
                         keywords,
                         mapping.get("ean", "") or "",
                         option.get("supplier", ""),
                         option.get("url", ""),
-                        option.get("title", "")
+                        option.get("title", ""),
+                        countries_str
                     ])
         
         csv_content = output.getvalue()
