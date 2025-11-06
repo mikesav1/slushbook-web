@@ -6,6 +6,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { API } from '../App';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
+import { updateUserPreferences } from '../utils/geolocation';
 
 const LoginPage = ({ onLogin }) => {
   const [email, setEmail] = useState('');
