@@ -35,6 +35,12 @@ const LoginPage = ({ onLogin }) => {
         console.log('[LoginPage] Saved session_token to localStorage');
       }
       
+      // Save user's country and language preferences to localStorage (mark as manual to prevent auto-override)
+      if (response.data.user.country && response.data.user.language) {
+        await updateUserPreferences(response.data.user.country, response.data.user.language, true);
+        console.log(`[LoginPage] Loaded user country preference: ${response.data.user.country}`);
+      }
+      
       // Save user data
       onLogin(response.data.user);
       
