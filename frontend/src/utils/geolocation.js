@@ -94,17 +94,27 @@ export async function detectUserLocation() {
 }
 
 /**
- * Update user's country and language preference
+ * Save user's country and language preferences
  * 
- * @param {string} countryCode - 2-letter country code
+ * @param {string} countryCode - 2-letter country code (e.g., 'DK', 'US')
  * @param {string} languageCode - Language code (e.g., 'dk', 'en-us')
- * @returns {Promise<boolean>} Success status
+ * @param {boolean} isManual - Whether this is a manual user selection (default: true)
  */
-export async function updateUserPreferences(countryCode, languageCode) {
+export async function updateUserPreferences(countryCode, languageCode, isManual = true) {
   try {
-    // Save to localStorage immediately
+    // Save to localStorage
     localStorage.setItem('user_country', countryCode);
     localStorage.setItem('user_language', languageCode);
+    localStorage.setItem('user_country_timestamp', Date.now().toString());
+    
+    // Mark as manually set if isManual=true
+    if (isManual) {
+      localStorage.setItem('user_country_manual', 'true');
+      console.log(`[Geolocation] Manually set country to: ${countryCode}`);
+    } else {
+      localStorage.removeItem('user_country_manual');
+      console.log(`[Geolocation] Auto-detected country: ${countryCode}`);
+    }
     
     // Also save to backend (for logged-in users)
     const response = await fetch(`${API}/api/user/preferences`, {
@@ -119,11 +129,11 @@ export async function updateUserPreferences(countryCode, languageCode) {
       })
     });
     
-    return response.ok;
+    if (!response.ok) {
+      console.error('Failed to save preferences to backend');
+    }
   } catch (error) {
-    console.error('Error updating preferences:', error);
-    // LocalStorage still saved, so return true
-    return true;
+    console.error('Error saving preferences:', error);
   }
 }
 
