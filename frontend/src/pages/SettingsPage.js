@@ -186,6 +186,69 @@ const SettingsPage = ({ sessionId }) => {
         </div>
       </div>
 
+      {/* Country & Language Settings */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <div className="flex items-center gap-2 mb-4">
+          <FaGlobe className="text-blue-500 text-xl" />
+          <h2 className="text-2xl font-bold">Land & Sprog</h2>
+        </div>
+        <p className="text-gray-600 mb-4">
+          Vælg dit land for at se relevante produktlinks. Dit land detekteres automatisk, men du kan ændre det her.
+        </p>
+        
+        <div className="space-y-4">
+          <div>
+            <Label className="text-sm font-medium mb-2 block">Vælg Land</Label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {Object.entries(COUNTRIES).map(([code, country]) => (
+                <button
+                  key={code}
+                  onClick={async () => {
+                    setSelectedCountry(code);
+                    await updateUserPreferences(code, country.lang);
+                    toast.success(`Land ændret til ${country.name}`);
+                  }}
+                  className={`flex items-center gap-2 p-3 rounded-lg border-2 transition-all ${
+                    selectedCountry === code
+                      ? 'border-blue-500 bg-blue-50'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <span className="text-2xl">{country.flag}</span>
+                  <span className="text-sm font-medium">{country.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          <div className="flex gap-2">
+            <Button
+              onClick={async () => {
+                setDetectingCountry(true);
+                try {
+                  const result = await refreshUserLocation();
+                  setSelectedCountry(result.country_code);
+                  toast.success(`Land detekteret: ${COUNTRIES[result.country_code]?.name || result.country_code}`);
+                } catch (error) {
+                  toast.error('Kunne ikke detektere land');
+                } finally {
+                  setDetectingCountry(false);
+                }
+              }}
+              disabled={detectingCountry}
+              variant="outline"
+              className="flex-1"
+            >
+              {detectingCountry ? 'Detekterer...' : '🔄 Gendetekter Land Automatisk'}
+            </Button>
+          </div>
+          
+          <div className="p-3 bg-blue-50 rounded-lg text-sm text-gray-700">
+            <strong>💡 Tip:</strong> Dit land bruges til at vise relevante produktlinks når du klikker på "Indkøb" knapper.
+          </div>
+        </div>
+      </div>
+
       {/* My Recipes */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <div className="flex items-center justify-between mb-4">
