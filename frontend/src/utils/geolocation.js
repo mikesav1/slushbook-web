@@ -148,15 +148,18 @@ export async function updateUserPreferences(countryCode, languageCode, isManual 
 }
 
 /**
- * Force refresh country detection (ignores cache)
+ * Force refresh country detection (ignores cache and manual selection)
  * 
  * @returns {Promise<{country_code: string, language_code: string}>}
  */
 export async function refreshUserLocation() {
-  // Clear cache
+  // Clear cache and manual flag
   localStorage.removeItem('user_country');
   localStorage.removeItem('user_language');
   localStorage.removeItem('user_country_timestamp');
+  localStorage.removeItem('user_country_manual');
+  
+  console.log('[Geolocation] Force refreshing location (clearing cache and manual selection)');
   
   // Detect fresh
   return detectUserLocation();
