@@ -2844,8 +2844,17 @@ async def detect_user_location(request: Request):
     
     Returns country code and suggested language
     """
-    # Get user's IP address
-    client_ip = request.client.host
+    # Get user's IP address (handle proxy/load balancer scenarios)
+    # Try X-Forwarded-For header first (for proxied requests)
+    forwarded_for = request.headers.get("x-forwarded-for")
+    if forwarded_for:
+        # X-Forwarded-For can contain multiple IPs, use the first one (original client)
+        client_ip = forwarded_for.split(",")[0].strip()
+    else:
+        # Fallback to direct connection IP
+        client_ip = request.client.host
+    
+    logger.info(f"[Geolocation] Detecting country for IP: {client_ip}")
     
     # Try IP-based detection first
     country_code = await geolocation_service.detect_country_from_ip(client_ip)
