@@ -26,6 +26,8 @@ const SettingsPage = ({ sessionId }) => {
     tank_volumes_ml: [12000],
     loss_margin_pct: 5
   });
+  const [selectedCountry, setSelectedCountry] = useState(getUserCountry());
+  const [detectingCountry, setDetectingCountry] = useState(false);
 
   useEffect(() => {
     fetchData();
