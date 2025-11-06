@@ -174,6 +174,35 @@ const SignupPage = () => {
               </button>
             </div>
 
+            {/* Country Selector */}
+            <div>
+              <label className="flex items-center gap-2 text-sm font-medium mb-2 text-gray-700">
+                <FaGlobe className="text-blue-500" />
+                Vælg dit land
+              </label>
+              <select
+                name="country"
+                value={formData.country}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 border-2 rounded-xl"
+                style={{ 
+                  backgroundColor: '#D4E157',
+                  borderColor: '#C0CA33'
+                }}
+              >
+                {Object.entries(COUNTRIES).map(([code, country]) => (
+                  <option key={code} value={code}>
+                    {country.flag} {country.name}
+                  </option>
+                ))}
+                <option value="GB">🇬🇧 Other (English)</option>
+              </select>
+              <p className="text-xs text-gray-600 mt-1">
+                Dit land bruges til at vise relevante produktlinks
+              </p>
+            </div>
+
             {/* Sign Up Button */}
             <Button
               type="submit"
