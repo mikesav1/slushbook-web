@@ -169,9 +169,17 @@ const RecipeDetailPage = ({ sessionId }) => {
           return mapping.id; // Exact match - return immediately
         }
         
-        // Second check: All ingredient words must be found TOGETHER in ONE single keyword
-        // This prevents "appelsin juice" from matching when only "appelsin" and "orange juice" exist separately
+        // Second check: Match only if ingredient has SAME number of words as keyword
+        // This prevents "jordbær" (1 word) from matching "jordbær sirup" (2 words)
         for (const keyword of allKeywords) {
+          const keywordWords = keyword.split(/\s+/);
+          
+          // Only match if word count is the same
+          if (keywordWords.length !== ingredientWords.length) {
+            continue;
+          }
+          
+          // All ingredient words must be found in the keyword
           const allWordsFoundInThisKeyword = ingredientWords.every(word => 
             keyword.includes(word)
           );
