@@ -73,10 +73,8 @@ export async function detectUserLocation() {
     if (response.ok) {
       const data = await response.json();
       
-      // Save to localStorage with timestamp
-      localStorage.setItem('user_country', data.country_code);
-      localStorage.setItem('user_language', data.language_code);
-      localStorage.setItem('user_country_timestamp', Date.now().toString());
+      // Save to localStorage with timestamp (mark as auto-detected, not manual)
+      await updateUserPreferences(data.country_code, data.language_code, false);
       
       console.log(`[Geolocation] Detected and cached: ${data.country_code}`);
       
