@@ -31,6 +31,8 @@ const SettingsPage = ({ sessionId }) => {
 
   useEffect(() => {
     fetchData();
+    // Update selected country from localStorage when component mounts
+    setSelectedCountry(getUserCountry());
   }, [sessionId]);
 
   const fetchData = async () => {
