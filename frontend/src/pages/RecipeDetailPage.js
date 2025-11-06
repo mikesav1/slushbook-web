@@ -154,18 +154,36 @@ const RecipeDetailPage = ({ sessionId }) => {
 
   const getMappingForIngredient = (ingredientName) => {
     const name = ingredientName.toLowerCase().trim();
+    const ingredientWords = name.split(/\s+/); // Split ingredient name into words
     
     let bestMatch = null;
-    let bestMatchLength = 0;
+    let bestMatchScore = 0;
     
-    // Check against all mappings' keywords - find the longest/most specific match
+    // Check against all mappings' keywords
     for (const mapping of allMappings) {
       if (mapping.keywords) {
-        const keywords = mapping.keywords.toLowerCase().split(',').map(k => k.trim());
-        for (const keyword of keywords) {
-          if (name.includes(keyword) && keyword.length > bestMatchLength) {
+        const allKeywords = mapping.keywords.toLowerCase().split(/[,;]/).map(k => k.trim()).filter(k => k);
+        
+        // First check: Exact match (highest priority)
+        if (allKeywords.includes(name)) {
+          return mapping.id; // Exact match - return immediately
+        }
+        
+        // Second check: All ingredient words must be found in keywords
+        const allWordsFound = ingredientWords.every(word => 
+          allKeywords.some(keyword => keyword.includes(word))
+        );
+        
+        if (allWordsFound) {
+          // Calculate match score based on total keyword length (more specific = better)
+          const matchedKeywords = allKeywords.filter(keyword => 
+            ingredientWords.some(word => keyword.includes(word))
+          );
+          const score = matchedKeywords.join('').length;
+          
+          if (score > bestMatchScore) {
             bestMatch = mapping.id;
-            bestMatchLength = keyword.length;
+            bestMatchScore = score;
           }
         }
       }
