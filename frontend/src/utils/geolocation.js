@@ -30,9 +30,21 @@ export const LANGUAGES = {
  */
 export async function detectUserLocation() {
   try {
-    // Check localStorage cache with timestamp (cache for 1 hour)
+    // Check if user has manually set their country - ALWAYS respect manual selection
+    const isManuallySet = localStorage.getItem('user_country_manual') === 'true';
     const savedCountry = localStorage.getItem('user_country');
     const savedLanguage = localStorage.getItem('user_language');
+    
+    if (isManuallySet && savedCountry && savedLanguage) {
+      console.log(`[Geolocation] Using manually set country: ${savedCountry}`);
+      return {
+        country_code: savedCountry,
+        language_code: savedLanguage,
+        source: 'manual'
+      };
+    }
+    
+    // Check localStorage cache with timestamp (cache for 5 minutes)
     const savedTimestamp = localStorage.getItem('user_country_timestamp');
     
     // If cached and less than 5 minutes old, use cached value
