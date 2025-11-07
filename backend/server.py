@@ -1731,6 +1731,16 @@ async def update_recipe(recipe_id: str, recipe_data: RecipeCreate, request: Requ
         doc = recipe.model_dump()
         doc['session_id'] = session_id
         doc['created_at'] = doc['created_at'].isoformat()
+        
+        # IMPORTANT: When editing an existing recipe, set status to "pending" for re-approval
+        # (unless user is admin - admins can edit without re-approval)
+        if user and user.role == "admin":
+            # Admin edits keep their current status (or set to approved if new)
+            doc['status'] = existing.get('status', 'approved')
+        else:
+            # Non-admin edits require re-approval
+            doc['status'] = 'pending'
+            logger.info(f"Recipe {recipe_id} edited by non-admin, set to pending for re-approval")
     
     await collection.replace_one(
         {"id": recipe_id},
