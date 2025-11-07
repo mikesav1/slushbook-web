@@ -536,10 +536,22 @@ const EditRecipePage = ({ sessionId }) => {
                   ? 'Denne opskrift er synlig for alle brugere' 
                   : 'Kun du kan se denne opskrift'}
               </p>
+              {/* Show info if approved and user is not admin */}
+              {recipe.status === 'approved' && !isAdmin() && (
+                <p className="text-xs text-blue-600 mt-1">
+                  ℹ️ Denne opskrift er godkendt. Ændringer kræver ny godkendelse.
+                </p>
+              )}
             </div>
             <button
               type="button"
               onClick={() => {
+                // Only allow toggle if: user is admin OR recipe is not yet approved
+                if (!isAdmin() && recipe.status === 'approved') {
+                  toast.info('Godkendte opskrifter kan ikke ændres til privat. Slet opskriften i stedet hvis du vil fjerne den.');
+                  return;
+                }
+                
                 const newPublishedState = !recipe.is_published;
                 setRecipe({...recipe, is_published: newPublishedState});
                 // Reset confirmation when toggling off
@@ -547,9 +559,10 @@ const EditRecipePage = ({ sessionId }) => {
                   setImageRightsConfirmed(false);
                 }
               }}
+              disabled={!isAdmin() && recipe.status === 'approved'}
               className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors ${
                 recipe.is_published ? 'bg-green-500' : 'bg-gray-300'
-              }`}
+              } ${!isAdmin() && recipe.status === 'approved' ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <span
                 className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform ${
