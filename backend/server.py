@@ -2351,11 +2351,17 @@ async def import_recipe_from_csv(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail=f"CSV parsing error: {str(e)}")
 
 @api_router.post("/admin/confirm-import")
-async def confirm_recipe_import(recipes: List[dict]):
+async def confirm_recipe_import(recipes: List[dict], request: Request):
     """
     Confirm and create recipes from CSV import (Admin only)
+    Creates recipes under admin's account as approved but private
     """
     try:
+        # Get admin user
+        user = await get_current_user(request, None, db)
+        if not user or user.role != "admin":
+            raise HTTPException(status_code=403, detail="Admin only")
+        
         created_count = 0
         
         for recipe_data in recipes:
@@ -2366,15 +2372,20 @@ async def confirm_recipe_import(recipes: List[dict]):
             recipe_data['rating_count'] = 0
             recipe_data['view_count'] = 0
             recipe_data['is_free'] = False  # Admin can manually set to True later
-            recipe_data['is_published'] = True  # Published by default - admin imports are trusted
+            recipe_data['is_published'] = False  # Start as private - admin can review and publish
             
-            # Insert into database
-            await db.recipes.insert_one(recipe_data)
+            # Set admin as author so it shows in "Mine opskrifter"
+            recipe_data['author'] = user.id
+            recipe_data['author_name'] = user.name
+            recipe_data['status'] = 'approved'  # Admin recipes don't need approval
+            
+            # Insert into user_recipes collection (so it shows under "Mine opskrifter")
+            await db.user_recipes.insert_one(recipe_data)
             created_count += 1
         
         return {
             'success': True,
-            'message': f'Successfully imported {created_count} recipes',
+            'message': f'Successfully imported {created_count} recipes to your account',
             'count': created_count
         }
         
