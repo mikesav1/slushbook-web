@@ -2366,7 +2366,7 @@ async def confirm_recipe_import(recipes: List[dict]):
             recipe_data['rating_count'] = 0
             recipe_data['view_count'] = 0
             recipe_data['is_free'] = False  # Admin can manually set to True later
-            recipe_data['is_published'] = True
+            recipe_data['is_published'] = False  # Start as private - admin can review and publish manually
             
             # Insert into database
             await db.recipes.insert_one(recipe_data)
