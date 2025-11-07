@@ -13,6 +13,7 @@ import { useAuth } from '../context/AuthContext';
 const EditRecipePage = ({ sessionId }) => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user, isAdmin } = useAuth();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [recipe, setRecipe] = useState(null);
