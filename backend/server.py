@@ -969,6 +969,89 @@ async def login(request: LoginRequest, response: Response, http_request: Request
     }
 
 
+# ===== DEVICE MANAGEMENT ENDPOINTS =====
+
+@api_router.get("/auth/devices")
+async def get_user_devices(request: Request):
+    """Get all active devices for current user"""
+    user = await get_current_user(request, None, db)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    # Get all active sessions
+    sessions = await db.user_sessions.find({
+        "user_id": user.id,
+        "expires_at": {"$gt": datetime.now(timezone.utc)}
+    }).sort("last_active", -1).to_list(length=None)
+    
+    # Get current session token
+    current_token = request.cookies.get("session_token") or request.headers.get("Authorization", "").replace("Bearer ", "")
+    
+    devices = []
+    for session in sessions:
+        devices.append({
+            "device_id": session.get("device_id"),
+            "device_name": session.get("device_name", "Unknown Device"),
+            "user_agent": session.get("user_agent", ""),
+            "ip_address": session.get("ip_address"),
+            "last_active": session.get("last_active", session.get("created_at")).isoformat(),
+            "is_current": session.get("session_token") == current_token
+        })
+    
+    # Determine max devices
+    role = user.role
+    if role == "admin":
+        max_devices = 999
+    elif role == "pro":
+        max_devices = 3
+    else:
+        max_devices = 1
+    
+    return {
+        "devices": devices,
+        "current_count": len(devices),
+        "max_devices": max_devices
+    }
+
+@api_router.post("/auth/devices/logout")
+async def logout_device(device_id: str, request: Request):
+    """Logout a specific device"""
+    user = await get_current_user(request, None, db)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    # Delete the session for that device
+    result = await db.user_sessions.delete_one({
+        "user_id": user.id,
+        "device_id": device_id
+    })
+    
+    if result.deleted_count > 0:
+        return {"message": "Device logged out successfully"}
+    else:
+        raise HTTPException(status_code=404, detail="Device not found")
+
+@api_router.post("/auth/devices/logout-all")
+async def logout_all_devices(request: Request):
+    """Logout all devices except current"""
+    user = await get_current_user(request, None, db)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    # Get current session token
+    current_token = request.cookies.get("session_token") or request.headers.get("Authorization", "").replace("Bearer ", "")
+    
+    # Delete all sessions except current
+    result = await db.user_sessions.delete_many({
+        "user_id": user.id,
+        "session_token": {"$ne": current_token}
+    })
+    
+    return {
+        "message": f"Logged out {result.deleted_count} devices",
+        "count": result.deleted_count
+    }
+
 @api_router.get("/auth/me")
 async def get_me(request: Request):
     """Get current user info"""
