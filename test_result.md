@@ -122,15 +122,18 @@ backend:
 
   - task: "Session Persistence - 30 Day + Rolling Expiration"
     implemented: true
-    working: "NA"
+    working: true
     file: "backend/auth.py, backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implemented session persistence improvements to address frequent re-login issue (especially on mobile/iPhone). CHANGES: 1) Extended ACCESS_TOKEN_EXPIRE_DAYS from 7 to 30 days in auth.py. 2) Updated login endpoint session creation to use 30-day expiration with matching cookie max_age (already done in previous session). 3) Implemented rolling expiration in get_current_user() function - every authenticated request now refreshes session expires_at to +30 days from current time and updates last_active timestamp. This ensures active users stay logged in practically forever. Session will only expire if user is inactive for 30 consecutive days. Ready for comprehensive backend testing to verify rolling expiration mechanism works correctly."
+      - working: true
+        agent: "testing"
+        comment: "✅ SESSION PERSISTENCE WITH 30-DAY + ROLLING EXPIRATION FULLY TESTED AND WORKING: Comprehensive testing confirms all session persistence requirements are met. ✅ TEST 1 - 30-DAY INITIAL EXPIRATION: Login as kimesav@gmail.com/admin123 successful, session_token captured (9B1HpNl_tCBQCkGO-EPf...), user_sessions collection queried successfully, expires_at verified to be exactly 30 days from login time (diff: 0.01s), created_at timestamp is current (diff: 0.01s), last_active timestamp is current (diff: 0.01s). ✅ TEST 2 - ROLLING EXPIRATION MECHANISM: Initial expires_at captured (2025-12-08 10:50:15), waited 3 seconds, made authenticated GET /api/recipes request, expires_at updated to NEW timestamp (2025-12-08 10:50:18, extended by 3.02s), new expires_at is approximately 30 days from request time (diff: 0.02s), last_active updated to request time (diff: 0.02s). ✅ TEST 3 - MULTIPLE REQUESTS EXTEND SESSION: Made 3 authenticated requests with 1.5s delays, Request 1: expires_at pushed from 10:50:18 to 10:50:20, Request 2: expires_at pushed from 10:50:20 to 10:50:21, Request 3: expires_at pushed from 10:50:21 to 10:50:23, each request successfully extended session lifetime by pushing expires_at further into future. ✅ TEST 4 - SESSION EXPIRATION LOGIC: Verified theoretical logic - sessions expire after 30 days of inactivity, expired sessions (expires_at < current time) are rejected by get_current_user(), cannot test actual 30-day wait in automated test but logic is sound. ✅ TEST 5 - DEVICE LIMIT COMPATIBILITY: Device limit functionality remains intact with rolling expiration, admin user has 13/999 devices before test, login from new device successful, device count increased to 14/999, device limit enforcement still working correctly. ✅ MONGODB VERIFICATION: All session fields properly stored and updated in user_sessions collection (session_token, expires_at, created_at, last_active, user_id, device_id, device_name, user_agent, ip_address). ✅ CONCLUSION: Session persistence implementation is fully functional. Users will stay logged in practically forever as long as they remain active. Sessions only expire after 30 days of complete inactivity. This solves the mobile/iPhone re-login issue reported by users."
 
   - task: "Internationalization - Product Links by Country"
     implemented: true
