@@ -293,10 +293,11 @@ const SettingsPage = ({ sessionId }) => {
                   </div>
                   {!device.is_current && (
                     <Button
-                      onClick={() => logoutDevice(device.device_id)}
+                      onClick={() => logoutDevice(device.device_id, device.session_token)}
                       variant="outline"
                       size="sm"
                       className="text-red-600 hover:text-red-700"
+                      disabled={!device.device_id && !device.session_token}
                     >
                       Log ud
                     </Button>
