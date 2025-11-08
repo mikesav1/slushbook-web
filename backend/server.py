@@ -913,9 +913,9 @@ async def login(request: LoginRequest, response: Response, http_request: Request
             await db.user_sessions.delete_one({"_id": oldest_session["_id"]})
             logger.info(f"Removed oldest session for user {user_doc['id']} due to device limit")
     
-    # Create new session
+    # Create new session with 30 day expiration
     session_token = create_session_token()
-    expires_at = datetime.now(timezone.utc) + timedelta(days=7)
+    expires_at = datetime.now(timezone.utc) + timedelta(days=30)  # Extended from 7 to 30 days
     
     session = {
         "user_id": user_doc["id"],
