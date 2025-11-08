@@ -25,6 +25,22 @@ const RecipeDetailPage = ({ sessionId }) => {
   const [hoverRating, setHoverRating] = useState(0);
   const [products, setProducts] = useState([]);
   const [userCountry, setUserCountry] = useState('DK');
+  
+  // Category display name mapper
+  const getCategoryDisplayName = (categoryKey) => {
+    const categoryMap = {
+      'vand': 'Vand',
+      'mælk': 'Mælk',
+      'maelk': 'Mælk',
+      'frugtsaft': 'Frugtsaft',
+      'laeskedrik': 'Læskedrik',
+      'kaffe': 'Kaffe',
+      'te': 'Te',
+      'smoothie': 'Smoothie',
+      'andetdrink': 'Andet drink'
+    };
+    return categoryMap[categoryKey] || categoryKey;
+  };
 
   useEffect(() => {
     fetchRecipe();
