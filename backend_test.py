@@ -7344,8 +7344,8 @@ Test CSV Product Empty,test;csv,,bilka,https://www.bilka.dk/test-csv-product-2,T
             return False
 
 def main():
-    """Run device list filtering test"""
-    print("🧪 SLUSHBOOK Device List Filtering Test")
+    """Run free recipes ordering test"""
+    print("🧪 SLUSHBOOK Free Recipes Ordering Test")
     print("=" * 80)
     
     # Use preview environment for testing (has working admin credentials)
@@ -7356,9 +7356,9 @@ def main():
     
     tester = BackendTester(preview_url)
     
-    # Run device list filtering test as requested in review
+    # Run free recipes ordering test as requested in review
     tests = [
-        ("Device List 7-Day Filtering", tester.test_device_list_filtering_7_days)
+        ("Free Recipes Ordering for Guests", tester.test_free_recipes_ordering_for_guests)
     ]
     
     passed = 0
