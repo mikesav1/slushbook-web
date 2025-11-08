@@ -1043,6 +1043,173 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             
         return True
 
+    def test_free_recipes_ordering_for_guests(self):
+        """Test that free recipes appear first in the recipes list for guest users"""
+        self.log("=== TESTING FREE RECIPES ORDERING FOR GUESTS ===")
+        
+        try:
+            # Test 1: Verify free recipes appear first for guest users (no authentication)
+            self.log("\n--- Test 1: Free recipes appear first for guest users ---")
+            
+            # Use a fresh session to ensure we're testing as a guest
+            guest_session = requests.Session()
+            response = guest_session.get(f"{self.base_url}/recipes")
+            
+            if response.status_code != 200:
+                self.log(f"❌ Failed to get recipes as guest: {response.status_code} - {response.text}")
+                return False
+            
+            recipes = response.json()
+            self.log(f"✅ Retrieved {len(recipes)} recipes as guest user")
+            
+            if len(recipes) == 0:
+                self.log("❌ No recipes found - cannot test ordering")
+                return False
+            
+            # Check the response order - verify first recipes have is_free=True
+            free_recipes_count = 0
+            first_locked_recipe_index = None
+            
+            for i, recipe in enumerate(recipes):
+                is_free = recipe.get('is_free', False)
+                recipe_name = recipe.get('name', 'Unknown')
+                
+                if is_free:
+                    free_recipes_count += 1
+                    self.log(f"  Recipe {i+1}: '{recipe_name}' - FREE ✅")
+                else:
+                    if first_locked_recipe_index is None:
+                        first_locked_recipe_index = i
+                    self.log(f"  Recipe {i+1}: '{recipe_name}' - LOCKED 🔒")
+                    
+                    # If we find a locked recipe, all subsequent free recipes indicate wrong ordering
+                    if i < len(recipes) - 1:
+                        remaining_recipes = recipes[i+1:]
+                        for j, remaining_recipe in enumerate(remaining_recipes):
+                            if remaining_recipe.get('is_free', False):
+                                self.log(f"❌ ORDERING ERROR: Found free recipe '{remaining_recipe.get('name')}' at position {i+j+2} after locked recipe at position {i+1}")
+                                return False
+                    break
+            
+            self.log(f"✅ Found {free_recipes_count} free recipes before first locked recipe")
+            
+            if free_recipes_count == 0:
+                self.log("⚠️  No free recipes found - this might be expected if all recipes are locked")
+            else:
+                self.log(f"✅ All {free_recipes_count} free recipes appear before locked recipes")
+            
+            # Test 2: Verify sorting within free and locked groups
+            self.log("\n--- Test 2: Verify sorting within free and locked groups ---")
+            
+            # Separate free and locked recipes
+            free_recipes = [r for r in recipes if r.get('is_free', False)]
+            locked_recipes = [r for r in recipes if not r.get('is_free', False)]
+            
+            self.log(f"Free recipes: {len(free_recipes)}, Locked recipes: {len(locked_recipes)}")
+            
+            # Check that free recipes are sorted by created_at (newest first)
+            if len(free_recipes) > 1:
+                free_dates = []
+                for recipe in free_recipes:
+                    created_at = recipe.get('created_at')
+                    if created_at:
+                        # Parse datetime if it's a string
+                        if isinstance(created_at, str):
+                            try:
+                                from datetime import datetime
+                                parsed_date = datetime.fromisoformat(created_at.replace('Z', '+00:00'))
+                                free_dates.append(parsed_date)
+                            except:
+                                self.log(f"⚠️  Could not parse date for free recipe: {created_at}")
+                        else:
+                            free_dates.append(created_at)
+                
+                # Check if dates are in descending order (newest first)
+                if len(free_dates) > 1:
+                    is_sorted_desc = all(free_dates[i] >= free_dates[i+1] for i in range(len(free_dates)-1))
+                    if is_sorted_desc:
+                        self.log("✅ Free recipes are sorted by date (newest first)")
+                    else:
+                        self.log("❌ Free recipes are NOT sorted by date correctly")
+                        return False
+            
+            # Check that locked recipes are also sorted by created_at (newest first)
+            if len(locked_recipes) > 1:
+                locked_dates = []
+                for recipe in locked_recipes:
+                    created_at = recipe.get('created_at')
+                    if created_at:
+                        if isinstance(created_at, str):
+                            try:
+                                from datetime import datetime
+                                parsed_date = datetime.fromisoformat(created_at.replace('Z', '+00:00'))
+                                locked_dates.append(parsed_date)
+                            except:
+                                self.log(f"⚠️  Could not parse date for locked recipe: {created_at}")
+                        else:
+                            locked_dates.append(created_at)
+                
+                if len(locked_dates) > 1:
+                    is_sorted_desc = all(locked_dates[i] >= locked_dates[i+1] for i in range(len(locked_dates)-1))
+                    if is_sorted_desc:
+                        self.log("✅ Locked recipes are sorted by date (newest first)")
+                    else:
+                        self.log("❌ Locked recipes are NOT sorted by date correctly")
+                        return False
+            
+            # Test 3: Verify homepage experience (first 8 recipes)
+            self.log("\n--- Test 3: Verify homepage experience (first 8 recipes) ---")
+            
+            first_8_recipes = recipes[:8]
+            free_in_first_8 = sum(1 for r in first_8_recipes if r.get('is_free', False))
+            
+            self.log(f"First 8 recipes: {free_in_first_8} are free, {8 - free_in_first_8} are locked")
+            
+            # Log the first 8 recipes for visibility
+            for i, recipe in enumerate(first_8_recipes):
+                is_free = recipe.get('is_free', False)
+                status = "FREE" if is_free else "LOCKED"
+                self.log(f"  Homepage Recipe {i+1}: '{recipe.get('name')}' - {status}")
+            
+            # Verify that most/all of these 8 are free recipes
+            if free_in_first_8 >= 6:  # At least 75% should be free
+                self.log(f"✅ Homepage shows primarily free content ({free_in_first_8}/8 free recipes)")
+            elif free_in_first_8 >= 4:  # At least 50% free
+                self.log(f"⚠️  Homepage shows mixed content ({free_in_first_8}/8 free recipes) - could be improved")
+            else:
+                self.log(f"❌ Homepage shows mostly locked content ({free_in_first_8}/8 free recipes) - poor guest experience")
+                return False
+            
+            # Final verification: Ensure all free recipes come before all locked recipes
+            self.log("\n--- Final Verification: Free recipes before locked recipes ---")
+            
+            transition_point = None
+            for i, recipe in enumerate(recipes):
+                if not recipe.get('is_free', False):
+                    transition_point = i
+                    break
+            
+            if transition_point is None:
+                self.log("✅ All recipes are free - perfect guest experience")
+            elif transition_point == 0:
+                self.log("❌ No free recipes found at the beginning - poor guest experience")
+                return False
+            else:
+                self.log(f"✅ Free recipes occupy positions 1-{transition_point}, locked recipes start at position {transition_point + 1}")
+            
+            self.log("\n=== FREE RECIPES ORDERING TEST SUMMARY ===")
+            self.log("✅ All free recipes appear before locked recipes in response")
+            self.log("✅ Free recipes sorted by date (newest first)")
+            self.log("✅ Locked recipes sorted by date (newest first)")
+            self.log(f"✅ First 8 recipes contain {free_in_first_8} free recipes (good homepage experience)")
+            self.log("✅ Guest users see inviting free content first, not a wall of locked recipes")
+            
+            return True
+            
+        except Exception as e:
+            self.log(f"❌ Free recipes ordering test failed with exception: {str(e)}")
+            return False
+
     def test_specific_user_login(self, email, passwords_to_try):
         """Test login for a specific user with multiple password attempts"""
         self.log(f"Testing login for user: {email}")
