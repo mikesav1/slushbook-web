@@ -585,38 +585,58 @@ async def import_csv(
                 else:
                     country_codes = ["DK", "US", "GB"]
                 
-                # Check if mapping exists
-                existing_mapping = await db.redirect_mappings.find_one({"id": mapping_id})
-                if not existing_mapping:
-                    await db.redirect_mappings.update_one(
-                        {"id": mapping_id},
-                        {
-                            "$set": {
-                                "id": mapping_id,
-                                "name": produkt_navn,
-                                "ean": ean or None,
-                                "keywords": keywords_formatted
-                            }
-                        },
-                        upsert=True
-                    )
+                # UPSERT mapping (update if exists, insert if new)
+                result = await db.redirect_mappings.update_one(
+                    {"id": mapping_id},
+                    {
+                        "$set": {
+                            "id": mapping_id,
+                            "name": produkt_navn,
+                            "ean": ean or None,
+                            "keywords": keywords_formatted
+                        }
+                    },
+                    upsert=True
+                )
+                if result.upserted_id or result.matched_count == 0:
                     imported["mappings"] += 1
                 
-                # Generate option ID
-                option_id = f"opt_{mapping_id}_{leverandor}_{int(datetime.now(timezone.utc).timestamp() * 1000)}"
-                
-                # Create option
-                await db.redirect_options.insert_one({
-                    "id": option_id,
+                # Check if option already exists (same mapping + supplier)
+                existing_option = await db.redirect_options.find_one({
                     "mappingId": mapping_id,
-                    "supplier": leverandor,
-                    "title": title,
-                    "url": url,
-                    "status": "active",
-                    "priceLastSeen": None,
-                    "country_codes": country_codes,
-                    "updatedAt": datetime.now(timezone.utc).isoformat()
+                    "supplier": leverandor
                 })
+                
+                if existing_option:
+                    # UPDATE existing option
+                    await db.redirect_options.update_one(
+                        {"id": existing_option["id"]},
+                        {
+                            "$set": {
+                                "title": title,
+                                "url": url,
+                                "country_codes": country_codes,
+                                "updatedAt": datetime.now(timezone.utc).isoformat()
+                            }
+                        }
+                    )
+                    logger.info(f"Updated option: {mapping_id} - {leverandor}")
+                else:
+                    # INSERT new option
+                    option_id = f"opt_{mapping_id}_{leverandor}_{int(datetime.now(timezone.utc).timestamp() * 1000)}"
+                    
+                    await db.redirect_options.insert_one({
+                        "id": option_id,
+                        "mappingId": mapping_id,
+                        "supplier": leverandor,
+                        "title": title,
+                        "url": url,
+                        "status": "active",
+                        "priceLastSeen": None,
+                        "country_codes": country_codes,
+                        "updatedAt": datetime.now(timezone.utc).isoformat()
+                    })
+                    logger.info(f"Created new option: {mapping_id} - {leverandor}")
                 
                 imported["options"] += 1
             except Exception as e:
