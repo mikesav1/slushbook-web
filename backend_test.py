@@ -1443,11 +1443,14 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             # Step 2: Get list of active devices
             self.log("\n--- Step 2: Get active devices list ---")
             
-            # Set up headers with credentials for authenticated requests
+            # Set up headers with credentials for authenticated requests (matching frontend behavior)
             headers = {
                 "Authorization": f"Bearer {session_token}",
                 "Content-Type": "application/json"
             }
+            
+            # Also test with cookies to match frontend withCredentials: true behavior
+            self.session.cookies.set("session_token", session_token)
             
             devices_response = self.session.get(f"{self.base_url}/auth/devices", headers=headers)
             
