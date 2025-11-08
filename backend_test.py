@@ -7097,8 +7097,8 @@ Test CSV Product Empty,test;csv,,bilka,https://www.bilka.dk/test-csv-product-2,T
             return False
 
 def main():
-    """Run device logout functionality test"""
-    print("🧪 SLUSHBOOK Device Logout Functionality Test")
+    """Run device list filtering test"""
+    print("🧪 SLUSHBOOK Device List Filtering Test")
     print("=" * 80)
     
     # Use preview environment for testing (has working admin credentials)
@@ -7109,9 +7109,9 @@ def main():
     
     tester = BackendTester(preview_url)
     
-    # Run device logout test as requested in review
+    # Run device list filtering test as requested in review
     tests = [
-        ("Device Logout Functionality", tester.test_device_logout_functionality)
+        ("Device List 7-Day Filtering", tester.test_device_list_filtering_7_days)
     ]
     
     passed = 0
