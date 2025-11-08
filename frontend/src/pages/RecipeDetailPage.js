@@ -126,9 +126,13 @@ const RecipeDetailPage = ({ sessionId }) => {
         const machineVolume = defaultMachine.tank_volumes_ml[0];
         setFullMachineVolume(machineVolume);
         setTargetVolume(machineVolume);
+        // Return true to indicate a machine was found
+        return true;
       }
+      return false;
     } catch (error) {
       console.error('Error fetching machines:', error);
+      return false;
     }
   };
 
