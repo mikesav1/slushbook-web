@@ -1594,6 +1594,12 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
                 current_expires_at = session_check.get("expires_at")
                 current_last_active = session_check.get("last_active")
                 
+                # Make timezone-aware if needed
+                if current_expires_at.tzinfo is None:
+                    current_expires_at = current_expires_at.replace(tzinfo=timezone.utc)
+                if current_last_active.tzinfo is None:
+                    current_last_active = current_last_active.replace(tzinfo=timezone.utc)
+                
                 # Verify expires_at is pushed further
                 if current_expires_at > previous_expires_at:
                     self.log(f"✅ Request {i+1}: expires_at pushed further (was: {previous_expires_at}, now: {current_expires_at})")
