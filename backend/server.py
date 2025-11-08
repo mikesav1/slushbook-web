@@ -991,6 +991,7 @@ async def get_user_devices(request: Request):
     for session in sessions:
         devices.append({
             "device_id": session.get("device_id"),
+            "session_token": session.get("session_token"),  # Include session_token as fallback
             "device_name": session.get("device_name", "Unknown Device"),
             "user_agent": session.get("user_agent", ""),
             "ip_address": session.get("ip_address"),
