@@ -108,6 +108,7 @@ async def get_current_user(
     """
     Get current authenticated user from session token
     Checks both cookie and Authorization header
+    Implements rolling expiration - refreshes session on each authenticated request
     """
     session_token = None
     
@@ -129,6 +130,19 @@ async def get_current_user(
     
     if not session:
         return None
+    
+    # ROLLING EXPIRATION: Refresh session expiration and last_active timestamp
+    # This ensures active users stay logged in "practically forever"
+    new_expires_at = datetime.now(timezone.utc) + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)
+    await db.user_sessions.update_one(
+        {"session_token": session_token},
+        {
+            "$set": {
+                "expires_at": new_expires_at,
+                "last_active": datetime.now(timezone.utc)
+            }
+        }
+    )
     
     # Get user
     user_doc = await db.users.find_one({"id": session["user_id"]})
