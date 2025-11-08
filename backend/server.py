@@ -854,8 +854,8 @@ async def login_options():
     return {}
 
 @api_router.post("/auth/login")
-async def login(request: LoginRequest, response: Response):
-    """Login with email/password"""
+async def login(request: LoginRequest, response: Response, http_request: Request):
+    """Login with email/password with device limit enforcement"""
     logger.info(f"Login attempt for: {request.email}")
     
     # Find user
@@ -880,15 +880,53 @@ async def login(request: LoginRequest, response: Response):
             detail="Invalid email or password"
         )
     
-    # Create session
+    # Get device info from request
+    device_id = getattr(request, 'device_id', None)
+    device_name = getattr(request, 'device_name', 'Unknown Device')
+    user_agent = http_request.headers.get('user-agent', 'Unknown')
+    ip_address = http_request.client.host
+    
+    # Determine max devices based on user role
+    role = user_doc.get("role", "guest")
+    if role == "admin":
+        max_devices = 999  # Unlimited for admin
+    elif role == "pro":
+        max_devices = 3
+    else:
+        max_devices = 1  # Guest/free users
+    
+    # Check active sessions for this user
+    active_sessions = await db.user_sessions.find({
+        "user_id": user_doc["id"],
+        "expires_at": {"$gt": datetime.now(timezone.utc)}
+    }).sort("last_active", 1).to_list(length=None)
+    
+    # Filter out current device if already logged in
+    if device_id:
+        active_sessions = [s for s in active_sessions if s.get("device_id") != device_id]
+    
+    # If at or over limit, remove oldest session(s)
+    if len(active_sessions) >= max_devices:
+        sessions_to_remove = len(active_sessions) - max_devices + 1
+        for i in range(sessions_to_remove):
+            oldest_session = active_sessions[i]
+            await db.user_sessions.delete_one({"_id": oldest_session["_id"]})
+            logger.info(f"Removed oldest session for user {user_doc['id']} due to device limit")
+    
+    # Create new session
     session_token = create_session_token()
     expires_at = datetime.now(timezone.utc) + timedelta(days=7)
     
     session = {
         "user_id": user_doc["id"],
         "session_token": session_token,
+        "device_id": device_id,
+        "device_name": device_name,
+        "user_agent": user_agent,
+        "ip_address": ip_address,
         "expires_at": expires_at,
-        "created_at": datetime.now(timezone.utc)
+        "created_at": datetime.now(timezone.utc),
+        "last_active": datetime.now(timezone.utc)
     }
     
     await db.user_sessions.insert_one(session)
@@ -905,7 +943,7 @@ async def login(request: LoginRequest, response: Response):
         value=session_token,
         httponly=True,
         secure=True,
-        samesite="lax",  # Changed from "none" to "lax" for better compatibility
+        samesite="lax",
         max_age=7 * 24 * 60 * 60  # 7 days
     )
     
@@ -920,10 +958,14 @@ async def login(request: LoginRequest, response: Response):
             "name": user_doc["name"],
             "role": user_doc["role"],
             "picture": user_doc.get("picture"),
-            "country": user_doc.get("country", "GB"),  # Include country preference
-            "language": user_doc.get("language", "en-us")  # Include language preference
+            "country": user_doc.get("country", "GB"),
+            "language": user_doc.get("language", "en-us")
         },
-        "session_token": session_token
+        "session_token": session_token,
+        "device_limit": {
+            "current": len(active_sessions) + 1,
+            "max": max_devices
+        }
     }
 
 
