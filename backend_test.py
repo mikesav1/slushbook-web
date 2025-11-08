@@ -7394,30 +7394,46 @@ def main():
         tests = [
             ("Free Recipes Ordering for Guests", tester.test_free_recipes_ordering_for_guests)
         ]
+        
+        env_passed = 0
+        env_failed = 0
+        
+        for test_name, test_func in tests:
+            print(f"\n🔬 Running: {test_name}")
+            print("-" * 80)
+            try:
+                if test_func():
+                    print(f"✅ {test_name} - PASSED")
+                    env_passed += 1
+                else:
+                    print(f"❌ {test_name} - FAILED")
+                    env_failed += 1
+            except Exception as e:
+                print(f"💥 {test_name} - Exception: {str(e)}")
+                import traceback
+                print(f"Traceback: {traceback.format_exc()}")
+                env_failed += 1
+        
+        all_results[env_name] = {"passed": env_passed, "failed": env_failed}
+        
+        print(f"\n📊 {env_name} Results: {env_passed} passed, {env_failed} failed")
     
-    passed = 0
-    failed = 0
+    # Overall summary
+    print("\n" + "=" * 80)
+    print("OVERALL TEST SUMMARY")
+    print("=" * 80)
     
-    for test_name, test_func in tests:
-        print(f"\n🔬 Running: {test_name}")
-        print("-" * 80)
-        try:
-            if test_func():
-                print(f"✅ {test_name} - PASSED")
-                passed += 1
-            else:
-                print(f"❌ {test_name} - FAILED")
-                failed += 1
-        except Exception as e:
-            print(f"💥 {test_name} - Exception: {str(e)}")
-            import traceback
-            print(f"Traceback: {traceback.format_exc()}")
-            failed += 1
+    total_passed = sum(r["passed"] for r in all_results.values())
+    total_failed = sum(r["failed"] for r in all_results.values())
     
-    print(f"\n📊 Final Results: {passed} passed, {failed} failed")
+    for env_name, results in all_results.items():
+        status = "✅ PASS" if results["failed"] == 0 else "❌ FAIL"
+        print(f"{env_name} Environment: {status} ({results['passed']} passed, {results['failed']} failed)")
     
-    if failed == 0:
-        print("🎉 All tests passed!")
+    print(f"\nTotal: {total_passed} passed, {total_failed} failed")
+    
+    if total_failed == 0:
+        print("🎉 All tests passed on all environments!")
     else:
         print("⚠️  Some tests failed - check output above for details")
     
