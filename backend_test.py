@@ -1481,11 +1481,14 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             
             logout_body = {"device_id": device_id}
             
+            # Test with both Authorization header and cookies (matching frontend withCredentials: true)
             logout_response = self.session.post(
                 f"{self.base_url}/auth/devices/logout",
                 headers=headers,
                 json=logout_body
             )
+            
+            self.log(f"✅ Testing with Authorization header AND cookies (withCredentials: true behavior)")
             
             if logout_response.status_code != 200:
                 self.log(f"❌ Device logout failed: {logout_response.status_code} - {logout_response.text}")
