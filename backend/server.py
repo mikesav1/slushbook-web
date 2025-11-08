@@ -973,15 +973,19 @@ async def login(request: LoginRequest, response: Response, http_request: Request
 
 @api_router.get("/auth/devices")
 async def get_user_devices(request: Request):
-    """Get all active devices for current user"""
+    """Get all active devices for current user (last 7 days)"""
     user = await get_current_user(request, None, db)
     if not user:
         raise HTTPException(status_code=401, detail="Not authenticated")
     
-    # Get all active sessions
+    # Only show sessions active in the last 7 days to avoid clutter
+    seven_days_ago = datetime.now(timezone.utc) - timedelta(days=7)
+    
+    # Get all active sessions from last 7 days
     sessions = await db.user_sessions.find({
         "user_id": user.id,
-        "expires_at": {"$gt": datetime.now(timezone.utc)}
+        "expires_at": {"$gt": datetime.now(timezone.utc)},
+        "last_active": {"$gt": seven_days_ago}  # Only sessions active in last 7 days
     }).sort("last_active", -1).to_list(length=None)
     
     # Get current session token
