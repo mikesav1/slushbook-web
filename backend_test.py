@@ -1409,6 +1409,197 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             self.log("   - Verify all user data has been properly migrated from test_database to flavor_sync")
             return False
 
+    def test_device_logout_functionality(self):
+        """Test device logout functionality fix to verify 422 error is resolved"""
+        self.log("=== TESTING DEVICE LOGOUT FUNCTIONALITY ===")
+        
+        test_email = KIMESAV_EMAIL
+        test_password = KIMESAV_PASSWORD
+        
+        try:
+            # Step 1: Login with a device_id
+            self.log("\n--- Step 1: Login with device_id ---")
+            device_id = f"test_device_{int(time.time())}"
+            
+            login_response = self.session.post(f"{self.base_url}/auth/login", json={
+                "email": test_email,
+                "password": test_password,
+                "device_id": device_id,
+                "device_name": "Test Device for Logout"
+            })
+            
+            if login_response.status_code != 200:
+                self.log(f"❌ Login failed: {login_response.status_code} - {login_response.text}")
+                return False
+            
+            login_data = login_response.json()
+            session_token = login_data.get("session_token")
+            user_data = login_data.get("user", {})
+            
+            self.log(f"✅ Login successful with device_id: {device_id}")
+            self.log(f"✅ Session token: {session_token[:20] if session_token else 'None'}...")
+            self.log(f"✅ User: {user_data.get('email')} ({user_data.get('role')})")
+            
+            # Step 2: Get list of active devices
+            self.log("\n--- Step 2: Get active devices list ---")
+            
+            # Set up headers with credentials for authenticated requests
+            headers = {
+                "Authorization": f"Bearer {session_token}",
+                "Content-Type": "application/json"
+            }
+            
+            devices_response = self.session.get(f"{self.base_url}/auth/devices", headers=headers)
+            
+            if devices_response.status_code != 200:
+                self.log(f"❌ Get devices failed: {devices_response.status_code} - {devices_response.text}")
+                return False
+            
+            devices_data = devices_response.json()
+            devices = devices_data.get("devices", [])
+            
+            self.log(f"✅ Retrieved {len(devices)} active devices")
+            self.log(f"✅ Current device count: {devices_data.get('current_count')}/{devices_data.get('max_devices')}")
+            
+            # Verify our test device is in the list
+            test_device_found = False
+            for device in devices:
+                if device.get("device_id") == device_id:
+                    test_device_found = True
+                    self.log(f"✅ Test device found in list: {device.get('device_name')} (current: {device.get('is_current')})")
+                    break
+            
+            if not test_device_found:
+                self.log(f"❌ Test device {device_id} not found in devices list")
+                return False
+            
+            # Step 3: Test device logout with JSON body (the fix)
+            self.log("\n--- Step 3: Test device logout with JSON body ---")
+            
+            logout_body = {"device_id": device_id}
+            
+            logout_response = self.session.post(
+                f"{self.base_url}/auth/devices/logout",
+                headers=headers,
+                json=logout_body
+            )
+            
+            if logout_response.status_code != 200:
+                self.log(f"❌ Device logout failed: {logout_response.status_code} - {logout_response.text}")
+                self.log(f"❌ This indicates the 422 error fix may not be working")
+                return False
+            
+            logout_data = logout_response.json()
+            expected_message = "Device logged out successfully"
+            
+            if logout_data.get("message") == expected_message:
+                self.log(f"✅ Device logout successful: {logout_data.get('message')}")
+            else:
+                self.log(f"❌ Unexpected logout response: {logout_data}")
+                return False
+            
+            # Step 4: Verify device no longer appears in devices list
+            self.log("\n--- Step 4: Verify device removed from list ---")
+            
+            # Create a new session for verification (since we logged out the current device)
+            verify_session = requests.Session()
+            
+            # Login again to get a new session for verification
+            verify_login = verify_session.post(f"{self.base_url}/auth/login", json={
+                "email": test_email,
+                "password": test_password,
+                "device_id": f"verify_device_{int(time.time())}",
+                "device_name": "Verification Device"
+            })
+            
+            if verify_login.status_code != 200:
+                self.log(f"❌ Verification login failed: {verify_login.status_code}")
+                return False
+            
+            verify_token = verify_login.json().get("session_token")
+            verify_headers = {
+                "Authorization": f"Bearer {verify_token}",
+                "Content-Type": "application/json"
+            }
+            
+            # Get devices list again
+            verify_devices_response = verify_session.get(f"{self.base_url}/auth/devices", headers=verify_headers)
+            
+            if verify_devices_response.status_code != 200:
+                self.log(f"❌ Verification get devices failed: {verify_devices_response.status_code}")
+                return False
+            
+            verify_devices_data = verify_devices_response.json()
+            verify_devices = verify_devices_data.get("devices", [])
+            
+            # Check if the logged out device is still in the list
+            logged_out_device_found = False
+            for device in verify_devices:
+                if device.get("device_id") == device_id:
+                    logged_out_device_found = True
+                    break
+            
+            if logged_out_device_found:
+                self.log(f"❌ Logged out device {device_id} still appears in devices list")
+                return False
+            else:
+                self.log(f"✅ Logged out device {device_id} successfully removed from devices list")
+            
+            # Step 5: Test error cases
+            self.log("\n--- Step 5: Test error cases ---")
+            
+            # Test with invalid device_id
+            invalid_logout_response = verify_session.post(
+                f"{self.base_url}/auth/devices/logout",
+                headers=verify_headers,
+                json={"device_id": "non_existent_device_123"}
+            )
+            
+            if invalid_logout_response.status_code == 404:
+                self.log("✅ Invalid device_id correctly returns 404")
+            else:
+                self.log(f"❌ Invalid device_id should return 404, got: {invalid_logout_response.status_code}")
+                return False
+            
+            # Test with missing device_id
+            missing_device_response = verify_session.post(
+                f"{self.base_url}/auth/devices/logout",
+                headers=verify_headers,
+                json={}
+            )
+            
+            if missing_device_response.status_code == 422:
+                self.log("✅ Missing device_id correctly returns 422")
+            else:
+                self.log(f"❌ Missing device_id should return 422, got: {missing_device_response.status_code}")
+                return False
+            
+            # Test without authentication
+            no_auth_response = requests.Session().post(
+                f"{self.base_url}/auth/devices/logout",
+                json={"device_id": "some_device"}
+            )
+            
+            if no_auth_response.status_code == 401:
+                self.log("✅ Unauthenticated request correctly returns 401")
+            else:
+                self.log(f"❌ Unauthenticated request should return 401, got: {no_auth_response.status_code}")
+                return False
+            
+            self.log("\n✅ ALL DEVICE LOGOUT TESTS PASSED")
+            self.log("✅ The 422 error fix is working correctly")
+            self.log("✅ Device logout accepts JSON body with device_id field")
+            self.log("✅ Device sessions are properly deleted from user_sessions collection")
+            self.log("✅ Error handling works for invalid/missing device_id and authentication")
+            
+            return True
+            
+        except Exception as e:
+            self.log(f"❌ Device logout test failed with exception: {str(e)}")
+            import traceback
+            self.log(f"❌ Traceback: {traceback.format_exc()}")
+            return False
+
     def test_session_persistence_30day_rolling_expiration(self):
         """Test session persistence with 30-day + rolling expiration mechanism"""
         self.log("=== TESTING SESSION PERSISTENCE - 30 DAY + ROLLING EXPIRATION ===")
