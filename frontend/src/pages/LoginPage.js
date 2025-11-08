@@ -15,14 +15,51 @@ const LoginPage = ({ onLogin }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Generate device fingerprint
+  const getDeviceFingerprint = () => {
+    const data = [
+      navigator.userAgent,
+      navigator.language,
+      screen.width,
+      screen.height,
+      screen.colorDepth,
+      new Date().getTimezoneOffset()
+    ].join('|');
+    
+    // Simple hash function
+    let hash = 0;
+    for (let i = 0; i < data.length; i++) {
+      const char = data.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    return 'device_' + Math.abs(hash).toString(36);
+  };
+  
+  const getDeviceName = () => {
+    const ua = navigator.userAgent;
+    if (/iPhone/i.test(ua)) return 'iPhone';
+    if (/iPad/i.test(ua)) return 'iPad';
+    if (/Android/i.test(ua)) return 'Android Device';
+    if (/Mac/i.test(ua)) return 'Mac';
+    if (/Windows/i.test(ua)) return 'Windows PC';
+    if (/Linux/i.test(ua)) return 'Linux PC';
+    return 'Unknown Device';
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
+      const deviceId = getDeviceFingerprint();
+      const deviceName = getDeviceName();
+      
       const response = await axios.post(`${API}/auth/login`, {
         email,
-        password
+        password,
+        device_id: deviceId,
+        device_name: deviceName
       }, {
         withCredentials: true
       });
