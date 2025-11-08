@@ -292,6 +292,31 @@ const RecipeDetailPage = ({ sessionId }) => {
     }
   };
 
+  // Auto-scale recipe when machine is selected and recipe is loaded
+  useEffect(() => {
+    const autoScale = async () => {
+      // Only auto-scale if:
+      // 1. Recipe is loaded
+      // 2. User has machines (targetVolume is set to machine volume, not default 12000)
+      // 3. Recipe hasn't been scaled yet (avoid re-scaling on every render)
+      if (recipe && machines.length > 0 && !scaledData) {
+        try {
+          const response = await axios.post(`${API}/scale`, {
+            recipe_id: id,
+            target_volume_ml: targetVolume,
+            margin_pct: 5
+          });
+          setScaledData(response.data);
+          console.log('[Auto-Scale] Recipe automatically scaled to machine volume:', targetVolume);
+        } catch (error) {
+          console.error('[Auto-Scale] Error:', error);
+        }
+      }
+    };
+    
+    autoScale();
+  }, [recipe, machines, targetVolume]); // Auto-scale when recipe, machines, or targetVolume changes
+
   const toggleFavorite = async () => {
     try {
       if (recipe.is_favorite) {
