@@ -937,14 +937,14 @@ async def login(request: LoginRequest, response: Response, http_request: Request
         {"$set": {"last_login": datetime.now(timezone.utc)}}
     )
     
-    # Set cookie
+    # Set cookie with 30 day expiration
     response.set_cookie(
         key="session_token",
         value=session_token,
         httponly=True,
         secure=True,
         samesite="lax",
-        max_age=7 * 24 * 60 * 60  # 7 days
+        max_age=30 * 24 * 60 * 60  # 30 days (matches session expiration)
     )
     
     # Remove password from response
