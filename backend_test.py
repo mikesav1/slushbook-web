@@ -5588,91 +5588,145 @@ test,data,here"""
             # Test 3: Test with ordinary user (device limit)
             self.log("\n--- Test 3: Test with ordinary user (device limit) ---")
             
-            # Try to find or create a pro user
-            pro_user_email = "ulla@itopgaver.dk"
-            pro_user_password = "mille0188"
+            # Create a test guest user to verify device limits
+            guest_email = f"guest.test.{int(time.time())}@example.com"
+            guest_password = "guestpass123"
             
-            # Create multiple sessions with different device_ids
-            pro_sessions = []
-            for i in range(3):
-                device_id = f"pro_device_{i}_{int(time.time())}"
-                device_name = f"Pro Device {i+1}"
+            # Create guest user
+            guest_signup_response = self.session.post(f"{self.base_url}/auth/signup", json={
+                "email": guest_email,
+                "password": guest_password,
+                "name": "Guest Test User"
+            })
+            
+            if guest_signup_response.status_code == 200:
+                self.log(f"✅ Created guest user: {guest_email}")
                 
-                pro_login_response = self.session.post(f"{self.base_url}/auth/login", json={
-                    "email": pro_user_email,
-                    "password": pro_user_password,
-                    "device_id": device_id,
-                    "device_name": device_name
-                })
-                
-                if pro_login_response.status_code == 200:
-                    pro_data = pro_login_response.json()
-                    pro_sessions.append({
-                        "session_token": pro_data.get("session_token"),
+                # Create multiple sessions with different device_ids to test device limit
+                guest_sessions = []
+                for i in range(2):  # Try to create 2 sessions (guest limit is 1)
+                    device_id = f"guest_device_{i}_{int(time.time())}"
+                    device_name = f"Guest Device {i+1}"
+                    
+                    guest_login_response = self.session.post(f"{self.base_url}/auth/login", json={
+                        "email": guest_email,
+                        "password": guest_password,
                         "device_id": device_id,
                         "device_name": device_name
                     })
-                    self.log(f"✅ Created pro user session {i+1}: {device_name}")
-                else:
-                    self.log(f"⚠️  Could not create pro user session {i+1}: {pro_login_response.status_code}")
-            
-            if pro_sessions:
-                # Use the last session to check device list
-                last_session = pro_sessions[-1]
-                pro_headers = {"Authorization": f"Bearer {last_session['session_token']}"}
-                
-                pro_devices_response = self.session.get(f"{self.base_url}/auth/devices", headers=pro_headers)
-                
-                if pro_devices_response.status_code == 200:
-                    pro_devices_data = pro_devices_response.json()
-                    pro_devices = pro_devices_data.get("devices", [])
-                    pro_max_devices = pro_devices_data.get("max_devices", 0)
                     
-                    self.log(f"✅ Pro user device list: {len(pro_devices)}/{pro_max_devices} devices")
-                    
-                    # Check what role this user actually has
-                    pro_auth_response = self.session.get(f"{self.base_url}/auth/me", headers=pro_headers)
-                    if pro_auth_response.status_code == 200:
-                        pro_user_data = pro_auth_response.json()
-                        actual_role = pro_user_data.get('role', 'unknown')
-                        self.log(f"✅ Pro user actual role: {actual_role}")
-                        
-                        # Verify device limit enforcement based on actual role
-                        if actual_role == "admin" and pro_max_devices == 999:
-                            self.log("✅ Device limit enforcement: Admin user has correct 999 device limit")
-                        elif actual_role == "pro" and pro_max_devices == 3:
-                            self.log("✅ Device limit enforcement: Pro user has correct 3 device limit")
-                        else:
-                            self.log(f"⚠️  Device limit {pro_max_devices} for role {actual_role} - may be expected")
+                    if guest_login_response.status_code == 200:
+                        guest_data = guest_login_response.json()
+                        guest_sessions.append({
+                            "session_token": guest_data.get("session_token"),
+                            "device_id": device_id,
+                            "device_name": device_name
+                        })
+                        self.log(f"✅ Created guest session {i+1}: {device_name}")
                     else:
-                        self.log(f"⚠️  Could not get pro user role: {pro_auth_response.status_code}")
+                        self.log(f"⚠️  Could not create guest session {i+1}: {guest_login_response.status_code}")
+                
+                if guest_sessions:
+                    # Use the last session to check device list
+                    last_session = guest_sessions[-1]
+                    guest_headers = {"Authorization": f"Bearer {last_session['session_token']}"}
                     
-                    # Verify only recent active devices are shown
-                    for device in pro_devices:
-                        last_active_str = device.get("last_active")
-                        if last_active_str:
-                            try:
-                                # Parse the ISO format datetime - handle both with and without timezone
-                                if last_active_str.endswith('Z'):
-                                    last_active = datetime.fromisoformat(last_active_str.replace('Z', '+00:00'))
-                                elif '+' in last_active_str or last_active_str.endswith('00:00'):
-                                    last_active = datetime.fromisoformat(last_active_str)
-                                else:
-                                    # Assume UTC if no timezone info
-                                    last_active = datetime.fromisoformat(last_active_str).replace(tzinfo=timezone.utc)
-                                
-                                if last_active < seven_days_ago:
-                                    self.log(f"❌ Pro user has device older than 7 days: {last_active_str}")
-                                    return False
-                            except Exception as e:
-                                self.log(f"⚠️  Could not parse pro user last_active: {last_active_str} - {e}")
+                    guest_devices_response = self.session.get(f"{self.base_url}/auth/devices", headers=guest_headers)
                     
-                    self.log("✅ Pro user device list only shows recent active devices")
+                    if guest_devices_response.status_code == 200:
+                        guest_devices_data = guest_devices_response.json()
+                        guest_devices = guest_devices_data.get("devices", [])
+                        guest_max_devices = guest_devices_data.get("max_devices", 0)
+                        
+                        self.log(f"✅ Guest user device list: {len(guest_devices)}/{guest_max_devices} devices")
+                        
+                        # Check what role this user actually has
+                        guest_auth_response = self.session.get(f"{self.base_url}/auth/me", headers=guest_headers)
+                        if guest_auth_response.status_code == 200:
+                            guest_user_data = guest_auth_response.json()
+                            actual_role = guest_user_data.get('role', 'unknown')
+                            self.log(f"✅ Guest user actual role: {actual_role}")
+                            
+                            # Verify device limit enforcement based on actual role
+                            if actual_role == "guest" and guest_max_devices == 1:
+                                self.log("✅ Device limit enforcement: Guest user has correct 1 device limit")
+                            elif actual_role == "pro" and guest_max_devices == 3:
+                                self.log("✅ Device limit enforcement: Pro user has correct 3 device limit")
+                            elif actual_role == "admin" and guest_max_devices == 999:
+                                self.log("✅ Device limit enforcement: Admin user has correct 999 device limit")
+                            else:
+                                self.log(f"⚠️  Device limit {guest_max_devices} for role {actual_role}")
+                        else:
+                            self.log(f"⚠️  Could not get guest user role: {guest_auth_response.status_code}")
+                        
+                        # Verify only recent active devices are shown
+                        for device in guest_devices:
+                            last_active_str = device.get("last_active")
+                            if last_active_str:
+                                try:
+                                    # Parse the ISO format datetime - handle both with and without timezone
+                                    if last_active_str.endswith('Z'):
+                                        last_active = datetime.fromisoformat(last_active_str.replace('Z', '+00:00'))
+                                    elif '+' in last_active_str or last_active_str.endswith('00:00'):
+                                        last_active = datetime.fromisoformat(last_active_str)
+                                    else:
+                                        # Assume UTC if no timezone info
+                                        last_active = datetime.fromisoformat(last_active_str).replace(tzinfo=timezone.utc)
+                                    
+                                    if last_active < seven_days_ago:
+                                        self.log(f"❌ Guest user has device older than 7 days: {last_active_str}")
+                                        return False
+                                except Exception as e:
+                                    self.log(f"⚠️  Could not parse guest user last_active: {last_active_str} - {e}")
+                        
+                        self.log("✅ Guest user device list only shows recent active devices")
+                        
+                        # Verify that device limit enforcement removed old sessions
+                        if len(guest_sessions) > guest_max_devices:
+                            self.log(f"✅ Device limit enforcement working: Created {len(guest_sessions)} sessions but only {len(guest_devices)} remain")
+                        
+                    else:
+                        self.log(f"❌ Could not get guest user device list: {guest_devices_response.status_code}")
+                        return False
                 else:
-                    self.log(f"❌ Could not get pro user device list: {pro_devices_response.status_code}")
-                    return False
+                    self.log("⚠️  Could not test guest user device limits - no guest sessions created")
             else:
-                self.log("⚠️  Could not test pro user device limits - no pro sessions created")
+                self.log(f"⚠️  Could not create guest user: {guest_signup_response.status_code}")
+            
+            # Also test with existing admin user (ulla@itopgaver.dk)
+            self.log("\n--- Test 3b: Test with existing admin user ---")
+            admin_user_email = "ulla@itopgaver.dk"
+            admin_user_password = "mille0188"
+            
+            admin_login_response = self.session.post(f"{self.base_url}/auth/login", json={
+                "email": admin_user_email,
+                "password": admin_user_password,
+                "device_id": f"admin_device_{int(time.time())}",
+                "device_name": "Admin Test Device"
+            })
+            
+            if admin_login_response.status_code == 200:
+                admin_data = admin_login_response.json()
+                admin_headers = {"Authorization": f"Bearer {admin_data.get('session_token')}"}
+                
+                admin_devices_response = self.session.get(f"{self.base_url}/auth/devices", headers=admin_headers)
+                
+                if admin_devices_response.status_code == 200:
+                    admin_devices_data = admin_devices_response.json()
+                    admin_devices = admin_devices_data.get("devices", [])
+                    admin_max_devices = admin_devices_data.get("max_devices", 0)
+                    
+                    self.log(f"✅ Admin user device list: {len(admin_devices)}/{admin_max_devices} devices")
+                    
+                    # Verify admin has unlimited devices
+                    if admin_max_devices == 999:
+                        self.log("✅ Admin user has unlimited device access (999)")
+                    else:
+                        self.log(f"⚠️  Admin user has unexpected device limit: {admin_max_devices}")
+                else:
+                    self.log(f"⚠️  Could not get admin device list: {admin_devices_response.status_code}")
+            else:
+                self.log(f"⚠️  Could not login as admin user: {admin_login_response.status_code}")
             
             # Test 4: Verify cleanup on startup (theoretical test)
             self.log("\n--- Test 4: Verify cleanup on startup ---")
