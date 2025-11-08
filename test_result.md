@@ -522,8 +522,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Water Filter Implementation - CRITICAL ISSUE"
-    - "Admin Sandbox Recipe Count Mismatch"
+    - "Session Persistence - 30 Day + Rolling Expiration"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
