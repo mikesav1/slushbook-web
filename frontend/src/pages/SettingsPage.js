@@ -28,12 +28,65 @@ const SettingsPage = ({ sessionId }) => {
   });
   const [selectedCountry, setSelectedCountry] = useState(getUserCountry());
   const [detectingCountry, setDetectingCountry] = useState(false);
+  const [devices, setDevices] = useState([]);
+  const [deviceLimits, setDeviceLimits] = useState({ current: 0, max: 1 });
 
   useEffect(() => {
     fetchData();
+    fetchDevices();
     // Update selected country from localStorage when component mounts
     setSelectedCountry(getUserCountry());
   }, [sessionId]);
+  
+  const fetchDevices = async () => {
+    try {
+      const token = localStorage.getItem('session_token');
+      const response = await axios.get(`${API}/auth/devices`, {
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true
+      });
+      setDevices(response.data.devices);
+      setDeviceLimits({
+        current: response.data.current_count,
+        max: response.data.max_devices
+      });
+    } catch (error) {
+      console.error('Error fetching devices:', error);
+    }
+  };
+  
+  const logoutDevice = async (deviceId) => {
+    try {
+      const token = localStorage.getItem('session_token');
+      await axios.post(`${API}/auth/devices/logout`, 
+        { device_id: deviceId },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true
+        }
+      );
+      toast.success('Enhed logget ud');
+      fetchDevices();
+    } catch (error) {
+      toast.error('Kunne ikke logge enhed ud');
+    }
+  };
+  
+  const logoutAllDevices = async () => {
+    if (!window.confirm('Log ud fra alle andre enheder?')) return;
+    
+    try {
+      const token = localStorage.getItem('session_token');
+      const response = await axios.post(`${API}/auth/devices/logout-all`, {}, {
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true
+      });
+      toast.success(`${response.data.count} enheder logget ud`);
+      fetchDevices();
+    } catch (error) {
+      toast.error('Kunne ikke logge ud fra enheder');
+    }
+  };
 
   const fetchData = async () => {
     try {
