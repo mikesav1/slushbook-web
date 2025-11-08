@@ -6674,6 +6674,253 @@ Test CSV Product Empty,test;csv,,bilka,https://www.bilka.dk/test-csv-product-2,T
             self.log("❌ SOME INTERNATIONALIZATION TESTS FAILED")
             return False
 
+    def test_user_sessions_investigation(self):
+        """Investigate kimesav@gmail.com device list to understand why they see so many devices"""
+        self.log("=== USER SESSIONS INVESTIGATION - KIMESAV@GMAIL.COM DEVICE LIST ===")
+        
+        try:
+            # Step 1: Login as kimesav@gmail.com/admin123 and get user ID
+            self.log("\n--- Step 1: Login as kimesav@gmail.com/admin123 ---")
+            
+            login_response = self.session.post(f"{self.base_url}/auth/login", json={
+                "email": KIMESAV_EMAIL,
+                "password": KIMESAV_PASSWORD
+            })
+            
+            if login_response.status_code != 200:
+                self.log(f"❌ Login failed: {login_response.status_code} - {login_response.text}")
+                return False
+            
+            login_data = login_response.json()
+            user_data = login_data.get("user", {})
+            user_id = user_data.get("id")
+            session_token = login_data.get("session_token")
+            
+            self.log(f"✅ Login successful")
+            self.log(f"✅ User ID: {user_id}")
+            self.log(f"✅ User Email: {user_data.get('email')}")
+            self.log(f"✅ User Role: {user_data.get('role')}")
+            self.log(f"✅ Session Token: {session_token[:20] if session_token else 'None'}...")
+            
+            if not user_id:
+                self.log("❌ No user ID returned from login")
+                return False
+            
+            # Step 2: Get current device list via API
+            self.log("\n--- Step 2: Get current device list via API ---")
+            
+            headers = {"Authorization": f"Bearer {session_token}"}
+            devices_response = self.session.get(f"{self.base_url}/auth/devices", headers=headers)
+            
+            if devices_response.status_code != 200:
+                self.log(f"❌ Get devices failed: {devices_response.status_code} - {devices_response.text}")
+                return False
+            
+            devices_data = devices_response.json()
+            devices = devices_data.get("devices", [])
+            current_count = devices_data.get("current_count", 0)
+            max_devices = devices_data.get("max_devices", 0)
+            
+            self.log(f"✅ Device API Response:")
+            self.log(f"   Current Count: {current_count}")
+            self.log(f"   Max Devices: {max_devices}")
+            self.log(f"   Devices Returned: {len(devices)}")
+            
+            # Step 3: Analyze device breakdown
+            self.log("\n--- Step 3: Device Analysis ---")
+            
+            device_names = {}
+            device_ids = {}
+            ip_addresses = {}
+            created_dates = {}
+            active_sessions = 0
+            expired_sessions = 0
+            sessions_without_device_id = 0
+            
+            current_time = datetime.now(timezone.utc)
+            
+            for i, device in enumerate(devices):
+                self.log(f"\nDevice {i+1}:")
+                self.log(f"  Device ID: {device.get('device_id', 'None')}")
+                self.log(f"  Session Token: {device.get('session_token', 'None')[:20] if device.get('session_token') else 'None'}...")
+                self.log(f"  Device Name: {device.get('device_name', 'Unknown')}")
+                self.log(f"  User Agent: {device.get('user_agent', 'Unknown')}")
+                self.log(f"  IP Address: {device.get('ip_address', 'Unknown')}")
+                self.log(f"  Last Active: {device.get('last_active', 'Unknown')}")
+                self.log(f"  Is Current: {device.get('is_current', False)}")
+                
+                # Count device names
+                device_name = device.get('device_name', 'Unknown Device')
+                device_names[device_name] = device_names.get(device_name, 0) + 1
+                
+                # Count device IDs (including null/missing)
+                device_id = device.get('device_id')
+                if device_id is None or device_id == '':
+                    sessions_without_device_id += 1
+                    device_ids['null/missing'] = device_ids.get('null/missing', 0) + 1
+                else:
+                    device_ids[device_id] = device_ids.get(device_id, 0) + 1
+                
+                # Count IP addresses
+                ip_address = device.get('ip_address', 'Unknown')
+                ip_addresses[ip_address] = ip_addresses.get(ip_address, 0) + 1
+                
+                # Parse created date (from last_active as proxy)
+                last_active_str = device.get('last_active', '')
+                if last_active_str:
+                    try:
+                        # Parse ISO format datetime
+                        last_active = datetime.fromisoformat(last_active_str.replace('Z', '+00:00'))
+                        date_key = last_active.strftime('%Y-%m-%d')
+                        created_dates[date_key] = created_dates.get(date_key, 0) + 1
+                        
+                        # Check if session is still active (assuming 30-day expiration)
+                        days_since_active = (current_time - last_active).days
+                        if days_since_active <= 30:
+                            active_sessions += 1
+                        else:
+                            expired_sessions += 1
+                    except Exception as e:
+                        self.log(f"  ⚠️  Could not parse last_active date: {e}")
+                        expired_sessions += 1
+                else:
+                    expired_sessions += 1
+            
+            # Step 4: Generate detailed statistics
+            self.log("\n--- Step 4: Detailed Statistics ---")
+            
+            self.log(f"\n📊 TOTAL SESSIONS: {len(devices)}")
+            self.log(f"   Active Sessions (≤30 days): {active_sessions}")
+            self.log(f"   Expired Sessions (>30 days): {expired_sessions}")
+            
+            self.log(f"\n📱 DEVICE NAME BREAKDOWN:")
+            for device_name, count in sorted(device_names.items(), key=lambda x: x[1], reverse=True):
+                self.log(f"   '{device_name}': {count} sessions")
+            
+            self.log(f"\n🆔 DEVICE ID BREAKDOWN:")
+            self.log(f"   Sessions without device_id: {sessions_without_device_id}")
+            for device_id, count in sorted(device_ids.items(), key=lambda x: x[1], reverse=True):
+                if device_id != 'null/missing':
+                    self.log(f"   '{device_id}': {count} sessions")
+            
+            self.log(f"\n🌐 IP ADDRESS BREAKDOWN:")
+            for ip_address, count in sorted(ip_addresses.items(), key=lambda x: x[1], reverse=True):
+                self.log(f"   {ip_address}: {count} sessions")
+            
+            self.log(f"\n📅 CREATED DATES BREAKDOWN:")
+            for date, count in sorted(created_dates.items(), reverse=True):
+                self.log(f"   {date}: {count} sessions")
+            
+            # Step 5: Check for anomalies
+            self.log("\n--- Step 5: Anomaly Detection ---")
+            
+            anomalies_found = []
+            
+            # Check for duplicate sessions from same device
+            duplicate_devices = {k: v for k, v in device_ids.items() if v > 1 and k != 'null/missing'}
+            if duplicate_devices:
+                anomalies_found.append(f"Duplicate device IDs found: {duplicate_devices}")
+                self.log(f"⚠️  ANOMALY: Duplicate device IDs detected")
+                for device_id, count in duplicate_devices.items():
+                    self.log(f"   Device ID '{device_id}' has {count} sessions")
+            
+            # Check for very old sessions
+            old_sessions = [date for date in created_dates.keys() if date < (current_time - timedelta(days=60)).strftime('%Y-%m-%d')]
+            if old_sessions:
+                anomalies_found.append(f"Very old sessions found (>60 days): {len(old_sessions)} dates")
+                self.log(f"⚠️  ANOMALY: Very old sessions detected (>60 days)")
+                for date in sorted(old_sessions):
+                    self.log(f"   Sessions from {date}: {created_dates[date]} sessions")
+            
+            # Check for excessive sessions without device_id
+            if sessions_without_device_id > 5:
+                anomalies_found.append(f"Excessive sessions without device_id: {sessions_without_device_id}")
+                self.log(f"⚠️  ANOMALY: {sessions_without_device_id} sessions without proper device_id")
+            
+            # Check for same IP with many sessions
+            excessive_ip_sessions = {ip: count for ip, count in ip_addresses.items() if count > 10}
+            if excessive_ip_sessions:
+                anomalies_found.append(f"IPs with excessive sessions: {excessive_ip_sessions}")
+                self.log(f"⚠️  ANOMALY: IPs with >10 sessions detected")
+                for ip, count in excessive_ip_sessions.items():
+                    self.log(f"   IP {ip}: {count} sessions")
+            
+            if not anomalies_found:
+                self.log("✅ No major anomalies detected")
+            
+            # Step 6: Provide recommendations
+            self.log("\n--- Step 6: Recommendations ---")
+            
+            recommendations = []
+            
+            if expired_sessions > 0:
+                recommendations.append(f"Clean up {expired_sessions} expired sessions from database")
+                self.log(f"💡 RECOMMENDATION: Clean up {expired_sessions} expired sessions")
+            
+            if sessions_without_device_id > 0:
+                recommendations.append(f"Review {sessions_without_device_id} sessions without device_id")
+                self.log(f"💡 RECOMMENDATION: Review sessions without proper device_id")
+            
+            if len(devices) > 20:
+                recommendations.append("Implement automatic cleanup of expired sessions")
+                self.log("💡 RECOMMENDATION: Implement automatic cleanup of expired sessions")
+            
+            if max_devices == 999:  # Admin user
+                recommendations.append("Consider adding 'Log ud fra alle enheder' (logout all) feature for admin users")
+                self.log("💡 RECOMMENDATION: Add 'Log ud fra alle enheder' feature for admin users")
+            
+            if duplicate_devices:
+                recommendations.append("Investigate and clean up duplicate device sessions")
+                self.log("💡 RECOMMENDATION: Clean up duplicate device sessions")
+            
+            # Step 7: Summary and findings
+            self.log("\n--- Step 7: Investigation Summary ---")
+            
+            self.log(f"\n🔍 INVESTIGATION FINDINGS:")
+            self.log(f"   User: {user_data.get('email')} (ID: {user_id})")
+            self.log(f"   Role: {user_data.get('role')} (Device Limit: {max_devices})")
+            self.log(f"   Total Sessions: {len(devices)}")
+            self.log(f"   Active Sessions: {active_sessions}")
+            self.log(f"   Expired Sessions: {expired_sessions}")
+            self.log(f"   Sessions without device_id: {sessions_without_device_id}")
+            self.log(f"   Unique IPs: {len(ip_addresses)}")
+            self.log(f"   Date Range: {min(created_dates.keys()) if created_dates else 'N/A'} to {max(created_dates.keys()) if created_dates else 'N/A'}")
+            
+            self.log(f"\n🚨 ANOMALIES DETECTED: {len(anomalies_found)}")
+            for anomaly in anomalies_found:
+                self.log(f"   - {anomaly}")
+            
+            self.log(f"\n💡 RECOMMENDATIONS: {len(recommendations)}")
+            for recommendation in recommendations:
+                self.log(f"   - {recommendation}")
+            
+            self.log(f"\n📋 EXPECTED FINDINGS VERIFICATION:")
+            self.log(f"   ✅ User has accumulated many sessions over time: {len(devices)} total sessions")
+            self.log(f"   ✅ Admin user has 999 device limit (no automatic cleanup): {max_devices == 999}")
+            
+            if expired_sessions > 0:
+                self.log(f"   ✅ Old sessions that should have expired: {expired_sessions} sessions")
+            else:
+                self.log(f"   ❓ No clearly expired sessions found (may need manual verification)")
+            
+            if sessions_without_device_id > 0:
+                self.log(f"   ✅ Sessions without proper cleanup: {sessions_without_device_id} sessions")
+            
+            # Determine if investigation was successful
+            if len(devices) > 10 and max_devices == 999:
+                self.log(f"\n✅ INVESTIGATION SUCCESSFUL: Found evidence of session accumulation")
+                self.log(f"   Root cause: Admin user with unlimited devices + no automatic cleanup")
+                return True
+            else:
+                self.log(f"\n⚠️  INVESTIGATION INCONCLUSIVE: Expected more sessions for investigation")
+                return False
+                
+        except Exception as e:
+            self.log(f"❌ Investigation failed with exception: {str(e)}")
+            import traceback
+            self.log(f"Traceback: {traceback.format_exc()}")
+            return False
+
 def main():
     """Run device logout functionality test"""
     print("🧪 SLUSHBOOK Device Logout Functionality Test")
