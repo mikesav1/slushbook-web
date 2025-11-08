@@ -5544,8 +5544,15 @@ test,data,here"""
                 last_active_str = device.get("last_active")
                 if last_active_str:
                     try:
-                        # Parse the ISO format datetime
-                        last_active = datetime.fromisoformat(last_active_str.replace('Z', '+00:00'))
+                        # Parse the ISO format datetime - handle both with and without timezone
+                        if last_active_str.endswith('Z'):
+                            last_active = datetime.fromisoformat(last_active_str.replace('Z', '+00:00'))
+                        elif '+' in last_active_str or last_active_str.endswith('00:00'):
+                            last_active = datetime.fromisoformat(last_active_str)
+                        else:
+                            # Assume UTC if no timezone info
+                            last_active = datetime.fromisoformat(last_active_str).replace(tzinfo=timezone.utc)
+                        
                         if last_active < seven_days_ago:
                             self.log(f"❌ Found device with last_active older than 7 days: {last_active_str}")
                             return False
