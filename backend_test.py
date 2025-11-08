@@ -7434,10 +7434,10 @@ def main():
     
     if total_failed == 0:
         print("🎉 All tests passed on all environments!")
+        return True
     else:
         print("⚠️  Some tests failed - check output above for details")
-    
-    return failed == 0
+        return False
 
     # ==========================================
     # INTERNATIONALIZATION TESTING
