@@ -5922,12 +5922,12 @@ test,data,here"""
         self.log("Starting SLUSHBOOK Backend System Tests")
         self.log("=" * 60)
         
-        # Run the device list filtering test as requested
-        self.log("\n📱 DEVICE LIST FILTERING TEST")
-        device_filtering_result = self.test_device_list_filtering_7_days()
+        # Run the free recipes ordering test as requested
+        self.log("\n🍹 FREE RECIPES ORDERING TEST")
+        free_recipes_result = self.test_free_recipes_ordering_for_guests()
         
         # Create results dictionary
-        critical_results = {"📱 DEVICE LIST 7-DAY FILTERING": device_filtering_result}
+        critical_results = {"🍹 FREE RECIPES ORDERING FOR GUESTS": free_recipes_result}
         
         # Run additional tests if needed
         additional_tests = []
