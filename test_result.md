@@ -120,6 +120,18 @@ backend:
         agent: "testing"
         comment: "✅ GEOLOCATION FOUNDATION TESTING COMPLETED SUCCESSFULLY: Comprehensive testing of Phase 1 geolocation features confirms all functionality is working correctly. ✅ GET /api/geolocation/detect ENDPOINT: Successfully returns country_code='DK', language_code='dk', detection_method='ip', fallback_countries=['DK', 'US', 'GB']. All required fields present with correct data types. Localhost correctly defaults to DK as expected. ✅ POST /api/user/preferences ENDPOINT: Guest user preferences successfully saved with success=True message 'Preferences set (localStorage only)'. Logged-in user preferences successfully saved to database with success=True message 'Preferences saved'. Both country_code and language_code parameters handled correctly. ✅ IP-BASED DETECTION: ipapi.co integration working correctly with proper fallback to DK for localhost IPs. ✅ BROWSER LANGUAGE FALLBACK: Accept-Language header parsing implemented and functional. ✅ COUNTRY-TO-LANGUAGE MAPPING: Proper mapping implemented for DK→dk, DE→de, FR→fr, GB→en-uk, US→en-us. All geolocation foundation features are fully functional and ready for production use."
 
+  - task: "Session Persistence - 30 Day + Rolling Expiration"
+    implemented: true
+    working: "NA"
+    file: "backend/auth.py, backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented session persistence improvements to address frequent re-login issue (especially on mobile/iPhone). CHANGES: 1) Extended ACCESS_TOKEN_EXPIRE_DAYS from 7 to 30 days in auth.py. 2) Updated login endpoint session creation to use 30-day expiration with matching cookie max_age (already done in previous session). 3) Implemented rolling expiration in get_current_user() function - every authenticated request now refreshes session expires_at to +30 days from current time and updates last_active timestamp. This ensures active users stay logged in practically forever. Session will only expire if user is inactive for 30 consecutive days. Ready for comprehensive backend testing to verify rolling expiration mechanism works correctly."
+
   - task: "Internationalization - Product Links by Country"
     implemented: true
     working: true
