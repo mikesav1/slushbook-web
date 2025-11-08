@@ -404,43 +404,17 @@ const RecipeDetailPage = ({ sessionId }) => {
     }
   };
 
-  const toggleHalfPortion = async (checked) => {
+  const toggleHalfPortion = (checked) => {
     setUseHalfPortion(checked);
     if (checked) {
-      // Halvér maskine volumen
+      // Halvér maskine volumen - auto-scale useEffect vil automatisk skalere
       const halfVolume = Math.round(fullMachineVolume / 2);
       setTargetVolume(halfVolume);
-      
-      // Skalér opskriften automatisk til halv portion
-      try {
-        const response = await axios.post(`${API}/scale`, {
-          recipe_id: id,
-          target_volume_ml: halfVolume,
-          margin_pct: 5
-        });
-        setScaledData(response.data);
-        toast.success('Opskrift skaleret til halv portion!');
-      } catch (error) {
-        console.error('Error scaling recipe:', error);
-        toast.error('Kunne ikke skalere opskrift');
-      }
+      toast.success('Skalerer til halv portion...');
     } else {
-      // Gendan fuld maskine volumen
+      // Gendan fuld maskine volumen - auto-scale useEffect vil automatisk skalere
       setTargetVolume(fullMachineVolume);
-      
-      // Skalér tilbage til fuld portion
-      try {
-        const response = await axios.post(`${API}/scale`, {
-          recipe_id: id,
-          target_volume_ml: fullMachineVolume,
-          margin_pct: 5
-        });
-        setScaledData(response.data);
-        toast.success('Opskrift gendannet til fuld portion!');
-      } catch (error) {
-        console.error('Error scaling recipe:', error);
-        toast.error('Kunne ikke skalere opskrift');
-      }
+      toast.success('Skalerer til fuld portion...');
     }
   };
 
