@@ -677,6 +677,18 @@ agent_communication:
         agent: "testing"
         comment: "🚨 WATER FILTER NOT IMPLEMENTED: Comprehensive testing confirms water filtering is completely missing from the backend. ❌ CRITICAL FINDINGS: 1) Added 'vand' to shopping list - SUCCESS (200) but item was SAVED to database (ID: 5b97417a-4ad6-4656-ab00-469baeba2916), 2) Added 'isvand' to shopping list - SUCCESS (200) but item was SAVED to database (ID: 217fda61-82a5-4cc4-ab40-3000bb71ed9c), 3) Found 3 total water items in shopping list including existing 'Isvand' item. ❌ ROOT CAUSE: No water filtering logic exists in POST /api/shopping-list endpoint. Water items (vand, isvand, knust is) are being added normally instead of being filtered out. ❌ IMPACT: Users can add water items to shopping list when they should be automatically filtered. 💡 SOLUTION REQUIRED: Implement water filtering in backend shopping list endpoint to reject water-related ingredients (vand, isvand, knust is, etc.) and return success message without saving to database."
 
+  - task: "Device Logout Functionality Fix - 422 Error Resolution"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ DEVICE LOGOUT FUNCTIONALITY FULLY TESTED AND WORKING: Comprehensive testing confirms the 422 error fix is successful and all device logout functionality works correctly. ✅ TEST SCENARIO EXECUTION: 1) Login as kimesav@gmail.com/admin123 with device_id 'test_device_1762620768' - SUCCESS, 2) GET /api/auth/devices returned 18 active devices including test device, 3) POST /api/auth/devices/logout with JSON body {'device_id': 'test_device_1762620768'} - SUCCESS (200) with message 'Device logged out successfully', 4) Verified device no longer appears in devices list, 5) Session successfully deleted from user_sessions collection. ✅ FRONTEND COMPATIBILITY: Tested with both Authorization header and cookies (withCredentials: true behavior) - works perfectly. ✅ ERROR HANDLING VERIFIED: Invalid device_id returns 404 'Device not found', missing device_id returns 422 'device_id is required', unauthenticated requests return 401 'Not authenticated'. ✅ CRITICAL FIX CONFIRMED: The endpoint now correctly reads device_id from request body (JSON) instead of query parameter, resolving the 422 Unprocessable Entity error. ✅ BACKEND IMPLEMENTATION: Lines 1024-1025 in server.py correctly parse JSON body with 'body = await request.json()' and 'device_id = body.get(\"device_id\")'. ✅ CONCLUSION: Device logout functionality is fully operational and matches frontend expectations. The 422 error has been completely resolved."
+
   - task: "Admin Sandbox Recipe Count Verification"
     implemented: true
     working: false
