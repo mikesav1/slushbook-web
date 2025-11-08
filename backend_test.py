@@ -7376,18 +7376,24 @@ def main():
     print("🧪 SLUSHBOOK Free Recipes Ordering Test")
     print("=" * 80)
     
-    # Use preview environment for testing (has working admin credentials)
-    preview_url = "https://shopping-links-1.preview.emergentagent.com/api"
-    
-    print(f"\n🌐 Testing Preview Environment: {preview_url}")
-    print("-" * 80)
-    
-    tester = BackendTester(preview_url)
-    
-    # Run free recipes ordering test as requested in review
-    tests = [
-        ("Free Recipes Ordering for Guests", tester.test_free_recipes_ordering_for_guests)
+    # Test both environments
+    environments = [
+        ("Preview", "https://shopping-links-1.preview.emergentagent.com/api"),
+        ("Production", "https://slushice-recipes.emergent.host/api")
     ]
+    
+    all_results = {}
+    
+    for env_name, env_url in environments:
+        print(f"\n🌐 Testing {env_name} Environment: {env_url}")
+        print("-" * 80)
+        
+        tester = BackendTester(env_url)
+        
+        # Run free recipes ordering test as requested in review
+        tests = [
+            ("Free Recipes Ordering for Guests", tester.test_free_recipes_ordering_for_guests)
+        ]
     
     passed = 0
     failed = 0
