@@ -66,6 +66,8 @@ class SignupRequest(BaseModel):
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+    device_id: Optional[str] = None
+    device_name: Optional[str] = None
 
 
 class ForgotPasswordRequest(BaseModel):
