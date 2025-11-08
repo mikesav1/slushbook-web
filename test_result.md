@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Implement internationalization feature for Slushbook: Phase 1 (Geolocation Foundation), Phase 2 (Product Links by Country), and Phase 2.5 (Signup Country Selection). Auto-detect user country via IP/browser language with 5-minute cache, allow multiple supplier links per product with country assignment, implement fallback logic (user country → DK → US → GB → fallback URL), manual country selector in Settings, country selection during signup with fallback to GB (English) for unlisted countries, and load user's saved country preference at login."
+user_problem_statement: "Implement session persistence improvements: Extend session duration from 7 days to 30 days and implement rolling expiration mechanism that refreshes session on each user activity, ensuring users remain logged in practically forever as long as they are active. This addresses the issue of users (especially on mobile/iPhone) needing to re-login frequently when closing and reopening the app."
 
 backend:
   - task: "Internationalization - Geolocation Foundation"
