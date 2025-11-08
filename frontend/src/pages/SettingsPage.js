@@ -241,6 +241,82 @@ const SettingsPage = ({ sessionId }) => {
         </div>
       </div>
 
+      {/* Device Management */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-2xl font-bold">Dine Enheder</h2>
+            <p className="text-sm text-gray-600">
+              Du bruger {deviceLimits.current} af {deviceLimits.max} tilladte enheder
+            </p>
+          </div>
+          {devices.length > 1 && (
+            <Button
+              onClick={logoutAllDevices}
+              variant="outline"
+              className="text-red-600 hover:text-red-700"
+            >
+              Log ud fra alle andre
+            </Button>
+          )}
+        </div>
+        
+        {devices.length === 0 ? (
+          <p className="text-gray-500">Ingen aktive enheder fundet</p>
+        ) : (
+          <div className="space-y-3">
+            {devices.map((device, index) => (
+              <div
+                key={index}
+                className={`p-4 rounded-lg border-2 ${
+                  device.is_current ? 'border-green-500 bg-green-50' : 'border-gray-200'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-bold text-gray-800">
+                        {device.device_name}
+                      </h3>
+                      {device.is_current && (
+                        <span className="text-xs bg-green-500 text-white px-2 py-1 rounded-full">
+                          Nuværende enhed
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-gray-500">
+                      Sidst aktiv: {new Date(device.last_active).toLocaleString('da-DK')}
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      IP: {device.ip_address}
+                    </p>
+                  </div>
+                  {!device.is_current && (
+                    <Button
+                      onClick={() => logoutDevice(device.device_id)}
+                      variant="outline"
+                      size="sm"
+                      className="text-red-600 hover:text-red-700"
+                    >
+                      Log ud
+                    </Button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        
+        <div className="mt-4 p-3 bg-blue-50 rounded-lg text-sm text-gray-700">
+          <strong>💡 Tip:</strong> {deviceLimits.max === 1 
+            ? 'Gratis brugere kan kun være logget ind på 1 enhed ad gangen.'
+            : `Du kan være logget ind på op til ${deviceLimits.max} enheder samtidig.`}
+          {deviceLimits.max < 3 && (
+            <span> Opgrader til Pro for at bruge flere enheder!</span>
+          )}
+        </div>
+      </div>
+
       {/* Country & Language Settings */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <div className="flex items-center gap-2 mb-4">
