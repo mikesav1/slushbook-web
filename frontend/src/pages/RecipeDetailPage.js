@@ -701,8 +701,9 @@ const RecipeDetailPage = ({ sessionId }) => {
               <div className="md:hidden absolute bottom-4 left-4">
                 <img 
                   src={`/icons/${recipe.type}.png`} 
-                  alt={recipe.type}
+                  alt={getCategoryDisplayName(recipe.type)}
                   className="w-12 h-12 rounded-full border-2 border-white shadow-lg bg-white p-1"
+                  title={getCategoryDisplayName(recipe.type)}
                 />
               </div>
             )}
