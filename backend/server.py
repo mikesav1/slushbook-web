@@ -66,6 +66,19 @@ UPLOADS_DIR.mkdir(exist_ok=True)
 # Create the main app
 app = FastAPI()
 
+# Startup event to clean up old sessions
+@app.on_event("startup")
+async def cleanup_old_sessions():
+    """Clean up sessions inactive for more than 30 days on startup"""
+    try:
+        thirty_days_ago = datetime.now(timezone.utc) - timedelta(days=30)
+        result = await db.user_sessions.delete_many({
+            "last_active": {"$lt": thirty_days_ago}
+        })
+        logger.info(f"Cleaned up {result.deleted_count} old inactive sessions on startup")
+    except Exception as e:
+        logger.warning(f"Failed to cleanup old sessions on startup: {e}")
+
 # CORS - MUST be added before routes
 app.add_middleware(
     CORSMiddleware,
