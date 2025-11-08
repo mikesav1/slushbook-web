@@ -11,7 +11,7 @@ import uuid
 from datetime import datetime, timezone, timedelta
 
 # Configuration
-PREVIEW_BASE_URL = "https://recipe-navigator.preview.emergentagent.com/api"  # Preview environment
+PREVIEW_BASE_URL = "https://shopping-links-1.preview.emergentagent.com/api"  # Preview environment
 PRODUCTION_BASE_URL = "https://slushice-recipes.emergent.host/api"  # Production environment
 TEST_EMAIL = f"test.user.{int(time.time())}@example.com"
 TEST_PASSWORD = "testpass123"
@@ -4998,7 +4998,7 @@ test,data,here"""
             test_origins = [
                 custom_domain_origin,
                 "https://slushice-recipes.emergent.host",
-                "https://recipe-navigator.preview.emergentagent.com"
+                "https://shopping-links-1.preview.emergentagent.com"
             ]
             
             for origin in test_origins:
@@ -6203,7 +6203,7 @@ def main():
     print("=" * 60)
     
     # Use preview environment for testing (has working admin credentials)
-    preview_url = "https://recipe-navigator.preview.emergentagent.com/api"
+    preview_url = "https://shopping-links-1.preview.emergentagent.com/api"
     
     print(f"\n🌐 Testing Preview Environment: {preview_url}")
     print("-" * 60)
