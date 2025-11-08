@@ -277,7 +277,7 @@ const RecipeDetailPage = ({ sessionId }) => {
     }
   };
 
-  const scaleRecipe = async () => {
+  const scaleRecipe = async (showToast = true) => {
     try {
       const response = await axios.post(`${API}/scale`, {
         recipe_id: id,
@@ -285,10 +285,14 @@ const RecipeDetailPage = ({ sessionId }) => {
         margin_pct: 5
       });
       setScaledData(response.data);
-      toast.success('Opskrift skaleret!');
+      if (showToast) {
+        toast.success('Opskrift skaleret!');
+      }
     } catch (error) {
       console.error('Error scaling recipe:', error);
-      toast.error('Kunne ikke skalere opskrift');
+      if (showToast) {
+        toast.error('Kunne ikke skalere opskrift');
+      }
     }
   };
 
@@ -298,8 +302,8 @@ const RecipeDetailPage = ({ sessionId }) => {
       // Only auto-scale if:
       // 1. Recipe is loaded
       // 2. User has machines (targetVolume is set to machine volume, not default 12000)
-      // 3. Recipe hasn't been scaled yet (avoid re-scaling on every render)
-      if (recipe && machines.length > 0 && !scaledData) {
+      // 3. Recipe hasn't been scaled yet OR targetVolume changed (allow re-scaling)
+      if (recipe && machines.length > 0) {
         try {
           const response = await axios.post(`${API}/scale`, {
             recipe_id: id,
@@ -307,7 +311,7 @@ const RecipeDetailPage = ({ sessionId }) => {
             margin_pct: 5
           });
           setScaledData(response.data);
-          console.log('[Auto-Scale] Recipe automatically scaled to machine volume:', targetVolume);
+          console.log('[Auto-Scale] Recipe automatically scaled to:', targetVolume, 'ml');
         } catch (error) {
           console.error('[Auto-Scale] Error:', error);
         }
