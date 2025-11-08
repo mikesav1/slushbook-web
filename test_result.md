@@ -689,6 +689,18 @@ agent_communication:
         agent: "testing"
         comment: "✅ DEVICE LOGOUT FUNCTIONALITY FULLY TESTED AND WORKING: Comprehensive testing confirms the 422 error fix is successful and all device logout functionality works correctly. ✅ TEST SCENARIO EXECUTION: 1) Login as kimesav@gmail.com/admin123 with device_id 'test_device_1762620768' - SUCCESS, 2) GET /api/auth/devices returned 18 active devices including test device, 3) POST /api/auth/devices/logout with JSON body {'device_id': 'test_device_1762620768'} - SUCCESS (200) with message 'Device logged out successfully', 4) Verified device no longer appears in devices list, 5) Session successfully deleted from user_sessions collection. ✅ FRONTEND COMPATIBILITY: Tested with both Authorization header and cookies (withCredentials: true behavior) - works perfectly. ✅ ERROR HANDLING VERIFIED: Invalid device_id returns 404 'Device not found', missing device_id returns 422 'device_id is required', unauthenticated requests return 401 'Not authenticated'. ✅ CRITICAL FIX CONFIRMED: The endpoint now correctly reads device_id from request body (JSON) instead of query parameter, resolving the 422 Unprocessable Entity error. ✅ BACKEND IMPLEMENTATION: Lines 1024-1025 in server.py correctly parse JSON body with 'body = await request.json()' and 'device_id = body.get(\"device_id\")'. ✅ CONCLUSION: Device logout functionality is fully operational and matches frontend expectations. The 422 error has been completely resolved."
 
+  - task: "Improved Device Logout Functionality - device_id and session_token Support"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "🎉 IMPROVED DEVICE LOGOUT FUNCTIONALITY FULLY TESTED AND WORKING: Comprehensive testing confirms all enhanced device logout scenarios work correctly, resolving 422 errors for devices without device_id. ✅ TEST 1 - LOGOUT DEVICE WITH device_id: Successfully logged in as kimesav@gmail.com/admin123 with device_id 'test_device_with_id_1762621433', GET /api/auth/devices returned 15 active devices with both device_id and session_token fields present, POST /api/auth/devices/logout with {'device_id': 'test_device_with_id_1762621433'} returned 200 success, verified device no longer appears in devices list after logout. ✅ TEST 2 - LOGOUT DEVICE WITHOUT device_id (OLD SESSIONS): Successfully logged in without device_id (simulating old sessions), found session with device_id=None but session_token present, POST /api/auth/devices/logout with {'session_token': '8sJB5sD1hC8JlyOpe8Ny...'} returned 200 success, verified session no longer appears in devices list after logout. ✅ TEST 3 - ERROR HANDLING: Empty request body returns 422 'device_id or session_token is required', invalid device_id returns 404 'Device not found', invalid session_token returns 404 'Device not found'. ✅ BACKEND IMPLEMENTATION VERIFIED: GET /api/auth/devices includes session_token in response for all devices (line 994), POST /api/auth/devices/logout accepts either device_id OR session_token (lines 1026-1037), proper query building with fallback logic (lines 1032-1037). ✅ CONCLUSION: This fix completely resolves the 422 errors for devices without device_id (empty/unnamed devices). Old sessions can now be logged out using session_token as fallback when device_id is null/missing."
+
   - task: "Admin Sandbox Recipe Count Verification"
     implemented: true
     working: false
