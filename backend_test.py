@@ -6669,8 +6669,8 @@ Test CSV Product Empty,test;csv,,bilka,https://www.bilka.dk/test-csv-product-2,T
             return False
 
 def main():
-    """Run session persistence test with 30-day + rolling expiration"""
-    print("🧪 SLUSHBOOK Session Persistence Test - 30 Day + Rolling Expiration")
+    """Run device logout functionality test"""
+    print("🧪 SLUSHBOOK Device Logout Functionality Test")
     print("=" * 80)
     
     # Use preview environment for testing (has working admin credentials)
@@ -6681,9 +6681,9 @@ def main():
     
     tester = BackendTester(preview_url)
     
-    # Run session persistence test as requested in review
+    # Run device logout test as requested in review
     tests = [
-        ("Session Persistence - 30 Day + Rolling Expiration", tester.test_session_persistence_30day_rolling_expiration)
+        ("Device Logout Functionality", tester.test_device_logout_functionality)
     ]
     
     passed = 0
