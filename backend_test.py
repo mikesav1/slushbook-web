@@ -1534,6 +1534,12 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             new_expires_at = updated_session_doc.get("expires_at")
             new_last_active = updated_session_doc.get("last_active")
             
+            # Make timezone-aware if needed
+            if new_expires_at.tzinfo is None:
+                new_expires_at = new_expires_at.replace(tzinfo=timezone.utc)
+            if new_last_active.tzinfo is None:
+                new_last_active = new_last_active.replace(tzinfo=timezone.utc)
+            
             self.log(f"📊 New expires_at: {new_expires_at}")
             self.log(f"📊 New last_active: {new_last_active}")
             
