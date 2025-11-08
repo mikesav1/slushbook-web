@@ -1015,23 +1015,28 @@ async def get_user_devices(request: Request):
 
 @api_router.post("/auth/devices/logout")
 async def logout_device(request: Request):
-    """Logout a specific device"""
+    """Logout a specific device by device_id or session_token"""
     user = await get_current_user(request, None, db)
     if not user:
         raise HTTPException(status_code=401, detail="Not authenticated")
     
-    # Get device_id from request body
+    # Get device_id or session_token from request body
     body = await request.json()
     device_id = body.get("device_id")
+    session_token = body.get("session_token")
     
-    if not device_id:
-        raise HTTPException(status_code=422, detail="device_id is required")
+    if not device_id and not session_token:
+        raise HTTPException(status_code=422, detail="device_id or session_token is required")
     
-    # Delete the session for that device
-    result = await db.user_sessions.delete_one({
-        "user_id": user.id,
-        "device_id": device_id
-    })
+    # Build query - prefer device_id, fallback to session_token
+    query = {"user_id": user.id}
+    if device_id:
+        query["device_id"] = device_id
+    else:
+        query["session_token"] = session_token
+    
+    # Delete the session
+    result = await db.user_sessions.delete_one(query)
     
     if result.deleted_count > 0:
         return {"message": "Device logged out successfully"}
