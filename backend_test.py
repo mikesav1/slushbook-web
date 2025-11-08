@@ -5494,12 +5494,12 @@ test,data,here"""
         self.log("Starting SLUSHBOOK Backend System Tests")
         self.log("=" * 60)
         
-        # Run the custom domain login test as requested
-        self.log("\n🌐 CUSTOM DOMAIN LOGIN TEST")
-        custom_domain_result = self.test_custom_domain_login()
+        # Run the device logout functionality test as requested
+        self.log("\n📱 DEVICE LOGOUT FUNCTIONALITY TEST")
+        device_logout_result = self.test_device_logout_functionality()
         
         # Create results dictionary
-        critical_results = {"🌐 CUSTOM DOMAIN LOGIN": custom_domain_result}
+        critical_results = {"📱 DEVICE LOGOUT FUNCTIONALITY": device_logout_result}
         
         # Run additional tests if needed
         additional_tests = []
