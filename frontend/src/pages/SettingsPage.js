@@ -55,11 +55,17 @@ const SettingsPage = ({ sessionId }) => {
     }
   };
   
-  const logoutDevice = async (deviceId) => {
+  const logoutDevice = async (deviceId, sessionToken) => {
     try {
       const token = localStorage.getItem('session_token');
+      
+      // Build request body - prefer device_id, fallback to session_token
+      const requestBody = deviceId 
+        ? { device_id: deviceId }
+        : { session_token: sessionToken };
+      
       await axios.post(`${API}/auth/devices/logout`, 
-        { device_id: deviceId },
+        requestBody,
         {
           headers: { Authorization: `Bearer ${token}` },
           withCredentials: true
@@ -68,6 +74,7 @@ const SettingsPage = ({ sessionId }) => {
       toast.success('Enhed logget ud');
       fetchDevices();
     } catch (error) {
+      console.error('Logout device error:', error);
       toast.error('Kunne ikke logge enhed ud');
     }
   };
