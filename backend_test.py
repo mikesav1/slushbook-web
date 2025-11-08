@@ -6458,21 +6458,21 @@ Test CSV Product Empty,test;csv,,bilka,https://www.bilka.dk/test-csv-product-2,T
             return False
 
 def main():
-    """Run advertisement creation endpoint test as requested"""
-    print("🧪 SLUSHBOOK Advertisement Creation Endpoint Test")
-    print("=" * 60)
+    """Run session persistence test with 30-day + rolling expiration"""
+    print("🧪 SLUSHBOOK Session Persistence Test - 30 Day + Rolling Expiration")
+    print("=" * 80)
     
     # Use preview environment for testing (has working admin credentials)
     preview_url = "https://shopping-links-1.preview.emergentagent.com/api"
     
     print(f"\n🌐 Testing Preview Environment: {preview_url}")
-    print("-" * 60)
+    print("-" * 80)
     
     tester = BackendTester(preview_url)
     
-    # Run advertisement creation test as requested in review
+    # Run session persistence test as requested in review
     tests = [
-        ("Advertisement Creation Endpoint", tester.test_advertisement_creation_endpoint)
+        ("Session Persistence - 30 Day + Rolling Expiration", tester.test_session_persistence_30day_rolling_expiration)
     ]
     
     passed = 0
@@ -6480,7 +6480,7 @@ def main():
     
     for test_name, test_func in tests:
         print(f"\n🔬 Running: {test_name}")
-        print("-" * 40)
+        print("-" * 80)
         try:
             if test_func():
                 print(f"✅ {test_name} - PASSED")
@@ -6490,6 +6490,8 @@ def main():
                 failed += 1
         except Exception as e:
             print(f"💥 {test_name} - Exception: {str(e)}")
+            import traceback
+            print(f"Traceback: {traceback.format_exc()}")
             failed += 1
     
     print(f"\n📊 Final Results: {passed} passed, {failed} failed")
