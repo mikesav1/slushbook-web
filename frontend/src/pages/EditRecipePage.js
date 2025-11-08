@@ -542,23 +542,17 @@ const EditRecipePage = ({ sessionId }) => {
                   ℹ️ Denne opskrift er godkendt. Ændringer kræver ny godkendelse.
                 </p>
               )}
-              {/* Show info if admin is editing approved recipe */}
-              {recipe.status === 'approved' && isAdmin() && (
-                <p className="text-xs text-orange-600 mt-1">
-                  ⚠️ Admin: Du kan ikke ændre synlighed på godkendte opskrifter.
+              {/* Show info if approved and user is not admin */}
+              {recipe.status === 'approved' && !isAdmin() && (
+                <p className="text-xs text-blue-600 mt-1">
+                  ℹ️ Denne opskrift er godkendt. Ændringer kræver ny godkendelse.
                 </p>
               )}
             </div>
             <button
               type="button"
               onClick={() => {
-                // Admin cannot toggle on approved recipes
-                if (isAdmin() && recipe.status === 'approved') {
-                  toast.info('Admin kan ikke ændre synlighed på godkendte opskrifter.');
-                  return;
-                }
-                
-                // Regular users CAN toggle (even on their approved recipes)
+                // Everyone (including admin) can toggle their own recipes
                 const newPublishedState = !recipe.is_published;
                 setRecipe({...recipe, is_published: newPublishedState});
                 // Reset confirmation when toggling off
@@ -566,10 +560,9 @@ const EditRecipePage = ({ sessionId }) => {
                   setImageRightsConfirmed(false);
                 }
               }}
-              disabled={isAdmin() && recipe.status === 'approved'}
               className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors ${
                 recipe.is_published ? 'bg-green-500' : 'bg-gray-300'
-              } ${isAdmin() && recipe.status === 'approved' ? 'opacity-50 cursor-not-allowed' : ''}`}
+              }`}
             >
               <span
                 className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform ${
