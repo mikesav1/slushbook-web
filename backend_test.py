@@ -1462,6 +1462,14 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
                 self.log(f"❌ Missing timestamp fields: expires_at={expires_at}, created_at={created_at}, last_active={last_active}")
                 return False
             
+            # Make timezone-aware if needed
+            if expires_at.tzinfo is None:
+                expires_at = expires_at.replace(tzinfo=timezone.utc)
+            if created_at.tzinfo is None:
+                created_at = created_at.replace(tzinfo=timezone.utc)
+            if last_active.tzinfo is None:
+                last_active = last_active.replace(tzinfo=timezone.utc)
+            
             self.log(f"✅ expires_at: {expires_at}")
             self.log(f"✅ created_at: {created_at}")
             self.log(f"✅ last_active: {last_active}")
