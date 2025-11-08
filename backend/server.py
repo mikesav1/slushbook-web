@@ -2363,30 +2363,65 @@ async def confirm_recipe_import(recipes: List[dict], request: Request):
             raise HTTPException(status_code=403, detail="Admin only")
         
         created_count = 0
+        updated_count = 0
         
         for recipe_data in recipes:
-            # Add required fields
-            recipe_data['id'] = str(uuid.uuid4())
-            recipe_data['created_at'] = datetime.now(timezone.utc)
-            recipe_data['rating_avg'] = 0.0
-            recipe_data['rating_count'] = 0
-            recipe_data['view_count'] = 0
-            recipe_data['is_free'] = False  # Admin can manually set to True later
-            recipe_data['is_published'] = False  # Start as private - admin can review and publish
+            recipe_name = recipe_data.get('name', '')
             
-            # Set admin as author so it shows in "Mine opskrifter"
-            recipe_data['author'] = user.id
-            recipe_data['author_name'] = user.name
-            recipe_data['status'] = 'approved'  # Admin recipes don't need approval
+            # Check if recipe already exists (by name and author)
+            existing = await db.user_recipes.find_one({
+                "name": recipe_name,
+                "author": user.id
+            })
             
-            # Insert into user_recipes collection (so it shows under "Mine opskrifter")
-            await db.user_recipes.insert_one(recipe_data)
-            created_count += 1
+            if existing:
+                # UPDATE existing recipe
+                recipe_id = existing['id']
+                
+                # Preserve some fields from existing
+                recipe_data['id'] = recipe_id
+                recipe_data['created_at'] = existing.get('created_at', datetime.now(timezone.utc))
+                recipe_data['rating_avg'] = existing.get('rating_avg', 0.0)
+                recipe_data['rating_count'] = existing.get('rating_count', 0)
+                recipe_data['view_count'] = existing.get('view_count', 0)
+                recipe_data['image_url'] = existing.get('image_url')  # Keep existing image
+                
+                # Update other fields
+                recipe_data['is_free'] = recipe_data.get('is_free', False)
+                recipe_data['is_published'] = existing.get('is_published', False)  # Keep publish status
+                recipe_data['author'] = user.id
+                recipe_data['author_name'] = user.name
+                recipe_data['status'] = 'approved'
+                
+                await db.user_recipes.replace_one(
+                    {"id": recipe_id},
+                    recipe_data
+                )
+                updated_count += 1
+                logger.info(f"Updated existing recipe: {recipe_name}")
+            else:
+                # INSERT new recipe
+                recipe_data['id'] = str(uuid.uuid4())
+                recipe_data['created_at'] = datetime.now(timezone.utc)
+                recipe_data['rating_avg'] = 0.0
+                recipe_data['rating_count'] = 0
+                recipe_data['view_count'] = 0
+                recipe_data['is_free'] = False
+                recipe_data['is_published'] = False
+                recipe_data['author'] = user.id
+                recipe_data['author_name'] = user.name
+                recipe_data['status'] = 'approved'
+                
+                await db.user_recipes.insert_one(recipe_data)
+                created_count += 1
+                logger.info(f"Created new recipe: {recipe_name}")
         
         return {
             'success': True,
-            'message': f'Successfully imported {created_count} recipes to your account',
-            'count': created_count
+            'message': f'Import complete: {created_count} created, {updated_count} updated',
+            'count': created_count + updated_count,
+            'created': created_count,
+            'updated': updated_count
         }
         
     except Exception as e:
