@@ -1625,6 +1625,15 @@ async def get_recipes(
         if isinstance(recipe.get('created_at'), str):
             recipe['created_at'] = datetime.fromisoformat(recipe['created_at'])
     
+    # IMPORTANT: Sort recipes so FREE recipes appear FIRST
+    # This ensures guests see free recipes before locked ones on homepage
+    all_recipes.sort(key=lambda r: (
+        # Primary sort: Free recipes first (is_free=True comes before is_free=False)
+        not r.get('is_free', False),
+        # Secondary sort: Newest first
+        -(r.get('created_at', datetime.min.replace(tzinfo=timezone.utc)).timestamp())
+    ))
+    
     # Add favorite and rating info
     if session_id:
         favorites = await db.favorites.find({"session_id": session_id}, {"_id": 0}).to_list(1000)
