@@ -585,9 +585,10 @@ async def import_csv(
                 # Convert keywords from semicolon to comma
                 keywords_formatted = keywords.replace(";", ",") if keywords else ""
                 
-                # Parse countries (auto-detect from URL if not specified)
+                # Parse countries - each CSV row should have ONE country
+                # We create separate options for each country
                 if countries and countries.strip():
-                    country_codes = [c.strip().upper() for c in re.split(r'[,;]', countries) if c.strip()]
+                    country_code = countries.strip().upper()
                 else:
                     # Auto-detect country from URL domain
                     import urllib.parse
@@ -602,45 +603,26 @@ async def import_csv(
                         '.fr': 'FR',
                         '.co.uk': 'GB',
                         '.uk': 'GB',
-                        '.com': 'US',  # Default .com to US
-                        '.eu': 'GB',   # EU domains default to GB
+                        '.com': 'US',
+                        '.eu': 'GB',
                     }
                     
-                    detected_country = None
+                    country_code = None
                     for tld, country in tld_to_country.items():
                         if domain.endswith(tld):
-                            detected_country = country
+                            country_code = country
                             break
                     
-                    if detected_country:
-                        country_codes = [detected_country]
-                        logger.info(f"Auto-detected country {detected_country} from URL: {url}")
-                    else:
-                        # Fallback to DK, US, GB if detection fails
-                        country_codes = ["DK", "US", "GB"]
-                        logger.warning(f"Could not detect country from URL {url}, using fallback")
+                    if not country_code:
+                        country_code = "DK"  # Default fallback
+                        logger.warning(f"Could not detect country from URL {url}, using DK fallback")
                 
-                # UPSERT mapping (update if exists, insert if new)
-                result = await db.redirect_mappings.update_one(
-                    {"id": mapping_id},
-                    {
-                        "$set": {
-                            "id": mapping_id,
-                            "name": produkt_navn,
-                            "ean": ean or None,
-                            "keywords": keywords_formatted
-                        }
-                    },
-                    upsert=True
-                )
-                # Count mapping only if it was newly created (upserted)
-                if result.upserted_id:
-                    imported["mappings"] += 1
-                
-                # Check if option already exists (same mapping + supplier)
+                # Each option is unique by: mapping + supplier + country
+                # Check if this specific option already exists
                 existing_option = await db.redirect_options.find_one({
                     "mappingId": mapping_id,
-                    "supplier": leverandor
+                    "supplier": leverandor,
+                    "country_codes": [country_code]  # Check exact country match
                 })
                 
                 if existing_option:
@@ -651,15 +633,15 @@ async def import_csv(
                             "$set": {
                                 "title": title,
                                 "url": url,
-                                "country_codes": country_codes,
+                                "country_codes": [country_code],  # Single country per option
                                 "updatedAt": datetime.now(timezone.utc).isoformat()
                             }
                         }
                     )
-                    logger.info(f"Updated option: {mapping_id} - {leverandor}")
+                    logger.info(f"Updated option: {mapping_id} - {leverandor} - {country_code}")
                 else:
                     # INSERT new option
-                    option_id = f"opt_{mapping_id}_{leverandor}_{int(datetime.now(timezone.utc).timestamp() * 1000)}"
+                    option_id = f"opt_{mapping_id}_{leverandor}_{country_code}_{int(datetime.now(timezone.utc).timestamp() * 1000)}"
                     
                     await db.redirect_options.insert_one({
                         "id": option_id,
@@ -669,10 +651,10 @@ async def import_csv(
                         "url": url,
                         "status": "active",
                         "priceLastSeen": None,
-                        "country_codes": country_codes,
+                        "country_codes": [country_code],  # Single country per option
                         "updatedAt": datetime.now(timezone.utc).isoformat()
                     })
-                    logger.info(f"Created new option: {mapping_id} - {leverandor}")
+                    logger.info(f"Created new option: {mapping_id} - {leverandor} - {country_code}")
                 
                 imported["options"] += 1
             except Exception as e:
