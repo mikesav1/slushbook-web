@@ -598,7 +598,8 @@ async def import_csv(
                     },
                     upsert=True
                 )
-                if result.upserted_id or result.matched_count == 0:
+                # Count mapping only if it was newly created (upserted)
+                if result.upserted_id:
                     imported["mappings"] += 1
                 
                 # Check if option already exists (same mapping + supplier)
