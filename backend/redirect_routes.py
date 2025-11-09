@@ -585,6 +585,23 @@ async def import_csv(
                 # Convert keywords from semicolon to comma
                 keywords_formatted = keywords.replace(";", ",") if keywords else ""
                 
+                # UPSERT mapping (update if exists, insert if new)
+                result = await db.redirect_mappings.update_one(
+                    {"id": mapping_id},
+                    {
+                        "$set": {
+                            "id": mapping_id,
+                            "name": produkt_navn,
+                            "ean": ean or None,
+                            "keywords": keywords_formatted
+                        }
+                    },
+                    upsert=True
+                )
+                # Count mapping only if it was newly created (upserted)
+                if result.upserted_id:
+                    imported["mappings"] += 1
+                
                 # Parse countries - each CSV row should have ONE country
                 # We create separate options for each country
                 if countries and countries.strip():
