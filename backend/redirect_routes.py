@@ -532,12 +532,14 @@ async def import_csv(
         content = await file.read()
         csv_content = content.decode('utf-8')
         
-        lines = csv_content.strip().split('\n')
-        if len(lines) < 2:
-            raise HTTPException(status_code=400, detail="CSV file is empty or invalid")
+        # Use StringIO to properly parse CSV with quoted fields
+        from io import StringIO
+        csv_file = StringIO(csv_content)
         
-        reader = csv.reader(lines)
-        next(reader)  # Skip header
+        reader = csv.reader(csv_file)
+        header = next(reader)  # Skip header
+        
+        logger.info(f"CSV Header: {header}")
         
         imported = {
             "mappings": 0,
@@ -545,12 +547,14 @@ async def import_csv(
             "errors": []
         }
         
-        for i, row in enumerate(reader, start=2):
+        line_number = 1  # Start at 1 for header
+        for row in reader:
+            line_number += 1
             try:
                 if len(row) < 6:
-                    imported["errors"].append(
-                        f"Line {i}: Invalid format (expected at least 6 fields, got {len(row)})"
-                    )
+                    error_msg = f"Line {line_number}: Invalid format (expected at least 6 fields, got {len(row)}). Row: {row}"
+                    imported["errors"].append(error_msg)
+                    logger.warning(error_msg)
                     continue
                 
                 produkt_navn, keywords, ean, leverandor, url, title = row[:6]
@@ -559,7 +563,9 @@ async def import_csv(
                 countries = row[6] if len(row) > 6 else ""
                 
                 if not produkt_navn or not leverandor or not url or not title:
-                    imported["errors"].append(f"Line {i}: Missing required fields")
+                    error_msg = f"Line {line_number}: Missing required fields. Row: {row}"
+                    imported["errors"].append(error_msg)
+                    logger.warning(error_msg)
                     continue
                 
                 # Generate mapping ID (slug)
