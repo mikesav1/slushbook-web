@@ -676,8 +676,11 @@ async def import_csv(
                 
                 imported["options"] += 1
             except Exception as e:
-                imported["errors"].append(f"Line {i}: {str(e)}")
+                error_msg = f"Line {line_number}: {str(e)}"
+                imported["errors"].append(error_msg)
+                logger.error(error_msg, exc_info=True)
         
+        logger.info(f"CSV Import completed: {imported['mappings']} mappings, {imported['options']} options, {len(imported['errors'])} errors")
         return imported
     except HTTPException:
         raise
