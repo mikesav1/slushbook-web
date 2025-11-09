@@ -579,11 +579,40 @@ async def import_csv(
                 # Convert keywords from semicolon to comma
                 keywords_formatted = keywords.replace(";", ",") if keywords else ""
                 
-                # Parse countries (default to DK,US,GB if not specified)
-                if countries:
+                # Parse countries (auto-detect from URL if not specified)
+                if countries and countries.strip():
                     country_codes = [c.strip().upper() for c in re.split(r'[,;]', countries) if c.strip()]
                 else:
-                    country_codes = ["DK", "US", "GB"]
+                    # Auto-detect country from URL domain
+                    import urllib.parse
+                    parsed_url = urllib.parse.urlparse(url)
+                    domain = parsed_url.netloc.lower()
+                    
+                    # Extract TLD and map to country code
+                    tld_to_country = {
+                        '.dk': 'DK',
+                        '.de': 'DE',
+                        '.at': 'AT',
+                        '.fr': 'FR',
+                        '.co.uk': 'GB',
+                        '.uk': 'GB',
+                        '.com': 'US',  # Default .com to US
+                        '.eu': 'GB',   # EU domains default to GB
+                    }
+                    
+                    detected_country = None
+                    for tld, country in tld_to_country.items():
+                        if domain.endswith(tld):
+                            detected_country = country
+                            break
+                    
+                    if detected_country:
+                        country_codes = [detected_country]
+                        logger.info(f"Auto-detected country {detected_country} from URL: {url}")
+                    else:
+                        # Fallback to DK, US, GB if detection fails
+                        country_codes = ["DK", "US", "GB"]
+                        logger.warning(f"Could not detect country from URL {url}, using fallback")
                 
                 # UPSERT mapping (update if exists, insert if new)
                 result = await db.redirect_mappings.update_one(
