@@ -187,12 +187,19 @@ const AdminPage = ({ sessionId }) => {
               Upload en CSV fil for at importere opskrifter automatisk
             </p>
           </div>
-          <Dialog open={isImportOpen} onOpenChange={setIsImportOpen}>
-            <DialogTrigger asChild>
-              <Button className="bg-purple-600 hover:bg-purple-700">
-                <FaUpload className="mr-2" /> Importer fra CSV
-              </Button>
-            </DialogTrigger>
+          <div className="flex gap-2">
+            <Button 
+              onClick={handleExportRecipes}
+              className="bg-green-600 hover:bg-green-700"
+            >
+              <FaDownload className="mr-2" /> Eksporter CSV
+            </Button>
+            <Dialog open={isImportOpen} onOpenChange={setIsImportOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-purple-600 hover:bg-purple-700">
+                  <FaUpload className="mr-2" /> Importer fra CSV
+                </Button>
+              </DialogTrigger>
             <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>Importer Opskrifter fra CSV</DialogTitle>
