@@ -469,9 +469,9 @@ async def export_csv(auth: bool = Depends(verify_admin_token)):
     try:
         mappings = await db.redirect_mappings.find({}, {"_id": 0}).to_list(length=None)
         
-        # Create CSV in memory
+        # Create CSV in memory with proper quoting
         output = io.StringIO()
-        writer = csv.writer(output)
+        writer = csv.writer(output, quoting=csv.QUOTE_MINIMAL)
         
         # Header (added 'lande' as 7th column)
         writer.writerow(['produkt_navn', 'keywords', 'ean', 'leverandør', 'url', 'title', 'lande'])
