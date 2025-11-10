@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
-import { FaPlus, FaTrash, FaEye, FaUpload, FaFileImport } from 'react-icons/fa';
+import { FaPlus, FaTrash, FaEye, FaUpload, FaFileImport, FaDownload } from 'react-icons/fa';
 import { API } from '../App';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
