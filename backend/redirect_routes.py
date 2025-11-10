@@ -469,9 +469,9 @@ async def export_csv(auth: bool = Depends(verify_admin_token)):
     try:
         mappings = await db.redirect_mappings.find({}, {"_id": 0}).to_list(length=None)
         
-        # Create CSV in memory with proper quoting
+        # Create CSV in memory with QUOTE_NONNUMERIC to ensure keywords with semicolons are quoted
         output = io.StringIO()
-        writer = csv.writer(output, quoting=csv.QUOTE_MINIMAL)
+        writer = csv.writer(output, quoting=csv.QUOTE_NONNUMERIC)
         
         # Header (keywords are semicolon-separated in output)
         writer.writerow(['produkt_navn', 'keywords', 'ean', 'leverandør', 'url', 'title', 'lande'])
