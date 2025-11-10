@@ -506,8 +506,11 @@ async def export_csv(auth: bool = Depends(verify_admin_token)):
         csv_content = output.getvalue()
         output.close()
         
+        # Add UTF-8 BOM for Excel/Numbers compatibility
+        csv_content_with_bom = '\ufeff' + csv_content
+        
         return Response(
-            content=csv_content,
+            content=csv_content_with_bom.encode('utf-8'),
             media_type="text/csv; charset=utf-8",
             headers={
                 "Content-Disposition": "attachment; filename=slushice-links.csv"
