@@ -224,10 +224,10 @@ const AdminPage = ({ sessionId }) => {
                   <FaUpload className="mr-2" /> Importer fra CSV
                 </Button>
               </DialogTrigger>
-            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>Importer Opskrifter fra CSV</DialogTitle>
-              </DialogHeader>
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Importer Opskrifter fra CSV</DialogTitle>
+                </DialogHeader>
               
               {!csvPreview ? (
                 <div className="space-y-4">
