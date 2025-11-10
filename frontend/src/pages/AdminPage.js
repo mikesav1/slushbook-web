@@ -151,6 +151,30 @@ const AdminPage = ({ sessionId }) => {
     }
   };
 
+  const handleExportRecipes = async () => {
+    try {
+      const response = await axios.get(`${API}/admin/export-recipes-csv`, {
+        responseType: 'blob'
+      });
+      
+      // Create download link
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'slushice-recipes.csv');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      
+      toast.success('CSV fil downloadet!');
+    } catch (error) {
+      console.error('Export error:', error);
+      toast.error('Kunne ikke eksportere: ' + (error.response?.data?.detail || error.message));
+    }
+  };
+
+
   const commonCategories = [
     'sirup.baer.jordbaer',
     'sirup.citrus.citron',
