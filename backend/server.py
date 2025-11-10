@@ -2637,9 +2637,9 @@ async def export_recipes_csv(request: Request):
                 recipe.get('description', ''),
                 recipe.get('type', ''),
                 recipe.get('color', ''),
-                recipe.get('brix', ''),
-                recipe.get('volume', ''),
-                recipe.get('alcohol', ''),
+                recipe.get('target_brix', ''),  # Correct field name
+                recipe.get('base_volume_ml', ''),  # Correct field name
+                'Ja' if recipe.get('alcohol_flag', False) else 'Nej',  # Convert boolean to Ja/Nej
                 tags_str,
                 ingredients_str,
                 steps_str,
