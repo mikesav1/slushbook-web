@@ -2591,6 +2591,80 @@ async def confirm_recipe_import(recipes: List[dict], request: Request):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Import error: {str(e)}")
 
+
+@api_router.get("/admin/export-recipes-csv")
+async def export_recipes_csv(request: Request):
+    """Export all recipes to CSV format"""
+    user = await get_current_user(request, None, db)
+    
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    try:
+        import io
+        
+        # Get all recipes
+        recipes = await db.recipes.find({}, {"_id": 0}).to_list(length=None)
+        user_recipes = await db.user_recipes.find({}, {"_id": 0}).to_list(length=None)
+        
+        all_recipes = recipes + user_recipes
+        
+        # Create CSV in memory
+        output = io.StringIO()
+        writer = csv.writer(output)
+        
+        # Header
+        writer.writerow(['Navn', 'Beskrivelse', 'Type', 'Farve', 'Brix', 'Volumen', 'Alkohol', 'Tags', 'Ingredienser', 'Fremgangsmåde', 'Is_Free', 'Is_Published', 'Author'])
+        
+        for recipe in all_recipes:
+            # Format ingredients: Navn:Mængde:Enhed:Brix:Rolle (separated by ;)
+            ingredients_list = []
+            for ing in recipe.get('ingredients', []):
+                ing_str = f"{ing.get('name', '')}:{ing.get('quantity', '')}:{ing.get('unit', '')}:{ing.get('brix', '')}:{ing.get('role', 'required')}"
+                ingredients_list.append(ing_str)
+            ingredients_str = ";".join(ingredients_list)
+            
+            # Format steps: Step 1|Step 2|Step 3
+            steps = recipe.get('steps', [])
+            steps_str = "|".join(steps) if steps else ""
+            
+            # Tags as comma-separated
+            tags = recipe.get('tags', [])
+            tags_str = ",".join(tags) if tags else ""
+            
+            writer.writerow([
+                recipe.get('name', ''),
+                recipe.get('description', ''),
+                recipe.get('type', ''),
+                recipe.get('color', ''),
+                recipe.get('brix', ''),
+                recipe.get('volume', ''),
+                recipe.get('alcohol', ''),
+                tags_str,
+                ingredients_str,
+                steps_str,
+                recipe.get('is_free', False),
+                recipe.get('is_published', False),
+                recipe.get('author', 'system')
+            ])
+        
+        csv_content = output.getvalue()
+        output.close()
+        
+        # Add UTF-8 BOM for Excel/Numbers compatibility
+        csv_content_with_bom = '\ufeff' + csv_content
+        
+        return Response(
+            content=csv_content_with_bom.encode('utf-8'),
+            media_type="text/csv; charset=utf-8",
+            headers={
+                "Content-Disposition": "attachment; filename=slushice-recipes.csv"
+            }
+        )
+    except Exception as e:
+        logger.error(f"Error exporting recipes CSV: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
 # ===== RECIPE APPROVAL ADMIN ENDPOINTS =====
 
 @api_router.get("/admin/pending-recipes")
