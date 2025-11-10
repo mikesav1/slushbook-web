@@ -473,10 +473,8 @@ async def export_csv(auth: bool = Depends(verify_admin_token)):
         output = io.StringIO()
         writer = csv.writer(output, quoting=csv.QUOTE_MINIMAL)
         
-        # Header with note about keyword separator
+        # Header (keywords are semicolon-separated in output)
         writer.writerow(['produkt_navn', 'keywords', 'ean', 'leverandør', 'url', 'title', 'lande'])
-        writer.writerow(['# Note: Keywords skal adskilles med semikolon (;)'])
-        writer.writerow([])  # Empty line for readability
         
         for mapping in mappings:
             options = await db.redirect_options.find(
