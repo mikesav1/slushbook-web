@@ -971,8 +971,8 @@ async def login(request: LoginRequest, response: Response, http_request: Request
             "name": user_doc["name"],
             "role": user_doc["role"],
             "picture": user_doc.get("picture"),
-            "country": user_doc.get("country", "DK"),  # Fallback to Denmark, not GB
-            "language": user_doc.get("language", "dk")  # Fallback to Danish, not en-us
+            "country": user_doc.get("country_preference", user_doc.get("country", "DK")),  # Read from country_preference first
+            "language": user_doc.get("language_preference", user_doc.get("language", "dk"))  # Read from language_preference first
         },
         "session_token": session_token,
         "device_limit": {
