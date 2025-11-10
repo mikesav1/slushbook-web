@@ -488,9 +488,10 @@ async def export_csv(auth: bool = Depends(verify_admin_token)):
             
             for option in options:
                 if option.get("status") == "active":
-                    # Get country_codes and format as comma-separated string
-                    country_codes = option.get("country_codes", ["DK", "US", "GB"])
-                    countries_str = ",".join(country_codes) if country_codes else "DK,US,GB"
+                    # Get country_codes - since we now store ONE country per option
+                    # Just extract the first (and should be only) country code
+                    country_codes = option.get("country_codes", ["DK"])
+                    country_str = country_codes[0] if country_codes else "DK"
                     
                     writer.writerow([
                         mapping.get("name", ""),
@@ -499,7 +500,7 @@ async def export_csv(auth: bool = Depends(verify_admin_token)):
                         option.get("supplier", ""),
                         option.get("url", ""),
                         option.get("title", ""),
-                        countries_str
+                        country_str  # Single country code
                     ])
         
         csv_content = output.getvalue()
