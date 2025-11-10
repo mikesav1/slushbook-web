@@ -321,6 +321,7 @@ const AdminPage = ({ sessionId }) => {
               )}
             </DialogContent>
           </Dialog>
+          </div>
         </div>
       </div>
 
