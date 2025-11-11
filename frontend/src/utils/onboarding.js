@@ -58,7 +58,23 @@ export const startHomeTour = (onComplete) => {
     return;
   }
 
-  const driverObj = createDriver();
+  // Create special driver for single-step tour
+  const driverObj = driver({
+    showProgress: true,
+    progressText: '{{current}} af {{total}}',
+    doneBtnText: 'Færdig ✓',
+    popoverClass: 'driverjs-theme',
+    animate: true,
+    smoothScroll: true,
+    allowClose: true,
+    overlayClickNext: false,
+    stagePadding: 5,
+    stageRadius: 8,
+    showButtons: ['close'],  // Only show close (X) button for single-step
+    onDestroyed: () => {
+      console.log('[Tour] Tour destroyed');
+    },
+  });
   
   driverObj.setSteps([
     {
@@ -67,8 +83,7 @@ export const startHomeTour = (onComplete) => {
         title: '👤 Brugerindstillinger',
         description: 'Klik her for at åbne menuen med Indstillinger, Favoritter og Log ud. Du kan også genstarte denne guide under Indstillinger senere.',
         side: 'bottom',
-        align: 'start',
-        showButtons: ['close']  // Only show close button for single-step tour
+        align: 'start'
       }
     }
   ]);
