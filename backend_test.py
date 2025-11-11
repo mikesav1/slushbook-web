@@ -6272,17 +6272,41 @@ test,data,here"""
             self.log(f"❌ Device list filtering test failed with exception: {str(e)}")
             return False
 
+    def run_match_finder_pantry_test(self):
+        """Run the specific match-finder pantry update test as requested in review"""
+        self.log("Starting MATCH-FINDER PANTRY UPDATE TEST")
+        self.log("=" * 60)
+        
+        # Run the specific test requested in the review
+        self.log("\n🔍 MATCH-FINDER PANTRY UPDATE TEST")
+        match_finder_result = self.test_match_finder_pantry_updates()
+        
+        # Summary
+        self.log("\n" + "=" * 60)
+        self.log("MATCH-FINDER PANTRY UPDATE TEST SUMMARY")
+        self.log("=" * 60)
+        
+        if match_finder_result:
+            self.log("✅ MATCH-FINDER PANTRY UPDATE TEST PASSED!")
+            self.log("✅ /api/match endpoint correctly uses current pantry state")
+            self.log("✅ No cached/old data issues detected")
+            return True
+        else:
+            self.log("❌ MATCH-FINDER PANTRY UPDATE TEST FAILED")
+            self.log("❌ /api/match endpoint may be using cached/old pantry data")
+            return False
+
     def run_all_tests(self):
         """Run all backend tests"""
         self.log("Starting SLUSHBOOK Backend System Tests")
         self.log("=" * 60)
         
         # Run the match-finder test as requested in review
-        self.log("\n🔍 MATCH-FINDER FUNCTIONALITY TEST")
-        match_finder_result = self.test_match_finder_functionality()
+        self.log("\n🔍 MATCH-FINDER PANTRY UPDATE TEST")
+        match_finder_result = self.test_match_finder_pantry_updates()
         
         # Create results dictionary
-        critical_results = {"🔍 MATCH-FINDER FUNCTIONALITY": match_finder_result}
+        critical_results = {"🔍 MATCH-FINDER PANTRY UPDATE": match_finder_result}
         
         # Run additional tests if needed
         additional_tests = []
