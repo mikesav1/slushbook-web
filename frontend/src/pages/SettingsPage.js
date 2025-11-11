@@ -10,7 +10,8 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
 import { COUNTRIES, getUserCountry, updateUserPreferences, refreshUserLocation } from '../utils/geolocation';
-import { resetAllTours } from '../utils/onboarding';
+import OnboardingTooltip from '../components/OnboardingTooltip';
+import { resetAllTours, settingsPageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
 
 const SettingsPage = ({ sessionId }) => {
   const { user, isAdmin, isPro, isEditor } = useAuth();
