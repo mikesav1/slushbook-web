@@ -657,6 +657,7 @@ const SettingsPage = ({ sessionId }) => {
           <div className="pt-2">
             <a 
               href="/guide" 
+              data-tour="guide-link"
               className="inline-flex items-center gap-2 text-cyan-600 hover:text-cyan-700 font-semibold hover:underline"
             >
               <FaBook /> Læs den fulde vejledning til SLUSHBOOK her →
