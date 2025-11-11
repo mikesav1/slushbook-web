@@ -29,18 +29,27 @@ export const resetAllTours = () => {
   });
 };
 
-// HomePage Tour Steps
-export const homePageSteps = [
-  {
-    // Step 1: Welcome message (no target to highlight)
-    content: '🎉 Velkommen til Slush Book!\n\nHer kan du udforske opskrifter, finde inspiration og tilføje dine egne slushice-kreationer.\n\nFør vi går i gang, får du et par hurtige tips til, hvordan du bruger appen bedst.\n\nTryk Næste for at se, hvor du finder indstillinger og dine favoritter.'
-  },
-  {
-    // Step 2: Point to settings menu
-    target: '[data-tour="settings-menu"]',
-    content: '👤 Her finder du profil-ikonet (eller tandhjulet på mobil).\n\nHer kan du åbne menuen med Indstillinger, Favoritter og Log ud.\n\nDu kan også genstarte denne guide under Indstillinger senere.'
-  }
-];
+// HomePage Tour Steps - Function to include user's first name
+export const getHomePageSteps = (userName) => {
+  // Extract first name from full name
+  const firstName = userName ? userName.split(' ')[0] : '';
+  const greeting = firstName ? `🎉 Velkommen til Slush Book, ${firstName}!` : '🎉 Velkommen til Slush Book!';
+  
+  return [
+    {
+      // Step 1: Welcome message (no target to highlight)
+      content: `${greeting}\n\nHer kan du udforske opskrifter, finde inspiration og tilføje dine egne slushice-kreationer.\n\nFør vi går i gang, får du et par hurtige tips til, hvordan du bruger appen bedst.\n\nTryk Næste for at se, hvor du finder indstillinger og dine favoritter.`
+    },
+    {
+      // Step 2: Point to settings menu
+      target: '[data-tour="settings-menu"]',
+      content: '👤 Her finder du profil-ikonet (eller tandhjulet på mobil).\n\nHer kan du åbne menuen med Indstillinger, Favoritter og Log ud.\n\nDu kan også genstarte denne guide under Indstillinger senere.'
+    }
+  ];
+};
+
+// Keep the old export for backwards compatibility (without name)
+export const homePageSteps = getHomePageSteps();
 
 // Recipes Page Tour Steps  
 export const recipesPageSteps = [
