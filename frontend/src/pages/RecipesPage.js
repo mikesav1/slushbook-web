@@ -47,7 +47,7 @@ const RecipesPage = ({ sessionId }) => {
 
   // Start tour if coming from HomePage and tour not completed
   useEffect(() => {
-    if (user && !user.isGuest && !isTourCompleted(TOUR_KEYS.RECIPES) && isTourCompleted(TOUR_KEYS.HOME)) {
+    if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.RECIPES) && isTourCompleted(TOUR_KEYS.HOME)) {
       console.log('[Tour] Starting recipes tour...');
       setTimeout(() => {
         setCurrentTourStep(0);
