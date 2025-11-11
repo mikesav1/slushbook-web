@@ -8,6 +8,9 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
+import { useAuth } from '../context/AuthContext';
+import OnboardingTooltip from '../components/OnboardingTooltip';
+import { addRecipePageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
 
 const AddRecipePage = ({ sessionId }) => {
   const navigate = useNavigate();
