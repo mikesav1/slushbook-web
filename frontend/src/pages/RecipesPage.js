@@ -357,14 +357,24 @@ const RecipesPage = ({ sessionId }) => {
             {user && !user.isGuest && (
               <div
                 onClick={() => navigate('/add-recipe')}
-                className="aspect-[3/4] bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl border-2 border-dashed border-purple-300 hover:border-purple-500 cursor-pointer transition-all duration-200 hover:shadow-xl hover:scale-105 flex flex-col items-center justify-center p-4 gap-3"
+                className="flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all overflow-hidden border-2 border-dashed border-purple-300 hover:border-purple-500 cursor-pointer hover:scale-105"
               >
-                <div className="bg-white rounded-full p-4 shadow-md">
-                  <FaPlus className="text-4xl text-purple-600" />
+                {/* Header matching RecipeCard image height */}
+                <div className="h-64 bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center">
+                  <div className="bg-white rounded-full p-6 shadow-md">
+                    <FaPlus className="text-5xl text-purple-600" />
+                  </div>
                 </div>
-                <p className="text-purple-700 font-bold text-center text-sm md:text-base">
-                  Tilføj din egen opskrift
-                </p>
+                
+                {/* Content matching RecipeCard */}
+                <div className="p-5 flex flex-col flex-grow justify-center">
+                  <h3 className="font-bold text-lg text-center text-purple-700">
+                    Tilføj din egen opskrift
+                  </h3>
+                  <p className="text-sm text-gray-600 text-center mt-2">
+                    Opret og del dine egne slush opskrifter
+                  </p>
+                </div>
               </div>
             )}
             
