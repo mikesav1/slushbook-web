@@ -101,7 +101,7 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
         </button>
         
         {/* Content */}
-        <div className="text-gray-800 mb-5 text-lg font-medium leading-relaxed">
+        <div className="text-gray-800 mb-5 text-lg font-medium leading-relaxed whitespace-pre-line">
           {step.content}
         </div>
         
