@@ -16,6 +16,7 @@ const HomePage = ({ sessionId }) => {
   const [sortBy, setSortBy] = useState('latest'); // 'latest' or 'popular'
   const [isMobile, setIsMobile] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [currentTourStep, setCurrentTourStep] = useState(-1);
 
   useEffect(() => {
     // Check if mobile
