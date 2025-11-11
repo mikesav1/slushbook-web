@@ -114,13 +114,23 @@ code {
     }
 }
 
-/* Onboarding Tour - Highlight Animation */
-@keyframes pulse-highlight {
+/* Onboarding Tour - Strong Highlight Animation for visibility on dark backgrounds */
+@keyframes pulse-highlight-strong {
   0%, 100% {
-    box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.8), 0 0 20px rgba(251, 191, 36, 0.5);
+    box-shadow: 
+      0 0 0 3px #ffffff,
+      0 0 0 6px #fbbf24,
+      0 0 30px 8px rgba(251, 191, 36, 0.9),
+      0 0 50px 12px rgba(251, 191, 36, 0.6);
+    outline-offset: 3px;
   }
   50% {
-    box-shadow: 0 0 0 8px rgba(251, 191, 36, 0.6), 0 0 30px rgba(251, 191, 36, 0.7);
+    box-shadow: 
+      0 0 0 3px #ffffff,
+      0 0 0 8px #fbbf24,
+      0 0 40px 12px rgba(251, 191, 36, 1),
+      0 0 70px 16px rgba(251, 191, 36, 0.8);
+    outline-offset: 6px;
   }
 }
 
