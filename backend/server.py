@@ -2117,7 +2117,10 @@ async def delete_machine(machine_id: str, session_id: str):
 
 # Favorites
 @api_router.get("/favorites/{session_id}")
-async def get_favorites(session_id: str):
+async def get_favorites(
+    session_id: str,
+    user: User = Depends(require_role(["pro", "editor", "admin"]))
+):
     favorites = await db.favorites.find({"session_id": session_id}, {"_id": 0}).to_list(1000)
     
     # Get full recipe details
