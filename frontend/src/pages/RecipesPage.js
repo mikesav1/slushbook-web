@@ -362,6 +362,19 @@ const RecipesPage = ({ sessionId }) => {
               />
             ))}
           </div>
+
+          {/* Add Recipe Button - Fixed at bottom */}
+          {user && !user.isGuest && (
+            <div className="flex justify-center mt-8">
+              <button
+                onClick={() => navigate('/add-recipe')}
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-3 font-bold text-lg"
+              >
+                <FaPlus className="text-xl" />
+                <span>Tilføj din egen opskrift</span>
+              </button>
+            </div>
+          )}
         </div>
       )}
       
