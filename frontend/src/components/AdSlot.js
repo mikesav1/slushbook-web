@@ -168,8 +168,8 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
     }
   };
 
-  // Don't render if user is logged in, no ad, or loading
-  if (user || !ad || loading) {
+  // Don't render if user is PRO (but show for guests), no ad, or loading
+  if ((user && user.role !== 'guest') || !ad || loading) {
     return null;
   }
 
