@@ -39,7 +39,7 @@ const SettingsPage = ({ sessionId }) => {
     fetchDevices();
     // Update selected country from localStorage when component mounts
     setSelectedCountry(getUserCountry());
-
+  }, [sessionId]);
 
   // Start tour for first-time users
   useEffect(() => {
@@ -64,8 +64,6 @@ const SettingsPage = ({ sessionId }) => {
     setCurrentTourStep(-1);
     toast.success('Indstillinger guide færdig!');
   };
-
-  }, [sessionId]);
   
   const fetchDevices = async () => {
     try {
