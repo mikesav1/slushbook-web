@@ -6207,12 +6207,12 @@ test,data,here"""
         self.log("Starting SLUSHBOOK Backend System Tests")
         self.log("=" * 60)
         
-        # Run the free recipes ordering test as requested
-        self.log("\n🍹 FREE RECIPES ORDERING TEST")
-        free_recipes_result = self.test_free_recipes_ordering_for_guests()
+        # Run the match-finder test as requested in review
+        self.log("\n🔍 MATCH-FINDER FUNCTIONALITY TEST")
+        match_finder_result = self.test_match_finder_functionality()
         
         # Create results dictionary
-        critical_results = {"🍹 FREE RECIPES ORDERING FOR GUESTS": free_recipes_result}
+        critical_results = {"🔍 MATCH-FINDER FUNCTIONALITY": match_finder_result}
         
         # Run additional tests if needed
         additional_tests = []
