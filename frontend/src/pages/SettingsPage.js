@@ -39,6 +39,32 @@ const SettingsPage = ({ sessionId }) => {
     fetchDevices();
     // Update selected country from localStorage when component mounts
     setSelectedCountry(getUserCountry());
+
+
+  // Start tour for first-time users
+  useEffect(() => {
+    if (user && !user.isGuest && !isTourCompleted(TOUR_KEYS.SETTINGS)) {
+      setTimeout(() => {
+        setCurrentTourStep(0);
+      }, 1000);
+    }
+  }, [user]);
+
+  const handleTourNext = () => {
+    setCurrentTourStep(prev => prev + 1);
+  };
+
+  const handleTourSkip = () => {
+    markTourCompleted(TOUR_KEYS.SETTINGS);
+    setCurrentTourStep(-1);
+  };
+
+  const handleTourFinish = () => {
+    markTourCompleted(TOUR_KEYS.SETTINGS);
+    setCurrentTourStep(-1);
+    toast.success('Indstillinger guide færdig!');
+  };
+
   }, [sessionId]);
   
   const fetchDevices = async () => {
