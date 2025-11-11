@@ -51,6 +51,8 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
             targetElement.style.outlineOffset = '3px';
             targetElement.style.transition = 'all 0.3s ease';
             targetElement.style.animation = 'pulse-highlight-strong 2s ease-in-out infinite';
+            // IMPORTANT: Prevent clicking on highlighted element during tour
+            targetElement.style.pointerEvents = 'none';
             
             // Store cleanup function for this element
             cleanupFunctions.push(() => {
