@@ -80,10 +80,15 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
 
   return (
     <>
-      {/* Semi-transparent overlay - allows background to be visible */}
+      {/* Semi-transparent overlay - blocks all clicks during tour */}
       <div 
         className="fixed inset-0 bg-black/40 z-[9998]" 
-        onClick={onSkip}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          // Only allow closing via X button or skip button, not by clicking overlay
+        }}
+        style={{ pointerEvents: 'auto' }}
       />
       
       {/* Tooltip - Always centered on screen */}
