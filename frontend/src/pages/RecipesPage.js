@@ -6,6 +6,8 @@ import { API } from '../App';
 import RecipeCard from '../components/RecipeCard';
 import UpgradeModal from '../components/UpgradeModal';
 import { useAuth } from '../context/AuthContext';
+import OnboardingTooltip from '../components/OnboardingTooltip';
+import { recipesPageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
 
 const RecipesPage = ({ sessionId }) => {
   const { user } = useAuth();
