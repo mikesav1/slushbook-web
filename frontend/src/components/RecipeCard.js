@@ -99,6 +99,7 @@ const RecipeCard = ({ recipe, sessionId, showMatchInfo, onLockedClick }) => {
           <button
             onClick={toggleFavorite}
             data-testid={`favorite-button-${recipe.id}`}
+            data-tour="recipe-favorite"
             className="bg-white/90 backdrop-blur-sm p-2 rounded-full hover:bg-white transition-colors"
           >
             {isFavorite ? (
