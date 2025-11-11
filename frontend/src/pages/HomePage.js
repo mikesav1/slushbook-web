@@ -5,9 +5,8 @@ import { FaMagic, FaBook, FaFire } from 'react-icons/fa';
 import { API } from '../App';
 import RecipeCard from '../components/RecipeCard';
 import UpgradeModal from '../components/UpgradeModal';
-import OnboardingTooltip from '../components/OnboardingTooltip';
 import { useAuth } from '../context/AuthContext';
-import { homePageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
+import { startHomeTour, TOUR_KEYS } from '../utils/onboarding';
 
 const HomePage = ({ sessionId }) => {
   const { user } = useAuth();
