@@ -62,24 +62,28 @@ export const recipesPageSteps = [
 // Add Recipe Page Tour Steps
 export const addRecipePageSteps = [
   {
+    // Welcome to add recipe page
+    content: '✨ Velkommen til Opret Opskrift!\n\nHer kan du skabe og dele dine egne slushice-kreationer.\n\nLad os se på, hvordan du gør det.'
+  },
+  {
     target: '[data-tour="recipe-name"]',
-    content: '📝 Start med at give din opskrift et catchy navn!'
+    content: '📝 Start med at give din opskrift et catchy navn!\n\nF.eks. "Sommer Jordbær" eller "Tropisk Paradise".'
   },
   {
     target: '[data-tour="recipe-type"]',
-    content: '🎨 Vælg hvilken type opskrift det er, og hvilken farve din slushice har.'
+    content: '🎨 Vælg hvilken type opskrift det er.\n\nVælg også farve, så andre kan se hvordan din slushice ser ud.'
   },
   {
     target: '[data-tour="recipe-ingredients"]',
-    content: '🥤 Tilføj alle ingredienserne til din opskrift. Søg efter eksisterende ingredienser eller opret nye.'
+    content: '🥤 Her tilføjer du alle ingredienserne til din opskrift.\n\nSøg efter eksisterende ingredienser eller opret nye.'
   },
   {
     target: '[data-tour="recipe-public-toggle"]',
-    content: '🌍 VIGTIGT: Aktiver "Offentlig opskrift" for at dele din opskrift med andre! Den skal godkendes af admin, før den bliver synlig for alle.'
+    content: '🌍 VIGTIGT: Hvis du vil dele din opskrift med andre, skal du aktivere "Offentlig opskrift".\n\nOpskriften skal godkendes af admin, før den bliver synlig for alle.'
   },
   {
     target: '[data-tour="recipe-submit"]',
-    content: '✅ Når du er tilfreds med din opskrift, klik "Gem" for at gemme den.'
+    content: '✅ Når du er tilfreds med din opskrift, kan du gemme den her.\n\nDin opskrift bliver tilføjet til din samling, og hvis den er offentlig, kan andre også nyde den efter godkendelse!'
   }
 ];
 
