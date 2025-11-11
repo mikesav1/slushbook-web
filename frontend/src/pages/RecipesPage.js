@@ -26,6 +26,7 @@ const RecipesPage = ({ sessionId }) => {
   });
   const [showMyRecipes, setShowMyRecipes] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [currentTourStep, setCurrentTourStep] = useState(-1);
 
   // Save filters to localStorage whenever they change
   useEffect(() => {
