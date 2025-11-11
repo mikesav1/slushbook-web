@@ -34,15 +34,29 @@ const HomePage = ({ sessionId }) => {
     fetchFeaturedRecipes();
   }, [sessionId, sortBy]);
 
-  // Start tour for new pro users (mobile only, first visit)
+  // Start tour for new pro users (first visit)
   useEffect(() => {
-    if (user && !user.isGuest && isMobile && !isTourCompleted(TOUR_KEYS.HOME)) {
+    console.log('[Tour] Checking tour conditions:', {
+      hasUser: !!user,
+      isGuest: user?.isGuest,
+      tourCompleted: isTourCompleted(TOUR_KEYS.HOME),
+      currentStep
+    });
+    
+    if (user && !user.isGuest && !isTourCompleted(TOUR_KEYS.HOME)) {
+      console.log('[Tour] Starting tour in 1 second...');
       // Delay to ensure DOM is ready
       setTimeout(() => {
-        setCurrentTourStep(0);
-      }, 1000);
+        const target = document.querySelector('[data-tour="settings-menu"]');
+        console.log('[Tour] Target element found:', !!target);
+        if (target) {
+          setCurrentTourStep(0);
+        } else {
+          console.warn('[Tour] Target element not found!');
+        }
+      }, 1500);
     }
-  }, [user, isMobile]);
+  }, [user]);
 
   const handleTourNext = () => {
     setCurrentTourStep(prev => prev + 1);
