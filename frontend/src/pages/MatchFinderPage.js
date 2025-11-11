@@ -32,6 +32,32 @@ const MatchFinderPage = ({ sessionId }) => {
     }
   }, [sessionId]);
 
+
+  // Start tour for first-time users
+  useEffect(() => {
+    if (user && !user.isGuest && !isTourCompleted(TOUR_KEYS.MATCH)) {
+      setTimeout(() => {
+        setCurrentTourStep(0);
+      }, 1000);
+    }
+  }, [user]);
+
+  const handleTourNext = () => {
+    setCurrentTourStep(prev => prev + 1);
+  };
+
+  const handleTourSkip = () => {
+    markTourCompleted(TOUR_KEYS.MATCH);
+    setCurrentTourStep(-1);
+  };
+
+  const handleTourFinish = () => {
+    markTourCompleted(TOUR_KEYS.MATCH);
+    setCurrentTourStep(-1);
+    toast.success('Match-Finder guide færdig!');
+  };
+
+
   const checkPantry = async () => {
     try {
       const response = await axios.get(`${API}/pantry/${sessionId}`);
