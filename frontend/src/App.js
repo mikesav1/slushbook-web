@@ -104,6 +104,7 @@ const Navigation = () => {
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                   className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/10 transition-colors"
+                  data-tour="settings-menu"
                 >
                   <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-blue-600 font-semibold">
                     {user.name.charAt(0).toUpperCase()}
