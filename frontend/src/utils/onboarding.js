@@ -29,6 +29,7 @@ export const resetAllTours = () => {
 // HomePage Tour Steps
 export const homePageSteps = [
   {
+    target: '[data-tour="settings-menu"]',
     content: '👤 Velkommen! Klik på profil-ikonet øverst til højre (eller tandhjulet på mobil) for at åbne menuen med Indstillinger, Favoritter og Log ud. Du kan også genstarte denne guide under Indstillinger senere.'
   }
 ];
