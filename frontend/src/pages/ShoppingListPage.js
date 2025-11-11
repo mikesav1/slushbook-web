@@ -38,11 +38,13 @@ const BuyButton = ({ mappingId, redirectApi, fetchSupplier, userCountry }) => {
 };
 
 const ShoppingListPage = ({ sessionId }) => {
+  const { user } = useAuth();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [supplierCache, setSupplierCache] = useState({});
   const [allMappings, setAllMappings] = useState([]);
   const [userCountry, setUserCountry] = useState('DK');
+  const [currentTourStep, setCurrentTourStep] = useState(-1);
 
   // Use direct API endpoints (no proxy needed)
   const REDIRECT_API = `${API}/go`;
