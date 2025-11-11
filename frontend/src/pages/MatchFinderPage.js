@@ -6,6 +6,9 @@ import { Link } from 'react-router-dom';
 import { API } from '../App';
 import RecipeCard from '../components/RecipeCard';
 import { Button } from '../components/ui/button';
+import { useAuth } from '../context/AuthContext';
+import OnboardingTooltip from '../components/OnboardingTooltip';
+import { matchPageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
 
 const MatchFinderPage = ({ sessionId }) => {
   const [matches, setMatches] = useState(null);
