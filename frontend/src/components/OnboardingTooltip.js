@@ -17,7 +17,7 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
         const rect = target.getBoundingClientRect();
         
         // Calculate position, ensuring tooltip stays within viewport
-        const tooltipWidth = 320; // max-w-sm = ~320px
+        const tooltipWidth = 320; // w-80 = 320px
         let left = rect.left + window.scrollX + (rect.width / 2);
         
         // Adjust if tooltip would go off right edge
@@ -30,14 +30,21 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
           left = tooltipWidth / 2 + 20;
         }
         
+        // Calculate arrow position (pointing to actual target)
+        const targetCenterX = rect.left + (rect.width / 2);
+        const arrowOffset = targetCenterX - (left - tooltipWidth / 2);
+        
         setPosition({
           top: rect.bottom + window.scrollY + 10,
-          left: left
+          left: left,
+          arrowOffset: Math.max(20, Math.min(arrowOffset, tooltipWidth - 20)) // Keep arrow within tooltip bounds
         });
         
-        // Highlight target
+        // Highlight target with glow effect
         target.style.position = 'relative';
         target.style.zIndex = '9999';
+        target.style.boxShadow = '0 0 0 3px rgba(251, 191, 36, 0.5)';
+        target.style.borderRadius = '12px';
         
         setShow(true);
       }
