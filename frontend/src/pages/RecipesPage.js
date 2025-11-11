@@ -198,6 +198,15 @@ const RecipesPage = ({ sessionId }) => {
 
   return (
     <div className="space-y-6 fade-in" data-testid="recipes-page">
+      {/* Onboarding Tour */}
+      <OnboardingTooltip
+        steps={recipesPageSteps}
+        currentStep={currentTourStep}
+        onNext={handleTourNext}
+        onSkip={handleTourSkip}
+        onFinish={handleTourFinish}
+      />
+      
       <div>
         <h1 className="text-4xl font-bold mb-2">Opskrifter</h1>
         <p className="text-gray-600">Gennemse {recipes.length} lækre slushice opskrifter</p>
