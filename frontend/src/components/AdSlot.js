@@ -63,7 +63,7 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
 
   // Rotate ad on navigation/location change
   useEffect(() => {
-    if (!user && availableAds.length > 1) {
+    if ((!user || user.role === 'guest') && availableAds.length > 1) {
       rotateAd();
     }
   }, [location.pathname]);
