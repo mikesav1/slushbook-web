@@ -7789,7 +7789,9 @@ def main():
     else:
         print("⚠️  Some tests failed - check output above for details")
         return False
-        """Test GET /api/geolocation/detect endpoint"""
+
+if __name__ == "__main__":
+    main()
         self.log("=== TESTING GEOLOCATION DETECT ENDPOINT ===")
         
         try:
