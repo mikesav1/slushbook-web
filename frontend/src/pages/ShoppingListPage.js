@@ -281,6 +281,15 @@ const ShoppingListPage = ({ sessionId }) => {
 
   return (
     <div className="space-y-6 fade-in" data-testid="shopping-list-page">
+      {/* Onboarding Tour */}
+      <OnboardingTooltip
+        steps={shoppingListPageSteps}
+        currentStep={currentTourStep}
+        onNext={handleTourNext}
+        onSkip={handleTourSkip}
+        onFinish={handleTourFinish}
+      />
+      
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1 className="text-4xl font-bold mb-2">Indkøbsliste</h1>
