@@ -122,31 +122,12 @@ const HomePage = ({ sessionId }) => {
   return (
     <div className="space-y-0 fade-in -mt-6">
       {/* Onboarding Tour */}
-      <Joyride
+      <OnboardingTooltip
         steps={homePageSteps}
-        run={runTour}
-        continuous
-        showSkipButton
-        callback={handleJoyrideCallback}
-        locale={{
-          back: 'Tilbage',
-          close: 'Luk',
-          last: 'Færdig',
-          next: 'Næste',
-          skip: 'Spring over'
-        }}
-        styles={{
-          options: {
-            primaryColor: '#f59e0b',
-            textColor: '#333',
-            backgroundColor: '#fff',
-            zIndex: 10000
-          },
-          tooltip: {
-            borderRadius: '12px',
-            padding: '16px'
-          }
-        }}
+        currentStep={currentTourStep}
+        onNext={handleTourNext}
+        onSkip={handleTourSkip}
+        onFinish={handleTourFinish}
       />
       
       {/* Video Background - Fixed full screen */}
