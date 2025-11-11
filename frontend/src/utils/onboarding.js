@@ -47,15 +47,22 @@ export const recipesPageSteps = [
   },
   {
     target: '[data-tour="search-bar"]',
-    content: '🔍 Brug søgefeltet til at finde specifikke opskrifter hurtigt.\n\nSkriv f.eks. "jordbær" eller "klassisk".'
+    content: '🔍 Søg efter opskrifter\n\nBrug søgefeltet til at finde specifikke opskrifter hurtigt. Skriv f.eks. "jordbær" eller "klassisk".'
   },
   {
     target: '[data-tour="type-filter"]',
-    content: '🎨 Her kan du filtrere opskrifter efter type.\n\nVælg mellem Klassisk, Tropisk, Cremet og flere andre kategorier.'
+    content: '🎨 Filtrer efter type\n\nHer kan du filtrere opskrifter efter kategori.\n\nVælg mellem Klassisk, Tropisk, Cremet, Cocktail og flere andre.'
+  },
+  {
+    target: '[data-tour="recipe-favorite"]',
+    content: '❤️ Tilføj til favoritter\n\nKlik på hjertet på et opskriftskort for at gemme den som favorit.\n\nDine favoritter kan du finde under profil-menuen.'
+  },
+  {
+    content: '🛒 Tip: Åbn en opskrift for mere!\n\nNår du klikker på en opskrift, kan du:\n• Se detaljerede ingredienser og instruktioner\n• Tilføje ingredienser til din indkøbsliste\n• Skalere opskriften til din maskinvolumen\n• Vurdere og dele opskriften'
   },
   {
     target: '[data-tour="add-recipe-card"]',
-    content: '➕ Det første kort er "Tilføj Opskrift"-knappen.\n\nHer kan du oprette og dele dine egne slushice-opskrifter!\n\nLad os gå derind og se hvordan det virker.'
+    content: '➕ Opret din egen opskrift\n\nDet første kort er "Tilføj Opskrift"-knappen.\n\nHer kan du oprette og dele dine egne slushice-kreationer!\n\nLad os gå derind og se hvordan det virker.'
   }
 ];
 
