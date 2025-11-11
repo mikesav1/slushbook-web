@@ -1253,10 +1253,10 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             
             self.log("✅ SUCCESS: Both jordbær and citron recipes found after adding both ingredients")
             
-            # Step 6: Fjern "Jordbær sirup" fra pantry via DELETE /api/pantry
+            # Step 6: Fjern "Jordbær sirup" fra pantry via DELETE /api/pantry/{session_id}/{item_id}
             self.log("\n--- Step 6: Fjern 'Jordbær sirup' fra pantry ---")
             
-            delete_response = self.session.delete(f"{self.base_url}/pantry/{jordbaer_item_id}")
+            delete_response = self.session.delete(f"{self.base_url}/pantry/{user_session_id}/{jordbaer_item_id}")
             if delete_response.status_code != 200:
                 self.log(f"❌ Failed to delete Jordbær sirup: {delete_response.status_code} - {delete_response.text}")
                 return False
