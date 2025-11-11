@@ -587,6 +587,8 @@ agent_communication:
     message: "Device list 7-day filtering testing completed successfully. All 4 test scenarios passed: 1) 7-day filter works correctly - only shows recent sessions, 2) Current device always appears in list, 3) Device limit enforcement still works for all user roles, 4) Startup cleanup logic verified. Implementation successfully resolves user concerns about seeing too many old devices and ensures ordinary users get cleaner, more manageable device lists."
   - agent: "testing"
     message: "Free recipes ordering testing completed with CRITICAL FINDINGS: Preview environment works perfectly (18 free recipes first, then 66 locked recipes), but Production environment FAILS (locked recipes appear first). This explains why guests see locked content instead of free content on the live site. The backend sorting logic is correct in code but not working on Production. Urgent investigation needed for Production environment database or deployment issues."
+  - agent: "testing"
+    message: "Match-finder functionality testing completed successfully on both Preview and Production environments. All test scenarios passed: 1) User login and authentication working, 2) Pantry ingredient addition via /api/pantry working correctly, 3) /api/match endpoint returning proper match results, 4) All matched recipes accessible via /api/recipes/{recipe_id} (zero 404 errors), 5) Access control logic verified - only recipes user can access are returned in matches. The fix is working correctly - match-finder only returns recipes the user has permission to view, preventing 404 errors when users click on matched recipes."
 
   - task: "Login System Diagnostics - admin@slushbook.dk and ulla@test.dk"
     implemented: true
