@@ -67,7 +67,8 @@ export const startHomeTour = (onComplete) => {
         title: '👤 Brugerindstillinger',
         description: 'Klik her for at åbne menuen med Indstillinger, Favoritter og Log ud. Du kan også genstarte denne guide under Indstillinger senere.',
         side: 'bottom',
-        align: 'start'
+        align: 'start',
+        showButtons: ['close']  // Only show close button for single-step tour
       }
     }
   ]);
