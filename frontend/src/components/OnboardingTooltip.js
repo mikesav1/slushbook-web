@@ -16,10 +16,23 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
       if (target) {
         const rect = target.getBoundingClientRect();
         
-        // Position tooltip below target
+        // Calculate position, ensuring tooltip stays within viewport
+        const tooltipWidth = 320; // max-w-sm = ~320px
+        let left = rect.left + window.scrollX + (rect.width / 2);
+        
+        // Adjust if tooltip would go off right edge
+        if (left + tooltipWidth / 2 > window.innerWidth - 20) {
+          left = window.innerWidth - tooltipWidth / 2 - 20;
+        }
+        
+        // Adjust if tooltip would go off left edge
+        if (left - tooltipWidth / 2 < 20) {
+          left = tooltipWidth / 2 + 20;
+        }
+        
         setPosition({
           top: rect.bottom + window.scrollY + 10,
-          left: rect.left + window.scrollX + (rect.width / 2)
+          left: left
         });
         
         // Highlight target
