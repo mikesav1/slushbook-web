@@ -15,56 +15,13 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
       
       if (target) {
         const rect = target.getBoundingClientRect();
-        const tooltipWidth = 320;
-        const tooltipHeight = 200;
         const isMobile = window.innerWidth < 768;
         
-        console.log('[Tooltip] Positioning:', {
+        console.log('[Tooltip] Setup:', {
           isMobile,
-          targetRect: { top: rect.top, bottom: rect.bottom, left: rect.left },
-          windowHeight: window.innerHeight,
-          windowWidth: window.innerWidth
-        });
-        
-        let top, left, arrowPosition, arrowOffset;
-        
-        // Calculate arrow offset to point at target
-        const targetCenterX = rect.left + (rect.width / 2);
-        
-        if (isMobile) {
-          // On mobile, always place tooltip at bottom of viewport
-          // Don't use scrollY since header is fixed
-          top = window.innerHeight - tooltipHeight - 100; // 100px from bottom
-          left = window.innerWidth / 2;
-          arrowPosition = 'bottom'; // Arrow points DOWN to target above
-          arrowOffset = targetCenterX; // Arrow at target X position
-          
-          console.log('[Tooltip] Mobile positioning:', { top, left, arrowOffset });
-        } else {
-          // Desktop: below target
-          top = rect.bottom + 10; // No scrollY needed for fixed positioning
-          left = rect.left + (rect.width / 2);
-          arrowPosition = 'top';
-          
-          // Keep tooltip within viewport
-          if (left + tooltipWidth / 2 > window.innerWidth - 20) {
-            left = window.innerWidth - tooltipWidth / 2 - 20;
-          }
-          if (left - tooltipWidth / 2 < 20) {
-            left = tooltipWidth / 2 + 20;
-          }
-          
-          arrowOffset = targetCenterX - (left - tooltipWidth / 2);
-          arrowOffset = Math.max(20, Math.min(arrowOffset, tooltipWidth - 20));
-          
-          console.log('[Tooltip] Desktop positioning:', { top, left, arrowOffset });
-        }
-        
-        setPosition({
-          top,
-          left,
-          arrowPosition,
-          arrowOffset: arrowOffset || 160
+          windowWidth: window.innerWidth,
+          targetTop: rect.top,
+          targetLeft: rect.left
         });
         
         // Highlight target
@@ -72,6 +29,11 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
         target.style.zIndex = '9999';
         target.style.boxShadow = '0 0 0 3px rgba(251, 191, 36, 0.5)';
         target.style.borderRadius = '12px';
+        
+        setPosition({
+          isMobile,
+          targetCenterX: rect.left + (rect.width / 2)
+        });
         
         setShow(true);
       }
