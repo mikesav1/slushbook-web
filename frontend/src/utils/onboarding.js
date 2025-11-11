@@ -6,7 +6,10 @@
 const TOUR_KEYS = {
   HOME: 'tour_home_completed',
   RECIPES: 'tour_recipes_completed',
-  ADD_RECIPE: 'tour_add_recipe_completed'
+  ADD_RECIPE: 'tour_add_recipe_completed',
+  MATCH: 'tour_match_completed',
+  SHOPPING_LIST: 'tour_shopping_list_completed',
+  SETTINGS: 'tour_settings_completed'
 };
 
 // Check if tour has been completed
