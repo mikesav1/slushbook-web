@@ -420,7 +420,7 @@ const SettingsPage = ({ sessionId }) => {
           
 
       {/* Onboarding Tour Reset */}
-      {!user?.isGuest && (
+      {user?.role !== 'guest' && (
         <div className="bg-yellow-50 rounded-2xl p-6 shadow-sm border border-yellow-200 mt-6">
           <div className="flex items-center gap-2 mb-4">
             <FaQuestionCircle className="text-yellow-600 text-xl" />
