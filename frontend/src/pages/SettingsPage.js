@@ -437,6 +437,7 @@ const SettingsPage = ({ sessionId }) => {
               resetAllTours();
               toast.success('Alle guider er nulstillet! De vil vises næste gang du besøger siderne.');
             }}
+            data-tour="restart-tours-button"
             className="bg-yellow-500 hover:bg-yellow-600 text-white"
           >
             🔄 Genstart Alle Guider
