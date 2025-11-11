@@ -7,7 +7,7 @@ import RecipeCard from '../components/RecipeCard';
 import UpgradeModal from '../components/UpgradeModal';
 import { useAuth } from '../context/AuthContext';
 import OnboardingTooltip from '../components/OnboardingTooltip';
-import { homePageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
+import { getHomePageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
 
 const HomePage = ({ sessionId }) => {
   const { user } = useAuth();
