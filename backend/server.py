@@ -1663,6 +1663,15 @@ async def get_recipe(recipe_id: str, session_id: Optional[str] = None, request: 
     # Try system recipes first
     recipe = await db.recipes.find_one({"id": recipe_id}, {"_id": 0})
     
+    # If system recipe found, check if user has access
+    if recipe:
+        is_admin = user and user.role == "admin"
+        is_published = recipe.get("is_published", False)
+        
+        # Non-admin users can only see published system recipes
+        if not is_admin and not is_published:
+            raise HTTPException(status_code=404, detail="Recipe not found")
+    
     # Try user recipes if not found in system recipes
     if not recipe and session_id:
         # Search by session_id OR author (for logged-in users)
