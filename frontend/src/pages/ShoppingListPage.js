@@ -116,7 +116,7 @@ const ShoppingListPage = ({ sessionId }) => {
 
   // Start tour for first-time users
   useEffect(() => {
-    if (user && !user.isGuest && !isTourCompleted(TOUR_KEYS.SHOPPING_LIST) && items.length > 0) {
+    if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.SHOPPING_LIST) && items.length > 0) {
       setTimeout(() => {
         setCurrentTourStep(0);
       }, 1000);
