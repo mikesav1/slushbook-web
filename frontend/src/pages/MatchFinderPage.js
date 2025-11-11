@@ -72,7 +72,11 @@ const MatchFinderPage = ({ sessionId }) => {
     try {
       await axios.delete(`${API}/pantry/${sessionId}/${itemId}`);
       toast.success('Ingrediens fjernet');
-      checkPantry(); // Refresh
+      
+      // Clear matches since pantry changed
+      setMatches(null);
+      
+      checkPantry(); // Refresh pantry count
     } catch (error) {
       console.error('Error removing ingredient:', error);
       toast.error('Kunne ikke fjerne ingrediens');
