@@ -7629,8 +7629,8 @@ Test CSV Product Empty,test;csv,,bilka,https://www.bilka.dk/test-csv-product-2,T
             return False
 
 def main():
-    """Run free recipes ordering test"""
-    print("🧪 SLUSHBOOK Free Recipes Ordering Test")
+    """Run match-finder functionality test"""
+    print("🧪 SLUSHBOOK Match-Finder Functionality Test")
     print("=" * 80)
     
     # Test both environments
@@ -7647,9 +7647,9 @@ def main():
         
         tester = BackendTester(env_url)
         
-        # Run free recipes ordering test as requested in review
+        # Run match-finder functionality test as requested in review
         tests = [
-            ("Free Recipes Ordering for Guests", tester.test_free_recipes_ordering_for_guests)
+            ("Match-Finder Functionality", tester.test_match_finder_functionality)
         ]
         
         env_passed = 0
