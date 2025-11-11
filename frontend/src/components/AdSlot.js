@@ -30,7 +30,7 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
 
   // Separate effect for rotation - runs when availableAds change
   useEffect(() => {
-    if (user || availableAds.length <= 1) {
+    if ((user && user.role !== 'guest') || availableAds.length <= 1) {
       return;
     }
 
