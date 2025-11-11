@@ -399,6 +399,7 @@ const RecipesPage = ({ sessionId }) => {
             {/* Add Recipe Card - First in grid */}
             {user && !user.isGuest && (
               <div
+                data-tour="add-recipe-card"
                 onClick={() => navigate('/add-recipe')}
                 className="flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all overflow-hidden border-2 border-dashed border-purple-300 hover:border-purple-500 cursor-pointer hover:scale-105"
               >
