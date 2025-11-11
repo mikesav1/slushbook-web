@@ -140,7 +140,7 @@ const MatchFinderPage = ({ sessionId }) => {
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <Link to="/pantry" className="w-full sm:w-auto">
-              <Button variant="outline" size="sm" className="w-full">
+              <Button variant="outline" size="sm" className="w-full" data-tour="add-pantry-button">
                 <FaPlus className="mr-2" /> Tilføj Flere
               </Button>
             </Link>
@@ -148,6 +148,7 @@ const MatchFinderPage = ({ sessionId }) => {
               onClick={findMatches}
               disabled={loading || pantryCount === 0}
               data-testid="find-match-button"
+              data-tour="find-matches-button"
               className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 w-full sm:w-auto"
             >
               <FaMagic className="mr-2" />
