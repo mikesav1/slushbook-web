@@ -52,28 +52,33 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
       {/* Overlay */}
       <div className="fixed inset-0 bg-black/30 z-[9998]" onClick={onSkip} />
       
-      {/* Tooltip */}
+      {/* Tooltip - Different positioning for mobile vs desktop */}
       <div
-        className="fixed z-[10000] bg-yellow-50 border-3 border-yellow-400 rounded-xl shadow-2xl p-5 w-80"
-        style={{
-          top: `${position.top}px`,
-          left: `${position.left}px`,
-          transform: 'translateX(-50%)',
-          maxWidth: 'calc(100vw - 40px)'
+        className={`fixed z-[10000] bg-yellow-50 border-3 border-yellow-400 rounded-xl shadow-2xl p-5 w-80 max-w-[calc(100vw-40px)] ${
+          position.isMobile 
+            ? 'left-1/2 -translate-x-1/2' // Mobile: horizontally centered
+            : ''
+        }`}
+        style={position.isMobile ? {
+          bottom: '120px' // Mobile: fixed 120px from bottom (above nav)
+        } : {
+          // Desktop: use normal positioning (this will be set by parent or default)
+          position: 'fixed',
+          top: '80px',
+          left: '50%',
+          transform: 'translateX(-50%)'
         }}
       >
-        {/* Arrow pointing to actual target - position varies based on tooltip placement */}
-        <div 
-          className={`absolute w-0 h-0 ${
-            position.arrowPosition === 'top' 
-              ? '-top-3 border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-yellow-400' 
-              : 'top-0 -translate-y-full border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-yellow-400'
-          }`}
-          style={{
-            left: `${position.arrowOffset || 160}px`,
-            transform: position.arrowPosition === 'top' ? 'translateX(-50%)' : 'translateX(-50%) translateY(-100%)'
-          }}
-        />
+        {/* Simple arrow pointing up on mobile, otherwise skip for now */}
+        {position.isMobile && (
+          <div 
+            className="absolute -top-3 w-0 h-0 border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-yellow-400"
+            style={{
+              left: `${position.targetCenterX || window.innerWidth / 2}px`,
+              transform: 'translateX(-50%)'
+            }}
+          />
+        )}
         
         {/* Content */}
         <div className="text-gray-800 mb-4 text-base font-medium">
