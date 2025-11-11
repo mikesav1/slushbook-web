@@ -231,6 +231,15 @@ const SettingsPage = ({ sessionId }) => {
 
   return (
     <div className="space-y-6 fade-in" data-testid="settings-page">
+      {/* Onboarding Tour */}
+      <OnboardingTooltip
+        steps={settingsPageSteps}
+        currentStep={currentTourStep}
+        onNext={handleTourNext}
+        onSkip={handleTourSkip}
+        onFinish={handleTourFinish}
+      />
+      
       <div>
         <h1 className="text-4xl font-bold mb-2">Indstillinger</h1>
         <p className="text-gray-600">Administrér din maskine og konto</p>
