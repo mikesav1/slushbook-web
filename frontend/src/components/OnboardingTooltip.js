@@ -58,49 +58,50 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
       
       {/* Tooltip */}
       <div
-        className="fixed z-[10000] bg-yellow-50 border-2 border-yellow-400 rounded-lg shadow-2xl p-4 max-w-sm"
+        className="fixed z-[10000] bg-yellow-50 border-3 border-yellow-400 rounded-xl shadow-2xl p-5 w-80"
         style={{
           top: `${position.top}px`,
           left: `${position.left}px`,
-          transform: 'translateX(-50%)'
+          transform: 'translateX(-50%)',
+          maxWidth: 'calc(100vw - 40px)'
         }}
       >
         {/* Arrow */}
         <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-yellow-400" />
         
         {/* Content */}
-        <div className="text-gray-800 mb-4">
+        <div className="text-gray-800 mb-4 text-base font-medium">
           {step.content}
         </div>
         
         {/* Buttons */}
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center gap-3">
           <button
             onClick={onSkip}
-            className="text-sm text-gray-600 hover:text-gray-800"
+            className="text-sm text-gray-600 hover:text-gray-800 font-medium"
           >
             Spring over
           </button>
           
-          <div className="flex gap-2">
+          <div className="flex gap-3 items-center">
             {/* Step indicator */}
-            <span className="text-xs text-gray-500 self-center">
+            <span className="text-sm text-gray-600 font-medium">
               {currentStep + 1} / {steps.length}
             </span>
             
             {isLast ? (
               <button
                 onClick={onFinish}
-                className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-medium"
+                className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg font-bold text-base shadow-md hover:shadow-lg transition-all"
               >
-                Færdig
+                Færdig ✓
               </button>
             ) : (
               <button
                 onClick={onNext}
-                className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-medium"
+                className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg font-bold text-base shadow-md hover:shadow-lg transition-all"
               >
-                Næste
+                Næste →
               </button>
             )}
           </div>
