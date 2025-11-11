@@ -267,6 +267,15 @@ const AddRecipePage = ({ sessionId }) => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 fade-in" data-testid="add-recipe-page">
+      {/* Onboarding Tour */}
+      <OnboardingTooltip
+        steps={addRecipePageSteps}
+        currentStep={currentTourStep}
+        onNext={handleTourNext}
+        onSkip={handleTourSkip}
+        onFinish={handleTourFinish}
+      />
+      
       <button
         onClick={() => navigate(-1)}
         data-testid="back-button"
