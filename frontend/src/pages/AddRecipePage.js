@@ -45,7 +45,7 @@ const AddRecipePage = ({ sessionId }) => {
 
   // Start tour if coming from RecipesPage
   useEffect(() => {
-    if (user && !user.isGuest && !isTourCompleted(TOUR_KEYS.ADD_RECIPE) && isTourCompleted(TOUR_KEYS.RECIPES)) {
+    if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.ADD_RECIPE) && isTourCompleted(TOUR_KEYS.RECIPES)) {
       console.log('[Tour] Starting add recipe tour...');
       setTimeout(() => {
         setCurrentTourStep(0);
