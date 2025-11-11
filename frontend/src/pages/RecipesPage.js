@@ -44,6 +44,37 @@ const RecipesPage = ({ sessionId }) => {
   useEffect(() => {
     filterRecipes();
   }, [recipes, searchTerm, showMyRecipes]);
+
+  // Start tour if coming from HomePage and tour not completed
+  useEffect(() => {
+    if (user && !user.isGuest && !isTourCompleted(TOUR_KEYS.RECIPES) && isTourCompleted(TOUR_KEYS.HOME)) {
+      console.log('[Tour] Starting recipes tour...');
+      setTimeout(() => {
+        setCurrentTourStep(0);
+      }, 1000);
+    }
+  }, [user]);
+
+  const handleTourNext = () => {
+    const nextStep = currentTourStep + 1;
+    setCurrentTourStep(nextStep);
+  };
+
+  const handleTourSkip = () => {
+    markTourCompleted(TOUR_KEYS.RECIPES);
+    setCurrentTourStep(-1);
+  };
+
+  const handleTourFinish = () => {
+    markTourCompleted(TOUR_KEYS.RECIPES);
+    setCurrentTourStep(-1);
+    
+    // Navigate to Add Recipe page to continue tour
+    setTimeout(() => {
+      navigate('/add-recipe');
+    }, 500);
+  };
+
   
   // Check URL params for sort preference
   useEffect(() => {
