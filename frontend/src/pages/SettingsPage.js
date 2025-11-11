@@ -32,6 +32,7 @@ const SettingsPage = ({ sessionId }) => {
   const [detectingCountry, setDetectingCountry] = useState(false);
   const [devices, setDevices] = useState([]);
   const [deviceLimits, setDeviceLimits] = useState({ current: 0, max: 1 });
+  const [currentTourStep, setCurrentTourStep] = useState(-1);
 
   useEffect(() => {
     fetchData();
