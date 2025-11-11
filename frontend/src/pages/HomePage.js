@@ -112,15 +112,6 @@ const HomePage = ({ sessionId }) => {
 
   return (
     <div className="space-y-0 fade-in -mt-6">
-      {/* Onboarding Tour */}
-      <OnboardingTooltip
-        steps={homePageSteps}
-        currentStep={currentTourStep}
-        onNext={handleTourNext}
-        onSkip={handleTourSkip}
-        onFinish={handleTourFinish}
-      />
-      
       {/* Video Background - Fixed full screen */}
       <video
         autoPlay
