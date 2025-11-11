@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import Joyride from 'react-joyride';
 import { FaMagic, FaBook, FaFire } from 'react-icons/fa';
 import { API } from '../App';
 import RecipeCard from '../components/RecipeCard';
 import UpgradeModal from '../components/UpgradeModal';
+import OnboardingTooltip from '../components/OnboardingTooltip';
 import { useAuth } from '../context/AuthContext';
 import { homePageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
 
@@ -16,7 +16,7 @@ const HomePage = ({ sessionId }) => {
   const [sortBy, setSortBy] = useState('latest'); // 'latest' or 'popular'
   const [isMobile, setIsMobile] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
-  const [runTour, setRunTour] = useState(false);
+  const [currentTourStep, setCurrentTourStep] = useState(-1);
 
   useEffect(() => {
     // Check if mobile
