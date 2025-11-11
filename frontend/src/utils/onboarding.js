@@ -37,12 +37,15 @@ export const homePageSteps = [
 // Recipes Page Tour Steps  
 export const recipesPageSteps = [
   {
+    target: '[data-tour="search-bar"]',
     content: '🔍 Brug søgefeltet til at finde specifikke opskrifter hurtigt.'
   },
   {
+    target: '[data-tour="type-filter"]',
     content: '🎨 Filtrer opskrifter efter type (Klassisk, Tropisk, Cremet osv.) for at finde præcis hvad du har lyst til.'
   },
   {
+    target: '[data-tour="add-recipe-card"]',
     content: '➕ Klik på "Tilføj Opskrift"-kortet (det første kort) for at oprette og dele dine egne slushice opskrifter!'
   }
 ];
