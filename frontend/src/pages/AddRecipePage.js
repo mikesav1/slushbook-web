@@ -463,7 +463,7 @@ const AddRecipePage = ({ sessionId }) => {
         </div>
 
         {/* Ingredients */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4 ingredients-section">
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4 ingredients-section" data-tour="recipe-ingredients">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold">Ingredienser</h2>
             <Button type="button" onClick={addIngredient} size="sm">
