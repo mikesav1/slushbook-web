@@ -1673,21 +1673,30 @@ async def get_recipe(recipe_id: str, session_id: Optional[str] = None, request: 
             raise HTTPException(status_code=404, detail="Recipe not found")
     
     # Try user recipes if not found in system recipes
-    if not recipe and session_id:
-        # Search by session_id OR author (for logged-in users)
-        query = {"id": recipe_id}
-        if user:
-            # If logged in, search by author (user.id) or session_id
-            query["$or"] = [
-                {"session_id": session_id},
-                {"author": user.id},
-                {"author": user.email}
-            ]
-        else:
-            # If guest, search by session_id only
-            query["session_id"] = session_id
-            
-        recipe = await db.user_recipes.find_one(query, {"_id": 0})
+    if not recipe:
+        # First, try to find approved user recipes (public to all)
+        approved_recipe = await db.user_recipes.find_one({
+            "id": recipe_id,
+            "approval_status": "approved"
+        }, {"_id": 0})
+        
+        if approved_recipe:
+            recipe = approved_recipe
+        elif session_id:
+            # If not approved, search by session_id OR author (for logged-in users)
+            query = {"id": recipe_id}
+            if user:
+                # If logged in, search by author (user.id) or session_id
+                query["$or"] = [
+                    {"session_id": session_id},
+                    {"author": user.id},
+                    {"author": user.email}
+                ]
+            else:
+                # If guest, search by session_id only
+                query["session_id"] = session_id
+                
+            recipe = await db.user_recipes.find_one(query, {"_id": 0})
     
     if not recipe:
         raise HTTPException(status_code=404, detail="Recipe not found")
