@@ -663,6 +663,7 @@ const AddRecipePage = ({ sessionId }) => {
             type="submit"
             disabled={loading || (recipe.is_published && imageFile && !imageRightsConfirmed)}
             data-testid="submit-recipe"
+            data-tour="recipe-submit"
             className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700"
           >
             {loading ? 'Opretter...' : 'Opret Opskrift'}
