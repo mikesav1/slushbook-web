@@ -8016,14 +8016,13 @@ Test CSV Product Empty,test;csv,,bilka,https://www.bilka.dk/test-csv-product-2,T
             return False
 
 def main():
-    """Run match-finder pantry update test as requested in review"""
-    print("🧪 SLUSHBOOK Match-Finder Pantry Update Test")
+    """Run guest user limitations test as requested in review"""
+    print("🧪 SLUSHBOOK Gæstebruger Begrænsninger Test")
     print("=" * 80)
     
-    # Test both environments
+    # Test only Preview environment as specified in review request
     environments = [
         ("Preview", "https://onboarding-tour.preview.emergentagent.com/api"),
-        ("Production", "https://slushice-recipes.emergent.host/api")
     ]
     
     all_results = {}
@@ -8034,9 +8033,9 @@ def main():
         
         tester = BackendTester(env_url)
         
-        # Run match-finder pantry update test as requested in review
+        # Run guest user limitations test as requested in review
         tests = [
-            ("Match-Finder Pantry Updates", tester.test_match_finder_pantry_updates)
+            ("Gæstebruger Begrænsninger", tester.test_guest_user_limitations)
         ]
         
         env_passed = 0
