@@ -1351,6 +1351,25 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             self.log(f"❌ Match-finder pantry update test failed with exception: {str(e)}")
             return False
 
+    def test_specific_user_login(self, email, passwords):
+        """Helper method to test login with specific user and multiple password attempts"""
+        for password in passwords:
+            try:
+                login_response = self.session.post(f"{self.base_url}/auth/login", json={
+                    "email": email,
+                    "password": password
+                })
+                
+                if login_response.status_code == 200:
+                    login_data = login_response.json()
+                    session_token = login_data.get("session_token")
+                    return True, session_token
+                    
+            except Exception as e:
+                continue
+                
+        return False, None
+
     def test_free_recipes_ordering_for_guests(self):
         """Test that free recipes appear first in the recipes list for guest users"""
         self.log("=== TESTING FREE RECIPES ORDERING FOR GUESTS ===")
