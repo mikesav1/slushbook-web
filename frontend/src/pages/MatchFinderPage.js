@@ -39,6 +39,13 @@ const MatchFinderPage = ({ sessionId }) => {
       console.log(`Pantry changed from ${previousPantryCount} to ${pantryCount} - clearing matches`);
       setMatches(null);
       sessionStorage.removeItem(`matches_${sessionId}`);
+      
+      // Notify user that they should re-run match
+      if (pantryCount > 0) {
+        toast.info('Dine ingredienser er opdateret! Klik "Find matches" for at se nye resultater.', {
+          duration: 4000
+        });
+      }
     }
     setPreviousPantryCount(pantryCount);
   }, [pantryCount]);
