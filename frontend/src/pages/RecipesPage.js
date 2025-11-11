@@ -361,20 +361,22 @@ const RecipesPage = ({ sessionId }) => {
                 onLockedClick={() => setShowUpgradeModal(true)}
               />
             ))}
-          </div>
-
-          {/* Add Recipe Button - Fixed at bottom */}
-          {user && !user.isGuest && (
-            <div className="flex justify-center mt-8">
-              <button
+            
+            {/* Add Recipe Card - Integrated into grid */}
+            {user && !user.isGuest && (
+              <div
                 onClick={() => navigate('/add-recipe')}
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-3 font-bold text-lg"
+                className="aspect-[3/4] bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl border-2 border-dashed border-purple-300 hover:border-purple-500 cursor-pointer transition-all duration-200 hover:shadow-xl hover:scale-105 flex flex-col items-center justify-center p-4 gap-3"
               >
-                <FaPlus className="text-xl" />
-                <span>Tilføj din egen opskrift</span>
-              </button>
-            </div>
-          )}
+                <div className="bg-white rounded-full p-4 shadow-md">
+                  <FaPlus className="text-4xl text-purple-600" />
+                </div>
+                <p className="text-purple-700 font-bold text-center text-sm md:text-base">
+                  Tilføj din egen opskrift
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       )}
       
