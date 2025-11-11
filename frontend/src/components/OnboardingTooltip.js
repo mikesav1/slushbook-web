@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
  * Compatible with React 19
  */
 const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => {
-  const [position, setPosition] = useState({ top: 0, left: 0 });
+  const [position, setPosition] = useState({ top: 0, left: 0, arrowOffset: 160 });
   const [show, setShow] = useState(false);
 
   useEffect(() => {
