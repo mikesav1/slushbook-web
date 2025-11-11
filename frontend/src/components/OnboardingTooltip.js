@@ -102,14 +102,14 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
       >
         {/* Arrow pointing to actual target - position varies based on tooltip placement */}
         <div 
-          className={`absolute w-0 h-0 border-l-8 border-r-8 border-l-transparent border-r-transparent ${
+          className={`absolute w-0 h-0 ${
             position.arrowPosition === 'top' 
-              ? '-top-3 border-b-8 border-b-yellow-400' 
-              : '-bottom-3 border-t-8 border-t-yellow-400'
+              ? '-top-3 border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-yellow-400' 
+              : 'top-0 -translate-y-full border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-yellow-400'
           }`}
           style={{
             left: `${position.arrowOffset || 160}px`,
-            transform: 'translateX(-50%)'
+            transform: position.arrowPosition === 'top' ? 'translateX(-50%)' : 'translateX(-50%) translateY(-100%)'
           }}
         />
         
