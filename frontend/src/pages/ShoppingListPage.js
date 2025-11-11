@@ -26,6 +26,7 @@ const BuyButton = ({ mappingId, redirectApi, fetchSupplier, userCountry }) => {
       href={`${redirectApi}/${mappingId}?country=${userCountry}`}
       target="_blank"
       rel="noopener noreferrer"
+      data-tour="buy-button"
       className="inline-flex items-center gap-2 text-sm text-emerald-600 hover:text-emerald-700 font-medium ml-10 hover:underline transition-colors"
     >
       <FaShoppingCart className="w-4 h-4" />
