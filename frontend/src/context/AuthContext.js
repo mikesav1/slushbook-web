@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const isGuest = () => !user;
+  const isGuest = () => !user || user?.role === 'guest';
   const isPro = () => user?.role === 'pro' || user?.role === 'editor' || user?.role === 'admin';
   const isEditor = () => user?.role === 'editor' || user?.role === 'admin';
   const isAdmin = () => user?.role === 'admin';
