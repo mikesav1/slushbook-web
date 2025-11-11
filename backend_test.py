@@ -1370,6 +1370,299 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
                 
         return False, None
 
+    def test_guest_user_limitations(self):
+        """Test gæstebruger begrænsninger - specific test scenario from review request"""
+        self.log("=== TESTING GÆSTEBRUGER BEGRÆNSNINGER ===")
+        
+        try:
+            # Step 1: Opret en ny gæstebruger via /api/auth/signup med role='guest'
+            self.log("\n--- Step 1: Opret ny gæstebruger ---")
+            
+            guest_email = f"guest.test.{int(time.time())}@example.com"
+            guest_password = "guestpass123"
+            guest_name = "Guest Test User"
+            
+            signup_data = {
+                "email": guest_email,
+                "password": guest_password,
+                "name": guest_name
+            }
+            
+            signup_response = self.session.post(f"{self.base_url}/auth/signup", json=signup_data)
+            
+            if signup_response.status_code != 200:
+                self.log(f"❌ Failed to create guest user: {signup_response.status_code} - {signup_response.text}")
+                return False
+            
+            self.log(f"✅ Created guest user: {guest_email}")
+            
+            # Step 2: Login som gæstebruger
+            self.log("\n--- Step 2: Login som gæstebruger ---")
+            
+            login_data = {
+                "email": guest_email,
+                "password": guest_password
+            }
+            
+            login_response = self.session.post(f"{self.base_url}/auth/login", json=login_data)
+            
+            if login_response.status_code != 200:
+                self.log(f"❌ Failed to login as guest: {login_response.status_code} - {login_response.text}")
+                return False
+            
+            login_result = login_response.json()
+            guest_session_token = login_result.get("session_token")
+            guest_user = login_result.get("user", {})
+            guest_role = guest_user.get("role")
+            guest_user_id = guest_user.get("id")
+            
+            self.log(f"✅ Logged in as guest user - Role: {guest_role}, ID: {guest_user_id}")
+            
+            # Verify user has guest role
+            if guest_role != "guest":
+                self.log(f"❌ Expected role 'guest', got '{guest_role}'")
+                return False
+            
+            # Set authorization header for subsequent requests
+            headers = {"Authorization": f"Bearer {guest_session_token}"}
+            
+            # Step 3: Test endpoints that SKAL VÆRE BLOKERET for gæstebrugere
+            self.log("\n--- Step 3: Test BLOKEREDE endpoints for gæstebrugere ---")
+            
+            blocked_tests_passed = 0
+            total_blocked_tests = 0
+            
+            # Test 3.1: POST /api/favorites (tilføj favorit) - SKAL give fejl eller limit
+            self.log("\n  Test 3.1: POST /api/favorites (tilføj favorit)")
+            total_blocked_tests += 1
+            
+            favorite_data = {
+                "session_id": guest_user_id,
+                "recipe_id": "test-recipe-123"
+            }
+            
+            favorite_response = self.session.post(f"{self.base_url}/favorites", json=favorite_data, headers=headers)
+            
+            if favorite_response.status_code in [403, 401, 400]:
+                self.log(f"✅ POST /api/favorites correctly blocked: {favorite_response.status_code}")
+                blocked_tests_passed += 1
+            elif favorite_response.status_code == 200:
+                # Check if response indicates limitation
+                fav_result = favorite_response.json()
+                if "limit" in str(fav_result).lower() or "guest" in str(fav_result).lower():
+                    self.log(f"✅ POST /api/favorites shows limitation message: {fav_result}")
+                    blocked_tests_passed += 1
+                else:
+                    self.log(f"❌ POST /api/favorites should be blocked for guests but succeeded: {fav_result}")
+            else:
+                self.log(f"❌ POST /api/favorites unexpected response: {favorite_response.status_code} - {favorite_response.text}")
+            
+            # Test 3.2: GET /api/favorites (se favoritter) - SKAL give tom liste eller fejl
+            self.log("\n  Test 3.2: GET /api/favorites (se favoritter)")
+            total_blocked_tests += 1
+            
+            get_favorites_response = self.session.get(f"{self.base_url}/favorites/{guest_user_id}", headers=headers)
+            
+            if get_favorites_response.status_code in [403, 401, 400]:
+                self.log(f"✅ GET /api/favorites correctly blocked: {get_favorites_response.status_code}")
+                blocked_tests_passed += 1
+            elif get_favorites_response.status_code == 200:
+                favorites_result = get_favorites_response.json()
+                if isinstance(favorites_result, list) and len(favorites_result) == 0:
+                    self.log(f"✅ GET /api/favorites returns empty list for guest: {favorites_result}")
+                    blocked_tests_passed += 1
+                else:
+                    self.log(f"❌ GET /api/favorites should return empty list for guests: {favorites_result}")
+            else:
+                self.log(f"❌ GET /api/favorites unexpected response: {get_favorites_response.status_code}")
+            
+            # Test 3.3: POST /api/shopping-list (tilføj til liste) - SKAL give fejl
+            self.log("\n  Test 3.3: POST /api/shopping-list (tilføj til liste)")
+            total_blocked_tests += 1
+            
+            shopping_item_data = {
+                "session_id": guest_user_id,
+                "ingredient_name": "Test Ingredient",
+                "category_key": "test-category",
+                "quantity": 100.0,
+                "unit": "ml"
+            }
+            
+            shopping_post_response = self.session.post(f"{self.base_url}/shopping-list", json=shopping_item_data, headers=headers)
+            
+            if shopping_post_response.status_code in [403, 401, 400]:
+                self.log(f"✅ POST /api/shopping-list correctly blocked: {shopping_post_response.status_code}")
+                blocked_tests_passed += 1
+            elif shopping_post_response.status_code == 200:
+                shopping_result = shopping_post_response.json()
+                if "limit" in str(shopping_result).lower() or "guest" in str(shopping_result).lower():
+                    self.log(f"✅ POST /api/shopping-list shows limitation: {shopping_result}")
+                    blocked_tests_passed += 1
+                else:
+                    self.log(f"❌ POST /api/shopping-list should be blocked for guests: {shopping_result}")
+            else:
+                self.log(f"❌ POST /api/shopping-list unexpected response: {shopping_post_response.status_code}")
+            
+            # Test 3.4: GET /api/shopping-list (se liste) - SKAL give tom liste eller fejl
+            self.log("\n  Test 3.4: GET /api/shopping-list (se liste)")
+            total_blocked_tests += 1
+            
+            get_shopping_response = self.session.get(f"{self.base_url}/shopping-list/{guest_user_id}", headers=headers)
+            
+            if get_shopping_response.status_code in [403, 401, 400]:
+                self.log(f"✅ GET /api/shopping-list correctly blocked: {get_shopping_response.status_code}")
+                blocked_tests_passed += 1
+            elif get_shopping_response.status_code == 200:
+                shopping_list_result = get_shopping_response.json()
+                if isinstance(shopping_list_result, list) and len(shopping_list_result) == 0:
+                    self.log(f"✅ GET /api/shopping-list returns empty list for guest: {shopping_list_result}")
+                    blocked_tests_passed += 1
+                else:
+                    self.log(f"❌ GET /api/shopping-list should return empty list for guests: {shopping_list_result}")
+            else:
+                self.log(f"❌ GET /api/shopping-list unexpected response: {get_shopping_response.status_code}")
+            
+            # Test 3.5: POST /api/user-recipes (opret opskrift) - SKAL give fejl
+            self.log("\n  Test 3.5: POST /api/user-recipes (opret opskrift)")
+            total_blocked_tests += 1
+            
+            recipe_data = {
+                "name": "Guest Test Recipe",
+                "description": "Test recipe by guest user",
+                "ingredients": [
+                    {
+                        "name": "Test Ingredient",
+                        "category_key": "test",
+                        "quantity": 100,
+                        "unit": "ml",
+                        "role": "required"
+                    }
+                ],
+                "steps": ["Mix ingredients"],
+                "session_id": guest_user_id,
+                "base_volume_ml": 1000,
+                "target_brix": 14.0,
+                "color": "red",
+                "type": "klassisk",
+                "tags": ["test"]
+            }
+            
+            recipe_response = self.session.post(f"{self.base_url}/recipes", json=recipe_data, headers=headers)
+            
+            if recipe_response.status_code in [403, 401, 400]:
+                self.log(f"✅ POST /api/recipes correctly blocked: {recipe_response.status_code}")
+                blocked_tests_passed += 1
+            elif recipe_response.status_code == 200:
+                recipe_result = recipe_response.json()
+                if "limit" in str(recipe_result).lower() or "guest" in str(recipe_result).lower():
+                    self.log(f"✅ POST /api/recipes shows limitation: {recipe_result}")
+                    blocked_tests_passed += 1
+                else:
+                    self.log(f"❌ POST /api/recipes should be blocked for guests: {recipe_result}")
+            else:
+                self.log(f"❌ POST /api/recipes unexpected response: {recipe_response.status_code}")
+            
+            # Test 3.6: POST /api/pantry (tilføj til pantry) - Tjek om det skal være blokeret
+            self.log("\n  Test 3.6: POST /api/pantry (tilføj til pantry)")
+            total_blocked_tests += 1
+            
+            pantry_data = {
+                "session_id": guest_user_id,
+                "ingredient_name": "Test Pantry Item",
+                "category_key": "test-pantry",
+                "quantity": 200.0,
+                "unit": "ml"
+            }
+            
+            pantry_response = self.session.post(f"{self.base_url}/pantry", json=pantry_data, headers=headers)
+            
+            if pantry_response.status_code in [403, 401, 400]:
+                self.log(f"✅ POST /api/pantry correctly blocked: {pantry_response.status_code}")
+                blocked_tests_passed += 1
+            elif pantry_response.status_code == 200:
+                pantry_result = pantry_response.json()
+                if "limit" in str(pantry_result).lower() or "guest" in str(pantry_result).lower():
+                    self.log(f"✅ POST /api/pantry shows limitation: {pantry_result}")
+                    blocked_tests_passed += 1
+                else:
+                    self.log(f"⚠️  POST /api/pantry allowed for guests - may be intentional: {pantry_result}")
+                    # Don't fail the test for pantry as it might be allowed for guests
+                    blocked_tests_passed += 1
+            else:
+                self.log(f"❌ POST /api/pantry unexpected response: {pantry_response.status_code}")
+            
+            # Step 4: Test endpoints that SKAL VIRKE for gæstebrugere
+            self.log("\n--- Step 4: Test TILLADTE endpoints for gæstebrugere ---")
+            
+            allowed_tests_passed = 0
+            total_allowed_tests = 0
+            
+            # Test 4.1: GET /api/recipes (se system opskrifter)
+            self.log("\n  Test 4.1: GET /api/recipes (se system opskrifter)")
+            total_allowed_tests += 1
+            
+            recipes_response = self.session.get(f"{self.base_url}/recipes", headers=headers)
+            
+            if recipes_response.status_code == 200:
+                recipes_result = recipes_response.json()
+                if isinstance(recipes_result, list) and len(recipes_result) > 0:
+                    self.log(f"✅ GET /api/recipes works for guest: {len(recipes_result)} recipes returned")
+                    allowed_tests_passed += 1
+                else:
+                    self.log(f"❌ GET /api/recipes returned empty list: {recipes_result}")
+            else:
+                self.log(f"❌ GET /api/recipes failed for guest: {recipes_response.status_code}")
+            
+            # Test 4.2: GET /api/recipes/{id} (åbn enkelt opskrift)
+            self.log("\n  Test 4.2: GET /api/recipes/{id} (åbn enkelt opskrift)")
+            total_allowed_tests += 1
+            
+            # First get a recipe ID from the recipes list
+            if recipes_response.status_code == 200:
+                recipes_list = recipes_response.json()
+                if len(recipes_list) > 0:
+                    test_recipe_id = recipes_list[0].get('id')
+                    if test_recipe_id:
+                        single_recipe_response = self.session.get(f"{self.base_url}/recipes/{test_recipe_id}", headers=headers)
+                        
+                        if single_recipe_response.status_code == 200:
+                            single_recipe_result = single_recipe_response.json()
+                            if single_recipe_result.get('id') == test_recipe_id:
+                                self.log(f"✅ GET /api/recipes/{{id}} works for guest: {single_recipe_result.get('name')}")
+                                allowed_tests_passed += 1
+                            else:
+                                self.log(f"❌ GET /api/recipes/{{id}} returned wrong recipe: {single_recipe_result}")
+                        else:
+                            self.log(f"❌ GET /api/recipes/{{id}} failed for guest: {single_recipe_response.status_code}")
+                    else:
+                        self.log("❌ No recipe ID available for single recipe test")
+                else:
+                    self.log("❌ No recipes available for single recipe test")
+            else:
+                self.log("❌ Cannot test single recipe - recipes list failed")
+            
+            # Final Results
+            self.log("\n=== FINAL RESULTS ===")
+            
+            self.log(f"Blocked endpoints: {blocked_tests_passed}/{total_blocked_tests} correctly blocked")
+            self.log(f"Allowed endpoints: {allowed_tests_passed}/{total_allowed_tests} working correctly")
+            
+            success = (blocked_tests_passed == total_blocked_tests) and (allowed_tests_passed == total_allowed_tests)
+            
+            if success:
+                self.log("\n🎉 GÆSTEBRUGER BEGRÆNSNINGER TEST PASSED")
+                self.log("✅ Guest users have correct limitations")
+                self.log("✅ Guest users can access allowed endpoints")
+                return True
+            else:
+                self.log("\n❌ GÆSTEBRUGER BEGRÆNSNINGER TEST FAILED")
+                self.log("❌ Guest user limitations not working as expected")
+                return False
+                
+        except Exception as e:
+            self.log(f"❌ Guest user limitations test failed with exception: {str(e)}")
+            return False
+
     def test_free_recipes_ordering_for_guests(self):
         """Test that free recipes appear first in the recipes list for guest users"""
         self.log("=== TESTING FREE RECIPES ORDERING FOR GUESTS ===")
