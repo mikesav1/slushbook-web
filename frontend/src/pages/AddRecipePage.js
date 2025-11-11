@@ -353,7 +353,7 @@ const AddRecipePage = ({ sessionId }) => {
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4" data-tour="recipe-type">
             <div>
               <Label>Type/Gruppe *</Label>
               <select
