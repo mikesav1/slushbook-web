@@ -480,7 +480,7 @@ const SettingsPage = ({ sessionId }) => {
           {user ? (
             <Dialog open={isAddMachineOpen} onOpenChange={setIsAddMachineOpen}>
               <DialogTrigger asChild>
-                <Button data-testid="add-machine-button" variant="outline">
+                <Button data-testid="add-machine-button" data-tour="add-machine-button" variant="outline">
                   <FaPlus className="mr-2" /> Tilføj Maskine
                 </Button>
               </DialogTrigger>
