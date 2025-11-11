@@ -9,6 +9,7 @@ import { useAuth } from '../context/AuthContext';
 
 const RecipesPage = ({ sessionId }) => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [recipes, setRecipes] = useState([]);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
