@@ -3,8 +3,39 @@ import React from 'react';
 /**
  * Simple centered onboarding tooltip
  * No complex positioning - always centered on screen
+ * Highlights target element
  */
 const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => {
+  // Highlight the target element
+  React.useEffect(() => {
+    if (currentStep >= 0 && currentStep < steps.length) {
+      const step = steps[currentStep];
+      if (step.target) {
+        const targetElement = document.querySelector(step.target);
+        if (targetElement) {
+          // Add highlight styling
+          targetElement.style.position = 'relative';
+          targetElement.style.zIndex = '9999';
+          targetElement.style.boxShadow = '0 0 0 4px rgba(251, 191, 36, 0.8), 0 0 20px rgba(251, 191, 36, 0.5)';
+          targetElement.style.borderRadius = '12px';
+          targetElement.style.transition = 'all 0.3s ease';
+          
+          // Add pulse animation
+          targetElement.style.animation = 'pulse-highlight 2s ease-in-out infinite';
+          
+          // Cleanup function
+          return () => {
+            targetElement.style.position = '';
+            targetElement.style.zIndex = '';
+            targetElement.style.boxShadow = '';
+            targetElement.style.borderRadius = '';
+            targetElement.style.animation = '';
+          };
+        }
+      }
+    }
+  }, [currentStep, steps]);
+
   if (currentStep < 0 || currentStep >= steps.length) return null;
 
   const step = steps[currentStep];
