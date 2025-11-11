@@ -70,27 +70,30 @@ export const recipesPageSteps = [
 export const addRecipePageSteps = [
   {
     // Welcome to add recipe page
-    content: '✨ Velkommen til Opret Opskrift!\n\nHer kan du skabe og dele dine egne slushice-kreationer.\n\nLad os se på, hvordan du gør det.'
+    content: '✨ Velkommen til Opret Opskrift!\n\nHer kan du skabe og dele dine egne slushice-kreationer.\n\nLad os gennemgå hvordan du opretter en opskrift trin for trin.'
   },
   {
     target: '[data-tour="recipe-name"]',
-    content: '📝 Start med at give din opskrift et catchy navn!\n\nF.eks. "Sommer Jordbær" eller "Tropisk Paradise".'
+    content: '📝 Opskriftens navn\n\nGiv din opskrift et catchy og beskrivende navn!\n\nF.eks. "Sommer Jordbær", "Tropisk Paradise" eller "Cremet Blåbær".'
   },
   {
     target: '[data-tour="recipe-type"]',
-    content: '🎨 Vælg hvilken type opskrift det er.\n\nVælg også farve, så andre kan se hvordan din slushice ser ud.'
+    content: '🎨 Type og kategori\n\nVælg hvilken type opskrift det er (Klassisk, Juice, Smoothie, Cocktail osv.).\n\nDu kan også vælge farve, sukkergrad og om den indeholder alkohol.'
   },
   {
     target: '[data-tour="recipe-ingredients"]',
-    content: '🥤 Her tilføjer du alle ingredienserne til din opskrift.\n\nSøg efter eksisterende ingredienser eller opret nye.'
+    content: '🥤 Ingredienser\n\nHer tilføjer du alle ingredienserne til din opskrift.\n\n• Søg efter eksisterende ingredienser\n• Eller opret nye ingredienser\n• Angiv mængde og enhed\n• Du kan tilføje flere ingredienser med "Tilføj" knappen'
   },
   {
     target: '[data-tour="recipe-public-toggle"]',
-    content: '🌍 VIGTIGT: Hvis du vil dele din opskrift med andre, skal du aktivere "Offentlig opskrift".\n\nOpskriften skal godkendes af admin, før den bliver synlig for alle.'
+    content: '🌍 VIGTIGT: Offentlig opskrift\n\nHvis du vil DELE din opskrift med andre brugere, skal du aktivere "Offentlig opskrift".\n\n⚠️ OBS: Offentlige opskrifter skal godkendes af admin før de bliver synlige.\n\nPrivate opskrifter er kun synlige for dig.'
   },
   {
     target: '[data-tour="recipe-submit"]',
-    content: '✅ Når du er tilfreds med din opskrift, kan du gemme den her.\n\nDin opskrift bliver tilføjet til din samling, og hvis den er offentlig, kan andre også nyde den efter godkendelse!'
+    content: '✅ Gem din opskrift\n\nNår du er tilfreds med din opskrift, klik "Opret Opskrift".\n\nDin opskrift bliver:\n• Tilføjet til din samling med det samme\n• Sendt til godkendelse hvis den er offentlig\n• Klar til at dele hvis den er offentlig og godkendt!'
+  },
+  {
+    content: '🎉 Du er nu klar!\n\nDu ved nu hvordan du:\n• Søger og filtrerer opskrifter\n• Tilføjer favoritter\n• Opretter egne opskrifter\n\nGod fornøjelse med at udforske og skabe slushice-opskrifter! 🍹'
   }
 ];
 
