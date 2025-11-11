@@ -241,6 +241,7 @@ const Navigation = () => {
               onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
               className="flex items-center justify-center p-3 bg-white/10 backdrop-blur-md rounded-full hover:bg-white/20 transition-all"
               data-testid="mobile-profile-button"
+              data-tour="settings-menu"
             >
               <FaCog size={24} className="text-white" />
             </button>
