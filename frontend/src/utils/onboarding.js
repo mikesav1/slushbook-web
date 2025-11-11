@@ -29,8 +29,13 @@ export const resetAllTours = () => {
 // HomePage Tour Steps
 export const homePageSteps = [
   {
+    // Step 1: Welcome message (no target to highlight)
+    content: '🎉 Velkommen til Slush Book!\n\nHer kan du udforske opskrifter, finde inspiration og tilføje dine egne slushice-kreationer.\n\nFør vi går i gang, får du et par hurtige tips til, hvordan du bruger appen bedst.\n\nTryk Næste for at se, hvor du finder indstillinger og dine favoritter.'
+  },
+  {
+    // Step 2: Point to settings menu
     target: '[data-tour="settings-menu"]',
-    content: '👤 Velkommen! Klik på profil-ikonet øverst til højre (eller tandhjulet på mobil) for at åbne menuen med Indstillinger, Favoritter og Log ud. Du kan også genstarte denne guide under Indstillinger senere.'
+    content: '👤 Klik på profil-ikonet øverst til højre (eller tandhjulet på mobil) for at åbne menuen med Indstillinger, Favoritter og Log ud.\n\nDu kan også genstarte denne guide under Indstillinger senere.'
   }
 ];
 
