@@ -43,7 +43,7 @@ const SettingsPage = ({ sessionId }) => {
 
   // Start tour for first-time users
   useEffect(() => {
-    if (user && !user.isGuest && !isTourCompleted(TOUR_KEYS.SETTINGS)) {
+    if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.SETTINGS)) {
       setTimeout(() => {
         setCurrentTourStep(0);
       }, 1000);
