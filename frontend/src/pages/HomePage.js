@@ -39,17 +39,23 @@ const HomePage = ({ sessionId }) => {
     if (user && !user.isGuest && isMobile && !isTourCompleted(TOUR_KEYS.HOME)) {
       // Delay to ensure DOM is ready
       setTimeout(() => {
-        setRunTour(true);
+        setCurrentTourStep(0);
       }, 1000);
     }
   }, [user, isMobile]);
 
-  const handleJoyrideCallback = (data) => {
-    const { status } = data;
-    if (status === 'finished' || status === 'skipped') {
-      markTourCompleted(TOUR_KEYS.HOME);
-      setRunTour(false);
-    }
+  const handleTourNext = () => {
+    setCurrentTourStep(prev => prev + 1);
+  };
+
+  const handleTourSkip = () => {
+    markTourCompleted(TOUR_KEYS.HOME);
+    setCurrentTourStep(-1);
+  };
+
+  const handleTourFinish = () => {
+    markTourCompleted(TOUR_KEYS.HOME);
+    setCurrentTourStep(-1);
   };
 
 
