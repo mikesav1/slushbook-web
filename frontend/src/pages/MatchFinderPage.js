@@ -11,10 +11,12 @@ import OnboardingTooltip from '../components/OnboardingTooltip';
 import { matchPageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
 
 const MatchFinderPage = ({ sessionId }) => {
+  const { user } = useAuth();
   const [matches, setMatches] = useState(null);
   const [loading, setLoading] = useState(false);
   const [pantryCount, setPantryCount] = useState(0);
   const [pantryItems, setPantryItems] = useState([]);
+  const [currentTourStep, setCurrentTourStep] = useState(-1);
 
   useEffect(() => {
     checkPantry();
