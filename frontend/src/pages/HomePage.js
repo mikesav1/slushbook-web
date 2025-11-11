@@ -57,6 +57,11 @@ const HomePage = ({ sessionId }) => {
   const handleTourFinish = () => {
     markTourCompleted(TOUR_KEYS.HOME);
     setCurrentTourStep(-1);
+    
+    // Navigate to Recipes page to continue tour
+    setTimeout(() => {
+      navigate('/recipes');
+    }, 500);
   };
 
 
