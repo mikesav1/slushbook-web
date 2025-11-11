@@ -100,4 +100,64 @@ export const addRecipePageSteps = [
   }
 ];
 
+
+// Match Finder Page Tour Steps
+export const matchPageSteps = [
+  {
+    content: '🎯 Velkommen til Match-Finder!\n\nHer kan du finde opskrifter baseret på de ingredienser du allerede har.\n\nLad os se hvordan det virker.'
+  },
+  {
+    target: '[data-tour="add-pantry-button"]',
+    content: '📦 Tilføj ingredienser til dit "skab"\n\nKlik her for at tilføje ingredienser du har derhjemme.\n\nJo flere ingredienser du tilføjer, desto bedre matches får du!'
+  },
+  {
+    target: '[data-tour="find-matches-button"]',
+    content: '🔍 Find matches\n\nNår du har tilføjet dine ingredienser, klik her for at finde opskrifter du kan lave.\n\nSystemet viser opskrifter du kan lave med det du har!'
+  },
+  {
+    content: '💡 Tips til Match-Finder\n\n• Start med at tilføje de basale ingredienser (sukker, citron, vand)\n• Tilføj frugter og smagsvarianter du har\n• Systemet viser hvor mange % match der er\n• Du kan købe manglende ingredienser direkte fra listen!'
+  }
+];
+
+// Shopping List Page Tour Steps
+export const shoppingListPageSteps = [
+  {
+    content: '🛒 Velkommen til din Indkøbsliste!\n\nHer finder du alle ingredienser du har tilføjet fra opskrifter.\n\nLad os se hvad du kan gøre.'
+  },
+  {
+    target: '[data-tour="shopping-item"]',
+    content: '✅ Afkryds købte varer\n\nKlik på checkbox for at markere en ingrediens som købt.\n\nKøbte varer forsvinder fra listen.'
+  },
+  {
+    target: '[data-tour="buy-button"]',
+    content: '🏪 Køb online\n\nKlik på "Indkøb hos..." for at købe ingrediensen direkte hos en leverandør.\n\nVi viser automatisk den bedste pris for dit land!'
+  },
+  {
+    content: '💡 Tips til Indkøbsliste\n\n• Tilføj ingredienser ved at åbne en opskrift og klikke "Tilføj til Liste"\n• Ingredienserne grupperes automatisk\n• Køb online og spar tid!\n• Listen huskes så du kan handle når du vil'
+  }
+];
+
+// Settings Page Tour Steps (Machine setup)
+export const settingsPageSteps = [
+  {
+    content: '⚙️ Velkommen til Indstillinger!\n\nHer kan du tilpasse appen til dine behov.\n\nLad os især se på maskin-indstillingerne.'
+  },
+  {
+    target: '[data-tour="machine-section"]',
+    content: '🧊 Dine slush-maskiner\n\nHer kan du tilføje og administrere dine slush-maskiner.\n\nNår du har indstillet din maskine, skaleres opskrifter automatisk til den rigtige størrelse!'
+  },
+  {
+    target: '[data-tour="add-machine-button"]',
+    content: '➕ Tilføj maskine\n\nKlik her for at tilføje en ny maskine.\n\nIndtast navn og tank-volumen (f.eks. 12000 ml).\n\nDette gør opskrifter perfekte til din maskine!'
+  },
+  {
+    target: '[data-tour="restart-tours-button"]',
+    content: '🔄 Genstart guider\n\nHar du brug for at se guiderne igen?\n\nKlik her for at nulstille alle onboarding-tours og se dem forfra.'
+  },
+  {
+    content: '💡 Andre indstillinger\n\n• Administrer dine enheder og log ud fra specifikke enheder\n• Se dine gratis-limits (hvor mange opskrifter du kan oprette)\n• Alle dine indstillinger gemmes automatisk'
+  }
+];
+
+
 export { TOUR_KEYS };
