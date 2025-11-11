@@ -1043,19 +1043,18 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             
         return True
 
-    def test_match_finder_functionality(self):
-        """Test Match-Finder functionality as requested in review"""
-        self.log("=== TESTING MATCH-FINDER FUNCTIONALITY ===")
+    def test_match_finder_pantry_updates(self):
+        """Test Match-Finder opdatering når pantry ændres - specific scenario from review request"""
+        self.log("=== TESTING MATCH-FINDER PANTRY UPDATES ===")
         
         try:
-            # Step 1: Login as test user to get session_id
-            self.log("\n--- Step 1: Login as test user ---")
+            # Step 1: Login som test bruger
+            self.log("\n--- Step 1: Login som test bruger ---")
             
             # Try multiple users that might work on different environments
             test_users = [
                 (KIMESAV_EMAIL, KIMESAV_PASSWORD),
                 (ULLA_EMAIL, ULLA_PASSWORD),
-                # Fallback: create a new test user if needed
             ]
             
             login_success = False
@@ -1063,14 +1062,19 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             
             for email, password in test_users:
                 self.log(f"Trying to login as {email}...")
-                success, token = self.test_specific_user_login(email, [password])
-                if success:
+                login_response = self.session.post(f"{self.base_url}/auth/login", json={
+                    "email": email,
+                    "password": password
+                })
+                
+                if login_response.status_code == 200:
+                    login_data = login_response.json()
+                    session_token = login_data.get("session_token")
                     login_success = True
-                    session_token = token
                     self.log(f"✅ Successfully logged in as {email}")
                     break
                 else:
-                    self.log(f"❌ Login failed for {email}")
+                    self.log(f"❌ Login failed for {email}: {login_response.status_code}")
             
             # If no existing users work, create a new test user
             if not login_success:
@@ -1118,238 +1122,233 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             user_session_id = user_data.get('id')  # Use user.id as session_id
             self.log(f"✅ Logged in as {user_data.get('email')} with session_id: {user_session_id}")
             
-            # Step 2: Add 2 ingredients to pantry (Jordbær sirup and Cola sirup)
-            self.log("\n--- Step 2: Add ingredients to pantry ---")
-            
-            ingredients_to_add = [
-                {
-                    "session_id": user_session_id,
-                    "ingredient_name": "Jordbær sirup",
-                    "category_key": "sirup.baer.jordbaer",
-                    "quantity": 250.0,
-                    "unit": "ml",
-                    "brix": 65.0
-                },
-                {
-                    "session_id": user_session_id,
-                    "ingredient_name": "Cola sirup", 
-                    "category_key": "sirup.cola",
-                    "quantity": 350.0,
-                    "unit": "ml",
-                    "brix": 68.0
-                }
-            ]
-            
-            added_ingredients = []
-            for ingredient in ingredients_to_add:
-                response = self.session.post(f"{self.base_url}/pantry", json=ingredient)
-                
-                if response.status_code == 200:
-                    added_ingredient = response.json()
-                    added_ingredients.append(added_ingredient)
-                    self.log(f"✅ Added '{ingredient['ingredient_name']}' to pantry")
-                else:
-                    self.log(f"❌ Failed to add '{ingredient['ingredient_name']}' to pantry: {response.status_code} - {response.text}")
-                    return False
-            
-            # Verify pantry contents
+            # Clear existing pantry to start fresh
+            self.log("\n--- Clearing existing pantry ---")
             pantry_response = self.session.get(f"{self.base_url}/pantry/{user_session_id}")
             if pantry_response.status_code == 200:
-                pantry_items = pantry_response.json()
-                self.log(f"✅ Pantry now contains {len(pantry_items)} items")
-                for item in pantry_items:
-                    self.log(f"  - {item.get('ingredient_name')} ({item.get('quantity')} {item.get('unit')})")
-            else:
-                self.log(f"❌ Failed to verify pantry contents: {pantry_response.status_code}")
+                existing_items = pantry_response.json()
+                for item in existing_items:
+                    delete_response = self.session.delete(f"{self.base_url}/pantry/{item['id']}")
+                    if delete_response.status_code == 200:
+                        self.log(f"✅ Removed existing pantry item: {item['ingredient_name']}")
+            
+            # Step 2: Tilføj "Jordbær sirup" til pantry via /api/pantry
+            self.log("\n--- Step 2: Tilføj 'Jordbær sirup' til pantry ---")
+            
+            jordbaer_ingredient = {
+                "session_id": user_session_id,
+                "ingredient_name": "Jordbær sirup",
+                "category_key": "sirup.baer.jordbaer",
+                "quantity": 250.0,
+                "unit": "ml",
+                "brix": 65.0
+            }
+            
+            jordbaer_response = self.session.post(f"{self.base_url}/pantry", json=jordbaer_ingredient)
+            if jordbaer_response.status_code != 200:
+                self.log(f"❌ Failed to add Jordbær sirup: {jordbaer_response.status_code} - {jordbaer_response.text}")
                 return False
             
-            # Step 3: Call /api/match endpoint to find recipes
-            self.log("\n--- Step 3: Call /api/match endpoint ---")
+            jordbaer_item = jordbaer_response.json()
+            jordbaer_item_id = jordbaer_item.get('id')
+            self.log(f"✅ Added 'Jordbær sirup' to pantry (ID: {jordbaer_item_id})")
+            
+            # Step 3: Kald /api/match - verificer at der kommer jordbær-opskrifter
+            self.log("\n--- Step 3: Kald /api/match - verificer jordbær-opskrifter ---")
             
             match_request = {"session_id": user_session_id}
-            match_response = self.session.post(f"{self.base_url}/match", json=match_request)
+            match1_response = self.session.post(f"{self.base_url}/match", json=match_request)
             
-            if match_response.status_code != 200:
-                self.log(f"❌ Match endpoint failed: {match_response.status_code} - {match_response.text}")
+            if match1_response.status_code != 200:
+                self.log(f"❌ First match call failed: {match1_response.status_code} - {match1_response.text}")
                 return False
             
-            match_data = match_response.json()
-            self.log(f"✅ Match endpoint returned successfully")
+            match1_data = match1_response.json()
+            match1_recipes = match1_data.get('can_make_now', []) + match1_data.get('almost', [])
             
-            # Verify match response structure
-            expected_keys = ['can_make_now', 'almost', 'need_more', 'total_matches']
-            for key in expected_keys:
-                if key not in match_data:
-                    self.log(f"❌ Missing key in match response: {key}")
-                    return False
-            
-            can_make_recipes = match_data.get('can_make_now', [])
-            almost_recipes = match_data.get('almost', [])
-            total_matches = match_data.get('total_matches', 0)
-            
-            self.log(f"✅ Match results: {len(can_make_recipes)} can make now, {len(almost_recipes)} almost, {total_matches} total matches")
-            
-            # Step 4: For each matched recipe, verify /api/recipes/{recipe_id} returns 200 (not 404)
-            self.log("\n--- Step 4: Verify recipe access for all matched recipes ---")
-            
-            all_matched_recipes = can_make_recipes + almost_recipes
-            
-            if len(all_matched_recipes) == 0:
-                self.log("⚠️  No recipe matches found - this might be expected if pantry ingredients don't match any recipes")
-                self.log("⚠️  Testing with a known recipe ingredient...")
+            # Look for jordbær recipes
+            jordbaer_recipes_1 = []
+            for match_item in match1_recipes:
+                recipe = match_item.get('recipe', {})
+                recipe_name = recipe.get('name', '').lower()
+                ingredients = recipe.get('ingredients', [])
                 
-                # Add a more common ingredient that should match system recipes
-                common_ingredient = {
-                    "session_id": user_session_id,
-                    "ingredient_name": "Vand/knust is",
-                    "category_key": "base.vand",
-                    "quantity": 1000.0,
-                    "unit": "ml",
-                    "brix": 0.0
-                }
-                
-                water_response = self.session.post(f"{self.base_url}/pantry", json=common_ingredient)
-                if water_response.status_code == 200:
-                    self.log("✅ Added 'Vand/knust is' to pantry")
-                    
-                    # Try match again
-                    match_response2 = self.session.post(f"{self.base_url}/match", json=match_request)
-                    if match_response2.status_code == 200:
-                        match_data2 = match_response2.json()
-                        all_matched_recipes = match_data2.get('can_make_now', []) + match_data2.get('almost', [])
-                        self.log(f"✅ After adding water: {len(all_matched_recipes)} total matches")
-                    else:
-                        self.log(f"❌ Second match attempt failed: {match_response2.status_code}")
-                        return False
-                else:
-                    self.log(f"❌ Failed to add water ingredient: {water_response.status_code}")
-                    return False
+                # Check if recipe contains jordbær sirup
+                has_jordbaer = any('jordbær' in ing.get('name', '').lower() for ing in ingredients)
+                if has_jordbaer or 'jordbær' in recipe_name:
+                    jordbaer_recipes_1.append(recipe.get('name', 'Unknown'))
             
-            if len(all_matched_recipes) == 0:
-                self.log("❌ Still no matches found - cannot test recipe access")
+            self.log(f"✅ Match 1 results: {len(match1_recipes)} total matches, {len(jordbaer_recipes_1)} jordbær recipes")
+            for recipe_name in jordbaer_recipes_1:
+                self.log(f"  - Jordbær recipe: {recipe_name}")
+            
+            # Step 4: Tilføj "Citron sirup" til pantry via /api/pantry  
+            self.log("\n--- Step 4: Tilføj 'Citron sirup' til pantry ---")
+            
+            citron_ingredient = {
+                "session_id": user_session_id,
+                "ingredient_name": "Citron sirup",
+                "category_key": "sirup.citrus.citron",
+                "quantity": 300.0,
+                "unit": "ml",
+                "brix": 65.0
+            }
+            
+            citron_response = self.session.post(f"{self.base_url}/pantry", json=citron_ingredient)
+            if citron_response.status_code != 200:
+                self.log(f"❌ Failed to add Citron sirup: {citron_response.status_code} - {citron_response.text}")
                 return False
             
-            # Test recipe access for each matched recipe
-            access_test_results = []
+            citron_item = citron_response.json()
+            citron_item_id = citron_item.get('id')
+            self.log(f"✅ Added 'Citron sirup' to pantry (ID: {citron_item_id})")
             
-            for i, match_item in enumerate(all_matched_recipes[:10]):  # Test first 10 to avoid too many requests
+            # Step 5: Kald /api/match igen - verificer at resultatet NU inkluderer BÅDE jordbær OG citron opskrifter
+            self.log("\n--- Step 5: Kald /api/match igen - verificer BÅDE jordbær OG citron ---")
+            
+            match2_response = self.session.post(f"{self.base_url}/match", json=match_request)
+            
+            if match2_response.status_code != 200:
+                self.log(f"❌ Second match call failed: {match2_response.status_code} - {match2_response.text}")
+                return False
+            
+            match2_data = match2_response.json()
+            match2_recipes = match2_data.get('can_make_now', []) + match2_data.get('almost', [])
+            
+            # Look for both jordbær and citron recipes
+            jordbaer_recipes_2 = []
+            citron_recipes_2 = []
+            
+            for match_item in match2_recipes:
                 recipe = match_item.get('recipe', {})
-                recipe_id = recipe.get('id')
-                recipe_name = recipe.get('name', 'Unknown')
-                recipe_author = recipe.get('author', 'Unknown')
+                recipe_name = recipe.get('name', '').lower()
+                ingredients = recipe.get('ingredients', [])
                 
-                if not recipe_id:
-                    self.log(f"❌ Match item {i+1} missing recipe ID")
-                    access_test_results.append({'recipe_name': recipe_name, 'status': 'missing_id', 'accessible': False})
-                    continue
+                # Check if recipe contains jordbær sirup
+                has_jordbaer = any('jordbær' in ing.get('name', '').lower() for ing in ingredients)
+                if has_jordbaer or 'jordbær' in recipe_name:
+                    jordbaer_recipes_2.append(recipe.get('name', 'Unknown'))
                 
-                self.log(f"Testing access to recipe {i+1}: '{recipe_name}' (ID: {recipe_id}, Author: {recipe_author})")
-                
-                # Test recipe access
-                recipe_response = self.session.get(f"{self.base_url}/recipes/{recipe_id}")
-                
-                if recipe_response.status_code == 200:
-                    recipe_data = recipe_response.json()
-                    self.log(f"✅ Recipe '{recipe_name}' accessible (200)")
-                    access_test_results.append({'recipe_name': recipe_name, 'recipe_id': recipe_id, 'status': 'accessible', 'accessible': True})
-                elif recipe_response.status_code == 404:
-                    self.log(f"❌ Recipe '{recipe_name}' returned 404 - NOT ACCESSIBLE")
-                    access_test_results.append({'recipe_name': recipe_name, 'recipe_id': recipe_id, 'status': '404_error', 'accessible': False})
-                elif recipe_response.status_code == 403:
-                    self.log(f"❌ Recipe '{recipe_name}' returned 403 - ACCESS DENIED")
-                    access_test_results.append({'recipe_name': recipe_name, 'recipe_id': recipe_id, 'status': '403_error', 'accessible': False})
-                else:
-                    self.log(f"❌ Recipe '{recipe_name}' returned unexpected status: {recipe_response.status_code}")
-                    access_test_results.append({'recipe_name': recipe_name, 'recipe_id': recipe_id, 'status': f'error_{recipe_response.status_code}', 'accessible': False})
+                # Check if recipe contains citron sirup
+                has_citron = any('citron' in ing.get('name', '').lower() for ing in ingredients)
+                if has_citron or 'citron' in recipe_name:
+                    citron_recipes_2.append(recipe.get('name', 'Unknown'))
             
-            # Step 5: Verify that only recipes user has access to appear in matches
-            self.log("\n--- Step 5: Analyze recipe access patterns ---")
+            self.log(f"✅ Match 2 results: {len(match2_recipes)} total matches")
+            self.log(f"  - Jordbær recipes: {len(jordbaer_recipes_2)}")
+            for recipe_name in jordbaer_recipes_2:
+                self.log(f"    * {recipe_name}")
+            self.log(f"  - Citron recipes: {len(citron_recipes_2)}")
+            for recipe_name in citron_recipes_2:
+                self.log(f"    * {recipe_name}")
             
-            accessible_count = sum(1 for result in access_test_results if result['accessible'])
-            inaccessible_count = len(access_test_results) - accessible_count
+            # Verify we have both types
+            if len(jordbaer_recipes_2) == 0:
+                self.log("❌ ISSUE: No jordbær recipes found after adding citron - should still have jordbær recipes")
+                return False
             
-            self.log(f"📊 Recipe Access Summary:")
-            self.log(f"  ✅ Accessible recipes: {accessible_count}")
-            self.log(f"  ❌ Inaccessible recipes: {inaccessible_count}")
+            if len(citron_recipes_2) == 0:
+                self.log("❌ ISSUE: No citron recipes found after adding citron sirup")
+                return False
             
-            # Check for specific error patterns
-            error_404_count = sum(1 for result in access_test_results if result.get('status') == '404_error')
-            error_403_count = sum(1 for result in access_test_results if result.get('status') == '403_error')
+            self.log("✅ SUCCESS: Both jordbær and citron recipes found after adding both ingredients")
             
-            if error_404_count > 0:
-                self.log(f"🚨 CRITICAL ISSUE: {error_404_count} recipes in match results return 404 (recipe not found)")
-                self.log("   This indicates match-finder is returning recipes that don't exist or aren't accessible")
-                
-                # List the problematic recipes
-                for result in access_test_results:
-                    if result.get('status') == '404_error':
-                        self.log(f"   - '{result['recipe_name']}' (ID: {result['recipe_id']}) returns 404")
+            # Step 6: Fjern "Jordbær sirup" fra pantry via DELETE /api/pantry
+            self.log("\n--- Step 6: Fjern 'Jordbær sirup' fra pantry ---")
             
-            if error_403_count > 0:
-                self.log(f"🚨 CRITICAL ISSUE: {error_403_count} recipes in match results return 403 (access denied)")
-                self.log("   This indicates match-finder is returning recipes user doesn't have permission to view")
-                
-                # List the problematic recipes
-                for result in access_test_results:
-                    if result.get('status') == '403_error':
-                        self.log(f"   - '{result['recipe_name']}' (ID: {result['recipe_id']}) returns 403")
+            delete_response = self.session.delete(f"{self.base_url}/pantry/{jordbaer_item_id}")
+            if delete_response.status_code != 200:
+                self.log(f"❌ Failed to delete Jordbær sirup: {delete_response.status_code} - {delete_response.text}")
+                return False
             
-            # Step 6: Verify system vs user recipe access logic
-            self.log("\n--- Step 6: Verify system vs user recipe access logic ---")
+            self.log(f"✅ Removed 'Jordbær sirup' from pantry")
             
-            system_recipes_tested = []
-            user_recipes_tested = []
+            # Verify pantry state
+            pantry_check = self.session.get(f"{self.base_url}/pantry/{user_session_id}")
+            if pantry_check.status_code == 200:
+                remaining_items = pantry_check.json()
+                self.log(f"✅ Pantry now contains {len(remaining_items)} items:")
+                for item in remaining_items:
+                    self.log(f"  - {item.get('ingredient_name')} ({item.get('quantity')} {item.get('unit')})")
             
-            for match_item in all_matched_recipes[:10]:
+            # Step 7: Kald /api/match igen - verificer at resultatet NU kun inkluderer citron-opskrifter (ingen jordbær)
+            self.log("\n--- Step 7: Kald /api/match igen - verificer kun citron (ingen jordbær) ---")
+            
+            match3_response = self.session.post(f"{self.base_url}/match", json=match_request)
+            
+            if match3_response.status_code != 200:
+                self.log(f"❌ Third match call failed: {match3_response.status_code} - {match3_response.text}")
+                return False
+            
+            match3_data = match3_response.json()
+            match3_recipes = match3_data.get('can_make_now', []) + match3_data.get('almost', [])
+            
+            # Look for jordbær and citron recipes after removal
+            jordbaer_recipes_3 = []
+            citron_recipes_3 = []
+            
+            for match_item in match3_recipes:
                 recipe = match_item.get('recipe', {})
-                author = recipe.get('author', '')
-                is_published = recipe.get('is_published', False)
-                approval_status = recipe.get('approval_status', '')
+                recipe_name = recipe.get('name', '').lower()
+                ingredients = recipe.get('ingredients', [])
                 
-                if author == 'system':
-                    system_recipes_tested.append({
-                        'name': recipe.get('name'),
-                        'is_published': is_published,
-                        'should_be_accessible': is_published  # System recipes should be published
-                    })
-                else:
-                    user_recipes_tested.append({
-                        'name': recipe.get('name'),
-                        'author': author,
-                        'approval_status': approval_status,
-                        'should_be_accessible': (approval_status == 'approved' or author == user_data.get('email') or author == user_data.get('id'))
-                    })
+                # Check if recipe contains jordbær sirup
+                has_jordbaer = any('jordbær' in ing.get('name', '').lower() for ing in ingredients)
+                if has_jordbaer or 'jordbær' in recipe_name:
+                    jordbaer_recipes_3.append(recipe.get('name', 'Unknown'))
+                
+                # Check if recipe contains citron sirup
+                has_citron = any('citron' in ing.get('name', '').lower() for ing in ingredients)
+                if has_citron or 'citron' in recipe_name:
+                    citron_recipes_3.append(recipe.get('name', 'Unknown'))
             
-            self.log(f"System recipes in matches: {len(system_recipes_tested)}")
-            for recipe in system_recipes_tested:
-                status = "✅ SHOULD BE ACCESSIBLE" if recipe['should_be_accessible'] else "❌ SHOULD NOT BE ACCESSIBLE"
-                self.log(f"  - '{recipe['name']}' (published: {recipe['is_published']}) - {status}")
+            self.log(f"✅ Match 3 results: {len(match3_recipes)} total matches")
+            self.log(f"  - Jordbær recipes: {len(jordbaer_recipes_3)}")
+            for recipe_name in jordbaer_recipes_3:
+                self.log(f"    * {recipe_name}")
+            self.log(f"  - Citron recipes: {len(citron_recipes_3)}")
+            for recipe_name in citron_recipes_3:
+                self.log(f"    * {recipe_name}")
             
-            self.log(f"User recipes in matches: {len(user_recipes_tested)}")
-            for recipe in user_recipes_tested:
-                status = "✅ SHOULD BE ACCESSIBLE" if recipe['should_be_accessible'] else "❌ SHOULD NOT BE ACCESSIBLE"
-                self.log(f"  - '{recipe['name']}' (author: {recipe['author']}, status: {recipe['approval_status']}) - {status}")
+            # Final verification
+            self.log("\n=== FINAL VERIFICATION ===")
             
-            # Final assessment
-            self.log("\n=== MATCH-FINDER TEST RESULTS ===")
+            success = True
             
-            if inaccessible_count == 0:
-                self.log("✅ SUCCESS: All matched recipes are accessible to the user")
-                self.log("✅ Match-finder correctly filters recipes based on user permissions")
+            # Check that jordbær recipes are gone
+            if len(jordbaer_recipes_3) > 0:
+                self.log("❌ CRITICAL ISSUE: Jordbær recipes still appear after removing jordbær sirup from pantry")
+                self.log("   This indicates match-finder is using cached/old pantry data instead of current state")
+                success = False
+            else:
+                self.log("✅ SUCCESS: No jordbær recipes found after removing jordbær sirup (correct)")
+            
+            # Check that citron recipes are still there
+            if len(citron_recipes_3) == 0:
+                self.log("❌ ISSUE: Citron recipes disappeared after removing jordbær sirup")
+                success = False
+            else:
+                self.log("✅ SUCCESS: Citron recipes still present after removing jordbær sirup (correct)")
+            
+            # Verify pantry state changes are reflected
+            if len(match1_recipes) == len(match2_recipes) == len(match3_recipes):
+                self.log("❌ WARNING: Match results identical across all pantry changes - possible caching issue")
+                success = False
+            else:
+                self.log("✅ SUCCESS: Match results change as pantry contents change")
+            
+            if success:
+                self.log("\n🎉 MATCH-FINDER PANTRY UPDATE TEST PASSED")
+                self.log("✅ /api/match endpoint correctly uses current pantry state")
+                self.log("✅ No cached/old data issues detected")
                 return True
             else:
-                self.log(f"❌ FAILURE: {inaccessible_count} out of {len(access_test_results)} matched recipes are not accessible")
-                self.log("❌ Match-finder is returning recipes the user cannot access")
-                
-                if error_404_count > 0:
-                    self.log("🔧 ISSUE: Recipe IDs in match results don't exist or aren't in correct collection")
-                if error_403_count > 0:
-                    self.log("🔧 ISSUE: Match-finder access control logic needs to be fixed")
-                
+                self.log("\n❌ MATCH-FINDER PANTRY UPDATE TEST FAILED")
+                self.log("❌ /api/match endpoint may be using cached/old pantry data")
                 return False
                 
         except Exception as e:
-            self.log(f"❌ Match-finder test failed with exception: {str(e)}")
+            self.log(f"❌ Match-finder pantry update test failed with exception: {str(e)}")
             return False
 
     def test_free_recipes_ordering_for_guests(self):
