@@ -35,7 +35,7 @@ export const homePageSteps = [
   {
     // Step 2: Point to settings menu
     target: '[data-tour="settings-menu"]',
-    content: '👤 Klik på profil-ikonet øverst til højre (eller tandhjulet på mobil) for at åbne menuen med Indstillinger, Favoritter og Log ud.\n\nDu kan også genstarte denne guide under Indstillinger senere.'
+    content: '👤 Her finder du profil-ikonet (eller tandhjulet på mobil).\n\nHer kan du åbne menuen med Indstillinger, Favoritter og Log ud.\n\nDu kan også genstarte denne guide under Indstillinger senere.'
   }
 ];
 
