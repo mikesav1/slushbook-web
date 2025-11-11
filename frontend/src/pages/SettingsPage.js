@@ -383,6 +383,30 @@ const SettingsPage = ({ sessionId }) => {
             </Button>
           </div>
           
+
+      {/* Onboarding Tour Reset */}
+      {!user?.isGuest && (
+        <div className="bg-yellow-50 rounded-2xl p-6 shadow-sm border border-yellow-200 mt-6">
+          <div className="flex items-center gap-2 mb-4">
+            <FaQuestionCircle className="text-yellow-600 text-xl" />
+            <h2 className="text-2xl font-bold">Guider & Hjælp</h2>
+          </div>
+          <p className="text-gray-700 mb-4">
+            Første gang du brugte appen, fik du vist gule guider. Hvis du vil se dem igen, kan du genstarte dem her.
+          </p>
+          
+          <Button
+            onClick={() => {
+              resetAllTours();
+              toast.success('Alle guider er nulstillet! De vil vises næste gang du besøger siderne.');
+            }}
+            className="bg-yellow-500 hover:bg-yellow-600 text-white"
+          >
+            🔄 Genstart Alle Guider
+          </Button>
+        </div>
+      )}
+
           <div className="p-3 bg-blue-50 rounded-lg text-sm text-gray-700">
             <strong>💡 Tip:</strong> Dit land bruges til at vise relevante produktlinks når du klikker på "Indkøb" knapper.
           </div>
