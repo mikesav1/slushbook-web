@@ -34,41 +34,20 @@ const HomePage = ({ sessionId }) => {
 
   // Start tour for new pro users (first visit)
   useEffect(() => {
-    console.log('[Tour] Checking tour conditions:', {
-      hasUser: !!user,
-      isGuest: user?.isGuest,
-      tourCompleted: isTourCompleted(TOUR_KEYS.HOME),
-      currentTourStep
-    });
-    
-    if (user && !user.isGuest && !isTourCompleted(TOUR_KEYS.HOME)) {
-      console.log('[Tour] Starting tour in 1.5 seconds...');
+    if (user && !user.isGuest) {
+      console.log('[Tour] Checking if should start home tour...');
       // Delay to ensure DOM is ready
       setTimeout(() => {
         const target = document.querySelector('[data-tour="settings-menu"]');
-        console.log('[Tour] Target element found:', !!target);
         if (target) {
-          setCurrentTourStep(0);
+          console.log('[Tour] Starting home tour...');
+          startHomeTour();
         } else {
-          console.warn('[Tour] Target element not found!');
+          console.warn('[Tour] Target element not found yet');
         }
       }, 1500);
     }
   }, [user]);
-
-  const handleTourNext = () => {
-    setCurrentTourStep(prev => prev + 1);
-  };
-
-  const handleTourSkip = () => {
-    markTourCompleted(TOUR_KEYS.HOME);
-    setCurrentTourStep(-1);
-  };
-
-  const handleTourFinish = () => {
-    markTourCompleted(TOUR_KEYS.HOME);
-    setCurrentTourStep(-1);
-  };
 
 
   const fetchFeaturedRecipes = async () => {
