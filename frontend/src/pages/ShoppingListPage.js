@@ -112,6 +112,32 @@ const ShoppingListPage = ({ sessionId }) => {
     });
   }, [sessionId]);
 
+
+  // Start tour for first-time users
+  useEffect(() => {
+    if (user && !user.isGuest && !isTourCompleted(TOUR_KEYS.SHOPPING_LIST) && items.length > 0) {
+      setTimeout(() => {
+        setCurrentTourStep(0);
+      }, 1000);
+    }
+  }, [user, items]);
+
+  const handleTourNext = () => {
+    setCurrentTourStep(prev => prev + 1);
+  };
+
+  const handleTourSkip = () => {
+    markTourCompleted(TOUR_KEYS.SHOPPING_LIST);
+    setCurrentTourStep(-1);
+  };
+
+  const handleTourFinish = () => {
+    markTourCompleted(TOUR_KEYS.SHOPPING_LIST);
+    setCurrentTourStep(-1);
+    toast.success('Indkøbsliste guide færdig!');
+  };
+
+
   const fetchSupplierInfo = async (mappingId) => {
     // Check cache first
     if (supplierCache[mappingId]) {
