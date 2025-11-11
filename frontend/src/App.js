@@ -62,8 +62,8 @@ const Navigation = () => {
     { path: "/", icon: FaHome, label: "Hjem" },
     { path: "/recipes", icon: FaBook, label: "Opskrifter" },
     { path: "/match", icon: FaMagic, label: "Match" },
-    ...(user ? [{ path: "/shopping", icon: FaShoppingCart, label: "Liste" }] : []),
-    ...(user ? [{ path: "/favorites", icon: FaHeart, label: "Favoritter" }] : []),
+    ...(user && user.role !== 'guest' ? [{ path: "/shopping", icon: FaShoppingCart, label: "Liste" }] : []),
+    ...(user && user.role !== 'guest' ? [{ path: "/favorites", icon: FaHeart, label: "Favoritter" }] : []),
     { path: "/settings", icon: FaCog, label: "Indstillinger" },
   ];
 
