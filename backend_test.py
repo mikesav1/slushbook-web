@@ -6594,12 +6594,12 @@ test,data,here"""
         self.log("Starting SLUSHBOOK Backend System Tests")
         self.log("=" * 60)
         
-        # Run the match-finder test as requested in review
-        self.log("\n🔍 MATCH-FINDER PANTRY UPDATE TEST")
-        match_finder_result = self.test_match_finder_pantry_updates()
+        # Run the guest user limitations test as requested in review
+        self.log("\n👤 GÆSTEBRUGER BEGRÆNSNINGER TEST")
+        guest_limitations_result = self.test_guest_user_limitations()
         
         # Create results dictionary
-        critical_results = {"🔍 MATCH-FINDER PANTRY UPDATE": match_finder_result}
+        critical_results = {"👤 GÆSTEBRUGER BEGRÆNSNINGER": guest_limitations_result}
         
         # Run additional tests if needed
         additional_tests = []
