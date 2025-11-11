@@ -73,8 +73,14 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
           maxWidth: 'calc(100vw - 40px)'
         }}
       >
-        {/* Arrow */}
-        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-yellow-400" />
+        {/* Arrow pointing to actual target */}
+        <div 
+          className="absolute -top-3 w-0 h-0 border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-yellow-400"
+          style={{
+            left: `${position.arrowOffset || 160}px`,
+            transform: 'translateX(-50%)'
+          }}
+        />
         
         {/* Content */}
         <div className="text-gray-800 mb-4 text-base font-medium">
@@ -82,15 +88,8 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
         </div>
         
         {/* Buttons */}
-        <div className="flex justify-between items-center gap-3">
-          <button
-            onClick={onSkip}
-            className="text-sm text-gray-600 hover:text-gray-800 font-medium"
-          >
-            Spring over
-          </button>
-          
-          <div className="flex gap-3 items-center">
+        <div className="flex flex-col gap-3">
+          <div className="flex justify-between items-center gap-3">
             {/* Step indicator */}
             <span className="text-sm text-gray-600 font-medium">
               {currentStep + 1} / {steps.length}
@@ -112,6 +111,14 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
               </button>
             )}
           </div>
+          
+          {/* Skip button with info */}
+          <button
+            onClick={onSkip}
+            className="text-sm text-gray-500 hover:text-gray-700 text-center"
+          >
+            Spring over (kan genstartes under Indstillinger ⚙️)
+          </button>
         </div>
       </div>
     </>
