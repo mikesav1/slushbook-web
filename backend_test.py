@@ -1050,7 +1050,59 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
         try:
             # Step 1: Login as test user to get session_id
             self.log("\n--- Step 1: Login as test user ---")
-            login_success, session_token = self.test_specific_user_login(KIMESAV_EMAIL, [KIMESAV_PASSWORD])
+            
+            # Try multiple users that might work on different environments
+            test_users = [
+                (KIMESAV_EMAIL, KIMESAV_PASSWORD),
+                (ULLA_EMAIL, ULLA_PASSWORD),
+                # Fallback: create a new test user if needed
+            ]
+            
+            login_success = False
+            session_token = None
+            
+            for email, password in test_users:
+                self.log(f"Trying to login as {email}...")
+                success, token = self.test_specific_user_login(email, [password])
+                if success:
+                    login_success = True
+                    session_token = token
+                    self.log(f"✅ Successfully logged in as {email}")
+                    break
+                else:
+                    self.log(f"❌ Login failed for {email}")
+            
+            # If no existing users work, create a new test user
+            if not login_success:
+                self.log("Creating new test user for match-finder testing...")
+                test_email = f"matchtest.{int(time.time())}@example.com"
+                test_password = "testpass123"
+                
+                signup_data = {
+                    "email": test_email,
+                    "password": test_password,
+                    "name": "Match Test User"
+                }
+                
+                signup_response = self.session.post(f"{self.base_url}/auth/signup", json=signup_data)
+                if signup_response.status_code == 200:
+                    self.log(f"✅ Created test user: {test_email}")
+                    
+                    # Login with new user
+                    login_response = self.session.post(f"{self.base_url}/auth/login", json={
+                        "email": test_email,
+                        "password": test_password
+                    })
+                    
+                    if login_response.status_code == 200:
+                        login_data = login_response.json()
+                        session_token = login_data.get("session_token")
+                        login_success = True
+                        self.log(f"✅ Logged in with new test user")
+                    else:
+                        self.log(f"❌ Failed to login with new test user: {login_response.status_code}")
+                else:
+                    self.log(f"❌ Failed to create test user: {signup_response.status_code}")
             
             if not login_success:
                 self.log("❌ Cannot test match-finder without valid login")
