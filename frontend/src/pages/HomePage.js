@@ -130,7 +130,7 @@ const HomePage = ({ sessionId }) => {
     <div className="space-y-0 fade-in -mt-6">
       {/* Onboarding Tour - Centered, simple tooltip */}
       <OnboardingTooltip
-        steps={homePageSteps}
+        steps={getHomePageSteps(user?.name)}
         currentStep={currentTourStep}
         onNext={handleTourNext}
         onSkip={handleTourSkip}
