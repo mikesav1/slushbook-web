@@ -30,7 +30,7 @@ export const resetAllTours = () => {
 export const homePageSteps = [
   {
     target: '[data-tour="settings-menu"]',
-    content: '🎛️ Tryk her for at åbne menuen med Indstillinger, Favoritter og Log ud',
+    content: '👤 Klik her for at åbne menuen med Indstillinger, Favoritter og Log ud',
     disableBeacon: true,
     placement: 'bottom'
   }
