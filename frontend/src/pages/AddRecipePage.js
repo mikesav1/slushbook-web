@@ -589,7 +589,7 @@ const AddRecipePage = ({ sessionId }) => {
         </div>
 
         {/* Publish Toggle */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6" data-tour="recipe-public-toggle">
           <div className="flex items-center justify-between mb-4">
             <div className="flex-1">
               <h3 className="text-lg font-bold text-gray-800 mb-1">
