@@ -6,30 +6,46 @@ import React from 'react';
  * Highlights target element
  */
 const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => {
-  // Highlight the target element
+  // Highlight the target element with strong, visible styling
   React.useEffect(() => {
     if (currentStep >= 0 && currentStep < steps.length) {
       const step = steps[currentStep];
       if (step.target) {
         const targetElement = document.querySelector(step.target);
         if (targetElement) {
-          // Add highlight styling
+          // Store original styles
+          const originalStyles = {
+            position: targetElement.style.position,
+            zIndex: targetElement.style.zIndex,
+            boxShadow: targetElement.style.boxShadow,
+            borderRadius: targetElement.style.borderRadius,
+            backgroundColor: targetElement.style.backgroundColor,
+            outline: targetElement.style.outline,
+            animation: targetElement.style.animation
+          };
+          
+          // Add VERY strong highlight styling that's visible on dark backgrounds
           targetElement.style.position = 'relative';
           targetElement.style.zIndex = '9999';
-          targetElement.style.boxShadow = '0 0 0 4px rgba(251, 191, 36, 0.8), 0 0 20px rgba(251, 191, 36, 0.5)';
+          // Multiple shadows for maximum visibility
+          targetElement.style.boxShadow = `
+            0 0 0 3px #ffffff,
+            0 0 0 6px #fbbf24,
+            0 0 30px 8px rgba(251, 191, 36, 0.9),
+            0 0 50px 12px rgba(251, 191, 36, 0.6)
+          `;
           targetElement.style.borderRadius = '12px';
+          targetElement.style.backgroundColor = 'rgba(251, 191, 36, 0.15)';
+          targetElement.style.outline = '3px solid #fbbf24';
+          targetElement.style.outlineOffset = '3px';
           targetElement.style.transition = 'all 0.3s ease';
-          
-          // Add pulse animation
-          targetElement.style.animation = 'pulse-highlight 2s ease-in-out infinite';
+          targetElement.style.animation = 'pulse-highlight-strong 2s ease-in-out infinite';
           
           // Cleanup function
           return () => {
-            targetElement.style.position = '';
-            targetElement.style.zIndex = '';
-            targetElement.style.boxShadow = '';
-            targetElement.style.borderRadius = '';
-            targetElement.style.animation = '';
+            Object.keys(originalStyles).forEach(key => {
+              targetElement.style[key] = originalStyles[key];
+            });
           };
         }
       }
