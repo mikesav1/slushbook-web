@@ -15,29 +15,52 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
       
       if (target) {
         const rect = target.getBoundingClientRect();
-        
-        // Calculate position, ensuring tooltip stays within viewport
         const tooltipWidth = 320; // w-80 = 320px
-        let left = rect.left + window.scrollX + (rect.width / 2);
+        const tooltipHeight = 200; // Approximate height
         
-        // Adjust if tooltip would go off right edge
-        if (left + tooltipWidth / 2 > window.innerWidth - 20) {
-          left = window.innerWidth - tooltipWidth / 2 - 20;
+        // Check if there's room below target
+        const spaceBelow = window.innerHeight - rect.bottom;
+        const spaceAbove = rect.top;
+        const isMobile = window.innerWidth < 768;
+        
+        let top, left, arrowPosition, arrowOffset;
+        
+        if (isMobile && spaceBelow < tooltipHeight) {
+          // On mobile, if no space below, place tooltip in center/bottom of screen
+          top = window.innerHeight - tooltipHeight - 80; // 80px from bottom for nav
+          left = window.innerWidth / 2;
+          arrowPosition = 'top'; // Arrow points up to target
+          
+          // Calculate arrow offset to point at target
+          const targetCenterX = rect.left + (rect.width / 2);
+          arrowOffset = Math.max(20, Math.min(targetCenterX, tooltipWidth - 20));
+        } else {
+          // Normal positioning: below target
+          top = rect.bottom + window.scrollY + 10;
+          left = rect.left + window.scrollX + (rect.width / 2);
+          arrowPosition = 'top'; // Arrow points up
+          
+          // Adjust if tooltip would go off right edge
+          if (left + tooltipWidth / 2 > window.innerWidth - 20) {
+            left = window.innerWidth - tooltipWidth / 2 - 20;
+          }
+          
+          // Adjust if tooltip would go off left edge
+          if (left - tooltipWidth / 2 < 20) {
+            left = tooltipWidth / 2 + 20;
+          }
+          
+          // Calculate arrow offset to point at target
+          const targetCenterX = rect.left + (rect.width / 2);
+          arrowOffset = targetCenterX - (left - tooltipWidth / 2);
+          arrowOffset = Math.max(20, Math.min(arrowOffset, tooltipWidth - 20));
         }
-        
-        // Adjust if tooltip would go off left edge
-        if (left - tooltipWidth / 2 < 20) {
-          left = tooltipWidth / 2 + 20;
-        }
-        
-        // Calculate arrow position (pointing to actual target)
-        const targetCenterX = rect.left + (rect.width / 2);
-        const arrowOffset = targetCenterX - (left - tooltipWidth / 2);
         
         setPosition({
-          top: rect.bottom + window.scrollY + 10,
-          left: left,
-          arrowOffset: Math.max(20, Math.min(arrowOffset, tooltipWidth - 20)) // Keep arrow within tooltip bounds
+          top,
+          left,
+          arrowPosition,
+          arrowOffset: arrowOffset || 160
         });
         
         // Highlight target with glow effect
