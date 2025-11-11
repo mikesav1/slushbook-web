@@ -43,6 +43,36 @@ const AddRecipePage = ({ sessionId }) => {
     checkLimits();
   }, [sessionId]);
 
+  // Start tour if coming from RecipesPage
+  useEffect(() => {
+    if (user && !user.isGuest && !isTourCompleted(TOUR_KEYS.ADD_RECIPE) && isTourCompleted(TOUR_KEYS.RECIPES)) {
+      console.log('[Tour] Starting add recipe tour...');
+      setTimeout(() => {
+        setCurrentTourStep(0);
+      }, 1000);
+    }
+  }, [user]);
+
+  const handleTourNext = () => {
+    setCurrentTourStep(prev => prev + 1);
+  };
+
+  const handleTourSkip = () => {
+    markTourCompleted(TOUR_KEYS.ADD_RECIPE);
+    setCurrentTourStep(-1);
+  };
+
+  const handleTourFinish = () => {
+    markTourCompleted(TOUR_KEYS.ADD_RECIPE);
+    setCurrentTourStep(-1);
+    toast.success('🎉 Tour færdig! Du er klar til at bruge appen!');
+    // Optionally navigate back to recipes
+    setTimeout(() => {
+      navigate('/recipes');
+    }, 2000);
+  };
+
+
   const checkLimits = async () => {
     try {
       const response = await axios.get(`${API}/user/${sessionId}/limits`);
