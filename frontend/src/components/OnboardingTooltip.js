@@ -67,8 +67,12 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
               Object.keys(originalStyles).forEach(key => {
                 targetElement.style[key] = originalStyles[key];
               });
-              // Re-enable clicking
+              // Re-enable clicking on element and children
               targetElement.style.pointerEvents = '';
+              targetElement.style.userSelect = '';
+              Array.from(targetElement.querySelectorAll('*')).forEach(child => {
+                child.style.pointerEvents = '';
+              });
             });
           }
         });
