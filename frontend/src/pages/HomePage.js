@@ -11,6 +11,7 @@ import { homePageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '..
 
 const HomePage = ({ sessionId }) => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [featuredRecipes, setFeaturedRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState('latest'); // 'latest' or 'popular'
