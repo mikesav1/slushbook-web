@@ -37,7 +37,7 @@ const HomePage = ({ sessionId }) => {
 
   // Start tour for new pro users (first visit)
   useEffect(() => {
-    if (user && !user.isGuest && !isTourCompleted(TOUR_KEYS.HOME)) {
+    if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.HOME)) {
       console.log('[Tour] Starting home tour...');
       // Small delay to ensure page is fully loaded
       setTimeout(() => {
