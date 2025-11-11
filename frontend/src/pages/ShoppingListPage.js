@@ -330,6 +330,7 @@ const ShoppingListPage = ({ sessionId }) => {
                     <div
                       key={item.id}
                       data-testid={`shopping-item-${item.id}`}
+                      data-tour="shopping-item"
                       className={`p-3 rounded-lg transition-all ${
                         item.checked ? 'bg-gray-50 opacity-60' : 'bg-cyan-50'
                       }`}
