@@ -5,6 +5,9 @@ import { FaTrash, FaShoppingCart, FaCheck } from 'react-icons/fa';
 import { API } from '../App';
 import { Button } from '../components/ui/button';
 import { getUserCountry, detectUserLocation } from '../utils/geolocation';
+import { useAuth } from '../context/AuthContext';
+import OnboardingTooltip from '../components/OnboardingTooltip';
+import { shoppingListPageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
 
 // BuyButton component to display dynamic supplier
 const BuyButton = ({ mappingId, redirectApi, fetchSupplier, userCountry }) => {
