@@ -15,45 +15,49 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
       
       if (target) {
         const rect = target.getBoundingClientRect();
-        const tooltipWidth = 320; // w-80 = 320px
-        const tooltipHeight = 200; // Approximate height
-        
-        // Check if there's room below target
-        const spaceBelow = window.innerHeight - rect.bottom;
-        const spaceAbove = rect.top;
+        const tooltipWidth = 320;
+        const tooltipHeight = 200;
         const isMobile = window.innerWidth < 768;
+        
+        console.log('[Tooltip] Positioning:', {
+          isMobile,
+          targetRect: { top: rect.top, bottom: rect.bottom, left: rect.left },
+          windowHeight: window.innerHeight,
+          windowWidth: window.innerWidth
+        });
         
         let top, left, arrowPosition, arrowOffset;
         
-        if (isMobile && spaceBelow < tooltipHeight) {
-          // On mobile, if no space below, place tooltip in center/bottom of screen
-          top = window.innerHeight - tooltipHeight - 80; // 80px from bottom for nav
+        // Calculate arrow offset to point at target
+        const targetCenterX = rect.left + (rect.width / 2);
+        
+        if (isMobile) {
+          // On mobile, always place tooltip at bottom of viewport
+          // Don't use scrollY since header is fixed
+          top = window.innerHeight - tooltipHeight - 100; // 100px from bottom
           left = window.innerWidth / 2;
-          arrowPosition = 'top'; // Arrow points up to target
+          arrowPosition = 'bottom'; // Arrow points DOWN to target above
+          arrowOffset = targetCenterX; // Arrow at target X position
           
-          // Calculate arrow offset to point at target
-          const targetCenterX = rect.left + (rect.width / 2);
-          arrowOffset = Math.max(20, Math.min(targetCenterX, tooltipWidth - 20));
+          console.log('[Tooltip] Mobile positioning:', { top, left, arrowOffset });
         } else {
-          // Normal positioning: below target
-          top = rect.bottom + window.scrollY + 10;
-          left = rect.left + window.scrollX + (rect.width / 2);
-          arrowPosition = 'top'; // Arrow points up
+          // Desktop: below target
+          top = rect.bottom + 10; // No scrollY needed for fixed positioning
+          left = rect.left + (rect.width / 2);
+          arrowPosition = 'top';
           
-          // Adjust if tooltip would go off right edge
+          // Keep tooltip within viewport
           if (left + tooltipWidth / 2 > window.innerWidth - 20) {
             left = window.innerWidth - tooltipWidth / 2 - 20;
           }
-          
-          // Adjust if tooltip would go off left edge
           if (left - tooltipWidth / 2 < 20) {
             left = tooltipWidth / 2 + 20;
           }
           
-          // Calculate arrow offset to point at target
-          const targetCenterX = rect.left + (rect.width / 2);
           arrowOffset = targetCenterX - (left - tooltipWidth / 2);
           arrowOffset = Math.max(20, Math.min(arrowOffset, tooltipWidth - 20));
+          
+          console.log('[Tooltip] Desktop positioning:', { top, left, arrowOffset });
         }
         
         setPosition({
@@ -63,7 +67,7 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
           arrowOffset: arrowOffset || 160
         });
         
-        // Highlight target with glow effect
+        // Highlight target
         target.style.position = 'relative';
         target.style.zIndex = '9999';
         target.style.boxShadow = '0 0 0 3px rgba(251, 191, 36, 0.5)';
