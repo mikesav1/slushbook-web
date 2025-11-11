@@ -307,7 +307,7 @@ const RecipesPage = ({ sessionId }) => {
         </div>
 
         {/* Type Filter */}
-        <div>
+        <div data-tour="type-filter">
           <label className="block text-sm font-semibold text-gray-700 mb-2">Type</label>
           
           {/* Mobile: Dropdown */}
