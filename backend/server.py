@@ -2151,7 +2151,11 @@ async def get_favorites(
     return all_recipes
 
 @api_router.post("/favorites")
-async def add_favorite(session_id: str, recipe_id: str):
+async def add_favorite(
+    session_id: str, 
+    recipe_id: str,
+    user: User = Depends(require_role(["pro", "editor", "admin"]))
+):
     # Check if already exists
     existing = await db.favorites.find_one({
         "session_id": session_id,
