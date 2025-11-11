@@ -135,6 +135,36 @@ const MatchFinderPage = ({ sessionId }) => {
     }
   };
 
+  // Show upgrade modal for guest users
+  if (!user || user.role === 'guest') {
+    return (
+      <div className="space-y-6 fade-in" data-testid="match-finder-page">
+        <div>
+          <h1 className="text-4xl font-bold mb-2">Find match</h1>
+          <p className="text-gray-600">Opdag hvilke opskrifter du kan lave med dine ingredienser</p>
+        </div>
+
+        <div className="bg-gradient-to-br from-cyan-50 to-coral-50 rounded-2xl p-8 text-center">
+          <div className="max-w-md mx-auto space-y-4">
+            <div className="text-6xl">🔒</div>
+            <h2 className="text-2xl font-bold text-gray-800">Match-Finder er en PRO-funktion</h2>
+            <p className="text-gray-600">
+              Opgradér til PRO for at matche dine ingredienser med opskrifter og finde ud af hvad du kan lave!
+            </p>
+            <div className="pt-4">
+              <a
+                href="/upgrade"
+                className="inline-block bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
+              >
+                Opgradér til PRO
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 fade-in" data-testid="match-finder-page">
       {/* Onboarding Tour */}
