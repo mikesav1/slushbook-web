@@ -397,7 +397,7 @@ const RecipesPage = ({ sessionId }) => {
           </p>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {/* Add Recipe Card - First in grid */}
-            {user && !user.isGuest && (
+            {user && user.role !== 'guest' && (
               <div
                 data-tour="add-recipe-card"
                 onClick={() => navigate('/add-recipe')}
