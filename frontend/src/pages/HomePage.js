@@ -40,11 +40,11 @@ const HomePage = ({ sessionId }) => {
       hasUser: !!user,
       isGuest: user?.isGuest,
       tourCompleted: isTourCompleted(TOUR_KEYS.HOME),
-      currentStep
+      currentTourStep
     });
     
     if (user && !user.isGuest && !isTourCompleted(TOUR_KEYS.HOME)) {
-      console.log('[Tour] Starting tour in 1 second...');
+      console.log('[Tour] Starting tour in 1.5 seconds...');
       // Delay to ensure DOM is ready
       setTimeout(() => {
         const target = document.querySelector('[data-tour="settings-menu"]');
