@@ -1958,7 +1958,10 @@ async def get_pantry(
     return items
 
 @api_router.post("/pantry", response_model=PantryItem)
-async def add_pantry_item(item_data: PantryItemCreate):
+async def add_pantry_item(
+    item_data: PantryItemCreate,
+    user: User = Depends(require_role(["pro", "editor", "admin"]))
+):
     # Check if exists, update if so
     existing = await db.user_pantry.find_one({
         "session_id": item_data.session_id,
