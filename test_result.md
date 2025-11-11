@@ -525,7 +525,7 @@ metadata:
 
 test_plan:
   current_focus: 
-    - "Free Recipes Ordering for Guest Users"
+    - "Match-Finder Functionality Testing"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
