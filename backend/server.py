@@ -2113,9 +2113,19 @@ async def get_favorites(session_id: str):
     
     # Get full recipe details
     recipe_ids = [fav['recipe_id'] for fav in favorites]
+    
+    # Get system recipes
     recipes = await db.recipes.find({"id": {"$in": recipe_ids}}, {"_id": 0}).to_list(1000)
+    
+    # Get user recipes - include approved recipes (public) OR own recipes
     user_recipes = await db.user_recipes.find(
-        {"id": {"$in": recipe_ids}, "session_id": session_id},
+        {
+            "id": {"$in": recipe_ids},
+            "$or": [
+                {"session_id": session_id},  # Own recipes
+                {"approval_status": "approved"}  # Approved public recipes
+            ]
+        },
         {"_id": 0}
     ).to_list(1000)
     
