@@ -113,8 +113,6 @@ code {
         border-bottom-color: inherit;
     }
 }
-
-/* Driver.js Custom Styling - Yellow Theme for Onboarding */
 .driverjs-theme .driver-popover {
   background-color: #fef3c7 !important; /* Yellow-100 */
   border: 3px solid #fbbf24 !important; /* Yellow-400 */
