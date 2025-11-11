@@ -113,3 +113,14 @@ code {
         border-bottom-color: inherit;
     }
 }
+
+/* Onboarding Tour - Highlight Animation */
+@keyframes pulse-highlight {
+  0%, 100% {
+    box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.8), 0 0 20px rgba(251, 191, 36, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(251, 191, 36, 0.6), 0 0 30px rgba(251, 191, 36, 0.7);
+  }
+}
+
