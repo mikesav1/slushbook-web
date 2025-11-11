@@ -53,18 +53,23 @@ export const recipesPageSteps = [
 // Add Recipe Page Tour Steps
 export const addRecipePageSteps = [
   {
+    target: '[data-tour="recipe-name"]',
     content: '📝 Start med at give din opskrift et catchy navn!'
   },
   {
+    target: '[data-tour="recipe-type"]',
     content: '🎨 Vælg hvilken type opskrift det er, og hvilken farve din slushice har.'
   },
   {
+    target: '[data-tour="recipe-ingredients"]',
     content: '🥤 Tilføj alle ingredienserne til din opskrift. Søg efter eksisterende ingredienser eller opret nye.'
   },
   {
+    target: '[data-tour="recipe-public-toggle"]',
     content: '🌍 VIGTIGT: Aktiver "Offentlig opskrift" for at dele din opskrift med andre! Den skal godkendes af admin, før den bliver synlig for alle.'
   },
   {
+    target: '[data-tour="recipe-submit"]',
     content: '✅ Når du er tilfreds med din opskrift, klik "Gem" for at gemme den.'
   }
 ];
