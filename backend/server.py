@@ -2173,7 +2173,11 @@ async def add_favorite(
     return {"message": "Added to favorites"}
 
 @api_router.delete("/favorites/{session_id}/{recipe_id}")
-async def remove_favorite(session_id: str, recipe_id: str):
+async def remove_favorite(
+    session_id: str, 
+    recipe_id: str,
+    user: User = Depends(require_role(["pro", "editor", "admin"]))
+):
     result = await db.favorites.delete_one({
         "session_id": session_id,
         "recipe_id": recipe_id
