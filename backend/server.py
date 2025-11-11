@@ -1943,7 +1943,10 @@ async def delete_recipe(recipe_id: str, session_id: str):
 
 # Pantry
 @api_router.get("/pantry/{session_id}")
-async def get_pantry(session_id: str):
+async def get_pantry(
+    session_id: str,
+    user: User = Depends(require_role(["pro", "editor", "admin"]))
+):
     items = await db.user_pantry.find({"session_id": session_id}, {"_id": 0}).to_list(1000)
     
     for item in items:
