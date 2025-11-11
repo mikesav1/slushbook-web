@@ -7723,8 +7723,8 @@ Test CSV Product Empty,test;csv,,bilka,https://www.bilka.dk/test-csv-product-2,T
             return False
 
 def main():
-    """Run match-finder functionality test"""
-    print("🧪 SLUSHBOOK Match-Finder Functionality Test")
+    """Run match-finder pantry update test as requested in review"""
+    print("🧪 SLUSHBOOK Match-Finder Pantry Update Test")
     print("=" * 80)
     
     # Test both environments
@@ -7741,9 +7741,9 @@ def main():
         
         tester = BackendTester(env_url)
         
-        # Run match-finder functionality test as requested in review
+        # Run match-finder pantry update test as requested in review
         tests = [
-            ("Match-Finder Functionality", tester.test_match_finder_functionality)
+            ("Match-Finder Pantry Updates", tester.test_match_finder_pantry_updates)
         ]
         
         env_passed = 0
@@ -7789,12 +7789,6 @@ def main():
     else:
         print("⚠️  Some tests failed - check output above for details")
         return False
-
-    # ==========================================
-    # INTERNATIONALIZATION TESTING
-    # ==========================================
-
-    def test_geolocation_detect_endpoint(self):
         """Test GET /api/geolocation/detect endpoint"""
         self.log("=== TESTING GEOLOCATION DETECT ENDPOINT ===")
         
