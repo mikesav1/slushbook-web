@@ -17,6 +17,7 @@ const MatchFinderPage = ({ sessionId }) => {
   const [pantryCount, setPantryCount] = useState(0);
   const [pantryItems, setPantryItems] = useState([]);
   const [currentTourStep, setCurrentTourStep] = useState(-1);
+  const [previousPantryCount, setPreviousPantryCount] = useState(0);
 
   useEffect(() => {
     checkPantry();
@@ -31,6 +32,16 @@ const MatchFinderPage = ({ sessionId }) => {
       }
     }
   }, [sessionId]);
+
+  // Clear matches when pantry changes
+  useEffect(() => {
+    if (previousPantryCount !== pantryCount && previousPantryCount !== 0) {
+      console.log(`Pantry changed from ${previousPantryCount} to ${pantryCount} - clearing matches`);
+      setMatches(null);
+      sessionStorage.removeItem(`matches_${sessionId}`);
+    }
+    setPreviousPantryCount(pantryCount);
+  }, [pantryCount]);
 
 
   // Start tour for first-time users
