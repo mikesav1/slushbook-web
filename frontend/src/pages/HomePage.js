@@ -34,6 +34,25 @@ const HomePage = ({ sessionId }) => {
     fetchFeaturedRecipes();
   }, [sessionId, sortBy]);
 
+  // Start tour for new pro users (mobile only, first visit)
+  useEffect(() => {
+    if (user && !user.isGuest && isMobile && !isTourCompleted(TOUR_KEYS.HOME)) {
+      // Delay to ensure DOM is ready
+      setTimeout(() => {
+        setRunTour(true);
+      }, 1000);
+    }
+  }, [user, isMobile]);
+
+  const handleJoyrideCallback = (data) => {
+    const { status } = data;
+    if (status === 'finished' || status === 'skipped') {
+      markTourCompleted(TOUR_KEYS.HOME);
+      setRunTour(false);
+    }
+  };
+
+
   const fetchFeaturedRecipes = async () => {
     setLoading(true);
     try {
