@@ -332,7 +332,7 @@ const AddRecipePage = ({ sessionId }) => {
             </div>
           </div>
           
-          <div>
+          <div data-tour="recipe-name">
             <Label>Navn *</Label>
             <Input
               data-testid="recipe-name-input"
