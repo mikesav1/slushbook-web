@@ -2007,12 +2007,21 @@ async def match_recipes(request: MatchRequest):
     if not pantry_items:
         return {"message": "Tilføj ingredienser til dit pantry først!", "matches": []}
     
-    # Get all recipes
-    recipes = await db.recipes.find({"author": "system"}, {"_id": 0}).to_list(1000)
-    user_recipes = await db.user_recipes.find(
-        {"session_id": request.session_id},
+    # Get all recipes that user has access to
+    # System recipes: Only published ones (unless user is admin)
+    recipes = await db.recipes.find(
+        {"author": "system", "is_published": True}, 
         {"_id": 0}
     ).to_list(1000)
+    
+    # User recipes: User's own recipes + approved public recipes
+    user_recipes_query = {
+        "$or": [
+            {"session_id": request.session_id},  # User's own recipes
+            {"approval_status": "approved"}  # Approved public recipes
+        ]
+    }
+    user_recipes = await db.user_recipes.find(user_recipes_query, {"_id": 0}).to_list(1000)
     
     all_recipes = recipes + user_recipes
     
