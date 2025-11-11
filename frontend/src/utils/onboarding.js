@@ -44,6 +44,7 @@ const createDriver = () => {
     overlayClickNext: false,
     stagePadding: 5,
     stageRadius: 8,
+    showButtons: ['next', 'previous'],  // Control which buttons show
     onDestroyed: () => {
       console.log('[Tour] Tour destroyed');
     },
