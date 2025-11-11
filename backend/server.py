@@ -1990,7 +1990,11 @@ async def add_pantry_item(
     return item
 
 @api_router.delete("/pantry/{session_id}/{item_id}")
-async def delete_pantry_item(session_id: str, item_id: str):
+async def delete_pantry_item(
+    session_id: str, 
+    item_id: str,
+    user: User = Depends(require_role(["pro", "editor", "admin"]))
+):
     result = await db.user_pantry.delete_one({
         "session_id": session_id,
         "id": item_id
