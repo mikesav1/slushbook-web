@@ -7,47 +7,64 @@ import React from 'react';
  */
 const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => {
   // Highlight the target element with strong, visible styling
+  // Find ALL elements matching selector and highlight the visible one(s)
   React.useEffect(() => {
     if (currentStep >= 0 && currentStep < steps.length) {
       const step = steps[currentStep];
       if (step.target) {
-        const targetElement = document.querySelector(step.target);
-        if (targetElement) {
-          // Store original styles
-          const originalStyles = {
-            position: targetElement.style.position,
-            zIndex: targetElement.style.zIndex,
-            boxShadow: targetElement.style.boxShadow,
-            borderRadius: targetElement.style.borderRadius,
-            backgroundColor: targetElement.style.backgroundColor,
-            outline: targetElement.style.outline,
-            animation: targetElement.style.animation
-          };
+        // Get ALL elements matching the selector (there might be multiple - desktop & mobile)
+        const targetElements = document.querySelectorAll(step.target);
+        const cleanupFunctions = [];
+        
+        targetElements.forEach(targetElement => {
+          // Only highlight visible elements
+          const rect = targetElement.getBoundingClientRect();
+          const isVisible = rect.width > 0 && rect.height > 0 && 
+                          window.getComputedStyle(targetElement).display !== 'none' &&
+                          window.getComputedStyle(targetElement).visibility !== 'hidden';
           
-          // Add VERY strong highlight styling that's visible on dark backgrounds
-          targetElement.style.position = 'relative';
-          targetElement.style.zIndex = '9999';
-          // Multiple shadows for maximum visibility
-          targetElement.style.boxShadow = `
-            0 0 0 3px #ffffff,
-            0 0 0 6px #fbbf24,
-            0 0 30px 8px rgba(251, 191, 36, 0.9),
-            0 0 50px 12px rgba(251, 191, 36, 0.6)
-          `;
-          targetElement.style.borderRadius = '12px';
-          targetElement.style.backgroundColor = 'rgba(251, 191, 36, 0.15)';
-          targetElement.style.outline = '3px solid #fbbf24';
-          targetElement.style.outlineOffset = '3px';
-          targetElement.style.transition = 'all 0.3s ease';
-          targetElement.style.animation = 'pulse-highlight-strong 2s ease-in-out infinite';
-          
-          // Cleanup function
-          return () => {
-            Object.keys(originalStyles).forEach(key => {
-              targetElement.style[key] = originalStyles[key];
+          if (isVisible) {
+            // Store original styles
+            const originalStyles = {
+              position: targetElement.style.position,
+              zIndex: targetElement.style.zIndex,
+              boxShadow: targetElement.style.boxShadow,
+              borderRadius: targetElement.style.borderRadius,
+              backgroundColor: targetElement.style.backgroundColor,
+              outline: targetElement.style.outline,
+              animation: targetElement.style.animation
+            };
+            
+            // Add VERY strong highlight styling that's visible on dark backgrounds
+            targetElement.style.position = 'relative';
+            targetElement.style.zIndex = '9999';
+            // Multiple shadows for maximum visibility
+            targetElement.style.boxShadow = `
+              0 0 0 3px #ffffff,
+              0 0 0 6px #fbbf24,
+              0 0 30px 8px rgba(251, 191, 36, 0.9),
+              0 0 50px 12px rgba(251, 191, 36, 0.6)
+            `;
+            targetElement.style.borderRadius = '12px';
+            targetElement.style.backgroundColor = 'rgba(251, 191, 36, 0.15)';
+            targetElement.style.outline = '3px solid #fbbf24';
+            targetElement.style.outlineOffset = '3px';
+            targetElement.style.transition = 'all 0.3s ease';
+            targetElement.style.animation = 'pulse-highlight-strong 2s ease-in-out infinite';
+            
+            // Store cleanup function for this element
+            cleanupFunctions.push(() => {
+              Object.keys(originalStyles).forEach(key => {
+                targetElement.style[key] = originalStyles[key];
+              });
             });
-          };
-        }
+          }
+        });
+        
+        // Cleanup function - restore all highlighted elements
+        return () => {
+          cleanupFunctions.forEach(cleanup => cleanup());
+        };
       }
     }
   }, [currentStep, steps]);
