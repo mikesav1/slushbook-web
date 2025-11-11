@@ -2240,7 +2240,10 @@ async def get_shopping_list(
     return items
 
 @api_router.post("/shopping-list", response_model=ShoppingListItem)
-async def add_shopping_list_item(item_data: ShoppingListItemCreate):
+async def add_shopping_list_item(
+    item_data: ShoppingListItemCreate,
+    user: User = Depends(require_role(["pro", "editor", "admin"]))
+):
     # Filter out water-related items (they're assumed to always be available)
     water_items = ['vand', 'isvand', 'knust is', 'istern', 'isterninger', 'vand/knust is']
     ingredient_lower = item_data.ingredient_name.lower().strip()
