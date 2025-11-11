@@ -525,7 +525,7 @@ metadata:
 
 test_plan:
   current_focus: 
-    - "Match-Finder Functionality Testing"
+    - "Match-Finder Pantry Update Testing - Real-time State Verification"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
