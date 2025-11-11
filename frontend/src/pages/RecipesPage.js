@@ -215,7 +215,7 @@ const RecipesPage = ({ sessionId }) => {
       {/* Search and Filters */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         {/* Search */}
-        <div className="relative mb-4">
+        <div className="relative mb-4" data-tour="search-bar">
           <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
             type="text"
