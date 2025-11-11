@@ -155,7 +155,11 @@ export const settingsPageSteps = [
     content: '🔄 Genstart guider\n\nHar du brug for at se guiderne igen?\n\nKlik her for at nulstille alle onboarding-tours og se dem forfra.'
   },
   {
-    content: '💡 Andre indstillinger\n\n• Administrer dine enheder og log ud fra specifikke enheder\n• Se dine gratis-limits (hvor mange opskrifter du kan oprette)\n• Alle dine indstillinger gemmes automatisk'
+    target: '[data-tour="guide-link"]',
+    content: '📖 Fuld vejledning\n\nKlik på dette link for at læse den komplette vejledning til SLUSHBOOK.\n\nHer finder du detaljerede instruktioner, tips og tricks til alle funktioner!'
+  },
+  {
+    content: '💡 Andre indstillinger\n\n• Administrer dine enheder og log ud fra specifikke enheder\n• Vælg dit land for relevante produktlinks\n• Se dine gratis-limits (hvor mange opskrifter du kan oprette)\n• Alle dine indstillinger gemmes automatisk'
   }
 ];
 
