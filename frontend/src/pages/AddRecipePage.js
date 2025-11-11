@@ -353,8 +353,9 @@ const AddRecipePage = ({ sessionId }) => {
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4" data-tour="recipe-type">
-            <div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" data-tour="recipe-type">
+            {/* Type/Gruppe - Full width on mobile, half width on larger screens */}
+            <div className="sm:col-span-2">
               <Label>Type/Gruppe *</Label>
               <select
                 value={recipe.type}
@@ -373,6 +374,7 @@ const AddRecipePage = ({ sessionId }) => {
               </select>
             </div>
 
+            {/* Sukkergrad - Stacks vertically on mobile, side-by-side on larger screens */}
             <div>
               <Label className="flex items-center gap-2">
                 Sukkergrad (°Bx)
@@ -397,6 +399,7 @@ const AddRecipePage = ({ sessionId }) => {
               <p className="text-xs text-gray-500 mt-1">Anbefalet: 13-15°Bx. <a href="/brix-info" className="text-cyan-600 underline" target="_blank">Læs mere om Brix</a></p>
             </div>
 
+            {/* Basis Volumen - Stacks vertically on mobile, side-by-side on larger screens */}
             <div>
               <Label className="flex items-center gap-2">
                 Basis Volumen (ml)
@@ -420,7 +423,8 @@ const AddRecipePage = ({ sessionId }) => {
               <p className="text-xs text-gray-500 mt-1">Standard: 2700ml</p>
             </div>
 
-            <div className="col-span-2">
+            {/* Alcohol checkbox - Full width */}
+            <div className="sm:col-span-2">
               <Label className="flex items-center gap-2">
                 <input
                   type="checkbox"
