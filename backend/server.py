@@ -5,6 +5,8 @@ from fastapi.responses import FileResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
+from PIL import Image
+import io
 import os
 import logging
 from pathlib import Path
