@@ -2635,6 +2635,277 @@ async def hide_comment(
     
     return {"message": f"Comment {new_status}"}
 
+# ==================== TIPS & TRICKS ====================
+
+@api_router.get("/tips")
+async def get_tips(
+    category: Optional[str] = None,
+    language: Optional[str] = None,
+    country: Optional[str] = None,
+    show_international: bool = True,
+    user: Optional[User] = Depends(get_current_user_with_db)
+):
+    """Get all approved tips with optional filters"""
+    query = {"is_public": True, "approval_status": "approved"}
+    
+    if category:
+        query["category"] = category
+    
+    # Language and country filtering
+    if user:
+        user_country = user.country
+        user_lang_map = {'DK': 'da', 'DE': 'de', 'FR': 'fr', 'GB': 'en', 'US': 'en-US'}
+        user_lang = user_lang_map.get(user_country, 'da')
+        
+        if show_international:
+            # Show tips from user's country OR international tips
+            query["$or"] = [
+                {"country": user_country, "language": user_lang},
+                {"is_international": True}
+            ]
+        else:
+            # Only user's country tips
+            query["country"] = user_country
+            query["language"] = user_lang
+    elif language and country:
+        # Manual filter
+        query["country"] = country
+        query["language"] = language
+    
+    tips = await db.tips_and_tricks.find(query, {"_id": 0}).to_list(10000)
+    
+    # Parse dates
+    for tip in tips:
+        if isinstance(tip.get('created_at'), str):
+            tip['created_at'] = datetime.fromisoformat(tip['created_at'])
+        if isinstance(tip.get('updated_at'), str):
+            tip['updated_at'] = datetime.fromisoformat(tip['updated_at'])
+    
+    # Sort by likes (most liked first), then by newest
+    tips.sort(key=lambda x: (-x.get('likes', 0), -x['created_at'].timestamp()))
+    
+    return tips
+
+@api_router.post("/tips", response_model=Tip)
+async def create_tip(
+    tip_data: TipCreate,
+    user: User = Depends(require_role(["pro", "family", "editor", "admin"], db))
+):
+    """Create a new tip (PRO and Family users only)"""
+    # Auto-detect language and country from user
+    country_to_lang = {'DK': 'da', 'DE': 'de', 'FR': 'fr', 'GB': 'en', 'US': 'en-US'}
+    language = country_to_lang.get(user.country, 'da')
+    
+    # Create tip
+    tip = Tip(
+        title=tip_data.title.strip(),
+        content=tip_data.content.strip(),
+        category=tip_data.category,
+        language=language,
+        country=user.country,
+        is_international=tip_data.is_international,
+        created_by=user.id,
+        creator_name=user.name,
+        is_public=False,  # Needs approval
+        approval_status="pending"
+    )
+    
+    # Save to database
+    doc = tip.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.tips_and_tricks.insert_one(doc)
+    
+    logger.info(f"Tip created by {user.name}: {tip.title}")
+    
+    return tip
+
+@api_router.put("/tips/{tip_id}", response_model=Tip)
+async def update_tip(
+    tip_id: str,
+    tip_data: TipUpdate,
+    user: User = Depends(require_role(["pro", "family", "editor", "admin"], db))
+):
+    """Update own tip (or admin can edit any)"""
+    # Find tip
+    existing = await db.tips_and_tricks.find_one({"id": tip_id})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Tip not found")
+    
+    # Check ownership (admin can edit any)
+    if existing['created_by'] != user.id and user.role not in ["admin", "editor"]:
+        raise HTTPException(status_code=403, detail="Not authorized to edit this tip")
+    
+    # Prepare update
+    update_data = {}
+    if tip_data.title:
+        update_data["title"] = tip_data.title.strip()
+    if tip_data.content:
+        update_data["content"] = tip_data.content.strip()
+    if tip_data.category:
+        update_data["category"] = tip_data.category
+    
+    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    
+    # Update in database
+    await db.tips_and_tricks.update_one({"id": tip_id}, {"$set": update_data})
+    
+    # Return updated tip
+    updated = await db.tips_and_tricks.find_one({"id": tip_id}, {"_id": 0})
+    if isinstance(updated.get('created_at'), str):
+        updated['created_at'] = datetime.fromisoformat(updated['created_at'])
+    if isinstance(updated.get('updated_at'), str):
+        updated['updated_at'] = datetime.fromisoformat(updated['updated_at'])
+    
+    return Tip(**updated)
+
+@api_router.delete("/tips/{tip_id}")
+async def delete_tip(
+    tip_id: str,
+    user: User = Depends(require_role(["pro", "family", "editor", "admin"], db))
+):
+    """Delete own tip (or admin can delete any)"""
+    # Find tip
+    existing = await db.tips_and_tricks.find_one({"id": tip_id})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Tip not found")
+    
+    # Check ownership (admin can delete any)
+    if existing['created_by'] != user.id and user.role not in ["admin", "editor"]:
+        raise HTTPException(status_code=403, detail="Not authorized to delete this tip")
+    
+    # Delete tip
+    await db.tips_and_tricks.delete_one({"id": tip_id})
+    
+    logger.info(f"Tip {tip_id} deleted by {user.name}")
+    
+    return {"message": "Tip deleted"}
+
+@api_router.post("/tips/{tip_id}/like")
+async def toggle_tip_like(
+    tip_id: str,
+    user: User = Depends(require_role(["pro", "family", "editor", "admin"], db))
+):
+    """Toggle like on a tip (PRO and Family users only)"""
+    # Find tip
+    tip = await db.tips_and_tricks.find_one({"id": tip_id})
+    if not tip:
+        raise HTTPException(status_code=404, detail="Tip not found")
+    
+    liked_by = tip.get('liked_by', [])
+    
+    if user.id in liked_by:
+        # Unlike
+        liked_by.remove(user.id)
+        action = "unliked"
+    else:
+        # Like
+        liked_by.append(user.id)
+        action = "liked"
+    
+    # Update in database
+    await db.tips_and_tricks.update_one(
+        {"id": tip_id},
+        {"$set": {
+            "liked_by": liked_by,
+            "likes": len(liked_by)
+        }}
+    )
+    
+    return {"message": f"Tip {action}", "likes": len(liked_by)}
+
+@api_router.get("/admin/tips/pending")
+async def get_pending_tips(
+    user: User = Depends(require_role(["admin", "editor"], db))
+):
+    """Admin: Get all pending tips"""
+    tips = await db.tips_and_tricks.find(
+        {"approval_status": "pending"},
+        {"_id": 0}
+    ).to_list(10000)
+    
+    # Parse dates
+    for tip in tips:
+        if isinstance(tip.get('created_at'), str):
+            tip['created_at'] = datetime.fromisoformat(tip['created_at'])
+        if isinstance(tip.get('updated_at'), str):
+            tip['updated_at'] = datetime.fromisoformat(tip['updated_at'])
+    
+    # Sort by newest first
+    tips.sort(key=lambda x: -x['created_at'].timestamp())
+    
+    return tips
+
+@api_router.get("/admin/tips/all")
+async def get_all_tips_admin(
+    user: User = Depends(require_role(["admin", "editor"], db)),
+    status: Optional[str] = None
+):
+    """Admin: Get all tips with optional status filter"""
+    query = {}
+    if status:
+        query["approval_status"] = status
+    
+    tips = await db.tips_and_tricks.find(query, {"_id": 0}).to_list(10000)
+    
+    # Parse dates
+    for tip in tips:
+        if isinstance(tip.get('created_at'), str):
+            tip['created_at'] = datetime.fromisoformat(tip['created_at'])
+        if isinstance(tip.get('updated_at'), str):
+            tip['updated_at'] = datetime.fromisoformat(tip['updated_at'])
+    
+    # Sort by newest first
+    tips.sort(key=lambda x: -x['created_at'].timestamp())
+    
+    return tips
+
+@api_router.put("/admin/tips/{tip_id}/approve")
+async def approve_tip(
+    tip_id: str,
+    user: User = Depends(require_role(["admin", "editor"], db))
+):
+    """Admin: Approve a tip"""
+    tip = await db.tips_and_tricks.find_one({"id": tip_id})
+    if not tip:
+        raise HTTPException(status_code=404, detail="Tip not found")
+    
+    await db.tips_and_tricks.update_one(
+        {"id": tip_id},
+        {"$set": {
+            "approval_status": "approved",
+            "is_public": True,
+            "rejection_reason": None
+        }}
+    )
+    
+    logger.info(f"Tip {tip_id} approved by {user.name}")
+    
+    return {"message": "Tip approved"}
+
+@api_router.put("/admin/tips/{tip_id}/reject")
+async def reject_tip(
+    tip_id: str,
+    reason: Optional[str] = None,
+    user: User = Depends(require_role(["admin", "editor"], db))
+):
+    """Admin: Reject a tip"""
+    tip = await db.tips_and_tricks.find_one({"id": tip_id})
+    if not tip:
+        raise HTTPException(status_code=404, detail="Tip not found")
+    
+    await db.tips_and_tricks.update_one(
+        {"id": tip_id},
+        {"$set": {
+            "approval_status": "rejected",
+            "is_public": False,
+            "rejection_reason": reason
+        }}
+    )
+    
+    logger.info(f"Tip {tip_id} rejected by {user.name}")
+    
+    return {"message": "Tip rejected"}
+
 # Shopping List
 @api_router.get("/shopping-list/{session_id}")
 async def get_shopping_list(
