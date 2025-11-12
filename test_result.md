@@ -532,6 +532,18 @@ test_plan:
   test_priority: "high_first"
 
 backend:
+  - task: "New Comment Functionality Testing"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ COMMENT FUNCTIONALITY TESTING COMPLETED SUCCESSFULLY: Comprehensive testing of the new comment system confirms all requirements are met perfectly. ✅ GET COMMENTS (Guest Access): Guests can successfully read comments without authentication - GET /api/comments/{recipe_id} returns empty array for recipes with no comments and works correctly without authentication. ✅ CREATE COMMENT (PRO Users Only): Guest users correctly blocked with 401/403 status, PRO users can successfully create comments with proper data structure including id, recipe_id, user_id, user_name, comment, created_at, likes=0. ✅ UPDATE COMMENT (Own Comments Only): Users can successfully edit their own comments with PUT /api/comments/{comment_id}, updated_at field is properly set, access control working - users cannot edit others' comments (403 forbidden). ✅ DELETE COMMENT (Own Comments + Admin): Users can successfully delete their own comments, comments are properly removed from database, access control working - users cannot delete others' comments (403 forbidden). ✅ LIKE COMMENT (PRO Users Only): Like functionality works perfectly with POST /api/comments/{comment_id}/like, toggle behavior working correctly (like → unlike → like), likes count updates properly (0 → 1 → 0 → 1). ✅ ACCESS CONTROL VERIFIED: Second user creation and login successful, proper 403 responses when trying to edit/delete others' comments, admin privileges confirmed (admin can delete any comment). ✅ DATA INTEGRITY: All comment fields properly stored and retrieved, proper session isolation, comments correctly associated with recipes and users. ✅ CONCLUSION: The comment system is fully functional and ready for production use. All test scenarios passed successfully."
+
   - task: "New Ingredient Filter Feature Testing"
     implemented: true
     working: false
