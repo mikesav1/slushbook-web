@@ -1643,6 +1643,39 @@ async def get_recipes(
     
     all_recipes = system_recipes + published_user_recipes + own_recipes
     
+    # Filter by ingredients if specified
+    if include_ingredients or exclude_ingredients:
+        include_list = [ing.strip().lower() for ing in include_ingredients.split(',')] if include_ingredients else []
+        exclude_list = [ing.strip().lower() for ing in exclude_ingredients.split(',')] if exclude_ingredients else []
+        
+        filtered_recipes = []
+        for recipe in all_recipes:
+            # Get all ingredient names from recipe (lowercase for case-insensitive matching)
+            recipe_ingredients = [ing['name'].lower() for ing in recipe.get('ingredients', [])]
+            
+            # Check if recipe contains ALL included ingredients
+            if include_list:
+                has_all_included = all(
+                    any(include_ing in recipe_ing for recipe_ing in recipe_ingredients)
+                    for include_ing in include_list
+                )
+                if not has_all_included:
+                    continue  # Skip this recipe
+            
+            # Check if recipe contains ANY excluded ingredients
+            if exclude_list:
+                has_any_excluded = any(
+                    any(exclude_ing in recipe_ing for recipe_ing in recipe_ingredients)
+                    for exclude_ing in exclude_list
+                )
+                if has_any_excluded:
+                    continue  # Skip this recipe
+            
+            # Recipe passed all filters
+            filtered_recipes.append(recipe)
+        
+        all_recipes = filtered_recipes
+    
     # Parse datetime
     for recipe in all_recipes:
         if isinstance(recipe.get('created_at'), str):
