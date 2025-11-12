@@ -2652,7 +2652,7 @@ async def get_tips(
         query["category"] = category
     
     # Language and country filtering
-    if user:
+    if user and hasattr(user, 'country') and user.country:
         user_country = user.country
         user_lang_map = {'DK': 'da', 'DE': 'de', 'FR': 'fr', 'GB': 'en', 'US': 'en-US'}
         user_lang = user_lang_map.get(user_country, 'da')
@@ -2671,6 +2671,7 @@ async def get_tips(
         # Manual filter
         query["country"] = country
         query["language"] = language
+    # else: show all approved tips (no country filter)
     
     tips = await db.tips_and_tricks.find(query, {"_id": 0}).to_list(10000)
     
