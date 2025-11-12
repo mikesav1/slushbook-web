@@ -167,11 +167,9 @@ const RecipeDetailPage = ({ sessionId }) => {
     const countryToLang = {
       'DK': 'da',
       'DE': 'de',
+      'FR': 'fr',
       'GB': 'en',
-      'US': 'en',
-      'SE': 'sv',
-      'NO': 'no',
-      'FI': 'fi'
+      'US': 'en-US'
     };
     return countryToLang[country] || 'da';
   };
@@ -180,10 +178,9 @@ const RecipeDetailPage = ({ sessionId }) => {
     const flags = {
       'da': '🇩🇰',
       'de': '🇩🇪',
+      'fr': '🇫🇷',
       'en': '🇬🇧',
-      'sv': '🇸🇪',
-      'no': '🇳🇴',
-      'fi': '🇫🇮'
+      'en-US': '🇺🇸'
     };
     return flags[lang] || '🌍';
   };
