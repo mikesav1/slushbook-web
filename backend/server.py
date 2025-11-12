@@ -2145,7 +2145,7 @@ async def delete_machine(machine_id: str, session_id: str):
 @api_router.get("/favorites/{session_id}")
 async def get_favorites(
     session_id: str,
-    user: Optional[User] = Depends(get_current_user)
+    user: Optional[User] = Depends(get_current_user_with_db)
 ):
     # Only pro users can have favorites - return empty for guests
     if not user or user.role == "guest":
