@@ -420,18 +420,40 @@ const RecipesPage = ({ sessionId }) => {
           </div>
 
           {/* Include Ingredients */}
-          <div>
+          <div className="relative">
             <label className="block text-xs font-medium text-gray-600 mb-2">
-              ✅ Skal indeholde (tryk Enter for at tilføje)
+              ✅ Skal indeholde (skriv eller vælg fra listen)
             </label>
             <input
               type="text"
               value={ingredientInput}
-              onChange={(e) => setIngredientInput(e.target.value)}
-              onKeyPress={addIncludeIngredient}
+              onChange={(e) => {
+                setIngredientInput(e.target.value);
+                setShowIncludeSuggestions(true);
+              }}
+              onKeyPress={handleIncludeKeyPress}
+              onFocus={() => setShowIncludeSuggestions(true)}
+              onBlur={() => setTimeout(() => setShowIncludeSuggestions(false), 200)}
               placeholder="f.eks. jordbær, citron..."
               className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
+            
+            {/* Dropdown suggestions */}
+            {showIncludeSuggestions && getIncludeSuggestions().length > 0 && (
+              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                {getIncludeSuggestions().map((suggestion, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => addIncludeIngredient(suggestion)}
+                    className="w-full text-left px-3 py-2 text-sm hover:bg-cyan-50 transition-colors border-b border-gray-100 last:border-b-0"
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
+            )}
+            
             {includeIngredients.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-2">
                 {includeIngredients.map((ing, idx) => (
@@ -453,18 +475,40 @@ const RecipesPage = ({ sessionId }) => {
           </div>
 
           {/* Exclude Ingredients */}
-          <div>
+          <div className="relative">
             <label className="block text-xs font-medium text-gray-600 mb-2">
-              ❌ Må ikke indeholde (tryk Enter for at tilføje)
+              ❌ Må ikke indeholde (skriv eller vælg fra listen)
             </label>
             <input
               type="text"
               value={excludeIngredientInput}
-              onChange={(e) => setExcludeIngredientInput(e.target.value)}
-              onKeyPress={addExcludeIngredient}
+              onChange={(e) => {
+                setExcludeIngredientInput(e.target.value);
+                setShowExcludeSuggestions(true);
+              }}
+              onKeyPress={handleExcludeKeyPress}
+              onFocus={() => setShowExcludeSuggestions(true)}
+              onBlur={() => setTimeout(() => setShowExcludeSuggestions(false), 200)}
               placeholder="f.eks. mælk, nødder..."
               className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
+            
+            {/* Dropdown suggestions */}
+            {showExcludeSuggestions && getExcludeSuggestions().length > 0 && (
+              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                {getExcludeSuggestions().map((suggestion, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => addExcludeIngredient(suggestion)}
+                    className="w-full text-left px-3 py-2 text-sm hover:bg-red-50 transition-colors border-b border-gray-100 last:border-b-0"
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
+            )}
+            
             {excludeIngredients.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-2">
                 {excludeIngredients.map((ing, idx) => (
