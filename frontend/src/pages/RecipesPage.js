@@ -45,7 +45,7 @@ const RecipesPage = ({ sessionId }) => {
 
   useEffect(() => {
     fetchRecipes();
-  }, [sessionId, alcoholFilter, typeFilter, sortBy]);
+  }, [sessionId, alcoholFilter, typeFilter, sortBy, includeIngredients, excludeIngredients]);
 
   useEffect(() => {
     filterRecipes();
