@@ -27,7 +27,8 @@ from auth import (
     SignupRequest, LoginRequest, ForgotPasswordRequest, ResetPasswordRequest,
     get_password_hash, verify_password, create_session_token, create_reset_token,
     get_current_user, require_auth, require_role,
-    can_edit_recipe, can_view_recipe, can_create_recipe
+    can_edit_recipe, can_view_recipe, can_create_recipe,
+    security
 )
 
 # Import redirect routes
