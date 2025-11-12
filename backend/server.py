@@ -21,6 +21,9 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
+# Version
+__version__ = "2.0.0"
+
 # Import geolocation service
 import geolocation_service
 
