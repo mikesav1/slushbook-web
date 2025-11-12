@@ -675,14 +675,42 @@ const SettingsPage = ({ sessionId }) => {
 
       {/* Administrator Section - Only for admin */}
       {user && user.role === 'admin' && (
-        <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-2xl p-6 shadow-lg">
-          <h2 className="text-2xl font-bold mb-1">Administrator</h2>
-          <p className="text-white/90 mb-4">Admin værktøjer og indstillinger</p>
+        <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-2xl shadow-lg overflow-hidden">
+          {/* Clickable Header */}
+          <button
+            onClick={() => setIsAdminSectionExpanded(!isAdminSectionExpanded)}
+            className="w-full p-6 text-left hover:bg-black/10 transition-colors flex items-center justify-between"
+          >
+            <div>
+              <h2 className="text-2xl font-bold mb-1">Administrator</h2>
+              <p className="text-white/90">Admin værktøjer og indstillinger</p>
+            </div>
+            {isAdminSectionExpanded ? (
+              <FaChevronUp className="text-white text-xl" />
+            ) : (
+              <FaChevronDown className="text-white text-xl" />
+            )}
+          </button>
         </div>
       )}
       
-      {user && user.role === 'admin' && (
+      {user && user.role === 'admin' && isAdminSectionExpanded && (
         <div className="space-y-3">
+          <Link
+            to="/admin/comments"
+            className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-blue-100"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-bold text-gray-800 flex items-center gap-2">
+                  <FaComments className="text-blue-500" />
+                  💬 Kommentarer
+                </h3>
+                <p className="text-sm text-gray-600">Moderer og administrer kommentarer på opskrifter</p>
+              </div>
+              <span className="text-blue-600">→</span>
+            </div>
+          </Link>
           <Link
             to="/admin/sandbox"
             className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-purple-100"
