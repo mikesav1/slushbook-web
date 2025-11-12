@@ -980,6 +980,138 @@ const RecipeDetailPage = ({ sessionId }) => {
           </ol>
         </div>
       )}
+
+      {/* Comments Section */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <h2 className="text-2xl font-bold mb-6">💬 Kommentarer ({comments.length})</h2>
+        
+        {/* Add Comment - Pro users only */}
+        {user && user.role !== 'guest' ? (
+          <div className="mb-6">
+            <textarea
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="Skriv en kommentar..."
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none"
+              rows="3"
+            />
+            <button
+              onClick={handleAddComment}
+              disabled={!newComment.trim()}
+              className="mt-2 px-6 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              Send kommentar
+            </button>
+          </div>
+        ) : (
+          <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200 text-center">
+            <p className="text-gray-600 text-sm">
+              ✨ <strong>Kun PRO-brugere kan kommentere.</strong> Opgrader for at deltage i diskussioner!
+            </p>
+          </div>
+        )}
+
+        {/* Comments List */}
+        {comments.length === 0 ? (
+          <p className="text-gray-500 text-center py-8">Ingen kommentarer endnu. Vær den første til at kommentere!</p>
+        ) : (
+          <div className="space-y-4">
+            {comments.map((comment) => (
+              <div key={comment.id} className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                {/* Comment Header */}
+                <div className="flex items-start justify-between mb-2">
+                  <div>
+                    <span className="font-semibold text-gray-900">{comment.user_name}</span>
+                    <span className="text-gray-500 text-sm ml-2">
+                      {new Date(comment.created_at).toLocaleDateString('da-DK', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </span>
+                    {comment.updated_at && (
+                      <span className="text-gray-400 text-xs ml-2">(redigeret)</span>
+                    )}
+                  </div>
+                  
+                  {/* Action Buttons */}
+                  {user && (user.id === comment.user_id || isAdmin) && (
+                    <div className="flex gap-2">
+                      {user.id === comment.user_id && (
+                        <button
+                          onClick={() => {
+                            setEditingCommentId(comment.id);
+                            setEditCommentText(comment.comment);
+                          }}
+                          className="text-blue-500 hover:text-blue-700 text-sm"
+                        >
+                          Rediger
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleDeleteComment(comment.id)}
+                        className="text-red-500 hover:text-red-700 text-sm"
+                      >
+                        Slet
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Comment Body */}
+                {editingCommentId === comment.id ? (
+                  <div className="mt-2">
+                    <textarea
+                      value={editCommentText}
+                      onChange={(e) => setEditCommentText(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none"
+                      rows="3"
+                    />
+                    <div className="flex gap-2 mt-2">
+                      <button
+                        onClick={() => handleEditComment(comment.id)}
+                        className="px-4 py-1.5 bg-cyan-500 text-white text-sm rounded-lg hover:bg-cyan-600"
+                      >
+                        Gem
+                      </button>
+                      <button
+                        onClick={() => {
+                          setEditingCommentId(null);
+                          setEditCommentText('');
+                        }}
+                        className="px-4 py-1.5 bg-gray-200 text-gray-700 text-sm rounded-lg hover:bg-gray-300"
+                      >
+                        Annuller
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-gray-700 whitespace-pre-wrap">{comment.comment}</p>
+                )}
+
+                {/* Like Button */}
+                {user && user.role !== 'guest' && (
+                  <div className="mt-3 flex items-center gap-2">
+                    <button
+                      onClick={() => handleToggleLike(comment.id)}
+                      className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm transition-colors ${
+                        comment.liked_by?.includes(user?.id)
+                          ? 'bg-cyan-100 text-cyan-700'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      <FaHeart className={comment.liked_by?.includes(user?.id) ? 'text-cyan-500' : ''} />
+                      <span>{comment.likes || 0}</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
