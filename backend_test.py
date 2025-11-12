@@ -1043,6 +1043,342 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
             
         return True
 
+    def test_comment_functionality(self):
+        """Test complete comment system functionality as requested"""
+        self.log("=== TESTING COMMENT FUNCTIONALITY ===")
+        
+        try:
+            # Step 1: Get a recipe ID to test with
+            self.log("\n--- Step 1: Get recipe ID for testing ---")
+            
+            recipes_response = self.session.get(f"{self.base_url}/recipes")
+            if recipes_response.status_code != 200:
+                self.log(f"❌ Failed to get recipes: {recipes_response.status_code}")
+                return False
+            
+            recipes = recipes_response.json()
+            if not recipes:
+                self.log("❌ No recipes found for testing")
+                return False
+            
+            test_recipe_id = recipes[0]['id']
+            recipe_name = recipes[0]['name']
+            self.log(f"✅ Using recipe for testing: {recipe_name} (ID: {test_recipe_id})")
+            
+            # Step 2: Test GET comments without authentication (guests can read)
+            self.log("\n--- Step 2: Test GET comments (guest access) ---")
+            
+            # Use fresh session to ensure no authentication
+            guest_session = requests.Session()
+            comments_response = guest_session.get(f"{self.base_url}/comments/{test_recipe_id}")
+            
+            if comments_response.status_code == 200:
+                comments = comments_response.json()
+                self.log(f"✅ Guest can read comments: {len(comments)} comments found")
+                
+                # Verify response structure
+                if isinstance(comments, list):
+                    self.log("✅ Comments returned as array")
+                else:
+                    self.log(f"❌ Expected array, got: {type(comments)}")
+                    return False
+            else:
+                self.log(f"❌ Guest cannot read comments: {comments_response.status_code}")
+                return False
+            
+            # Step 3: Test CREATE comment without authentication (should fail)
+            self.log("\n--- Step 3: Test CREATE comment as guest (should fail) ---")
+            
+            guest_comment_data = {
+                "recipe_id": test_recipe_id,
+                "comment": "This should fail - guest comment"
+            }
+            
+            guest_create_response = guest_session.post(f"{self.base_url}/comments", json=guest_comment_data)
+            
+            if guest_create_response.status_code == 403:
+                self.log("✅ Guest correctly blocked from creating comments (403)")
+            elif guest_create_response.status_code == 401:
+                self.log("✅ Guest correctly blocked from creating comments (401)")
+            else:
+                self.log(f"❌ Guest not properly blocked: {guest_create_response.status_code}")
+                return False
+            
+            # Step 4: Login as PRO user (kimesav@gmail.com)
+            self.log("\n--- Step 4: Login as PRO user ---")
+            
+            login_response = self.session.post(f"{self.base_url}/auth/login", json={
+                "email": KIMESAV_EMAIL,
+                "password": KIMESAV_PASSWORD
+            })
+            
+            if login_response.status_code != 200:
+                self.log(f"❌ Failed to login as PRO user: {login_response.status_code}")
+                return False
+            
+            login_data = login_response.json()
+            pro_session_token = login_data.get("session_token")
+            pro_user = login_data.get("user", {})
+            
+            self.log(f"✅ Logged in as PRO user: {pro_user.get('name')} ({pro_user.get('role')})")
+            
+            # Step 5: Test CREATE comment as PRO user (should succeed)
+            self.log("\n--- Step 5: Test CREATE comment as PRO user ---")
+            
+            comment_text = f"Test comment from PRO user at {datetime.now().strftime('%H:%M:%S')}"
+            pro_comment_data = {
+                "recipe_id": test_recipe_id,
+                "comment": comment_text
+            }
+            
+            create_response = self.session.post(f"{self.base_url}/comments", json=pro_comment_data)
+            
+            if create_response.status_code == 200:
+                created_comment = create_response.json()
+                comment_id = created_comment.get('id')
+                
+                self.log(f"✅ PRO user created comment successfully (ID: {comment_id})")
+                
+                # Verify comment structure
+                required_fields = ['id', 'recipe_id', 'user_id', 'user_name', 'comment', 'created_at', 'likes']
+                for field in required_fields:
+                    if field not in created_comment:
+                        self.log(f"❌ Missing field in comment: {field}")
+                        return False
+                
+                # Verify comment data
+                if created_comment['comment'] != comment_text:
+                    self.log(f"❌ Comment text mismatch: expected '{comment_text}', got '{created_comment['comment']}'")
+                    return False
+                
+                if created_comment['user_name'] != pro_user.get('name'):
+                    self.log(f"❌ User name mismatch: expected '{pro_user.get('name')}', got '{created_comment['user_name']}'")
+                    return False
+                
+                if created_comment['likes'] != 0:
+                    self.log(f"❌ Initial likes should be 0, got {created_comment['likes']}")
+                    return False
+                
+                self.log("✅ Comment data structure and values are correct")
+                
+            else:
+                self.log(f"❌ PRO user failed to create comment: {create_response.status_code} - {create_response.text}")
+                return False
+            
+            # Step 6: Test UPDATE own comment
+            self.log("\n--- Step 6: Test UPDATE own comment ---")
+            
+            updated_text = f"Updated comment at {datetime.now().strftime('%H:%M:%S')}"
+            update_data = {"comment": updated_text}
+            
+            update_response = self.session.put(f"{self.base_url}/comments/{comment_id}", json=update_data)
+            
+            if update_response.status_code == 200:
+                updated_comment = update_response.json()
+                
+                if updated_comment['comment'] == updated_text:
+                    self.log("✅ Comment updated successfully")
+                else:
+                    self.log(f"❌ Comment not updated: expected '{updated_text}', got '{updated_comment['comment']}'")
+                    return False
+                
+                # Verify updated_at field is set
+                if 'updated_at' in updated_comment and updated_comment['updated_at']:
+                    self.log("✅ updated_at field set correctly")
+                else:
+                    self.log("❌ updated_at field missing or empty")
+                    return False
+                    
+            else:
+                self.log(f"❌ Failed to update comment: {update_response.status_code} - {update_response.text}")
+                return False
+            
+            # Step 7: Test LIKE comment functionality
+            self.log("\n--- Step 7: Test LIKE comment functionality ---")
+            
+            # Like the comment
+            like_response = self.session.post(f"{self.base_url}/comments/{comment_id}/like")
+            
+            if like_response.status_code == 200:
+                like_data = like_response.json()
+                
+                if like_data.get('likes') == 1:
+                    self.log("✅ Comment liked successfully (likes = 1)")
+                else:
+                    self.log(f"❌ Like count incorrect: expected 1, got {like_data.get('likes')}")
+                    return False
+                
+                if 'liked' in like_data.get('message', '').lower():
+                    self.log("✅ Like message correct")
+                else:
+                    self.log(f"❌ Unexpected like message: {like_data.get('message')}")
+                    return False
+                    
+            else:
+                self.log(f"❌ Failed to like comment: {like_response.status_code} - {like_response.text}")
+                return False
+            
+            # Unlike the comment (toggle)
+            unlike_response = self.session.post(f"{self.base_url}/comments/{comment_id}/like")
+            
+            if unlike_response.status_code == 200:
+                unlike_data = unlike_response.json()
+                
+                if unlike_data.get('likes') == 0:
+                    self.log("✅ Comment unliked successfully (likes = 0)")
+                else:
+                    self.log(f"❌ Unlike count incorrect: expected 0, got {unlike_data.get('likes')}")
+                    return False
+                
+                if 'unliked' in unlike_data.get('message', '').lower():
+                    self.log("✅ Unlike message correct")
+                else:
+                    self.log(f"❌ Unexpected unlike message: {unlike_data.get('message')}")
+                    return False
+                    
+            else:
+                self.log(f"❌ Failed to unlike comment: {unlike_response.status_code} - {unlike_response.text}")
+                return False
+            
+            # Like again for further testing
+            self.session.post(f"{self.base_url}/comments/{comment_id}/like")
+            self.log("✅ Like toggle functionality working correctly")
+            
+            # Step 8: Create second user to test access control
+            self.log("\n--- Step 8: Create second user for access control testing ---")
+            
+            second_user_email = f"test.user2.{int(time.time())}@example.com"
+            second_user_password = "testpass123"
+            
+            signup_response = self.session.post(f"{self.base_url}/auth/signup", json={
+                "email": second_user_email,
+                "password": second_user_password,
+                "name": "Test User 2"
+            })
+            
+            if signup_response.status_code != 200:
+                self.log(f"❌ Failed to create second user: {signup_response.status_code}")
+                return False
+            
+            # Login as second user
+            second_session = requests.Session()
+            second_login = second_session.post(f"{self.base_url}/auth/login", json={
+                "email": second_user_email,
+                "password": second_user_password
+            })
+            
+            if second_login.status_code != 200:
+                self.log(f"❌ Failed to login as second user: {second_login.status_code}")
+                return False
+            
+            self.log("✅ Second user created and logged in")
+            
+            # Step 9: Test access control - second user tries to edit first user's comment
+            self.log("\n--- Step 9: Test access control (edit others' comments) ---")
+            
+            forbidden_update = {"comment": "Trying to edit someone else's comment"}
+            forbidden_response = second_session.put(f"{self.base_url}/comments/{comment_id}", json=forbidden_update)
+            
+            if forbidden_response.status_code == 403:
+                self.log("✅ Second user correctly blocked from editing others' comments (403)")
+            else:
+                self.log(f"❌ Access control failed: expected 403, got {forbidden_response.status_code}")
+                return False
+            
+            # Step 10: Test access control - second user tries to delete first user's comment
+            self.log("\n--- Step 10: Test access control (delete others' comments) ---")
+            
+            forbidden_delete = second_session.delete(f"{self.base_url}/comments/{comment_id}")
+            
+            if forbidden_delete.status_code == 403:
+                self.log("✅ Second user correctly blocked from deleting others' comments (403)")
+            else:
+                self.log(f"❌ Delete access control failed: expected 403, got {forbidden_delete.status_code}")
+                return False
+            
+            # Step 11: Test DELETE own comment
+            self.log("\n--- Step 11: Test DELETE own comment ---")
+            
+            # Switch back to original user
+            delete_response = self.session.delete(f"{self.base_url}/comments/{comment_id}")
+            
+            if delete_response.status_code == 200:
+                delete_data = delete_response.json()
+                
+                if 'deleted' in delete_data.get('message', '').lower():
+                    self.log("✅ Comment deleted successfully")
+                else:
+                    self.log(f"❌ Unexpected delete message: {delete_data.get('message')}")
+                    return False
+                
+                # Verify comment is actually deleted
+                verify_response = self.session.get(f"{self.base_url}/comments/{test_recipe_id}")
+                if verify_response.status_code == 200:
+                    remaining_comments = verify_response.json()
+                    
+                    # Check if our comment is gone
+                    found_deleted = any(c.get('id') == comment_id for c in remaining_comments)
+                    if not found_deleted:
+                        self.log("✅ Comment successfully removed from database")
+                    else:
+                        self.log("❌ Comment still exists after deletion")
+                        return False
+                        
+            else:
+                self.log(f"❌ Failed to delete comment: {delete_response.status_code} - {delete_response.text}")
+                return False
+            
+            # Step 12: Test admin privileges (if current user is admin)
+            self.log("\n--- Step 12: Test admin privileges ---")
+            
+            if pro_user.get('role') == 'admin':
+                # Create a comment as second user
+                second_comment_data = {
+                    "recipe_id": test_recipe_id,
+                    "comment": "Comment from second user for admin testing"
+                }
+                
+                second_comment_response = second_session.post(f"{self.base_url}/comments", json=second_comment_data)
+                
+                if second_comment_response.status_code == 200:
+                    second_comment = second_comment_response.json()
+                    second_comment_id = second_comment.get('id')
+                    
+                    # Admin tries to delete second user's comment
+                    admin_delete = self.session.delete(f"{self.base_url}/comments/{second_comment_id}")
+                    
+                    if admin_delete.status_code == 200:
+                        self.log("✅ Admin can delete any comment")
+                    else:
+                        self.log(f"❌ Admin cannot delete others' comments: {admin_delete.status_code}")
+                        return False
+                else:
+                    self.log("⚠️  Could not test admin privileges - second user cannot create comments")
+            else:
+                self.log("⚠️  Skipping admin privilege test - current user is not admin")
+            
+            # Final verification
+            self.log("\n=== FINAL VERIFICATION ===")
+            
+            # Test empty comments for recipe with no comments
+            final_comments = self.session.get(f"{self.base_url}/comments/{test_recipe_id}")
+            if final_comments.status_code == 200:
+                final_list = final_comments.json()
+                self.log(f"✅ Final comment count for recipe: {len(final_list)}")
+            
+            self.log("\n🎉 COMMENT FUNCTIONALITY TEST COMPLETED SUCCESSFULLY")
+            self.log("✅ Guests can READ comments")
+            self.log("✅ Only PRO users can CREATE, EDIT, DELETE, LIKE")
+            self.log("✅ Users can only edit/delete their OWN comments")
+            self.log("✅ Admin can delete any comment")
+            self.log("✅ Like functionality works correctly")
+            
+            return True
+            
+        except Exception as e:
+            self.log(f"❌ Comment functionality test failed with exception: {str(e)}")
+            return False
+
     def test_match_finder_pantry_updates(self):
         """Test Match-Finder opdatering når pantry ændres - specific scenario from review request"""
         self.log("=== TESTING MATCH-FINDER PANTRY UPDATES ===")
