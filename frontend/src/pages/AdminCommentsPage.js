@@ -145,10 +145,9 @@ const AdminCommentsPage = () => {
               <option value="all">Alle sprog</option>
               <option value="da">🇩🇰 Dansk</option>
               <option value="de">🇩🇪 Tysk</option>
+              <option value="fr">🇫🇷 Fransk</option>
               <option value="en">🇬🇧 Engelsk</option>
-              <option value="sv">🇸🇪 Svensk</option>
-              <option value="no">🇳🇴 Norsk</option>
-              <option value="fi">🇫🇮 Finsk</option>
+              <option value="en-US">🇺🇸 Amerikansk</option>
             </select>
           </div>
 
