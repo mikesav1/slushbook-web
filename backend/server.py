@@ -1559,7 +1559,9 @@ async def get_recipes(
     color: Optional[str] = None,
     type: Optional[str] = None,
     search: Optional[str] = None,
-    session_id: Optional[str] = None
+    session_id: Optional[str] = None,
+    include_ingredients: Optional[str] = None,  # Comma-separated list
+    exclude_ingredients: Optional[str] = None   # Comma-separated list
 ):
     # Get current user (can be None for guests)
     user = await get_current_user(request, None, db)
