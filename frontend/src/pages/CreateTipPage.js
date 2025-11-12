@@ -85,15 +85,38 @@ const CreateTipPage = () => {
       toast.error('Indhold må maks. være 1000 tegn');
       return;
     }
+    if (imageFile && !imageOwnershipConfirmed) {
+      toast.error('Du skal bekræfte at du ejer billedet');
+      return;
+    }
 
     try {
       setSubmitting(true);
-      await axios.post(`${API}/tips`, {
+      const response = await axios.post(`${API}/tips`, {
         title: title.trim(),
         content: content.trim(),
         category,
         is_international: isInternational
       });
+      
+      const tipId = response.data.id;
+      
+      // Upload image if provided
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append('file', imageFile);
+        
+        try {
+          await axios.post(`${API}/tips/${tipId}/upload-image`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          });
+        } catch (imgError) {
+          console.error('Error uploading image:', imgError);
+          toast.error('Tip oprettet, men billede kunne ikke uploades');
+        }
+      }
       
       toast.success('Dit tip er sendt til godkendelse! Du får besked når det er offentliggjort.');
       navigate('/tips');
