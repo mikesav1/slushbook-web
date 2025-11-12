@@ -427,6 +427,25 @@ const SettingsPage = ({ sessionId }) => {
             <FaQuestionCircle className="text-yellow-600 text-xl" />
             <h2 className="text-2xl font-bold">Guider & Hjælp</h2>
           </div>
+          
+          {/* Tips & Tricks Link */}
+          <Link
+            to="/tips"
+            className="block p-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all mb-4"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-bold text-lg flex items-center gap-2">
+                  💡 Tips & Tricks
+                </h3>
+                <p className="text-cyan-50 text-sm mt-1">
+                  Del erfaringer og lær af fællesskabet om maskiner, produkter og drift
+                </p>
+              </div>
+              <span className="text-2xl">→</span>
+            </div>
+          </Link>
+
           <p className="text-gray-700 mb-4">
             Første gang du brugte appen, fik du vist gule guider. Hvis du vil se dem igen, kan du genstarte dem her.
           </p>
