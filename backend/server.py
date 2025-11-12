@@ -1667,6 +1667,10 @@ async def get_recipes(
     
     all_recipes = system_recipes + published_user_recipes + own_recipes
     
+    # Filter by author if specified
+    if author:
+        all_recipes = [r for r in all_recipes if r.get('author') == author]
+    
     # Filter by ingredients if specified
     if include_ingredients or exclude_ingredients:
         include_list = [ing.strip().lower() for ing in include_ingredients.split(',')] if include_ingredients else []
