@@ -425,15 +425,40 @@ const EditRecipePage = ({ sessionId }) => {
             <div key={index} className="p-4 bg-gray-50 rounded-lg space-y-3">
               <div className="flex items-center justify-between">
                 <span className="font-semibold">Ingrediens {index + 1}</span>
-                {recipe.ingredients.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeIngredient(index)}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    <FaTrash />
-                  </button>
-                )}
+                <div className="flex items-center gap-2">
+                  {/* Move up button */}
+                  {index > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => moveIngredientUp(index)}
+                      className="text-cyan-500 hover:text-cyan-700 p-1"
+                      title="Flyt op"
+                    >
+                      <FaArrowUp size={14} />
+                    </button>
+                  )}
+                  {/* Move down button */}
+                  {index < recipe.ingredients.length - 1 && (
+                    <button
+                      type="button"
+                      onClick={() => moveIngredientDown(index)}
+                      className="text-cyan-500 hover:text-cyan-700 p-1"
+                      title="Flyt ned"
+                    >
+                      <FaArrowDown size={14} />
+                    </button>
+                  )}
+                  {/* Delete button */}
+                  {recipe.ingredients.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeIngredient(index)}
+                      className="text-red-500 hover:text-red-700 p-1"
+                    >
+                      <FaTrash />
+                    </button>
+                  )}
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <Input
