@@ -124,6 +124,34 @@ const GuidePage = () => {
           </div>
         </section>
 
+        {/* Favorites and Ratings */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+            <FaChartLine className="text-pink-600" /> Favoritter & Ratings
+          </h2>
+          <div className="space-y-4 text-gray-700 ml-4">
+            <div>
+              <h3 className="font-semibold text-lg mb-2">Gem favoritter</h3>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>Klik på ⭐ ikonet på en opskrift for at gemme den som favorit</li>
+                <li>Gratis brugere: Op til 5 favoritter</li>
+                <li>PRO brugere: Ubegrænsede favoritter</li>
+                <li>Find alle dine favoritter ved at filtrere på "Kun favoritter" på opskriftssiden</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold text-lg mb-2">Bedøm opskrifter</h3>
+              <p>Hjælp andre ved at bedømme opskrifter du har prøvet:</p>
+              <ul className="list-disc pl-6 mt-2 space-y-1">
+                <li>Giv 1-5 stjerner baseret på din oplevelse</li>
+                <li>Kun PRO brugere kan bedømme</li>
+                <li>Gennemsnitlig rating vises på hver opskrift</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
         {/* Match Finder */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
