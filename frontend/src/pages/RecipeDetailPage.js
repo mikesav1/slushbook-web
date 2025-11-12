@@ -154,11 +154,38 @@ const RecipeDetailPage = ({ sessionId }) => {
   // Comment functions
   const fetchComments = async () => {
     try {
-      const response = await axios.get(`${API}/comments/${id}`);
+      // Fetch comments, optionally filtered by user's language
+      const params = user?.country ? `?language=${getLanguageFromCountry(user.country)}` : '';
+      const response = await axios.get(`${API}/comments/${id}${params}`);
       setComments(response.data);
     } catch (error) {
       console.error('Error fetching comments:', error);
     }
+  };
+
+  const getLanguageFromCountry = (country) => {
+    const countryToLang = {
+      'DK': 'da',
+      'DE': 'de',
+      'GB': 'en',
+      'US': 'en',
+      'SE': 'sv',
+      'NO': 'no',
+      'FI': 'fi'
+    };
+    return countryToLang[country] || 'da';
+  };
+
+  const getLanguageFlag = (lang) => {
+    const flags = {
+      'da': '🇩🇰',
+      'de': '🇩🇪',
+      'en': '🇬🇧',
+      'sv': '🇸🇪',
+      'no': '🇳🇴',
+      'fi': '🇫🇮'
+    };
+    return flags[lang] || '🌍';
   };
 
   const handleAddComment = async () => {
