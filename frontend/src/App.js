@@ -415,6 +415,7 @@ const AppContent = ({ sessionId }) => {
             <Route path="/brix-info" element={<BrixInfoPage />} />
             <Route path="/admin" element={<AdminPage sessionId={effectiveSessionId} />} />
             <Route path="/admin/sandbox" element={<AdminSandboxPage sessionId={effectiveSessionId} />} />
+            <Route path="/admin/comments" element={<AdminCommentsPage />} />
             <Route path="/admin/ingredients" element={<AdminIngredientsPage sessionId={effectiveSessionId} />} />
             <Route path="/admin/links" element={<AdminLinksPage sessionId={effectiveSessionId} />} />
             <Route path="/admin/ads" element={<AdminAdsPage />} />
