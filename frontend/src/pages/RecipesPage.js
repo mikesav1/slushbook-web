@@ -54,6 +54,23 @@ const RecipesPage = ({ sessionId }) => {
     filterRecipes();
   }, [recipes, searchTerm, showMyRecipes]);
 
+  // Extract unique ingredients from all recipes for autocomplete
+  useEffect(() => {
+    if (recipes.length > 0) {
+      const allIngredients = new Set();
+      recipes.forEach(recipe => {
+        if (recipe.ingredients) {
+          recipe.ingredients.forEach(ing => {
+            if (ing.name) {
+              allIngredients.add(ing.name.toLowerCase());
+            }
+          });
+        }
+      });
+      setAvailableIngredients(Array.from(allIngredients).sort());
+    }
+  }, [recipes]);
+
   // Start tour if coming from HomePage and tour not completed
   useEffect(() => {
     if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.RECIPES) && isTourCompleted(TOUR_KEYS.HOME)) {
