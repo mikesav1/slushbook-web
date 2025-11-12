@@ -259,6 +259,7 @@ class Tip(BaseModel):
     language: str = "da"  # da, de, fr, en, en-US
     country: str = "DK"  # DK, DE, FR, GB, US
     is_international: bool = False  # Show across all countries
+    image_url: Optional[str] = None  # Path to uploaded image
     created_by: str  # User ID
     creator_name: str  # Denormalized for display
     likes: int = 0
