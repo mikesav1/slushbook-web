@@ -525,7 +525,7 @@ metadata:
 
 test_plan:
   current_focus: 
-    - "New Ingredient Filter Feature Testing - COMPLETED"
+    - "New Comment Functionality Testing - COMPLETED"
   stuck_tasks: 
     - "New Ingredient Filter Feature Testing - Production deployment issue"
   test_all: false
