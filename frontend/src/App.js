@@ -20,6 +20,8 @@ import AdminPage from "./pages/AdminPage";
 import AdminSandboxPage from "./pages/AdminSandboxPage";
 import AdminIngredientsPage from "./pages/AdminIngredientsPage";
 import AdminCommentsPage from "./pages/AdminCommentsPage";
+import TipsPage from "./pages/TipsPage";
+import CreateTipPage from "./pages/CreateTipPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
