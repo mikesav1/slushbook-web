@@ -29,6 +29,11 @@ export const resetAllTours = () => {
   });
 };
 
+// Reset individual tour
+export const resetTour = (tourKey) => {
+  localStorage.removeItem(tourKey);
+};
+
 // HomePage Tour Steps - Function to include user's first name
 export const getHomePageSteps = (userName) => {
   // Extract first name from full name
