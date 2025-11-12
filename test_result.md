@@ -525,8 +525,9 @@ metadata:
 
 test_plan:
   current_focus: 
-    - "Urgent Login Investigation - COMPLETED"
-  stuck_tasks: []
+    - "New Ingredient Filter Feature Testing - COMPLETED"
+  stuck_tasks: 
+    - "New Ingredient Filter Feature Testing - Production deployment issue"
   test_all: false
   test_priority: "high_first"
 
