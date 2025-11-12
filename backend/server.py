@@ -57,6 +57,10 @@ print(f"[DEBUG] CORS_ORIGINS split: {cors_origins_str.split(',')}")
 # NOTE: Redirect-service startup removed - now using integrated FastAPI routes
 
 # Setup logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 logger = logging.getLogger(__name__)
 
 # MongoDB connection
