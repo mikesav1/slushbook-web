@@ -261,6 +261,7 @@ const RecipeDetailPage = ({ sessionId }) => {
     fetchRecipe();
     fetchMachines();
     fetchMappings();
+    fetchComments();
   }, [id, sessionId]);
 
   const fetchMappings = async () => {
