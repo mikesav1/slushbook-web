@@ -2334,12 +2334,23 @@ async def create_rating(rating_data: RatingCreate):
 # ==================== COMMENTS ====================
 
 @api_router.get("/comments/{recipe_id}")
-async def get_comments(recipe_id: str):
-    """Get all visible comments for a recipe"""
-    comments = await db.recipe_comments.find({
+async def get_comments(
+    recipe_id: str,
+    language: Optional[str] = None,
+    user: Optional[User] = Depends(get_current_user_with_db)
+):
+    """Get all visible comments for a recipe, filtered by language"""
+    query = {
         "recipe_id": recipe_id,
         "status": "visible"
-    }, {"_id": 0}).to_list(1000)
+    }
+    
+    # If language specified, filter by it
+    # Otherwise, show user's language first if they're logged in
+    if language:
+        query["language"] = language
+    
+    comments = await db.recipe_comments.find(query, {"_id": 0}).to_list(1000)
     
     # Parse dates
     for comment in comments:
@@ -2347,6 +2358,38 @@ async def get_comments(recipe_id: str):
             comment['created_at'] = datetime.fromisoformat(comment['created_at'])
         if isinstance(comment.get('updated_at'), str):
             comment['updated_at'] = datetime.fromisoformat(comment['updated_at'])
+    
+    # Sort by newest first
+    comments.sort(key=lambda x: x['created_at'], reverse=True)
+    
+    return comments
+
+@api_router.get("/admin/comments/all")
+async def get_all_comments_admin(
+    user: User = Depends(require_role(["admin"], db)),
+    status: Optional[str] = None,
+    language: Optional[str] = None
+):
+    """Admin: Get all comments (including hidden) with optional filters"""
+    query = {}
+    
+    if status:
+        query["status"] = status
+    if language:
+        query["language"] = language
+    
+    comments = await db.recipe_comments.find(query, {"_id": 0}).to_list(10000)
+    
+    # Parse dates and enrich with recipe info
+    for comment in comments:
+        if isinstance(comment.get('created_at'), str):
+            comment['created_at'] = datetime.fromisoformat(comment['created_at'])
+        if isinstance(comment.get('updated_at'), str):
+            comment['updated_at'] = datetime.fromisoformat(comment['updated_at'])
+        
+        # Add recipe name
+        recipe = await db.recipes.find_one({"id": comment['recipe_id']}, {"_id": 0, "name": 1})
+        comment['recipe_name'] = recipe['name'] if recipe else "Unknown"
     
     # Sort by newest first
     comments.sort(key=lambda x: x['created_at'], reverse=True)
