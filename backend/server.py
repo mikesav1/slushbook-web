@@ -2268,7 +2268,7 @@ async def create_rating(rating_data: RatingCreate):
 @api_router.get("/shopping-list/{session_id}")
 async def get_shopping_list(
     session_id: str,
-    user: Optional[User] = Depends(get_current_user)
+    user: Optional[User] = Depends(get_current_user_with_db)
 ):
     # Only pro users can have shopping lists - return empty for guests
     if not user or user.role == "guest":
