@@ -2329,6 +2329,164 @@ async def create_rating(rating_data: RatingCreate):
     
     return rating
 
+# ==================== COMMENTS ====================
+
+@api_router.get("/comments/{recipe_id}")
+async def get_comments(recipe_id: str):
+    """Get all visible comments for a recipe"""
+    comments = await db.recipe_comments.find({
+        "recipe_id": recipe_id,
+        "status": "visible"
+    }, {"_id": 0}).to_list(1000)
+    
+    # Parse dates
+    for comment in comments:
+        if isinstance(comment.get('created_at'), str):
+            comment['created_at'] = datetime.fromisoformat(comment['created_at'])
+        if isinstance(comment.get('updated_at'), str):
+            comment['updated_at'] = datetime.fromisoformat(comment['updated_at'])
+    
+    # Sort by newest first
+    comments.sort(key=lambda x: x['created_at'], reverse=True)
+    
+    return comments
+
+@api_router.post("/comments", response_model=Comment)
+async def create_comment(
+    comment_data: CommentCreate,
+    user: User = Depends(require_role(["pro", "editor", "admin"], db))
+):
+    """Create a new comment (Pro users only)"""
+    # Create comment with user info
+    comment = Comment(
+        recipe_id=comment_data.recipe_id,
+        user_id=user.id,
+        user_name=user.name,  # Store user name for display
+        comment=comment_data.comment.strip()
+    )
+    
+    # Save to database
+    doc = comment.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.recipe_comments.insert_one(doc)
+    
+    logger.info(f"Comment created by {user.name} on recipe {comment_data.recipe_id}")
+    
+    return comment
+
+@api_router.put("/comments/{comment_id}", response_model=Comment)
+async def update_comment(
+    comment_id: str,
+    comment_data: CommentUpdate,
+    user: User = Depends(require_role(["pro", "editor", "admin"], db))
+):
+    """Update own comment"""
+    # Find comment
+    existing = await db.recipe_comments.find_one({"id": comment_id})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Comment not found")
+    
+    # Check ownership
+    if existing['user_id'] != user.id and user.role != "admin":
+        raise HTTPException(status_code=403, detail="Not authorized to edit this comment")
+    
+    # Update comment
+    updated_at = datetime.now(timezone.utc)
+    await db.recipe_comments.update_one(
+        {"id": comment_id},
+        {"$set": {
+            "comment": comment_data.comment.strip(),
+            "updated_at": updated_at.isoformat()
+        }}
+    )
+    
+    # Return updated comment
+    updated = await db.recipe_comments.find_one({"id": comment_id}, {"_id": 0})
+    if isinstance(updated.get('created_at'), str):
+        updated['created_at'] = datetime.fromisoformat(updated['created_at'])
+    if isinstance(updated.get('updated_at'), str):
+        updated['updated_at'] = datetime.fromisoformat(updated['updated_at'])
+    
+    return Comment(**updated)
+
+@api_router.delete("/comments/{comment_id}")
+async def delete_comment(
+    comment_id: str,
+    user: User = Depends(require_role(["pro", "editor", "admin"], db))
+):
+    """Delete own comment"""
+    # Find comment
+    existing = await db.recipe_comments.find_one({"id": comment_id})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Comment not found")
+    
+    # Check ownership (admin can delete any)
+    if existing['user_id'] != user.id and user.role != "admin":
+        raise HTTPException(status_code=403, detail="Not authorized to delete this comment")
+    
+    # Delete comment
+    await db.recipe_comments.delete_one({"id": comment_id})
+    
+    logger.info(f"Comment {comment_id} deleted by {user.name}")
+    
+    return {"message": "Comment deleted"}
+
+@api_router.post("/comments/{comment_id}/like")
+async def toggle_comment_like(
+    comment_id: str,
+    user: User = Depends(require_role(["pro", "editor", "admin"], db))
+):
+    """Toggle like on a comment"""
+    # Find comment
+    comment = await db.recipe_comments.find_one({"id": comment_id})
+    if not comment:
+        raise HTTPException(status_code=404, detail="Comment not found")
+    
+    liked_by = comment.get('liked_by', [])
+    
+    if user.id in liked_by:
+        # Unlike
+        liked_by.remove(user.id)
+        action = "unliked"
+    else:
+        # Like
+        liked_by.append(user.id)
+        action = "liked"
+    
+    # Update in database
+    await db.recipe_comments.update_one(
+        {"id": comment_id},
+        {"$set": {
+            "liked_by": liked_by,
+            "likes": len(liked_by)
+        }}
+    )
+    
+    return {"message": f"Comment {action}", "likes": len(liked_by)}
+
+@api_router.put("/comments/{comment_id}/hide")
+async def hide_comment(
+    comment_id: str,
+    user: User = Depends(require_role(["admin"], db))
+):
+    """Admin: Hide a comment"""
+    # Find comment
+    comment = await db.recipe_comments.find_one({"id": comment_id})
+    if not comment:
+        raise HTTPException(status_code=404, detail="Comment not found")
+    
+    # Toggle status
+    new_status = "hidden" if comment.get('status') == "visible" else "visible"
+    
+    await db.recipe_comments.update_one(
+        {"id": comment_id},
+        {"$set": {"status": new_status}}
+    )
+    
+    logger.info(f"Comment {comment_id} set to {new_status} by admin {user.name}")
+    
+    return {"message": f"Comment {new_status}"}
+
 # Shopping List
 @api_router.get("/shopping-list/{session_id}")
 async def get_shopping_list(
