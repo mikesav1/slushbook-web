@@ -1976,7 +1976,7 @@ async def get_pantry(
 @api_router.post("/pantry", response_model=PantryItem)
 async def add_pantry_item(
     item_data: PantryItemCreate,
-    user: User = Depends(require_role(["pro", "editor", "admin"]))
+    user: User = Depends(require_role(["pro", "editor", "admin"], db))
 ):
     # Check if exists, update if so
     existing = await db.user_pantry.find_one({
@@ -2009,7 +2009,7 @@ async def add_pantry_item(
 async def delete_pantry_item(
     session_id: str, 
     item_id: str,
-    user: User = Depends(require_role(["pro", "editor", "admin"]))
+    user: User = Depends(require_role(["pro", "editor", "admin"], db))
 ):
     result = await db.user_pantry.delete_one({
         "session_id": session_id,
@@ -2183,7 +2183,7 @@ async def get_favorites(
 async def add_favorite(
     session_id: str, 
     recipe_id: str,
-    user: User = Depends(require_role(["pro", "editor", "admin"]))
+    user: User = Depends(require_role(["pro", "editor", "admin"], db))
 ):
     # Check if already exists
     existing = await db.favorites.find_one({
@@ -2205,7 +2205,7 @@ async def add_favorite(
 async def remove_favorite(
     session_id: str, 
     recipe_id: str,
-    user: User = Depends(require_role(["pro", "editor", "admin"]))
+    user: User = Depends(require_role(["pro", "editor", "admin"], db))
 ):
     result = await db.favorites.delete_one({
         "session_id": session_id,
@@ -2285,7 +2285,7 @@ async def get_shopping_list(
 @api_router.post("/shopping-list", response_model=ShoppingListItem)
 async def add_shopping_list_item(
     item_data: ShoppingListItemCreate,
-    user: User = Depends(require_role(["pro", "editor", "admin"]))
+    user: User = Depends(require_role(["pro", "editor", "admin"], db))
 ):
     # Filter out water-related items (they're assumed to always be available)
     water_items = ['vand', 'isvand', 'knust is', 'istern', 'isterninger', 'vand/knust is']
