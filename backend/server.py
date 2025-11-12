@@ -2359,12 +2359,28 @@ async def create_comment(
     user: User = Depends(require_role(["pro", "editor", "admin"], db))
 ):
     """Create a new comment (Pro users only)"""
-    # Create comment with user info
+    # Auto-detect language from user's country if not provided
+    language = comment_data.language
+    if not language:
+        # Map country codes to language codes
+        country_to_lang = {
+            'DK': 'da',  # Denmark -> Danish
+            'DE': 'de',  # Germany -> German
+            'GB': 'en',  # UK -> English
+            'US': 'en',  # USA -> English
+            'SE': 'sv',  # Sweden -> Swedish
+            'NO': 'no',  # Norway -> Norwegian
+            'FI': 'fi',  # Finland -> Finnish
+        }
+        language = country_to_lang.get(user.country, 'da')  # Default to Danish
+    
+    # Create comment with user info and language
     comment = Comment(
         recipe_id=comment_data.recipe_id,
         user_id=user.id,
         user_name=user.name,  # Store user name for display
-        comment=comment_data.comment.strip()
+        comment=comment_data.comment.strip(),
+        language=language
     )
     
     # Save to database
@@ -2372,7 +2388,7 @@ async def create_comment(
     doc['created_at'] = doc['created_at'].isoformat()
     await db.recipe_comments.insert_one(doc)
     
-    logger.info(f"Comment created by {user.name} on recipe {comment_data.recipe_id}")
+    logger.info(f"Comment created by {user.name} on recipe {comment_data.recipe_id} in {language}")
     
     return comment
 
