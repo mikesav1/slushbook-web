@@ -2701,7 +2701,7 @@ async def create_tip(
     user_country = getattr(user, 'country', 'DK')  # Default to DK if country not set
     language = country_to_lang.get(user_country, 'da')
     
-    # Create tip
+    # Create tip - automatically public (no approval needed)
     tip = Tip(
         title=tip_data.title.strip(),
         content=tip_data.content.strip(),
@@ -2711,8 +2711,8 @@ async def create_tip(
         is_international=tip_data.is_international,
         created_by=user.id,
         creator_name=user.name,
-        is_public=False,  # Needs approval
-        approval_status="pending"
+        is_public=True,  # Automatically public
+        approval_status="approved"  # Automatically approved
     )
     
     # Save to database
