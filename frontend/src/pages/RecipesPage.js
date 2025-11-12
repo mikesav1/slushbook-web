@@ -445,22 +445,48 @@ const RecipesPage = ({ sessionId }) => {
           </button>
         </div>
 
-        {/* Ingredient Filters */}
-        <div className="mb-6 space-y-4 bg-gradient-to-br from-cyan-50 to-blue-50 p-5 rounded-xl border-2 border-cyan-200 shadow-sm">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-gray-800">🔍 Ingrediens-søgning</h3>
-            {(includeIngredients.length > 0 || excludeIngredients.length > 0) && (
-              <button
-                onClick={clearAllFilters}
-                className="text-xs text-cyan-600 hover:text-cyan-800 font-medium bg-white px-2 py-1 rounded-md"
-              >
-                Ryd alle
-              </button>
-            )}
-          </div>
+        {/* Ingredient Filters - Collapsible */}
+        <div className="mb-6 bg-gradient-to-br from-cyan-50 to-blue-50 rounded-xl border-2 border-cyan-200 shadow-sm overflow-hidden">
+          {/* Clickable Header */}
+          <button
+            onClick={() => setIsIngredientFilterExpanded(!isIngredientFilterExpanded)}
+            className="w-full flex items-center justify-between p-4 hover:bg-cyan-100/50 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <span className="text-lg">🔍</span>
+              <h3 className="text-sm font-semibold text-gray-800">Avanceret Ingrediens-søgning</h3>
+              {(includeIngredients.length > 0 || excludeIngredients.length > 0) && (
+                <span className="bg-cyan-600 text-white text-xs px-2 py-0.5 rounded-full font-medium">
+                  {includeIngredients.length + excludeIngredients.length} filtre aktive
+                </span>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              {(includeIngredients.length > 0 || excludeIngredients.length > 0) && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    clearAllFilters();
+                  }}
+                  className="text-xs text-cyan-600 hover:text-cyan-800 font-medium bg-white px-2 py-1 rounded-md mr-2"
+                >
+                  Ryd alle
+                </button>
+              )}
+              {isIngredientFilterExpanded ? (
+                <FaChevronUp className="text-gray-600" />
+              ) : (
+                <FaChevronDown className="text-gray-600" />
+              )}
+            </div>
+          </button>
 
-          {/* Quick Allergen Tags */}
-          <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+          {/* Expandable Content */}
+          {isIngredientFilterExpanded && (
+            <div className="p-5 pt-0 space-y-4 border-t border-cyan-200">
+
+              {/* Quick Allergen Tags */}
+              <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
             <label className="block text-xs font-semibold text-gray-700 mb-2">
               ⚡ Hurtig udelukkelse (klik for at udelukke allergen-gruppe)
             </label>
