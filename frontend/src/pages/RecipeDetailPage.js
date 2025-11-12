@@ -1048,7 +1048,14 @@ const RecipeDetailPage = ({ sessionId }) => {
                 {/* Comment Header */}
                 <div className="flex items-start justify-between mb-2">
                   <div>
-                    <span className="font-semibold text-gray-900">{comment.user_name}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-gray-900">{comment.user_name}</span>
+                      {comment.language && (
+                        <span className="text-lg" title={comment.language}>
+                          {getLanguageFlag(comment.language)}
+                        </span>
+                      )}
+                    </div>
                     <span className="text-gray-500 text-sm ml-2">
                       {new Date(comment.created_at).toLocaleDateString('da-DK', {
                         day: 'numeric',
