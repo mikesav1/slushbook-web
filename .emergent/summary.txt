@@ -1,129 +1,66 @@
-<analysis>**original_problem_statement:**
-Brugeren anmodede om en række funktioner og fejlrettelser efter en større migration. De vigtigste anmodninger inkluderer:
-1.  **Session Persistence:** Løs problemet med, at brugere (især på iPhone) ofte skal logge ind igen.
-2.  **Device Management Fejl:** Ret 422-fejl og andre problemer, når man forsøger at logge enheder ud fra indstillingssiden.
-3.  **Admin UI/UX:** Ryd op i listen over enheder for admin-brugere, da den viste hundredvis af gamle sessioner.
-4.  **Gæste-Homepage:** Sørg for, at gratis opskrifter vises først for gæstebrugere.
-5.  **Automatisk Skalering:** Opskrifter skal automatisk skaleres til en brugers valgte maskinvolumen uden behov for manuelle klik.
-6.  **CSV Import/Export:** Ret flere alvorlige fejl i CSV-importen for produktlinks, som medførte manglende data. Tilføj en eksportfunktion for opskrifter.
-7.  **Sprogpræference:** Sørg for, at brugerens valgte sprog (land) huskes ved efterfølgende logins.
-8.  **Admin Adgang på Custom DNS:** Løs det tilbagevendende problem, hvor admin-brugere ikke har adgang på .
-9.  **Sikkerhedsfejl:** En bruger kan se en Offentlig opskrift i listen, som de ikke har adgang til at åbne.
-10. **UI Forbedringer:** Flyt Tilføj opskrift-knappen til en mere intuitiv placering og juster designet.
-11. **Ny Funktion: Onboarding Tour:** Implementer en product tour med gule pop-ups for at guide nye brugere gennem appens funktioner.
+<analysis>
+The trajectory documents an extensive and iterative development process, primarily focused on implementing a comprehensive, multi-page onboarding tour. The initial plan to use the  library was abandoned after user feedback highlighted poor UX (a full-screen black overlay). The approach pivoted to a simplified custom React component, which was then iteratively improved based on precise user requests: centering the tooltip, adding a semi-transparent overlay, highlighting the target element with a pulsing animation, and blocking click-through events. This phase involved significant DOM manipulation, CSS styling, and React state management.
 
-**what currently exists?**
-Applikationen er en fuld-stack opskriftsplatform med brugerroller (gæst, pro, admin), opskriftsstyring, en indkøbsliste og et administrationspanel. Backend er FastAPI med MongoDB, og frontend er React. Næsten alle de oprindelige anmodninger er blevet implementeret og rettet, herunder session-håndtering, CSV-funktioner, diverse UI/UX-forbedringer og kritiske fejlrettelser. Den seneste opgave var at tilføje en onboarding-guide for nye brugere.
+After completing the tour, the focus shifted to bug fixing. Key issues addressed include:
+1.  A backend bug mãe  endpoint returned recipes inaccessible to the user.
+2.  A frontend caching bug in the Match Finder page mãe showed stale results.
+3.  A mobile CSS layout bug in the Add Recipe form.
+4.  A critical, multi-stage permission flaw where registered 'guest' users incorrectly received 'pro' user privileges.
 
-**Last working item**:
-    - Last item agent was working: Implementering af en onboarding-guide (product tour) for nye brugere ved hjælp af et brugerdefineret tooltip-komponent. Agenten forsøgte at få tooltip'en til at placere sig korrekt på tværs af enheder (desktop/mobil, portræt/landskab), men stødte på vedvarende positioneringsproblemer, især på mobile enheder, hvor tooltip'en blev vist forkert eller dækkede for headeren.
-    - Status: BLOCKED
-    - Agent Testing Done: N
-    - Which testing method agent to use? manual testing by screenshot tool. Agenten skal tage screenshots på både desktop og mobil (simuleret) for at verificere tooltip'ens position, især i landscape-mode på mobil.
-    - User Testing Done: Y (Brugeren har bekræftet, at de seneste forsøg ikke virkede).
+The final messages document a critical failure. An attempt to fix the guest permission issue on the backend introduced a regression that broke all functionality for PRO users. The AI was in the middle of a complex, multi-file refactoring of the authentication and database dependency injection logic in  and  to fix this regression when the user, observing a broken preview and perceived inactivity, decided to fork the job. The work was left in a broken, half-finished state.
+</analysis>
+<product_requirements>
+The primary objective was to build a multi-page, interactive product tour to guide new users through the application's core features. This tour needed to be responsive, highlight key UI elements with animations, and navigate the user sequentially through the , , , , , and . The tour's welcome message was also personalized with the user's first name.
 
-**All Pending/In progress Issue list**:
-  Issue 1: Admin-adgang virker ikke på custom domain (P0)
-  Issue 2: Onboarding tour-komponent er forkert placeret på mobile enheder (P1)
-  
-  Issues Detail:
-  - Issue 1: 
-     - Attempted fixes: Agenten implementerede en Axios interceptor for at sende -headeren, hvilket løser godkendelsesmekanismen.  og  identificerede dog den egentlige årsag:  i -filen peger på preview-URL'en i stedet for custom domain-URL'en. Dette forårsager cross-origin-fejl.
-     - Next debug checklist: Dette er ikke en kodefejl, men en konfigurationsfejl i deployment-miljøet. **Brugeren skal manuelt opdatere  i Emergent-platformens deployment-indstillinger til at pege på  og derefter gen-deploye.** Agenten kan ikke løse dette, da -variablen er beskyttet.
-     - Why fix this issue and what will be achieved with the fix? At løse dette vil give admin- og pro-brugere fuld adgang til alle funktioner på det primære domæne (), hvilket er afgørende for produktion.
-     - Status:  BLOCKED (afventer brugerhandling i deployment-miljøet)
-     - Is recurring issue? Y
-     - Should Test frontend/backend/both after fix? Frontend (ved at logge ind som admin på custom domain og tilgå beskyttede sider som Members).
-     - Blocked on other issue: Nej.
-  - Issue 2: 
-     - Attempted fixes: Agenten har forsøgt flere strategier: 1) Brugt -biblioteket (fejlede pga. React 19-kompatibilitet). 2) Bygget en custom komponent med JavaScript-baseret positionsberegning (fejlede på mobil). 3) Forbedret JS-logikken til at tvinge placering i bunden og tilføje pile (fejlede stadig). 4) Skiftet til en CSS -baseret tilgang (fejlede også).
-     - Next debug checklist:
-       1.  Giv op på komplekse beregninger. Overvej en simplere tilgang.
-       2.  Brug et andet, mere moderne product tour-bibliotek, der er kompatibelt med React 19 (f.eks. ). Kald  for at få en anbefaling.
-       3.  Hvis et custom komponent stadig er nødvendigt, skal du simplificere det: Placer altid tooltip'en i midten af skærmen med en fast position () og fremhæv mål-elementet med en border eller baggrundsfarve i stedet for at forsøge at placere en pop-up ved siden af det.
-     - Why fix this issue and what will be achieved with the fix? At færdiggøre dette vil levere den ønskede onboarding-oplevelse for nye brugere.
-     - Status:  IN PROGRESS
-     - Is recurring issue? N
-     - Should Test frontend/backend/both after fix? Frontend.
-     - Blocked on other issue: Nej.
-
-**In progress Task List**:
-- Task 1: Færdiggør implementeringen af onboarding-guiden.
-   - Where to resume:  og . Agenten skal beslutte, om den vil prøve en ny fejlfindingsmetode for det nuværende custom komponent eller skifte til et nyt bibliotek.
-   - What will be achieved with this? En funktionel onboarding-guide, der hjælper nye brugere.
-   - Status: IN PROGRESS
-   - Should Test frontend/backend/both after fix? Frontend.
-   - Blocked on something: Agentens nuværende tilgang er blokeret. En ny strategi er nødvendig.
-
-**Upcoming and Future Tasks**
-- **RecipesPage Tour (P1):** Implementer onboarding-trin for søge/filtreringsmuligheder og den nye Tilføj opskrift-knap på .
-- **AddRecipePage Tour (P1):** Implementer onboarding-trin på , med særligt fokus på at vise brugeren Offentlig opskrift-togglen.
-- **Fuld Google OAuth Integration (P2):** Den nuværende integration er en pladsholder.
-- **Pro-User Sharing Feature (P2):** Funktion til deling af opskrifter mellem pro-brugere er endnu ikke implementeret.
-- **Slushice Rules Validation (P2):** Automatisk BRIX/alkohol-beregning er endnu ikke implementeret.
-
-**Completed work in this session**
-- **Session Persistence:** Implementeret 30-dages rolling session, der fornyes ved aktivitet, hvilket løser problemet med hyppige logouts.
-- **Device Management:** Rettet 422-fejl og implementeret en robust fallback, så gamle enheder uden device ID nu kan logges ud.
-- **Admin Device List:** Listen over enheder for admin er nu filtreret til kun at vise sessioner fra de seneste 7 dage, hvilket giver et renere UI.
-- **Recipe Sorting:** Backend sorterer nu opskrifter, så gratis opskrifter altid vises først for gæster på forsiden.
-- **Auto-Scaling Recipes:** Opskrifter skaleres nu automatisk på detaljesiden baseret på brugerens valgte maskine.
-- **CSV Import/Export:**
-    - Rettet kritisk parsing-fejl, der fik import til at springe rækker over.
-    - Rettet upsert-logik, så produkter med samme leverandør i forskellige lande ikke overskrives.
-    - Rettet eksportformat, kolonnefejl og UTF-8 encoding-problemer.
-    - Tilføjet en ny eksportfunktion for opskrifter på admin-siden.
-- **Language Preference:** Rettet en fejl, så brugerens valgte land/sprog nu huskes korrekt efter login.
-- **Security Fix:** Ikke-publicerede opskrifter vises ikke længere i lister for almindelige brugere og er ikke tilgængelige via direkte link.
-- **UI/UX-forbedringer:**
-    - Tilføj Opskrift-knappen er flyttet til en mere intuitiv placering som det første kort i opskriftslisten.
-    - Fejl og logik relateret til favorisering og visning af godkendte brugeropskrifter er rettet.
-
-**Earlier issues found/mentioned but not fixed**
-   - Issue 1: Det er uklart, om CDN/CORS-problemer i produktion er fuldstændigt løst, selvom rettelsen til  sandsynligvis vil løse de fleste symptomer.
-   - Debug checklist: Efter at have rettet -variablen, test grundigt admin-funktioner og handlinger, der kræver godkendelse på tværs af hele sitet på custom-domænet.
-   - Why to solve this issue and what will be achieved with this? For at sikre stabil og pålidelig app-funktionalitet i produktionsmiljøet.
-   - Should Test frontend/backend/both after fix: Begge.
-
-**Code Architecture**
+A secondary, but equally critical, set of requirements emerged from bug reports:
+1.  **Match-Finder Bugs**: The feature returned inaccessible recipes and failed to update results when a user's ingredients changed.
+2.  **Permission Flaw**: Registered guest users were not seeing ads and could access pro features like favorites and shopping lists, defeating the monetization model. This was a critical issue.
+3.  **UI/Layout Bugs**: Fix CSS issues on the Add Recipe page for mobile devices.
+4.  **Critical Regression**: A fix for the permission flaw inadvertently broke all API access for pro users, halting all testing. This became the highest priority task.
+</product_requirements>
+<key_technical_concepts>
+- **React 19**: Frontend framework, utilizing Hooks (, ).
+- **FastAPI**: Backend framework for the Python-based API.
+- **MongoDB**: NoSQL database accessed via  async driver.
+- **Tailwind CSS**: Utility-first CSS framework for styling.
+- **Role-Based Access Control (RBAC)**: Differentiating user experience and API access for  vs.  roles.
+- **DOM Manipulation**: Dynamically finding and styling UI elements for the tour highlight.
+- **Dependency Injection (FastAPI)**: A core concept that was being refactored to fix a critical bug at the end of the session.
+</key_technical_concepts>
+<code_architecture>
+The application is a standard full-stack setup with a React frontend, a FastAPI backend, and a MongoDB database.
 
 
-**Key Technical Concepts**
-- React 19: Den anvendte version, som forårsagede kompatibilitetsproblemer med .
-- FastAPI: Backend framework.
-- MongoDB: Database.
-- Axios Interceptor: Implementeret globalt for at vedhæfte -headeren til alle API-kald for at løse cookie-problemer på custom domains.
-- Pydantic: Bruges til datavalidering i backend, især i forbindelse med rettelser til API-endpoints.
 
-**All files**
-- : Opdateret markant med rettelser til , , , login-logik, enhedsliste, og tilføjelse af opskrift-eksport.
-- : Opdateret med logik for rolling session-udløb.
-- : Gennemgribende rettelser til CSV-import- og eksportlogik.
-- : Tilføjet en global Axios interceptor.
-- : Rettet enheds-logout, tilføjet Genstart guider-knap.
-- : Implementeret logik for onboarding tour.
-- : Implementeret automatisk opskriftsskalering.
-- : Flyttet og redesignet Tilføj opskrift-knappen.
-- : Tilføjet en knap til eksport af opskrifter.
-- : Ændret logik for at undgå at overskrive manuelt valgt land.
-- : Ny fil til at styre onboarding-logik.
-- : Nyt, men fejlbehæftet, komponent til onboarding.
+- ****: This is the core component for the product tour. It was created from scratch after abandoning . It displays a centered tooltip, a semi-transparent overlay, and applies a pulsing highlight effect to a target DOM element. It was heavily modified to handle multi-step logic, click-blocking, and finding responsive elements.
 
-**Critical Info for New Agent**
-- **VIGTIGST:** Problemet med admin-adgang på custom-domænet () er **ikke en kodefejl**, men en konfigurationsfejl. Brugeren skal opdatere  i Emergent-platformens indstillinger. Du kan ikke fikse dette med kode.
-- Onboarding-tour-funktionen er **blokeret**. Den nuværende custom-komponent-tilgang til positionering virker ikke. Du bør overveje en helt ny, simplere tilgang eller et andet bibliotek, som anbefalet i All Pending/In progress Issue list. Spild ikke mere tid på at fejlfinde den nuværende komplekse positionsberegning.
+- ****: This file centralizes the configuration for all tour steps across the application. It exports arrays of step objects, each defining a  selector and . It was updated to make the HomePage tour dynamic to include the user's name.
 
-**Last 5 User Messages and any pending user messages**
-1.  **der kom ingen guide...**: Brugeren rapporterer, at onboarding-guiden slet ikke vises. (Løst ved at fjerne mobil-krav og rette desktop-target).
-2.  **jeg får denne fejl der lige blinker...**: Brugeren rapporterer en runtime-fejl, der giver en hvid skærm. (Løst ved at rette en variabel-typo).
-3.  **kan der sættes en pil der peger hen...**: Brugeren anmoder om en pil på tooltip'en, en spring over-mulighed og bedre positionering i landscape-mode. (Forsøgt implementeret, men førte til flere positioneringsproblemer).
-4.  **på pc placerer den sig rigtig men på mobil ser det såndan ud...**: Brugeren rapporterer, at tooltip'en er forkert placeret på mobil (både stående og liggende). (Flere fejlslagne forsøg på at rette).
-5.  **nope / så er jeg tilbage igen men nej desværre sidde mærkatet forkert**: Brugeren bekræfter, at de seneste, mest radikale forsøg på at rette positioneringen stadig ikke virker. (Dette er den nuværende blokerede tilstand).
+- ****: Multiple page components (, , etc.) were modified to include the  component, manage its state, and add  attributes to the elements igreja to be highlighted.
 
-**Project Health Check:**
-- Broken:
-  - Onboarding tour-funktionen er i øjeblikket i stykker på grund af UI-positioneringsfejl.
-  - Admin-adgang på produktions-DNS'en er brudt på grund af en konfigurationsfejl uden for koden.
+- ****: The  function was fixed here to correctly identify users with , which was a root cause of the permission flaws.
 
-**What agent forgot to execute**
-- Agenten har været grundig. Dog blev den fanget i en fejlfindingsløkke med onboarding-komponentet i stedet for hurtigere at skifte til en ny, mere robust strategi (f.eks. et andet bibliotek eller en meget simplere UI-tilgang).</analysis>
+- ****: This file contains the main FastAPI routes. Several endpoints (, , , ) were modified to enforce Role-Based Access Control (RBAC). A critical, incomplete refactoring was underway here to fix a database dependency injection issue.
+
+- ****: Contains authentication logic like  and . This file was the epicenter of the final critical bug.  was modified to accept a list of roles, but this led to a  dependency issue in . The file was left in a broken, partially-refactored state.
+</code_architecture>
+<pending_tasks>
+- The user mentioned returning to other issues on the match page, but did not specify them.
+- The original handoff summary listed future tasks like Full Google OAuth Integration and a Pro-User Sharing Feature, which have not been addressed.
+</pending_tasks>
+<current_work>
+The AI was in the middle of fixing a **critical, app-breaking regression**. A previous fix इंसान to restrict 'guest' user permissions had unintentionally broken API access for all 'pro' users, rendering the application unusable for testers.
+
+The root cause was identified as a database dependency injection failure within the  function in . The function was unable to access the  instance, causing all authentication-dependent API calls to fail.
+
+The AI's attempted solution involved a complex, multi-file refactor:
+1.  Create a new dependency provider function in  to supply the  instance.
+2.  Create wrapper functions in  for authentication checks.
+3.  Modify the core authentication functions (, , ) in  to accept the  instance as a parameter.
+4.  Update all API routes in  that use these authentication functions to pass the new  dependency.
+
+This work was left **incomplete**. The AI had edited  and  but had not finished updating all the call sites. As a result, the backend was left in a crashed, non-functional state, causing the preview URL to show a blank white page. The user forked the job due to this broken state and perceived agent inactivity.
+</current_work>
+<optional_next_step>
+Immediately complete the refactoring of the backend authentication logic to fix the critical database dependency injection failure and restore functionality for all PRO users.
+</optional_next_step>
