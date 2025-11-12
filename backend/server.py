@@ -226,6 +226,27 @@ class RatingCreate(BaseModel):
     comment: Optional[str] = None
     made_again: bool = False
 
+# Comment Models
+class Comment(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    recipe_id: str
+    user_id: str
+    user_name: str  # Denormalized for display
+    comment: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: Optional[datetime] = None
+    likes: int = 0
+    liked_by: List[str] = []  # List of user_ids who liked
+    status: str = "visible"  # visible, hidden
+
+class CommentCreate(BaseModel):
+    recipe_id: str
+    comment: str
+
+class CommentUpdate(BaseModel):
+    comment: str
+
 class ShoppingListItem(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
