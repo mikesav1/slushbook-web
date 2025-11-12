@@ -900,7 +900,11 @@ def scale_recipe(recipe: Dict, target_volume_ml: int, margin_pct: float = 5.0) -
 # Routes
 @api_router.get("/")
 async def root():
-    return {"message": "SLUSHBOOK API"}
+    return {
+        "message": "SLUSHBOOK API",
+        "version": __version__,
+        "status": "healthy"
+    }
 
 # =============================================================================
 # AUTHENTICATION ENDPOINTS
