@@ -162,13 +162,17 @@ async def require_auth(user: Optional[User] = Depends(get_current_user)) -> User
     return user
 
 
-def require_role(required_role: str):
-    """Require specific role or higher"""
+def require_role(allowed_roles):
+    """Require user to have one of the allowed roles"""
+    # Support both single role (string) and multiple roles (list)
+    if isinstance(allowed_roles, str):
+        allowed_roles = [allowed_roles]
+    
     async def role_checker(user: User = Depends(require_auth)) -> User:
-        if ROLES.get(user.role, 0) < ROLES.get(required_role, 0):
+        if user.role not in allowed_roles:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail=f"Requires {required_role} role"
+                detail=f"Requires one of these roles: {', '.join(allowed_roles)}"
             )
         return user
     return role_checker
