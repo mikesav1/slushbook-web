@@ -249,6 +249,37 @@ class CommentCreate(BaseModel):
 class CommentUpdate(BaseModel):
     comment: str
 
+# Tips & Tricks Models
+class Tip(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str = Field(..., max_length=100)
+    content: str = Field(..., max_length=1000)
+    category: str  # Maskiner, Produkter, Rengøring, Teknik, Brugertips, Tilbehør
+    language: str = "da"  # da, de, fr, en, en-US
+    country: str = "DK"  # DK, DE, FR, GB, US
+    is_international: bool = False  # Show across all countries
+    created_by: str  # User ID
+    creator_name: str  # Denormalized for display
+    likes: int = 0
+    liked_by: List[str] = []  # List of user_ids who liked
+    is_public: bool = False  # Must be approved by admin
+    approval_status: str = "pending"  # pending, approved, rejected
+    rejection_reason: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: Optional[datetime] = None
+
+class TipCreate(BaseModel):
+    title: str = Field(..., max_length=100)
+    content: str = Field(..., max_length=1000)
+    category: str
+    is_international: bool = False
+
+class TipUpdate(BaseModel):
+    title: Optional[str] = Field(None, max_length=100)
+    content: Optional[str] = Field(None, max_length=1000)
+    category: Optional[str] = None
+
 class ShoppingListItem(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
