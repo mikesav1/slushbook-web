@@ -3026,8 +3026,8 @@ async def create_tip_comment(
     user: User = Depends(require_role(["pro", "family", "editor", "admin"], db))
 ):
     """Create a comment/reply on a tip"""
-    # Find tip
-    tip = await db.tip_comments.find_one({"id": tip_id})
+    # Find tip to verify it exists
+    tip = await db.tips_and_tricks.find_one({"id": tip_id})
     if not tip:
         raise HTTPException(status_code=404, detail="Tip not found")
     
