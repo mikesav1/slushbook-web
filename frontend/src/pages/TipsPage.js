@@ -321,9 +321,6 @@ const TipsPage = () => {
                           src={`${BACKEND}${tip.image_url}`}
                           alt={tip.title}
                           className="w-full max-h-64 object-cover rounded-lg mb-3"
-                          onError={(e) => {
-                            e.target.style.display = 'none';
-                          }}
                         />
                       )}
                       <p className="text-gray-700 whitespace-pre-wrap">{tip.content}</p>
