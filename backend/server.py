@@ -2375,13 +2375,41 @@ async def get_all_comments_admin(
     
     if status:
         query["status"] = status
+    
+    # Special handling for language filter
     if language:
-        query["language"] = language
+        # Also include comments without language field when filtering
+        query["$or"] = [
+            {"language": language},
+            {"language": {"$exists": False}}  # Include old comments without language
+        ]
     
     comments = await db.recipe_comments.find(query, {"_id": 0}).to_list(10000)
     
-    # Parse dates and enrich with recipe info
+    # Parse dates, fix missing languages, and enrich with recipe info
     for comment in comments:
+        # Fix missing language field (backward compatibility)
+        if 'language' not in comment or not comment.get('language'):
+            # Try to detect from user
+            comment_user = await db.users.find_one({"id": comment['user_id']}, {"_id": 0, "country": 1})
+            if comment_user and comment_user.get('country'):
+                country_to_lang = {
+                    'DK': 'da',
+                    'DE': 'de',
+                    'FR': 'fr',
+                    'GB': 'en',
+                    'US': 'en-US',
+                }
+                comment['language'] = country_to_lang.get(comment_user['country'], 'da')
+            else:
+                comment['language'] = 'da'  # Default to Danish
+            
+            # Update in database for future
+            await db.recipe_comments.update_one(
+                {"id": comment['id']},
+                {"$set": {"language": comment['language']}}
+            )
+        
         if isinstance(comment.get('created_at'), str):
             comment['created_at'] = datetime.fromisoformat(comment['created_at'])
         if isinstance(comment.get('updated_at'), str):
