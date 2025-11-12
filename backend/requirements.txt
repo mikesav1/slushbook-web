@@ -70,3 +70,4 @@ watchfiles==1.1.0
 httpx
 python-multipart==0.0.20
 cloudinary==1.44.1
+Pillow
