@@ -431,16 +431,75 @@ const SettingsPage = ({ sessionId }) => {
             Første gang du brugte appen, fik du vist gule guider. Hvis du vil se dem igen, kan du genstarte dem her.
           </p>
           
+          {/* Reset All Tours Button */}
           <Button
             onClick={() => {
               resetAllTours();
               toast.success('Alle guider er nulstillet! De vil vises næste gang du besøger siderne.');
             }}
             data-tour="restart-tours-button"
-            className="bg-yellow-500 hover:bg-yellow-600 text-white"
+            className="bg-yellow-500 hover:bg-yellow-600 text-white mb-4 w-full"
           >
             🔄 Genstart Alle Guider
           </Button>
+
+          {/* Individual Tour Reset Buttons */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-4">
+            <button
+              onClick={() => {
+                resetTour(TOUR_KEYS.HOME);
+                toast.success('Hjem-guiden er nulstillet!');
+              }}
+              className="px-4 py-2 bg-white border-2 border-yellow-300 rounded-lg hover:bg-yellow-100 text-sm font-medium transition-colors"
+            >
+              🏠 Hjem
+            </button>
+            <button
+              onClick={() => {
+                resetTour(TOUR_KEYS.RECIPES);
+                toast.success('Opskrifter-guiden er nulstillet!');
+              }}
+              className="px-4 py-2 bg-white border-2 border-yellow-300 rounded-lg hover:bg-yellow-100 text-sm font-medium transition-colors"
+            >
+              📖 Opskrifter
+            </button>
+            <button
+              onClick={() => {
+                resetTour(TOUR_KEYS.ADD_RECIPE);
+                toast.success('Tilføj Opskrift-guiden er nulstillet!');
+              }}
+              className="px-4 py-2 bg-white border-2 border-yellow-300 rounded-lg hover:bg-yellow-100 text-sm font-medium transition-colors"
+            >
+              ➕ Tilføj Opskrift
+            </button>
+            <button
+              onClick={() => {
+                resetTour(TOUR_KEYS.MATCH);
+                toast.success('Match Finder-guiden er nulstillet!');
+              }}
+              className="px-4 py-2 bg-white border-2 border-yellow-300 rounded-lg hover:bg-yellow-100 text-sm font-medium transition-colors"
+            >
+              🔍 Match Finder
+            </button>
+            <button
+              onClick={() => {
+                resetTour(TOUR_KEYS.SHOPPING_LIST);
+                toast.success('Indkøbsliste-guiden er nulstillet!');
+              }}
+              className="px-4 py-2 bg-white border-2 border-yellow-300 rounded-lg hover:bg-yellow-100 text-sm font-medium transition-colors"
+            >
+              🛒 Indkøbsliste
+            </button>
+            <button
+              onClick={() => {
+                resetTour(TOUR_KEYS.SETTINGS);
+                toast.success('Indstillinger-guiden er nulstillet!');
+              }}
+              className="px-4 py-2 bg-white border-2 border-yellow-300 rounded-lg hover:bg-yellow-100 text-sm font-medium transition-colors"
+            >
+              ⚙️ Indstillinger
+            </button>
+          </div>
         </div>
       )}
 
