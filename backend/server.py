@@ -1713,7 +1713,7 @@ async def get_recipes(
         -(r.get('created_at', datetime.min.replace(tzinfo=timezone.utc)).timestamp())
     ))
     
-    # Add favorite and rating info
+    # Add favorite and rating info + author name for user recipes
     if session_id:
         favorites = await db.favorites.find({"session_id": session_id}, {"_id": 0}).to_list(1000)
         favorite_ids = {fav['recipe_id'] for fav in favorites}
@@ -1727,6 +1727,23 @@ async def get_recipes(
                 {"_id": 0}
             )
             recipe['user_rating'] = rating.get('stars') if rating else None
+            
+            # Add author name for user-created recipes
+            if recipe.get('author') and recipe.get('author') != 'system':
+                author_user = await db.users.find_one({"id": recipe['author']}, {"_id": 0, "name": 1})
+                if author_user:
+                    recipe['author_name'] = author_user.get('name', 'Ukendt')
+                else:
+                    recipe['author_name'] = 'Ukendt'
+    else:
+        # Even without session_id, add author names for display
+        for recipe in all_recipes:
+            if recipe.get('author') and recipe.get('author') != 'system':
+                author_user = await db.users.find_one({"id": recipe['author']}, {"_id": 0, "name": 1})
+                if author_user:
+                    recipe['author_name'] = author_user.get('name', 'Ukendt')
+                else:
+                    recipe['author_name'] = 'Ukendt'
     
     return all_recipes
 
