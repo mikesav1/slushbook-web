@@ -217,13 +217,19 @@ const RecipesPage = ({ sessionId }) => {
   };
 
   // Ingredient filter functions
-  const addIncludeIngredient = (e) => {
+  const addIncludeIngredient = (ingredient) => {
+    const trimmedIngredient = ingredient.trim().toLowerCase();
+    if (trimmedIngredient && !includeIngredients.includes(trimmedIngredient)) {
+      setIncludeIngredients([...includeIngredients, trimmedIngredient]);
+    }
+    setIngredientInput('');
+    setShowIncludeSuggestions(false);
+  };
+
+  const handleIncludeKeyPress = (e) => {
     if (e.key === 'Enter' && ingredientInput.trim()) {
       e.preventDefault();
-      if (!includeIngredients.includes(ingredientInput.trim().toLowerCase())) {
-        setIncludeIngredients([...includeIngredients, ingredientInput.trim().toLowerCase()]);
-      }
-      setIngredientInput('');
+      addIncludeIngredient(ingredientInput);
     }
   };
 
@@ -231,13 +237,19 @@ const RecipesPage = ({ sessionId }) => {
     setIncludeIngredients(includeIngredients.filter(ing => ing !== ingredient));
   };
 
-  const addExcludeIngredient = (e) => {
+  const addExcludeIngredient = (ingredient) => {
+    const trimmedIngredient = ingredient.trim().toLowerCase();
+    if (trimmedIngredient && !excludeIngredients.includes(trimmedIngredient)) {
+      setExcludeIngredients([...excludeIngredients, trimmedIngredient]);
+    }
+    setExcludeIngredientInput('');
+    setShowExcludeSuggestions(false);
+  };
+
+  const handleExcludeKeyPress = (e) => {
     if (e.key === 'Enter' && excludeIngredientInput.trim()) {
       e.preventDefault();
-      if (!excludeIngredients.includes(excludeIngredientInput.trim().toLowerCase())) {
-        setExcludeIngredients([...excludeIngredients, excludeIngredientInput.trim().toLowerCase()]);
-      }
-      setExcludeIngredientInput('');
+      addExcludeIngredient(excludeIngredientInput);
     }
   };
 
@@ -248,6 +260,27 @@ const RecipesPage = ({ sessionId }) => {
   const clearAllFilters = () => {
     setIncludeIngredients([]);
     setExcludeIngredients([]);
+  };
+
+  // Get filtered suggestions based on input
+  const getIncludeSuggestions = () => {
+    if (!ingredientInput) return availableIngredients.slice(0, 10);
+    return availableIngredients
+      .filter(ing => 
+        ing.includes(ingredientInput.toLowerCase()) && 
+        !includeIngredients.includes(ing)
+      )
+      .slice(0, 10);
+  };
+
+  const getExcludeSuggestions = () => {
+    if (!excludeIngredientInput) return availableIngredients.slice(0, 10);
+    return availableIngredients
+      .filter(ing => 
+        ing.includes(excludeIngredientInput.toLowerCase()) && 
+        !excludeIngredients.includes(ing)
+      )
+      .slice(0, 10);
   };
 
   const types = [
