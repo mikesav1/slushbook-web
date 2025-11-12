@@ -2998,6 +2998,83 @@ async def reject_tip(
     
     return {"message": "Tip rejected"}
 
+# Tip Comments (Community Forum Features)
+@api_router.get("/tips/{tip_id}/comments")
+async def get_tip_comments(tip_id: str):
+    """Get all comments for a tip"""
+    comments = await db.tip_comments.find(
+        {"tip_id": tip_id},
+        {"_id": 0}
+    ).to_list(1000)
+    
+    # Parse dates
+    for comment in comments:
+        if isinstance(comment.get('created_at'), str):
+            comment['created_at'] = datetime.fromisoformat(comment['created_at'])
+        if isinstance(comment.get('updated_at'), str):
+            comment['updated_at'] = datetime.fromisoformat(comment['updated_at'])
+    
+    # Sort by oldest first (chronological order)
+    comments.sort(key=lambda x: x['created_at'].timestamp())
+    
+    return comments
+
+@api_router.post("/tips/{tip_id}/comments")
+async def create_tip_comment(
+    tip_id: str,
+    content: str = Body(..., embed=True),
+    user: User = Depends(require_role(["pro", "family", "editor", "admin"], db))
+):
+    """Create a comment/reply on a tip"""
+    # Find tip
+    tip = await db.tip_comments.find_one({"id": tip_id})
+    if not tip:
+        raise HTTPException(status_code=404, detail="Tip not found")
+    
+    # Create comment
+    comment = {
+        "id": str(uuid.uuid4()),
+        "tip_id": tip_id,
+        "user_id": user.id,
+        "user_name": user.name,
+        "content": content.strip(),
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "updated_at": None
+    }
+    
+    await db.tip_comments.insert_one(comment)
+    
+    logger.info(f"Comment created on tip {tip_id} by {user.name}")
+    
+    # Return comment with parsed date
+    comment['created_at'] = datetime.fromisoformat(comment['created_at'])
+    comment.pop('_id', None)
+    
+    return comment
+
+@api_router.delete("/tips/{tip_id}/comments/{comment_id}")
+async def delete_tip_comment(
+    tip_id: str,
+    comment_id: str,
+    user: User = Depends(require_role(["pro", "family", "editor", "admin"], db))
+):
+    """Delete a comment (own comment or admin can delete any)"""
+    # Find comment
+    comment = await db.tip_comments.find_one({"id": comment_id, "tip_id": tip_id})
+    if not comment:
+        raise HTTPException(status_code=404, detail="Comment not found")
+    
+    # Check permissions (owner or admin)
+    if comment['user_id'] != user.id and user.role not in ["admin", "editor"]:
+        raise HTTPException(status_code=403, detail="Not authorized to delete this comment")
+    
+    # Delete comment
+    await db.tip_comments.delete_one({"id": comment_id})
+    
+    logger.info(f"Comment {comment_id} deleted by {user.name}")
+    
+    return {"message": "Comment deleted"}
+
 # Shopping List
 @api_router.get("/shopping-list/{session_id}")
 async def get_shopping_list(
