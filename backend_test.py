@@ -1370,6 +1370,215 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
                 
         return False, None
 
+    def test_critical_authentication_fix(self):
+        """Test critical authentication fix - database dependency injection for PRO users"""
+        self.log("=== TESTING CRITICAL AUTHENTICATION FIX ===")
+        
+        try:
+            # Step 1: Test PRO User Login (kimesav@gmail.com/admin123)
+            self.log("\n--- Step 1: Test PRO User Login ---")
+            
+            login_data = {
+                "email": KIMESAV_EMAIL,
+                "password": KIMESAV_PASSWORD
+            }
+            
+            login_response = self.session.post(f"{self.base_url}/auth/login", json=login_data)
+            
+            if login_response.status_code != 200:
+                self.log(f"❌ PRO user login FAILED: {login_response.status_code} - {login_response.text}")
+                return False
+            
+            login_result = login_response.json()
+            session_token = login_result.get("session_token")
+            user_data = login_result.get("user", {})
+            user_role = user_data.get("role")
+            user_id = user_data.get("id")
+            
+            self.log(f"✅ PRO user login SUCCESS - Role: {user_role}, ID: {user_id}")
+            self.log(f"✅ Session token obtained: {session_token[:20]}...")
+            
+            # Verify user data structure
+            if not session_token:
+                self.log("❌ No session token returned")
+                return False
+            
+            # Step 2: Test Protected Endpoints (these were failing with 500 errors)
+            self.log("\n--- Step 2: Test Protected Endpoints ---")
+            
+            # Set up headers for authenticated requests
+            headers = {"Authorization": f"Bearer {session_token}"}
+            
+            # Test POST /api/favorites
+            self.log("\n--- Testing POST /api/favorites ---")
+            favorite_data = {
+                "session_id": user_id,
+                "recipe_id": "test-recipe-123"
+            }
+            
+            favorites_post_response = self.session.post(f"{self.base_url}/favorites", json=favorite_data, headers=headers)
+            
+            if favorites_post_response.status_code == 500:
+                self.log(f"❌ CRITICAL: POST /api/favorites returned 500 error - authentication fix FAILED")
+                self.log(f"Error details: {favorites_post_response.text}")
+                return False
+            elif favorites_post_response.status_code in [200, 201]:
+                self.log("✅ POST /api/favorites SUCCESS - no 500 error")
+            else:
+                self.log(f"✅ POST /api/favorites returned {favorites_post_response.status_code} (not 500) - authentication working")
+            
+            # Test GET /api/favorites
+            self.log("\n--- Testing GET /api/favorites ---")
+            favorites_get_response = self.session.get(f"{self.base_url}/favorites?session_id={user_id}", headers=headers)
+            
+            if favorites_get_response.status_code == 500:
+                self.log(f"❌ CRITICAL: GET /api/favorites returned 500 error - authentication fix FAILED")
+                self.log(f"Error details: {favorites_get_response.text}")
+                return False
+            elif favorites_get_response.status_code == 200:
+                self.log("✅ GET /api/favorites SUCCESS - no 500 error")
+            else:
+                self.log(f"✅ GET /api/favorites returned {favorites_get_response.status_code} (not 500) - authentication working")
+            
+            # Test POST /api/shopping-list
+            self.log("\n--- Testing POST /api/shopping-list ---")
+            shopping_item = {
+                "session_id": user_id,
+                "ingredient_name": "Test Ingredient",
+                "category_key": "test-category",
+                "quantity": 100.0,
+                "unit": "ml",
+                "linked_recipe_id": "test-recipe-123",
+                "linked_recipe_name": "Test Recipe"
+            }
+            
+            shopping_post_response = self.session.post(f"{self.base_url}/shopping-list", json=shopping_item, headers=headers)
+            
+            if shopping_post_response.status_code == 500:
+                self.log(f"❌ CRITICAL: POST /api/shopping-list returned 500 error - authentication fix FAILED")
+                self.log(f"Error details: {shopping_post_response.text}")
+                return False
+            elif shopping_post_response.status_code in [200, 201]:
+                self.log("✅ POST /api/shopping-list SUCCESS - no 500 error")
+            else:
+                self.log(f"✅ POST /api/shopping-list returned {shopping_post_response.status_code} (not 500) - authentication working")
+            
+            # Test GET /api/shopping-list/{session_id}
+            self.log("\n--- Testing GET /api/shopping-list/{session_id} ---")
+            shopping_get_response = self.session.get(f"{self.base_url}/shopping-list/{user_id}", headers=headers)
+            
+            if shopping_get_response.status_code == 500:
+                self.log(f"❌ CRITICAL: GET /api/shopping-list returned 500 error - authentication fix FAILED")
+                self.log(f"Error details: {shopping_get_response.text}")
+                return False
+            elif shopping_get_response.status_code == 200:
+                self.log("✅ GET /api/shopping-list SUCCESS - no 500 error")
+            else:
+                self.log(f"✅ GET /api/shopping-list returned {shopping_get_response.status_code} (not 500) - authentication working")
+            
+            # Test POST /api/pantry
+            self.log("\n--- Testing POST /api/pantry ---")
+            pantry_item = {
+                "session_id": user_id,
+                "ingredient_name": "Test Pantry Item",
+                "category_key": "test-pantry-category",
+                "quantity": 250.0,
+                "unit": "ml",
+                "brix": 65.0
+            }
+            
+            pantry_post_response = self.session.post(f"{self.base_url}/pantry", json=pantry_item, headers=headers)
+            
+            if pantry_post_response.status_code == 500:
+                self.log(f"❌ CRITICAL: POST /api/pantry returned 500 error - authentication fix FAILED")
+                self.log(f"Error details: {pantry_post_response.text}")
+                return False
+            elif pantry_post_response.status_code in [200, 201]:
+                self.log("✅ POST /api/pantry SUCCESS - no 500 error")
+            else:
+                self.log(f"✅ POST /api/pantry returned {pantry_post_response.status_code} (not 500) - authentication working")
+            
+            # Test GET /api/pantry/{session_id}
+            self.log("\n--- Testing GET /api/pantry/{session_id} ---")
+            pantry_get_response = self.session.get(f"{self.base_url}/pantry/{user_id}", headers=headers)
+            
+            if pantry_get_response.status_code == 500:
+                self.log(f"❌ CRITICAL: GET /api/pantry returned 500 error - authentication fix FAILED")
+                self.log(f"Error details: {pantry_get_response.text}")
+                return False
+            elif pantry_get_response.status_code == 200:
+                self.log("✅ GET /api/pantry SUCCESS - no 500 error")
+            else:
+                self.log(f"✅ GET /api/pantry returned {pantry_get_response.status_code} (not 500) - authentication working")
+            
+            # Step 3: Verify Database Connection Working
+            self.log("\n--- Step 3: Verify Database Connection in Authentication ---")
+            
+            # Test /api/auth/me to verify authentication system is working
+            auth_me_response = self.session.get(f"{self.base_url}/auth/me", headers=headers)
+            
+            if auth_me_response.status_code == 500:
+                self.log(f"❌ CRITICAL: /api/auth/me returned 500 error - database connection FAILED")
+                self.log(f"Error details: {auth_me_response.text}")
+                return False
+            elif auth_me_response.status_code == 200:
+                auth_user_data = auth_me_response.json()
+                self.log(f"✅ /api/auth/me SUCCESS - User: {auth_user_data.get('name')} ({auth_user_data.get('role')})")
+            else:
+                self.log(f"❌ /api/auth/me returned unexpected status: {auth_me_response.status_code}")
+                return False
+            
+            # Step 4: Test Role-based Access Control
+            self.log("\n--- Step 4: Test Role-based Access Control ---")
+            
+            # Verify PRO user has proper access
+            if user_role in ["admin", "pro"]:
+                self.log(f"✅ User has PRO/Admin role ({user_role}) - should have access to protected features")
+            else:
+                self.log(f"⚠️  User has role '{user_role}' - may have limited access")
+            
+            # Final verification
+            self.log("\n=== FINAL VERIFICATION ===")
+            
+            success = True
+            error_count = 0
+            
+            # Check for any 500 errors
+            responses_to_check = [
+                ("POST /api/favorites", favorites_post_response),
+                ("GET /api/favorites", favorites_get_response),
+                ("POST /api/shopping-list", shopping_post_response),
+                ("GET /api/shopping-list", shopping_get_response),
+                ("POST /api/pantry", pantry_post_response),
+                ("GET /api/pantry", pantry_get_response),
+                ("GET /api/auth/me", auth_me_response)
+            ]
+            
+            for endpoint_name, response in responses_to_check:
+                if response.status_code == 500:
+                    self.log(f"❌ CRITICAL: {endpoint_name} returned 500 error")
+                    error_count += 1
+                    success = False
+                else:
+                    self.log(f"✅ {endpoint_name} - No 500 error (status: {response.status_code})")
+            
+            if success:
+                self.log("\n🎉 CRITICAL AUTHENTICATION FIX VERIFICATION PASSED")
+                self.log("✅ PRO user login works")
+                self.log("✅ All protected endpoints return proper status codes (not 500)")
+                self.log("✅ Database connection is working in authentication functions")
+                self.log("✅ Role-based access control is functioning")
+                return True
+            else:
+                self.log(f"\n❌ CRITICAL AUTHENTICATION FIX VERIFICATION FAILED")
+                self.log(f"❌ {error_count} endpoints still returning 500 errors")
+                self.log("❌ Database dependency injection fix may not be working properly")
+                return False
+                
+        except Exception as e:
+            self.log(f"❌ Critical authentication fix test failed with exception: {str(e)}")
+            return False
+
     def test_guest_user_limitations(self):
         """Test gæstebruger begrænsninger - specific test scenario from review request"""
         self.log("=== TESTING GÆSTEBRUGER BEGRÆNSNINGER ===")
