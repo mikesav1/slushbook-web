@@ -7622,12 +7622,12 @@ test,data,here"""
         self.log("Starting SLUSHBOOK Backend System Tests")
         self.log("=" * 60)
         
-        # Run the NEW Ingredient Filtering Feature test as requested in review
-        self.log("\n🔍 NEW INGREDIENT FILTERING FEATURE TEST")
-        ingredient_filtering_result = self.test_ingredient_filtering_feature()
+        # Run the NEW Comment Functionality test as requested in review
+        self.log("\n💬 NEW COMMENT FUNCTIONALITY TEST")
+        comment_result = self.test_comment_functionality()
         
         # Create results dictionary
-        critical_results = {"🔍 NEW INGREDIENT FILTERING FEATURE": ingredient_filtering_result}
+        critical_results = {"💬 NEW COMMENT FUNCTIONALITY": comment_result}
         
         # Run additional tests if needed
         additional_tests = []
