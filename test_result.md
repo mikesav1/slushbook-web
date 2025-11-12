@@ -531,6 +531,18 @@ test_plan:
   test_priority: "high_first"
 
 backend:
+  - task: "New Ingredient Filter Feature Testing"
+    implemented: true
+    working: false
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "🚨 CRITICAL DEPLOYMENT ISSUE IDENTIFIED: New ingredient filtering feature works perfectly on Preview environment but COMPLETELY FAILS on Production environment. ✅ PREVIEW ENVIRONMENT RESULTS: All filtering tests passed successfully - GET /api/recipes?include_ingredients=citron returns 10 recipes (all containing citron), GET /api/recipes?include_ingredients=citron,jordbær returns 1 recipe (containing both), GET /api/recipes?exclude_ingredients=mælk returns 51 recipes (none containing mælk), combined filters work correctly, case-insensitive matching works, partial matching works (e.g., 'citron' matches 'citron saft'). ❌ PRODUCTION ENVIRONMENT RESULTS: Filtering is completely broken - ALL filter requests return 78 recipes (total recipe count), ignoring filter parameters entirely. GET /api/recipes?include_ingredients=citron returns 78 recipes including recipes with NO citron ingredients, GET /api/recipes?include_ingredients=nonexistent123 also returns 78 recipes, exclude filters also return all 78 recipes. ✅ FEATURE VERIFICATION: The ingredient filtering code exists in server.py lines 1646-1677 with correct logic for include_ingredients and exclude_ingredients parameters. ❌ ROOT CAUSE: Production environment is not running the updated backend code with ingredient filtering functionality - this is a DEPLOYMENT SYNCHRONIZATION ISSUE. 💡 URGENT ACTION REQUIRED: Deploy the current backend code (server.py) to production environment to enable ingredient filtering feature. The feature is fully implemented and tested, but not deployed to production."
+
   - task: "Urgent Login Investigation - kimesav@gmail.com / admin123"
     implemented: true
     working: true
