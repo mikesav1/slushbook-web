@@ -9044,77 +9044,28 @@ Test CSV Product Empty,test;csv,,bilka,https://www.bilka.dk/test-csv-product-2,T
             return False
 
 def main():
-    """Run urgent login investigation as requested in review"""
-    print("🚨 URGENT LOGIN PROBLEM INVESTIGATION")
+    """Run comment functionality testing as requested in review"""
+    print("💬 COMMENT FUNCTIONALITY TESTING")
     print("=" * 80)
-    print("ISSUE: User reports unable to login as PRO or admin user")
-    print("TESTING: kimesav@gmail.com / admin123 login functionality")
-    print("=" * 80)
-    
-    # Test both environments to compare
-    environments = [
-        ("Preview", "https://prod-onboard.preview.emergentagent.com/api"),
-        ("Production", "https://slushice-recipes.emergent.host/api"),
-    ]
-    
-    all_results = {}
-    
-    for env_name, env_url in environments:
-        print(f"\n🌐 Testing {env_name} Environment: {env_url}")
-        print("-" * 80)
-        
-        tester = BackendTester(env_url)
-        
-        # Run urgent login investigation
-        tests = [
-            ("Urgent Login Investigation", tester.test_urgent_login_investigation),
-        ]
-        
-        env_passed = 0
-        env_failed = 0
-        
-        for test_name, test_func in tests:
-            print(f"\n🔬 Running: {test_name}")
-            print("-" * 80)
-            try:
-                if test_func():
-                    print(f"✅ {test_name} - PASSED")
-                    env_passed += 1
-                else:
-                    print(f"❌ {test_name} - FAILED")
-                    env_failed += 1
-            except Exception as e:
-                print(f"💥 {test_name} - Exception: {str(e)}")
-                import traceback
-                print(f"Traceback: {traceback.format_exc()}")
-                env_failed += 1
-        
-        all_results[env_name] = {"passed": env_passed, "failed": env_failed}
-        
-        print(f"\n📊 {env_name} Results: {env_passed} passed, {env_failed} failed")
-    
-    # Overall summary
-    print("\n" + "=" * 80)
-    print("URGENT LOGIN INVESTIGATION SUMMARY")
+    print("TESTING: New comment system on recipes")
+    print("SCENARIOS: Get, Create, Update, Delete, Like comments")
     print("=" * 80)
     
-    total_passed = sum(r["passed"] for r in all_results.values())
-    total_failed = sum(r["failed"] for r in all_results.values())
+    # Test Preview environment (main testing environment)
+    tester = BackendTester(PREVIEW_BASE_URL)
     
-    for env_name, results in all_results.items():
-        status = "✅ PASS" if results["failed"] == 0 else "❌ FAIL"
-        print(f"{env_name} Environment: {status} ({results['passed']} passed, {results['failed']} failed)")
+    print(f"\n🌐 Testing Environment: {PREVIEW_BASE_URL}")
+    print("-" * 80)
     
-    print(f"\nTotal: {total_passed} passed, {total_failed} failed")
+    # Run comment functionality test
+    result = tester.run_all_tests()
     
-    if total_failed == 0:
-        print("🎉 LOGIN INVESTIGATION COMPLETE - NO ISSUES FOUND!")
-        print("✅ Login works correctly on all environments")
-        print("✅ Session tokens are returned properly")
+    if result:
+        print("\n🎉 COMMENT FUNCTIONALITY TESTING COMPLETE - ALL TESTS PASSED!")
+        print("✅ Comment system is working correctly")
         return True
     else:
-        print("❌ LOGIN ISSUES DETECTED!")
-        print("❌ Login failing on one or more environments")
+        print("\n❌ COMMENT FUNCTIONALITY TESTING FAILED!")
         print("❌ Check logs above for specific error details")
         return False
 
