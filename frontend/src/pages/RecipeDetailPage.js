@@ -26,6 +26,12 @@ const RecipeDetailPage = ({ sessionId }) => {
   const [products, setProducts] = useState([]);
   const [userCountry, setUserCountry] = useState('DK');
   
+  // Comments state
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editCommentText, setEditCommentText] = useState('');
+  
   // Category display name mapper
   const getCategoryDisplayName = (categoryKey) => {
     const categoryMap = {
