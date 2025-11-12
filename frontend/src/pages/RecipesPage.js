@@ -36,6 +36,7 @@ const RecipesPage = ({ sessionId }) => {
   const [availableIngredients, setAvailableIngredients] = useState([]);
   const [showIncludeSuggestions, setShowIncludeSuggestions] = useState(false);
   const [showExcludeSuggestions, setShowExcludeSuggestions] = useState(false);
+  const [isIngredientFilterExpanded, setIsIngredientFilterExpanded] = useState(false);
 
   // Save filters to localStorage whenever they change
   useEffect(() => {
