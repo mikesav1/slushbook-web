@@ -418,6 +418,8 @@ const AppContent = ({ sessionId }) => {
             <Route path="/admin" element={<AdminPage sessionId={effectiveSessionId} />} />
             <Route path="/admin/sandbox" element={<AdminSandboxPage sessionId={effectiveSessionId} />} />
             <Route path="/admin/comments" element={<AdminCommentsPage />} />
+            <Route path="/tips" element={<TipsPage />} />
+            <Route path="/tips/create" element={<CreateTipPage />} />
             <Route path="/admin/ingredients" element={<AdminIngredientsPage sessionId={effectiveSessionId} />} />
             <Route path="/admin/links" element={<AdminLinksPage sessionId={effectiveSessionId} />} />
             <Route path="/admin/ads" element={<AdminAdsPage />} />
