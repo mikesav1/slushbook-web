@@ -2409,11 +2409,9 @@ async def create_comment(
         country_to_lang = {
             'DK': 'da',  # Denmark -> Danish
             'DE': 'de',  # Germany -> German
+            'FR': 'fr',  # France -> French
             'GB': 'en',  # UK -> English
-            'US': 'en',  # USA -> English
-            'SE': 'sv',  # Sweden -> Swedish
-            'NO': 'no',  # Norway -> Norwegian
-            'FI': 'fi',  # Finland -> Finnish
+            'US': 'en-US',  # USA -> American English
         }
         language = country_to_lang.get(user.country, 'da')  # Default to Danish
     
