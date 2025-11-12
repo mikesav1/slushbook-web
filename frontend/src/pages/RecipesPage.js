@@ -352,6 +352,94 @@ const RecipesPage = ({ sessionId }) => {
           </button>
         </div>
 
+        {/* Ingredient Filters */}
+        <div className="mb-6 space-y-4 bg-white p-4 rounded-xl border border-gray-200">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-gray-700">Ingrediens-søgning</h3>
+            {(includeIngredients.length > 0 || excludeIngredients.length > 0) && (
+              <button
+                onClick={clearAllFilters}
+                className="text-xs text-cyan-600 hover:text-cyan-700 font-medium"
+              >
+                Ryd alle
+              </button>
+            )}
+          </div>
+
+          {/* Include Ingredients */}
+          <div>
+            <label className="block text-xs font-medium text-gray-600 mb-2">
+              ✅ Skal indeholde (tryk Enter for at tilføje)
+            </label>
+            <input
+              type="text"
+              value={ingredientInput}
+              onChange={(e) => setIngredientInput(e.target.value)}
+              onKeyPress={addIncludeIngredient}
+              placeholder="f.eks. jordbær, citron..."
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            />
+            {includeIngredients.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-2">
+                {includeIngredients.map((ing, idx) => (
+                  <span
+                    key={idx}
+                    className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium"
+                  >
+                    {ing}
+                    <button
+                      onClick={() => removeIncludeIngredient(ing)}
+                      className="hover:text-green-900"
+                    >
+                      <FaTimes size={10} />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Exclude Ingredients */}
+          <div>
+            <label className="block text-xs font-medium text-gray-600 mb-2">
+              ❌ Må ikke indeholde (tryk Enter for at tilføje)
+            </label>
+            <input
+              type="text"
+              value={excludeIngredientInput}
+              onChange={(e) => setExcludeIngredientInput(e.target.value)}
+              onKeyPress={addExcludeIngredient}
+              placeholder="f.eks. mælk, nødder..."
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            />
+            {excludeIngredients.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-2">
+                {excludeIngredients.map((ing, idx) => (
+                  <span
+                    key={idx}
+                    className="inline-flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium"
+                  >
+                    {ing}
+                    <button
+                      onClick={() => removeExcludeIngredient(ing)}
+                      className="hover:text-red-900"
+                    >
+                      <FaTimes size={10} />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Results count */}
+          {(includeIngredients.length > 0 || excludeIngredients.length > 0) && (
+            <div className="text-xs text-gray-500 pt-2 border-t border-gray-100">
+              📊 Viser {filteredRecipes.length} opskrifter med de valgte filtre
+            </div>
+          )}
+        </div>
+
         {/* Type Filter */}
         <div data-tour="type-filter">
           <label className="block text-sm font-semibold text-gray-700 mb-2">Type</label>
