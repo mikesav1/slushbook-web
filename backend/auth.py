@@ -103,7 +103,7 @@ security = HTTPBearer(auto_error=False)
 async def get_current_user(
     request: Request,
     credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
-    db = None
+    db = Depends(lambda: db)
 ) -> Optional[User]:
     """
     Get current authenticated user from session token
