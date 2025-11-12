@@ -4118,10 +4118,10 @@ app.include_router(api_router)
 app.include_router(redirect_routes.router)  # Admin routes: /api/admin/*
 app.include_router(redirect_routes.go_router)  # Redirect routes: /api/go/*
 
-# Mount uploads directory for static file serving under /api
+# Mount uploads directory for static file serving under /api/uploads
 uploads_dir = ROOT_DIR / 'uploads'
 uploads_dir.mkdir(exist_ok=True)
-api_router.mount("/uploads", StaticFiles(directory=str(uploads_dir)), name="uploads")
+app.mount("/api/uploads", StaticFiles(directory=str(uploads_dir)), name="uploads")
 
 # Logging configuration is done at the top of the file
 # logger = logging.getLogger(__name__) - already defined at line 60
