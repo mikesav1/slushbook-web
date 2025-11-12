@@ -118,7 +118,7 @@ const CreateTipPage = () => {
         }
       }
       
-      toast.success('Dit tip er sendt til godkendelse! Du får besked når det er offentliggjort.');
+      toast.success('✅ Dit tip er nu offentliggjort!');
       navigate('/tips');
     } catch (error) {
       console.error('Error creating tip:', error);
