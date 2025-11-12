@@ -151,6 +151,102 @@ const RecipeDetailPage = ({ sessionId }) => {
     }
   };
 
+  // Comment functions
+  const fetchComments = async () => {
+    try {
+      const response = await axios.get(`${API}/comments/${id}`);
+      setComments(response.data);
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+    }
+  };
+
+  const handleAddComment = async () => {
+    if (!newComment.trim()) {
+      toast.error('Kommentaren kan ikke være tom');
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${API}/comments`, {
+        recipe_id: id,
+        comment: newComment
+      });
+      setComments([response.data, ...comments]);
+      setNewComment('');
+      toast.success('Kommentar tilføjet');
+    } catch (error) {
+      console.error('Error adding comment:', error);
+      if (error.response?.status === 403) {
+        toast.error('Kun PRO-brugere kan kommentere. Opgrader for at deltage i diskussioner!');
+      } else {
+        toast.error('Kunne ikke tilføje kommentar');
+      }
+    }
+  };
+
+  const handleEditComment = async (commentId) => {
+    if (!editCommentText.trim()) {
+      toast.error('Kommentaren kan ikke være tom');
+      return;
+    }
+
+    try {
+      const response = await axios.put(`${API}/comments/${commentId}`, {
+        comment: editCommentText
+      });
+      setComments(comments.map(c => c.id === commentId ? response.data : c));
+      setEditingCommentId(null);
+      setEditCommentText('');
+      toast.success('Kommentar opdateret');
+    } catch (error) {
+      console.error('Error editing comment:', error);
+      toast.error('Kunne ikke opdatere kommentar');
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    if (!window.confirm('Er du sikker på, at du vil slette denne kommentar?')) {
+      return;
+    }
+
+    try {
+      await axios.delete(`${API}/comments/${commentId}`);
+      setComments(comments.filter(c => c.id !== commentId));
+      toast.success('Kommentar slettet');
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+      toast.error('Kunne ikke slette kommentar');
+    }
+  };
+
+  const handleToggleLike = async (commentId) => {
+    try {
+      const response = await axios.post(`${API}/comments/${commentId}/like`);
+      // Update likes count in UI
+      setComments(comments.map(c => {
+        if (c.id === commentId) {
+          const isLiked = c.liked_by?.includes(user?.id);
+          return {
+            ...c,
+            likes: response.data.likes,
+            liked_by: isLiked 
+              ? c.liked_by.filter(uid => uid !== user.id)
+              : [...(c.liked_by || []), user.id]
+          };
+        }
+        return c;
+      }));
+    } catch (error) {
+      console.error('Error toggling like:', error);
+      if (error.response?.status === 403) {
+        toast.error('Kun PRO-brugere kan like kommentarer');
+      } else {
+        toast.error('Kunne ikke like kommentar');
+      }
+    }
+  };
+
   const [allMappings, setAllMappings] = useState([]);
   const [supplierCache, setSupplierCache] = useState({});
   const [allRecipes, setAllRecipes] = useState([]);
