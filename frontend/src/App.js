@@ -144,6 +144,15 @@ const Navigation = () => {
                       Min profil
                     </Link>
                     
+                    <Link
+                      to="/tips"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      <FaLightbulb className="w-4 h-4 text-yellow-500" />
+                      Tips & Tricks
+                    </Link>
+                    
                     {/* Admin Section */}
                     {user.role === 'admin' && (
                       <>
