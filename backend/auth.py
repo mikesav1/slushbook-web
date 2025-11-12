@@ -165,13 +165,19 @@ def require_auth(db=None):
     return auth_checker
 
 
-def require_role(allowed_roles):
+def require_role(allowed_roles, db=None):
     """Require user to have one of the allowed roles"""
     # Support both single role (string) and multiple roles (list)
     if isinstance(allowed_roles, str):
         allowed_roles = [allowed_roles]
     
-    async def role_checker(user: User = Depends(require_auth)) -> User:
+    async def role_checker(request: Request, credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)) -> User:
+        user = await get_current_user(request, credentials, db)
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Not authenticated"
+            )
         if user.role not in allowed_roles:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
