@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { FaSearch, FaFilter, FaTimes, FaSortAlphaDown, FaPlus } from 'react-icons/fa';
+import { FaSearch, FaFilter, FaTimes, FaSortAlphaDown, FaPlus, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { API } from '../App';
 import RecipeCard from '../components/RecipeCard';
 import UpgradeModal from '../components/UpgradeModal';
