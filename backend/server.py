@@ -59,6 +59,19 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
+
+# Dependency to inject database
+async def get_db():
+    return db
+
+# Wrapper for get_current_user that injects db
+async def get_current_user_with_db(
+    request: Request,
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
+):
+    return await get_current_user(request, credentials, db)
+
+
 # Create uploads directory
 UPLOADS_DIR = ROOT_DIR / 'uploads'
 UPLOADS_DIR.mkdir(exist_ok=True)
