@@ -111,6 +111,12 @@ const RecipesPage = ({ sessionId }) => {
         alcohol: alcoholFilter
       });
       if (typeFilter) params.append('type', typeFilter);
+      if (includeIngredients.length > 0) {
+        params.append('include_ingredients', includeIngredients.join(','));
+      }
+      if (excludeIngredients.length > 0) {
+        params.append('exclude_ingredients', excludeIngredients.join(','));
+      }
       
       const response = await axios.get(`${API}/recipes?${params}`);
       
