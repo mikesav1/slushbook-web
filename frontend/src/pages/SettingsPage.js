@@ -809,6 +809,22 @@ const SettingsPage = ({ sessionId }) => {
               <span className="text-blue-600">→</span>
             </div>
           </Link>
+          
+          <Link
+            to="/admin/tips"
+            className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-yellow-100"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-bold text-gray-800 flex items-center gap-2">
+                  💡 Tips & Tricks
+                </h3>
+                <p className="text-sm text-gray-600">Godkend, rediger eller afvis bruger-indsendte tips</p>
+              </div>
+              <span className="text-yellow-600">→</span>
+            </div>
+          </Link>
+          
           <Link
             to="/admin/sandbox"
             className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-purple-100"
