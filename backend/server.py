@@ -2698,7 +2698,8 @@ async def create_tip(
     """Create a new tip (PRO and Family users only)"""
     # Auto-detect language and country from user
     country_to_lang = {'DK': 'da', 'DE': 'de', 'FR': 'fr', 'GB': 'en', 'US': 'en-US'}
-    language = country_to_lang.get(user.country, 'da')
+    user_country = getattr(user, 'country', 'DK')  # Default to DK if country not set
+    language = country_to_lang.get(user_country, 'da')
     
     # Create tip
     tip = Tip(
@@ -2706,7 +2707,7 @@ async def create_tip(
         content=tip_data.content.strip(),
         category=tip_data.category,
         language=language,
-        country=user.country,
+        country=user_country,
         is_international=tip_data.is_international,
         created_by=user.id,
         creator_name=user.name,
