@@ -262,6 +262,45 @@ const RecipesPage = ({ sessionId }) => {
     setExcludeIngredients([]);
   };
 
+  // Allergen groups for quick filtering
+  const allergenGroups = [
+    {
+      name: '🥜 Nødder',
+      icon: '🥜',
+      ingredients: ['hasselnød', 'mandel', 'pistacie', 'valnød', 'jordnød', 'peanut', 'sesamfrø', 'sesam']
+    },
+    {
+      name: '🥛 Mælk',
+      icon: '🥛',
+      ingredients: ['mælk', 'fløde', 'smør', 'ost', 'yoghurt', 'skummetmælk', 'valle', 'kasein', 'laktose', 'cream']
+    },
+    {
+      name: '🌾 Gluten',
+      icon: '🌾',
+      ingredients: ['hvede', 'byg', 'rug', 'havre', 'malt', 'gluten']
+    },
+    {
+      name: '🍳 Æg',
+      icon: '🍳',
+      ingredients: ['æg', 'æggehvide', 'albumin', 'æggeblomme']
+    },
+    {
+      name: '🍊 Citrus',
+      icon: '🍊',
+      ingredients: ['citron', 'lime', 'appelsin', 'grapefrugt', 'citrus']
+    },
+    {
+      name: '🍓 Bær',
+      icon: '🍓',
+      ingredients: ['jordbær', 'hindbær', 'blåbær', 'brombær', 'ribs']
+    }
+  ];
+
+  const addAllergenGroup = (group) => {
+    const newExcludeList = [...new Set([...excludeIngredients, ...group.ingredients])];
+    setExcludeIngredients(newExcludeList);
+  };
+
   // Get filtered suggestions based on input
   const getIncludeSuggestions = () => {
     if (!ingredientInput) return availableIngredients.slice(0, 10);
