@@ -445,13 +445,13 @@ const RecipesPage = ({ sessionId }) => {
         </div>
 
         {/* Ingredient Filters */}
-        <div className="mb-6 space-y-4 bg-white p-4 rounded-xl border border-gray-200">
+        <div className="mb-6 space-y-4 bg-gradient-to-br from-cyan-50 to-blue-50 p-5 rounded-xl border-2 border-cyan-200 shadow-sm">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-gray-700">Ingrediens-søgning</h3>
+            <h3 className="text-sm font-semibold text-gray-800">🔍 Ingrediens-søgning</h3>
             {(includeIngredients.length > 0 || excludeIngredients.length > 0) && (
               <button
                 onClick={clearAllFilters}
-                className="text-xs text-cyan-600 hover:text-cyan-700 font-medium"
+                className="text-xs text-cyan-600 hover:text-cyan-800 font-medium bg-white px-2 py-1 rounded-md"
               >
                 Ryd alle
               </button>
