@@ -2723,6 +2723,93 @@ async def create_tip(
     
     return tip
 
+@api_router.post("/tips/{tip_id}/upload-image")
+async def upload_tip_image(
+    tip_id: str,
+    file: UploadFile = File(...),
+    user: User = Depends(require_role(["pro", "family", "editor", "admin"], db))
+):
+    """Upload and compress image for a tip (max 80KB)"""
+    # Find tip
+    tip = await db.tips_and_tricks.find_one({"id": tip_id})
+    if not tip:
+        raise HTTPException(status_code=404, detail="Tip not found")
+    
+    # Check ownership (admin can edit any)
+    if tip['created_by'] != user.id and user.role not in ["admin", "editor"]:
+        raise HTTPException(status_code=403, detail="Not authorized to edit this tip")
+    
+    # Validate file type
+    if not file.content_type.startswith('image/'):
+        raise HTTPException(status_code=400, detail="File must be an image")
+    
+    try:
+        # Read image
+        contents = await file.read()
+        image = Image.open(io.BytesIO(contents))
+        
+        # Convert to RGB if necessary (for PNG with transparency)
+        if image.mode in ('RGBA', 'LA', 'P'):
+            background = Image.new('RGB', image.size, (255, 255, 255))
+            if image.mode == 'P':
+                image = image.convert('RGBA')
+            background.paste(image, mask=image.split()[-1] if image.mode == 'RGBA' else None)
+            image = background
+        
+        # Compress image iteratively until under 80KB
+        max_size = 80 * 1024  # 80KB
+        quality = 95
+        output = io.BytesIO()
+        
+        # Start with reasonable dimensions
+        max_dimension = 1200
+        if image.width > max_dimension or image.height > max_dimension:
+            image.thumbnail((max_dimension, max_dimension), Image.Resampling.LANCZOS)
+        
+        # Iteratively reduce quality until under 80KB
+        while quality > 10:
+            output.seek(0)
+            output.truncate()
+            image.save(output, format='JPEG', quality=quality, optimize=True)
+            size = output.tell()
+            
+            if size <= max_size:
+                break
+            
+            # Reduce quality or dimensions
+            if quality > 50:
+                quality -= 5
+            else:
+                # If quality is already low, reduce dimensions
+                new_size = (int(image.width * 0.9), int(image.height * 0.9))
+                image = image.resize(new_size, Image.Resampling.LANCZOS)
+                quality = 85  # Reset quality after resize
+        
+        # Save to file
+        tips_upload_dir = ROOT_DIR / 'uploads' / 'tips'
+        tips_upload_dir.mkdir(parents=True, exist_ok=True)
+        
+        filename = f"{tip_id}_{uuid.uuid4().hex[:8]}.jpg"
+        filepath = tips_upload_dir / filename
+        
+        with open(filepath, 'wb') as f:
+            f.write(output.getvalue())
+        
+        # Update tip with image URL
+        image_url = f"/uploads/tips/{filename}"
+        await db.tips_and_tricks.update_one(
+            {"id": tip_id},
+            {"$set": {"image_url": image_url}}
+        )
+        
+        logger.info(f"Image uploaded for tip {tip_id}: {filename} ({size} bytes)")
+        
+        return {"message": "Image uploaded", "image_url": image_url, "size": size}
+    
+    except Exception as e:
+        logger.error(f"Error uploading image: {e}")
+        raise HTTPException(status_code=500, detail=f"Error processing image: {str(e)}")
+
 @api_router.put("/tips/{tip_id}", response_model=Tip)
 async def update_tip(
     tip_id: str,
