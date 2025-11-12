@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { FaPlus, FaHeart, FaRegHeart, FaChevronDown, FaChevronUp, FaTrash, FaPaperPlane, FaGlobe } from 'react-icons/fa';
-import { API } from '../App';
+import { API, BACKEND } from '../App';
 import { useAuth } from '../context/AuthContext';
 
 const TipsPage = () => {
