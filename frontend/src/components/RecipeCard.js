@@ -86,10 +86,17 @@ const RecipeCard = ({ recipe, sessionId, showMatchInfo, onLockedClick }) => {
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
         <div className="absolute top-4 right-4 flex gap-2">
-          {recipe.is_published && recipe.author !== 'system' && (
-            <span className="bg-green-600 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
-              🌍 Offentlig
-            </span>
+          {recipe.is_published && recipe.author !== 'system' && recipe.author_name && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = `/recipes?author=${recipe.author}`;
+              }}
+              className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 text-white rounded-full text-sm font-bold flex items-center justify-center shadow-lg hover:scale-110 transition-transform border-2 border-white"
+              title={`Se opskrifter fra ${recipe.author_name}`}
+            >
+              {recipe.author_name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2)}
+            </button>
           )}
           {recipe.alcohol_flag && (
             <span className="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
