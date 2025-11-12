@@ -285,6 +285,26 @@ const SettingsPage = ({ sessionId }) => {
         </div>
       </div>
 
+      {/* Tips & Tricks - Prominent placement */}
+      {user && user.role !== 'guest' && (
+        <Link
+          to="/tips"
+          className="block bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-[1.02]"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-bold flex items-center gap-2 mb-2">
+                💡 Tips & Tricks
+              </h2>
+              <p className="text-cyan-50">
+                Del erfaringer og lær af fællesskabet om maskiner, produkter og drift
+              </p>
+            </div>
+            <div className="text-4xl">→</div>
+          </div>
+        </Link>
+      )}
+
       {/* Device Management */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <div className="flex items-center justify-between mb-4">
