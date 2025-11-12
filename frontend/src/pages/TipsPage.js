@@ -233,6 +233,15 @@ const TipsPage = () => {
                 </div>
               </div>
 
+              {/* Image */}
+              {tip.image_url && (
+                <img
+                  src={`${API}${tip.image_url}`}
+                  alt={tip.title}
+                  className="w-full h-48 object-cover rounded-lg mb-3"
+                />
+              )}
+
               {/* Content */}
               <p className="text-gray-700 text-sm mb-4 line-clamp-4">{tip.content}</p>
 
