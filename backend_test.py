@@ -1370,6 +1370,151 @@ Jordbær Test,Test recipe med danske tegn,klassisk,red,14.0,1000,Nej,test;dansk,
                 
         return False, None
 
+    def test_urgent_login_investigation(self):
+        """URGENT: Login Problem Investigation - kimesav@gmail.com / admin123"""
+        self.log("=== URGENT LOGIN PROBLEM INVESTIGATION ===")
+        
+        try:
+            # Test login with known credentials: kimesav@gmail.com / admin123
+            self.log("\n--- Testing login with kimesav@gmail.com / admin123 ---")
+            
+            login_data = {
+                "email": KIMESAV_EMAIL,
+                "password": KIMESAV_PASSWORD
+            }
+            
+            self.log(f"Attempting POST {self.base_url}/auth/login")
+            self.log(f"Email: {KIMESAV_EMAIL}")
+            self.log(f"Password: {'*' * len(KIMESAV_PASSWORD)}")
+            
+            login_response = self.session.post(f"{self.base_url}/auth/login", json=login_data)
+            
+            self.log(f"Response Status Code: {login_response.status_code}")
+            self.log(f"Response Headers: {dict(login_response.headers)}")
+            
+            if login_response.status_code == 200:
+                # SUCCESS CASE
+                login_result = login_response.json()
+                session_token = login_result.get("session_token")
+                user_data = login_result.get("user", {})
+                
+                self.log("✅ LOGIN SUCCESSFUL!")
+                self.log(f"✅ Session token returned: {session_token[:20] if session_token else 'None'}...")
+                self.log(f"✅ User object returned: {user_data}")
+                
+                # Verify session_token is present
+                if session_token:
+                    self.log("✅ Session token is present and valid")
+                else:
+                    self.log("❌ Session token is missing from response")
+                    return False
+                
+                # Verify user role
+                user_role = user_data.get('role')
+                if user_role:
+                    self.log(f"✅ User role: {user_role}")
+                else:
+                    self.log("❌ User role missing from response")
+                
+                # Test the session token works
+                self.log("\n--- Testing session token functionality ---")
+                headers = {"Authorization": f"Bearer {session_token}"}
+                auth_check = self.session.get(f"{self.base_url}/auth/me", headers=headers)
+                
+                if auth_check.status_code == 200:
+                    self.log("✅ Session token works - auth/me endpoint successful")
+                    auth_user = auth_check.json()
+                    self.log(f"✅ Authenticated user: {auth_user.get('email')} ({auth_user.get('role')})")
+                else:
+                    self.log(f"❌ Session token doesn't work - auth/me failed: {auth_check.status_code}")
+                    self.log(f"Auth/me response: {auth_check.text}")
+                
+                return True
+                
+            else:
+                # FAILURE CASE - Investigate why
+                self.log("❌ LOGIN FAILED!")
+                self.log(f"❌ Status Code: {login_response.status_code}")
+                
+                try:
+                    error_data = login_response.json()
+                    self.log(f"❌ Error Response: {error_data}")
+                    error_detail = error_data.get('detail', 'No detail provided')
+                    self.log(f"❌ Error Detail: {error_detail}")
+                except:
+                    self.log(f"❌ Raw Response Text: {login_response.text}")
+                
+                # Check if it's a 401 (Invalid credentials) or server error
+                if login_response.status_code == 401:
+                    self.log("❌ DIAGNOSIS: Invalid email or password")
+                    self.log("   - Either the user doesn't exist")
+                    self.log("   - Or the password is incorrect")
+                    self.log("   - Or there's a password hash mismatch")
+                elif login_response.status_code == 500:
+                    self.log("❌ DIAGNOSIS: Server error - backend issue")
+                    self.log("   - Database connection problem")
+                    self.log("   - Code error in login endpoint")
+                    self.log("   - Authentication system failure")
+                else:
+                    self.log(f"❌ DIAGNOSIS: Unexpected error code {login_response.status_code}")
+                
+                # Try to get more information about the user
+                self.log("\n--- Investigating user existence ---")
+                
+                # Try password reset to see if user exists
+                reset_request = {"email": KIMESAV_EMAIL}
+                reset_response = self.session.post(f"{self.base_url}/auth/forgot-password", json=reset_request)
+                
+                self.log(f"Password reset request status: {reset_response.status_code}")
+                if reset_response.status_code == 200:
+                    reset_data = reset_response.json()
+                    reset_token = reset_data.get("reset_token")
+                    if reset_token:
+                        self.log("✅ User exists (password reset token generated)")
+                        self.log("❌ CONCLUSION: User exists but password is incorrect")
+                        
+                        # Try to reset password and login again
+                        self.log("\n--- Attempting password reset to fix login ---")
+                        new_password = KIMESAV_PASSWORD  # Reset to same password
+                        
+                        reset_password_data = {
+                            "reset_token": reset_token,
+                            "new_password": new_password
+                        }
+                        
+                        reset_password_response = self.session.post(f"{self.base_url}/auth/reset-password", json=reset_password_data)
+                        
+                        if reset_password_response.status_code == 200:
+                            self.log("✅ Password reset successful")
+                            
+                            # Try login again
+                            self.log("--- Retrying login after password reset ---")
+                            retry_login = self.session.post(f"{self.base_url}/auth/login", json=login_data)
+                            
+                            if retry_login.status_code == 200:
+                                retry_result = retry_login.json()
+                                retry_token = retry_result.get("session_token")
+                                self.log("✅ LOGIN SUCCESSFUL AFTER PASSWORD RESET!")
+                                self.log(f"✅ Session token: {retry_token[:20] if retry_token else 'None'}...")
+                                return True
+                            else:
+                                self.log(f"❌ Login still failed after password reset: {retry_login.status_code}")
+                                self.log(f"❌ Response: {retry_login.text}")
+                        else:
+                            self.log(f"❌ Password reset failed: {reset_password_response.status_code}")
+                    else:
+                        self.log("❌ No reset token in response - user might not exist")
+                else:
+                    self.log("❌ Password reset request failed - user might not exist")
+                
+                return False
+                
+        except Exception as e:
+            self.log(f"❌ Login investigation failed with exception: {str(e)}")
+            import traceback
+            self.log(f"❌ Traceback: {traceback.format_exc()}")
+            return False
+
     def test_critical_authentication_fix(self):
         """Test critical authentication fix - database dependency injection for PRO users"""
         self.log("=== TESTING CRITICAL AUTHENTICATION FIX ===")
