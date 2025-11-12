@@ -234,6 +234,7 @@ class Comment(BaseModel):
     user_id: str
     user_name: str  # Denormalized for display
     comment: str
+    language: str = "da"  # Auto-detected from user.country, default Danish
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: Optional[datetime] = None
     likes: int = 0
@@ -243,6 +244,7 @@ class Comment(BaseModel):
 class CommentCreate(BaseModel):
     recipe_id: str
     comment: str
+    language: Optional[str] = None  # Optional, will auto-detect if not provided
 
 class CommentUpdate(BaseModel):
     comment: str
