@@ -322,6 +322,14 @@ const RecipeDetailPage = ({ sessionId }) => {
   }, [recipe, machines, targetVolume]); // Auto-scale when recipe, machines, or targetVolume changes
 
   const toggleFavorite = async () => {
+    // Check if user is guest
+    if (!user || user.role === 'guest') {
+      toast.error('Kun PRO-brugere kan gemme favoritter. Opgrader til PRO for ubegrænsede funktioner!', {
+        duration: 4000
+      });
+      return;
+    }
+    
     try {
       if (recipe.is_favorite) {
         await axios.delete(`${API}/favorites/${sessionId}/${id}`);
