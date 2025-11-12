@@ -14,6 +14,9 @@ const CreateTipPage = () => {
   const [category, setCategory] = useState('maskiner');
   const [isInternational, setIsInternational] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [imageOwnershipConfirmed, setImageOwnershipConfirmed] = useState(false);
 
   const categories = [
     { id: 'maskiner', name: 'Maskiner', icon: '🧊' },
