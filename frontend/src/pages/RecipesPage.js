@@ -196,6 +196,40 @@ const RecipesPage = ({ sessionId }) => {
     setFilteredRecipes(filtered);
   };
 
+  // Ingredient filter functions
+  const addIncludeIngredient = (e) => {
+    if (e.key === 'Enter' && ingredientInput.trim()) {
+      e.preventDefault();
+      if (!includeIngredients.includes(ingredientInput.trim().toLowerCase())) {
+        setIncludeIngredients([...includeIngredients, ingredientInput.trim().toLowerCase()]);
+      }
+      setIngredientInput('');
+    }
+  };
+
+  const removeIncludeIngredient = (ingredient) => {
+    setIncludeIngredients(includeIngredients.filter(ing => ing !== ingredient));
+  };
+
+  const addExcludeIngredient = (e) => {
+    if (e.key === 'Enter' && excludeIngredientInput.trim()) {
+      e.preventDefault();
+      if (!excludeIngredients.includes(excludeIngredientInput.trim().toLowerCase())) {
+        setExcludeIngredients([...excludeIngredients, excludeIngredientInput.trim().toLowerCase()]);
+      }
+      setExcludeIngredientInput('');
+    }
+  };
+
+  const removeExcludeIngredient = (ingredient) => {
+    setExcludeIngredients(excludeIngredients.filter(ing => ing !== ingredient));
+  };
+
+  const clearAllFilters = () => {
+    setIncludeIngredients([]);
+    setExcludeIngredients([]);
+  };
+
   const types = [
     { value: 'klassisk', label: 'Klassisk', icon: 'klassisk.png' },
     { value: 'juice', label: 'Juice', icon: 'juice.png' },
