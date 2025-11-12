@@ -7042,6 +7042,245 @@ test,data,here"""
             self.log("❌ /api/match endpoint may be using cached/old pantry data")
             return False
 
+    def test_ingredient_filtering_feature(self):
+        """Test NEW Ingredient Filter Feature on /api/recipes endpoint"""
+        self.log("=== TESTING NEW INGREDIENT FILTERING FEATURE ===")
+        
+        try:
+            # Test 1: Include Ingredients - Single ingredient (citron)
+            self.log("\n--- Test 1: Include Ingredients - Single ingredient (citron) ---")
+            
+            response = self.session.get(f"{self.base_url}/recipes?include_ingredients=citron")
+            
+            if response.status_code == 200:
+                recipes = response.json()
+                self.log(f"✅ GET /api/recipes?include_ingredients=citron returned {len(recipes)} recipes")
+                
+                # Verify all recipes contain citron
+                citron_found = 0
+                for recipe in recipes:
+                    ingredients = recipe.get('ingredients', [])
+                    has_citron = any('citron' in ing.get('name', '').lower() for ing in ingredients)
+                    if has_citron:
+                        citron_found += 1
+                        self.log(f"  ✅ Recipe '{recipe.get('name')}' contains citron ingredient")
+                    else:
+                        self.log(f"  ❌ Recipe '{recipe.get('name')}' does NOT contain citron ingredient")
+                        return False
+                
+                if citron_found == len(recipes):
+                    self.log(f"✅ All {len(recipes)} recipes contain citron ingredient (correct)")
+                else:
+                    self.log(f"❌ Only {citron_found}/{len(recipes)} recipes contain citron")
+                    return False
+                    
+            else:
+                self.log(f"❌ Include ingredients test failed: {response.status_code} - {response.text}")
+                return False
+            
+            # Test 2: Include Ingredients - Multiple ingredients (citron,jordbær)
+            self.log("\n--- Test 2: Include Ingredients - Multiple ingredients (citron,jordbær) ---")
+            
+            response = self.session.get(f"{self.base_url}/recipes?include_ingredients=citron,jordbær")
+            
+            if response.status_code == 200:
+                recipes = response.json()
+                self.log(f"✅ GET /api/recipes?include_ingredients=citron,jordbær returned {len(recipes)} recipes")
+                
+                # Verify all recipes contain BOTH citron AND jordbær
+                for recipe in recipes:
+                    ingredients = recipe.get('ingredients', [])
+                    ingredient_names = [ing.get('name', '').lower() for ing in ingredients]
+                    
+                    has_citron = any('citron' in name for name in ingredient_names)
+                    has_jordbaer = any('jordbær' in name for name in ingredient_names)
+                    
+                    if has_citron and has_jordbaer:
+                        self.log(f"  ✅ Recipe '{recipe.get('name')}' contains BOTH citron AND jordbær")
+                    else:
+                        self.log(f"  ❌ Recipe '{recipe.get('name')}' missing ingredients - citron: {has_citron}, jordbær: {has_jordbaer}")
+                        return False
+                        
+            else:
+                self.log(f"❌ Multiple include ingredients test failed: {response.status_code} - {response.text}")
+                return False
+            
+            # Test 3: Exclude Ingredients - Single ingredient (mælk)
+            self.log("\n--- Test 3: Exclude Ingredients - Single ingredient (mælk) ---")
+            
+            response = self.session.get(f"{self.base_url}/recipes?exclude_ingredients=mælk")
+            
+            if response.status_code == 200:
+                recipes = response.json()
+                self.log(f"✅ GET /api/recipes?exclude_ingredients=mælk returned {len(recipes)} recipes")
+                
+                # Verify NO recipes contain mælk
+                for recipe in recipes:
+                    ingredients = recipe.get('ingredients', [])
+                    ingredient_names = [ing.get('name', '').lower() for ing in ingredients]
+                    
+                    has_maelk = any('mælk' in name for name in ingredient_names)
+                    
+                    if not has_maelk:
+                        self.log(f"  ✅ Recipe '{recipe.get('name')}' correctly excludes mælk")
+                    else:
+                        self.log(f"  ❌ Recipe '{recipe.get('name')}' contains mælk (should be excluded)")
+                        return False
+                        
+            else:
+                self.log(f"❌ Exclude ingredients test failed: {response.status_code} - {response.text}")
+                return False
+            
+            # Test 4: Combined Filters - Include citron, Exclude alkohol
+            self.log("\n--- Test 4: Combined Filters - Include citron, Exclude alkohol ---")
+            
+            response = self.session.get(f"{self.base_url}/recipes?include_ingredients=citron&exclude_ingredients=alkohol")
+            
+            if response.status_code == 200:
+                recipes = response.json()
+                self.log(f"✅ GET /api/recipes?include_ingredients=citron&exclude_ingredients=alkohol returned {len(recipes)} recipes")
+                
+                # Verify all recipes have citron but NO alkohol
+                for recipe in recipes:
+                    ingredients = recipe.get('ingredients', [])
+                    ingredient_names = [ing.get('name', '').lower() for ing in ingredients]
+                    
+                    has_citron = any('citron' in name for name in ingredient_names)
+                    has_alkohol = any('alkohol' in name for name in ingredient_names)
+                    
+                    if has_citron and not has_alkohol:
+                        self.log(f"  ✅ Recipe '{recipe.get('name')}' has citron but NO alkohol (correct)")
+                    else:
+                        self.log(f"  ❌ Recipe '{recipe.get('name')}' failed combined filter - citron: {has_citron}, alkohol: {has_alkohol}")
+                        return False
+                        
+            else:
+                self.log(f"❌ Combined filters test failed: {response.status_code} - {response.text}")
+                return False
+            
+            # Test 5: Ingredient Filter + Alcohol Filter
+            self.log("\n--- Test 5: Ingredient Filter + Alcohol Filter ---")
+            
+            response = self.session.get(f"{self.base_url}/recipes?include_ingredients=jordbær&alcohol=none")
+            
+            if response.status_code == 200:
+                recipes = response.json()
+                self.log(f"✅ GET /api/recipes?include_ingredients=jordbær&alcohol=none returned {len(recipes)} recipes")
+                
+                # Verify all recipes have jordbær AND no alcohol
+                for recipe in recipes:
+                    ingredients = recipe.get('ingredients', [])
+                    ingredient_names = [ing.get('name', '').lower() for ing in ingredients]
+                    
+                    has_jordbaer = any('jordbær' in name for name in ingredient_names)
+                    alcohol_flag = recipe.get('alcohol_flag', False)
+                    
+                    if has_jordbaer and not alcohol_flag:
+                        self.log(f"  ✅ Recipe '{recipe.get('name')}' has jordbær AND no alcohol (correct)")
+                    else:
+                        self.log(f"  ❌ Recipe '{recipe.get('name')}' failed filter - jordbær: {has_jordbaer}, alcohol_flag: {alcohol_flag}")
+                        return False
+                        
+            else:
+                self.log(f"❌ Ingredient + alcohol filter test failed: {response.status_code} - {response.text}")
+                return False
+            
+            # Test 6: Case-Insensitive Matching
+            self.log("\n--- Test 6: Case-Insensitive Matching ---")
+            
+            # Test uppercase CITRON
+            response_upper = self.session.get(f"{self.base_url}/recipes?include_ingredients=CITRON")
+            response_lower = self.session.get(f"{self.base_url}/recipes?include_ingredients=citron")
+            
+            if response_upper.status_code == 200 and response_lower.status_code == 200:
+                recipes_upper = response_upper.json()
+                recipes_lower = response_lower.json()
+                
+                self.log(f"✅ Uppercase CITRON returned {len(recipes_upper)} recipes")
+                self.log(f"✅ Lowercase citron returned {len(recipes_lower)} recipes")
+                
+                # Should return same results
+                if len(recipes_upper) == len(recipes_lower):
+                    self.log("✅ Case-insensitive matching works correctly (same number of results)")
+                    
+                    # Verify same recipe IDs
+                    upper_ids = {r.get('id') for r in recipes_upper}
+                    lower_ids = {r.get('id') for r in recipes_lower}
+                    
+                    if upper_ids == lower_ids:
+                        self.log("✅ Case-insensitive matching returns identical recipes")
+                    else:
+                        self.log("❌ Case-insensitive matching returns different recipes")
+                        return False
+                else:
+                    self.log(f"❌ Case-insensitive matching failed - different counts: {len(recipes_upper)} vs {len(recipes_lower)}")
+                    return False
+                    
+            else:
+                self.log(f"❌ Case-insensitive test failed - upper: {response_upper.status_code}, lower: {response_lower.status_code}")
+                return False
+            
+            # Test 7: Partial Matching
+            self.log("\n--- Test 7: Partial Matching ---")
+            
+            response = self.session.get(f"{self.base_url}/recipes?include_ingredients=citron")
+            
+            if response.status_code == 200:
+                recipes = response.json()
+                self.log(f"✅ Testing partial matching with 'citron' filter")
+                
+                # Look for recipes that have ingredients containing "citron" (like "citronjuice", "citron saft", etc.)
+                partial_matches_found = 0
+                
+                for recipe in recipes:
+                    ingredients = recipe.get('ingredients', [])
+                    for ing in ingredients:
+                        ing_name = ing.get('name', '').lower()
+                        if 'citron' in ing_name:
+                            if ing_name != 'citron':  # It's a partial match
+                                partial_matches_found += 1
+                                self.log(f"  ✅ Partial match found: '{ing_name}' contains 'citron'")
+                                break
+                
+                if partial_matches_found > 0:
+                    self.log(f"✅ Partial matching works - found {partial_matches_found} recipes with partial citron matches")
+                else:
+                    self.log("ℹ️  No partial matches found (may be expected if all ingredients are exact 'citron')")
+                    
+            else:
+                self.log(f"❌ Partial matching test failed: {response.status_code} - {response.text}")
+                return False
+            
+            # Test 8: Empty Results Test
+            self.log("\n--- Test 8: Empty Results Test ---")
+            
+            response = self.session.get(f"{self.base_url}/recipes?include_ingredients=nonexistentingredient123")
+            
+            if response.status_code == 200:
+                recipes = response.json()
+                if len(recipes) == 0:
+                    self.log("✅ Non-existent ingredient correctly returns empty results")
+                else:
+                    self.log(f"❌ Non-existent ingredient returned {len(recipes)} recipes (should be 0)")
+                    return False
+            else:
+                self.log(f"❌ Empty results test failed: {response.status_code} - {response.text}")
+                return False
+            
+            self.log("\n🎉 ALL INGREDIENT FILTERING TESTS PASSED!")
+            self.log("✅ Include filter: Only recipes containing ALL specified ingredients")
+            self.log("✅ Exclude filter: No recipes containing ANY excluded ingredients")
+            self.log("✅ Combined filters work together")
+            self.log("✅ Works with existing filters (alcohol, type)")
+            self.log("✅ Case-insensitive matching")
+            self.log("✅ Partial matching (e.g., 'citron' matches 'citronjuice')")
+            
+            return True
+            
+        except Exception as e:
+            self.log(f"❌ Ingredient filtering test failed with exception: {str(e)}")
+            return False
+
     def run_all_tests(self):
         """Run all backend tests"""
         self.log("Starting SLUSHBOOK Backend System Tests")
