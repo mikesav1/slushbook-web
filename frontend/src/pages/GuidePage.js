@@ -62,7 +62,27 @@ const GuidePage = () => {
                 <li>Filtrer efter type (slush, smoothie, cocktail, osv.)</li>
                 <li>Vælg med eller uden alkohol</li>
                 <li>Søg på navn eller ingredienser</li>
+                <li><strong>🆕 Avanceret søgning:</strong> Inkluder/ekskluder specifikke ingredienser</li>
+                <li><strong>🆕 Allergenfiltre:</strong> Hurtigvalg for mælk, nødder, gluten, citrus, m.m.</li>
               </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold text-lg mb-2">🆕 Kommentarer og anmeldelser</h3>
+              <p>Del dine erfaringer med andre brugere:</p>
+              <ul className="list-disc pl-6 mt-2 space-y-1">
+                <li>Bedøm opskrifter med stjerner (1-5)</li>
+                <li>Skriv kommentarer og tips til andre</li>
+                <li>Se hvad andre synes om opskrifterne</li>
+                <li>PRO brugere kan kommentere ubegrænset</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold text-lg mb-2">🆕 Se forfattere</h3>
+              <p>
+                På opskriftskort kan du se forfatterens initialer. Klik på forfatternavnet på detaljesiden for at se deres profil og andre opskrifter.
+              </p>
             </div>
 
             <div>
