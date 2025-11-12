@@ -33,6 +33,7 @@ const SettingsPage = ({ sessionId }) => {
   const [devices, setDevices] = useState([]);
   const [deviceLimits, setDeviceLimits] = useState({ current: 0, max: 1 });
   const [currentTourStep, setCurrentTourStep] = useState(-1);
+  const [isAdminSectionExpanded, setIsAdminSectionExpanded] = useState(true);
 
   useEffect(() => {
     fetchData();
