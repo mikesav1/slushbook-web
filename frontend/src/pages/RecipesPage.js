@@ -27,6 +27,12 @@ const RecipesPage = ({ sessionId }) => {
   const [showMyRecipes, setShowMyRecipes] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [currentTourStep, setCurrentTourStep] = useState(-1);
+  
+  // Ingredient filters
+  const [includeIngredients, setIncludeIngredients] = useState([]);
+  const [excludeIngredients, setExcludeIngredients] = useState([]);
+  const [ingredientInput, setIngredientInput] = useState('');
+  const [excludeIngredientInput, setExcludeIngredientInput] = useState('');
 
   // Save filters to localStorage whenever they change
   useEffect(() => {
