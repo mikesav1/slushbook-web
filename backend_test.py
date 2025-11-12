@@ -7286,12 +7286,12 @@ test,data,here"""
         self.log("Starting SLUSHBOOK Backend System Tests")
         self.log("=" * 60)
         
-        # Run the guest user limitations test as requested in review
-        self.log("\n👤 GÆSTEBRUGER BEGRÆNSNINGER TEST")
-        guest_limitations_result = self.test_guest_user_limitations()
+        # Run the NEW Ingredient Filtering Feature test as requested in review
+        self.log("\n🔍 NEW INGREDIENT FILTERING FEATURE TEST")
+        ingredient_filtering_result = self.test_ingredient_filtering_feature()
         
         # Create results dictionary
-        critical_results = {"👤 GÆSTEBRUGER BEGRÆNSNINGER": guest_limitations_result}
+        critical_results = {"🔍 NEW INGREDIENT FILTERING FEATURE": ingredient_filtering_result}
         
         # Run additional tests if needed
         additional_tests = []
