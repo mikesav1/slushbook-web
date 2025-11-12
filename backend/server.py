@@ -3312,12 +3312,8 @@ app.include_router(api_router)
 app.include_router(redirect_routes.router)  # Admin routes: /api/admin/*
 app.include_router(redirect_routes.go_router)  # Redirect routes: /api/go/*
 
-# Logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+# Logging configuration is done at the top of the file
+# logger = logging.getLogger(__name__) - already defined at line 60
 
 # Startup event
 @app.on_event("startup")
