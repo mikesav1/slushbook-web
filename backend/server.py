@@ -1820,6 +1820,14 @@ async def get_recipe(recipe_id: str, session_id: Optional[str] = None, request: 
         )
         recipe['user_rating'] = rating.get('stars') if rating else None
     
+    # Add author name for user-created recipes
+    if recipe.get('author') and recipe.get('author') != 'system':
+        author_user = await db.users.find_one({"id": recipe['author']}, {"_id": 0, "name": 1})
+        if author_user:
+            recipe['author_name'] = author_user.get('name', 'Ukendt')
+        else:
+            recipe['author_name'] = 'Ukendt'
+    
     # Increment view count (only for system recipes)
     if recipe.get('author') == 'system':
         await db.recipes.update_one(
