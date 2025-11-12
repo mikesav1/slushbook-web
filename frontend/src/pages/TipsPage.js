@@ -318,7 +318,7 @@ const TipsPage = () => {
                     <div className="p-4 bg-gray-50">
                       {tip.image_url && (
                         <img
-                          src={`${BACKEND}${tip.image_url}`}
+                          src={`${API}${tip.image_url}`}
                           alt={tip.title}
                           className="w-full max-h-64 object-cover rounded-lg mb-3"
                         />
