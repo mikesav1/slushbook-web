@@ -622,6 +622,8 @@ const RecipesPage = ({ sessionId }) => {
               📊 Viser {filteredRecipes.length} opskrifter med de valgte filtre
             </div>
           )}
+            </div>
+          )}
         </div>
 
         {/* Type Filter */}
