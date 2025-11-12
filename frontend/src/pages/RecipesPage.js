@@ -458,6 +458,27 @@ const RecipesPage = ({ sessionId }) => {
             )}
           </div>
 
+          {/* Quick Allergen Tags */}
+          <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+            <label className="block text-xs font-semibold text-gray-700 mb-2">
+              ⚡ Hurtig udelukkelse (klik for at udelukke allergen-gruppe)
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {allergenGroups.map((group, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => addAllergenGroup(group)}
+                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-white hover:bg-orange-50 border border-gray-200 hover:border-orange-300 rounded-lg text-xs font-medium text-gray-700 hover:text-orange-700 transition-all shadow-sm"
+                  title={`Udeluk: ${group.ingredients.join(', ')}`}
+                >
+                  <span>{group.icon}</span>
+                  <span>{group.name.replace(/🥜|🥛|🌾|🍳|🍊|🍓/g, '').trim()}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Include Ingredients */}
           <div className="relative">
             <label className="block text-xs font-medium text-gray-600 mb-2">
