@@ -152,14 +152,17 @@ async def get_current_user(
     return User(**user_doc)
 
 
-async def require_auth(user: Optional[User] = Depends(get_current_user)) -> User:
-    """Require authentication"""
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Not authenticated"
-        )
-    return user
+def require_auth(db=None):
+    """Require authentication (any logged-in user)"""
+    async def auth_checker(request: Request, credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)) -> User:
+        user = await get_current_user(request, credentials, db)
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Not authenticated"
+            )
+        return user
+    return auth_checker
 
 
 def require_role(allowed_roles):
