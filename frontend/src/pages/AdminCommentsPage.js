@@ -69,10 +69,9 @@ const AdminCommentsPage = () => {
     const flags = {
       'da': '🇩🇰',
       'de': '🇩🇪',
+      'fr': '🇫🇷',
       'en': '🇬🇧',
-      'sv': '🇸🇪',
-      'no': '🇳🇴',
-      'fi': '🇫🇮'
+      'en-US': '🇺🇸'
     };
     return flags[lang] || '🌍';
   };
@@ -81,10 +80,9 @@ const AdminCommentsPage = () => {
     const names = {
       'da': 'Dansk',
       'de': 'Tysk',
+      'fr': 'Fransk',
       'en': 'Engelsk',
-      'sv': 'Svensk',
-      'no': 'Norsk',
-      'fi': 'Finsk'
+      'en-US': 'Amerikansk'
     };
     return names[lang] || lang;
   };
