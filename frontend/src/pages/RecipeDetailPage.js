@@ -646,6 +646,23 @@ const RecipeDetailPage = ({ sessionId }) => {
             
             <div className="mb-4">
               <h1 className="text-3xl md:text-4xl font-bold mb-3">{toSentenceCase(recipe.name)}</h1>
+              
+              {/* Author Info - User-created recipes */}
+              {recipe.author && recipe.author !== 'system' && recipe.author_name && (
+                <div className="mb-3 flex items-center gap-2">
+                  <span className="text-sm text-gray-600 font-medium">Forfatter:</span>
+                  <button
+                    onClick={() => navigate(`/recipes?author=${recipe.author}`)}
+                    className="text-cyan-600 hover:text-cyan-700 font-semibold text-sm hover:underline flex items-center gap-2"
+                  >
+                    <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 text-white rounded-full text-xs font-bold flex items-center justify-center border-2 border-cyan-200">
+                      {recipe.author_name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2)}
+                    </div>
+                    {recipe.author_name}
+                  </button>
+                </div>
+              )}
+              
               <div className="flex flex-wrap gap-2 mb-4">
                 <button
                   onClick={() => window.location.href = '/brix-info'}
