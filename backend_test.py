@@ -8225,11 +8225,14 @@ Test CSV Product Empty,test;csv,,bilka,https://www.bilka.dk/test-csv-product-2,T
             return False
 
 def main():
-    """Run guest user limitations test as requested in review"""
-    print("🧪 SLUSHBOOK Gæstebruger Begrænsninger Test")
+    """Run critical authentication fix verification as requested in review"""
+    print("🧪 SLUSHBOOK Critical Authentication Fix Verification")
+    print("=" * 80)
+    print("OBJECTIVE: Test if database dependency injection fix resolved PRO user authentication failures")
+    print("FOCUS: Verify NO 500 Internal Server Errors on protected endpoints")
     print("=" * 80)
     
-    # Test only Preview environment as specified in review request
+    # Test Preview environment (where the fix was applied)
     environments = [
         ("Preview", "https://prod-onboard.preview.emergentagent.com/api"),
     ]
@@ -8242,9 +8245,10 @@ def main():
         
         tester = BackendTester(env_url)
         
-        # Run guest user limitations test as requested in review
+        # Run critical authentication fix test as requested in review
         tests = [
-            ("Gæstebruger Begrænsninger", tester.test_guest_user_limitations)
+            ("Critical Authentication Fix", tester.test_critical_authentication_fix),
+            ("Guest User Limitations (if time permits)", tester.test_guest_user_limitations)
         ]
         
         env_passed = 0
@@ -8272,7 +8276,7 @@ def main():
     
     # Overall summary
     print("\n" + "=" * 80)
-    print("OVERALL TEST SUMMARY")
+    print("CRITICAL AUTHENTICATION FIX VERIFICATION SUMMARY")
     print("=" * 80)
     
     total_passed = sum(r["passed"] for r in all_results.values())
@@ -8285,10 +8289,14 @@ def main():
     print(f"\nTotal: {total_passed} passed, {total_failed} failed")
     
     if total_failed == 0:
-        print("🎉 All tests passed on all environments!")
+        print("🎉 CRITICAL FIX VERIFICATION PASSED!")
+        print("✅ PRO users can now access protected endpoints without 500 errors")
+        print("✅ Database dependency injection is working correctly")
         return True
     else:
-        print("⚠️  Some tests failed - check output above for details")
+        print("⚠️  CRITICAL FIX VERIFICATION FAILED!")
+        print("❌ Some protected endpoints still returning 500 errors")
+        print("❌ Database dependency injection may need further investigation")
         return False
 
 if __name__ == "__main__":
