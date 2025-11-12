@@ -19,6 +19,7 @@ import EditRecipePage from "./pages/EditRecipePage";
 import AdminPage from "./pages/AdminPage";
 import AdminSandboxPage from "./pages/AdminSandboxPage";
 import AdminIngredientsPage from "./pages/AdminIngredientsPage";
+import AdminCommentsPage from "./pages/AdminCommentsPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
