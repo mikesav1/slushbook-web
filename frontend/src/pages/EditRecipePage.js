@@ -108,6 +108,20 @@ const EditRecipePage = ({ sessionId }) => {
     });
   };
 
+  const moveIngredientUp = (index) => {
+    if (index === 0) return;
+    const newIngredients = [...recipe.ingredients];
+    [newIngredients[index - 1], newIngredients[index]] = [newIngredients[index], newIngredients[index - 1]];
+    setRecipe({ ...recipe, ingredients: newIngredients });
+  };
+
+  const moveIngredientDown = (index) => {
+    if (index === recipe.ingredients.length - 1) return;
+    const newIngredients = [...recipe.ingredients];
+    [newIngredients[index], newIngredients[index + 1]] = [newIngredients[index + 1], newIngredients[index]];
+    setRecipe({ ...recipe, ingredients: newIngredients });
+  };
+
   const addStep = () => {
     setRecipe({ ...recipe, steps: ['', ...recipe.steps] });
     setTimeout(() => {
