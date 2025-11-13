@@ -356,11 +356,11 @@ const EditRecipePage = ({ sessionId }) => {
 
             <div>
               <Label className="flex items-center gap-2">
-                Basis Volumen (ml)
+                Basis Volumen (ml) <span className="text-red-500">*</span>
                 <button
                   type="button"
                   className="text-cyan-600 hover:text-cyan-700"
-                  title="Hvor meget opskriften laver i basis. Standard er 2700ml. Kan senere skaleres til din maskine."
+                  title="Den samlede volumen som denne opskrift laver. Kan senere skaleres til din maskine."
                 >
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
@@ -370,11 +370,14 @@ const EditRecipePage = ({ sessionId }) => {
               <Input
                 type="number"
                 step="100"
+                required
                 value={recipe.base_volume_ml || 2700}
                 onChange={(e) => setRecipe({...recipe, base_volume_ml: parseInt(e.target.value)})}
                 placeholder="2700"
               />
-              <p className="text-xs text-gray-500 mt-1">Standard: 2700ml</p>
+              <p className="text-xs text-gray-600 mt-1 bg-cyan-50 px-2 py-1 rounded">
+                ℹ️ <strong>Obligatorisk:</strong> Angiv den samlede volumen denne opskrift laver (f.eks. 2700ml for en 3L beholder)
+              </p>
             </div>
 
             <div className="col-span-2">
