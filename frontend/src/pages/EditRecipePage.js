@@ -79,14 +79,17 @@ const EditRecipePage = ({ sessionId }) => {
     setRecipe({
       ...recipe,
       ingredients: [
-        { name: '', category_key: '', quantity: '', unit: 'ml', role: 'required', brix: null },
-        ...recipe.ingredients
+        ...recipe.ingredients,
+        { name: '', category_key: '', quantity: '', unit: 'ml', role: 'required', brix: null }
       ]
     });
     setTimeout(() => {
       const ingredientsSection = document.querySelector('.ingredients-section');
       if (ingredientsSection) {
-        ingredientsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        const lastIngredient = ingredientsSection.querySelector('.ingredient-item:last-child');
+        if (lastIngredient) {
+          lastIngredient.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
       }
     }, 100);
   };
