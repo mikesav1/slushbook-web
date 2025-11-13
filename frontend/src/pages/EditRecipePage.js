@@ -380,9 +380,16 @@ const EditRecipePage = ({ sessionId }) => {
                 onChange={(e) => setRecipe({...recipe, base_volume_ml: parseInt(e.target.value)})}
                 placeholder="2700"
               />
-              <p className="text-xs text-gray-600 mt-1 bg-cyan-50 px-2 py-1 rounded">
-                ℹ️ <strong>Obligatorisk:</strong> Angiv den samlede volumen denne opskrift laver (f.eks. 2700ml for en 3L beholder)
-              </p>
+              <div className="text-sm mt-2 bg-gradient-to-r from-cyan-50 to-blue-50 border-l-4 border-cyan-500 p-3 rounded-r">
+                <p className="font-semibold text-cyan-900 mb-1 flex items-center gap-2">
+                  <span className="text-lg">ℹ️</span>
+                  <span>Obligatorisk felt</span>
+                </p>
+                <p className="text-gray-700 text-xs leading-relaxed">
+                  Angiv den <strong>samlede volumen</strong> denne opskrift laver.<br/>
+                  <span className="text-gray-600">Eksempel: 2700ml for en 3L beholder</span>
+                </p>
+              </div>
             </div>
 
             <div className="col-span-2">
