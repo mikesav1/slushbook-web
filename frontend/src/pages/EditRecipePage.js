@@ -437,7 +437,7 @@ const EditRecipePage = ({ sessionId }) => {
           </div>
 
           {recipe.ingredients.map((ingredient, index) => (
-            <div key={index} className="p-4 bg-gray-50 rounded-lg space-y-3">
+            <div key={index} className="p-4 bg-gray-50 rounded-lg space-y-3 ingredient-item">
               <div className="flex items-center justify-between">
                 <span className="font-semibold">Ingrediens {index + 1}</span>
                 <div className="flex items-center gap-2">
