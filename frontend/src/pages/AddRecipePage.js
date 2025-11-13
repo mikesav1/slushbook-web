@@ -137,12 +137,16 @@ const AddRecipePage = ({ sessionId }) => {
   };
 
   const addStep = () => {
-    setRecipe({ ...recipe, steps: ['', ...recipe.steps] });
-    // Scroll to top of steps section
+    setRecipe({ ...recipe, steps: [...recipe.steps, ''] });
+    // Scroll to bottom of steps section to show new step
     setTimeout(() => {
       const stepsSection = document.querySelector('.steps-section');
       if (stepsSection) {
-        stepsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        const lastStep = stepsSection.querySelector('textarea:last-of-type');
+        if (lastStep) {
+          lastStep.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          lastStep.focus();
+        }
       }
     }, 100);
   };
