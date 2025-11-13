@@ -21,6 +21,7 @@ const EditRecipePage = ({ sessionId }) => {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [imageRightsConfirmed, setImageRightsConfirmed] = useState(false);
+  const [showVolumeInfo, setShowVolumeInfo] = useState(false);
 
   useEffect(() => {
     fetchRecipe();
