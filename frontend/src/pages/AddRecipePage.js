@@ -18,6 +18,7 @@ const AddRecipePage = ({ sessionId }) => {
   const [canAdd, setCanAdd] = useState(true);
   const [loading, setLoading] = useState(false);
   const [currentTourStep, setCurrentTourStep] = useState(-1);
+  const [showVolumeInfo, setShowVolumeInfo] = useState(false);
   const [recipe, setRecipe] = useState({
     name: '',
     description: '',
