@@ -186,6 +186,11 @@ const EditRecipePage = ({ sessionId }) => {
       return;
     }
 
+    if (!recipe.base_volume_ml || recipe.base_volume_ml <= 0) {
+      toast.error('Basis volumen er obligatorisk og skal være større end 0');
+      return;
+    }
+
     if (recipe.ingredients.some(ing => !ing.name || !ing.category_key)) {
       toast.error('Alle ingredienser skal have navn og kategori');
       return;
