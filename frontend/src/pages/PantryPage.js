@@ -50,6 +50,15 @@ const PantryPage = ({ sessionId }) => {
     }
   };
 
+  const fetchAllIngredients = async () => {
+    try {
+      const response = await axios.get(`${API}/ingredients`);
+      setAllIngredients(response.data);
+    } catch (error) {
+      console.error('Error fetching ingredients:', error);
+    }
+  };
+
   const addItem = async (e) => {
     e.preventDefault();
     if (!newItem.ingredient_name || !newItem.category_key) {
