@@ -35,6 +35,7 @@ const PantryPage = ({ sessionId }) => {
       return;
     }
     fetchPantry();
+    fetchAllIngredients();
   }, [sessionId, user]);
 
   const fetchPantry = async () => {
