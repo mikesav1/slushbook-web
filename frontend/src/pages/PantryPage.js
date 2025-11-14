@@ -18,6 +18,8 @@ const PantryPage = ({ sessionId }) => {
   const [loading, setLoading] = useState(true);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [allIngredients, setAllIngredients] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [newItem, setNewItem] = useState({
     ingredient_name: '',
     category_key: '',
