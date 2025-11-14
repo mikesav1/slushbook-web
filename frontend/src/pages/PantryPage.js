@@ -226,19 +226,69 @@ const PantryPage = ({ sessionId }) => {
           </div>
 
       {/* Quick Add */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-        <h3 className="font-semibold mb-3">Hurtig Tilføjelse</h3>
-        <div className="flex flex-wrap gap-2">
-          {commonIngredients.map((ingredient, index) => (
-            <button
-              key={index}
-              onClick={() => quickAdd(ingredient)}
-              data-testid={`quick-add-${ingredient.name}`}
-              className="px-4 py-2 bg-cyan-50 text-cyan-700 rounded-lg hover:bg-cyan-100 transition-colors text-sm font-medium"
-            >
-              + {ingredient.name}
-            </button>
-          ))}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
+        <div>
+          <h3 className="font-semibold mb-3">Søg i alle ingredienser</h3>
+          <div className="relative">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Søg efter ingrediens..."
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            />
+            {searchQuery && (
+              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-64 overflow-y-auto">
+                {allIngredients
+                  .filter(ing => 
+                    ing.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    ing.category.toLowerCase().includes(searchQuery.toLowerCase())
+                  )
+                  .slice(0, 20)
+                  .map((ingredient, index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        quickAdd({
+                          name: ingredient.name,
+                          category: ingredient.category,
+                          brix: ingredient.standard_brix || 0
+                        });
+                        setSearchQuery('');
+                      }}
+                      className="w-full px-4 py-3 text-left hover:bg-cyan-50 transition-colors border-b border-gray-100 last:border-b-0"
+                    >
+                      <div className="font-medium text-gray-800">{ingredient.name}</div>
+                      <div className="text-xs text-gray-500">{ingredient.category} • Brix: {ingredient.standard_brix || 0}</div>
+                    </button>
+                  ))}
+                {allIngredients.filter(ing => 
+                  ing.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  ing.category.toLowerCase().includes(searchQuery.toLowerCase())
+                ).length === 0 && (
+                  <div className="px-4 py-3 text-gray-500 text-center">
+                    Ingen ingredienser fundet
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+        
+        <div>
+          <h3 className="font-semibold mb-3">Hurtig Tilføjelse (Populære)</h3>
+          <div className="flex flex-wrap gap-2">
+            {commonIngredients.map((ingredient, index) => (
+              <button
+                key={index}
+                onClick={() => quickAdd(ingredient)}
+                data-testid={`quick-add-${ingredient.name}`}
+                className="px-4 py-2 bg-cyan-50 text-cyan-700 rounded-lg hover:bg-cyan-100 transition-colors text-sm font-medium"
+              >
+                + {ingredient.name}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
