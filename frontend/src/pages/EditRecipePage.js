@@ -22,6 +22,7 @@ const EditRecipePage = ({ sessionId }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [imageRightsConfirmed, setImageRightsConfirmed] = useState(false);
   const [showVolumeInfo, setShowVolumeInfo] = useState(false);
+  const [showBrixInfo, setShowBrixInfo] = useState(false);
 
   useEffect(() => {
     fetchRecipe();
