@@ -3835,7 +3835,10 @@ async def create_ingredient(ingredient: dict, request: Request):
     # Check if ingredient already exists
     existing = await db.master_ingredients.find_one({"name": ingredient['name']})
     if existing:
-        raise HTTPException(status_code=400, detail="Ingrediens findes allerede")
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Ingrediens '{ingredient['name']}' findes allerede i kategorien '{existing.get('category', 'Ukendt')}'. Brug 'Rediger' for at opdatere den."
+        )
     
     # Add ID and created timestamp
     ingredient['id'] = str(uuid.uuid4())
