@@ -278,6 +278,23 @@ const AdminIngredientsPage = () => {
                 />
               </div>
 
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Keywords (søgeord)
+                  <span className="text-xs text-gray-500 ml-2">Valgfrit - komma-separeret</span>
+                </label>
+                <input
+                  type="text"
+                  value={formData.keywords}
+                  onChange={(e) => setFormData({ ...formData, keywords: e.target.value })}
+                  placeholder="F.eks. Fanta, Appelsin sodavand, Orange"
+                  className="w-full px-4 py-2 border rounded-lg"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Tilføj produktnavne og alternative søgeord (komma-separeret)
+                </p>
+              </div>
+
               <div className="flex gap-3 mt-6">
                 <Button
                   type="submit"
