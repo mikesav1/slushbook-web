@@ -1042,7 +1042,7 @@ async def login(request: LoginRequest, response: Response, http_request: Request
         value=session_token,
         httponly=True,
         secure=True,
-        samesite="lax",
+        samesite="none",  # Changed from "lax" to "none" for better cross-domain support
         max_age=30 * 24 * 60 * 60  # 30 days (matches session expiration)
     )
     
