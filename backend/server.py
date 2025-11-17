@@ -2515,7 +2515,9 @@ async def create_comment(
             'GB': 'en',  # UK -> English
             'US': 'en-US',  # USA -> American English
         }
-        language = country_to_lang.get(user.country, 'da')  # Default to Danish
+        # Use getattr to safely get country (defaults to None if missing)
+        user_country = getattr(user, 'country', None)
+        language = country_to_lang.get(user_country, 'da')  # Default to Danish
     
     # Create comment with user info and language
     comment = Comment(
