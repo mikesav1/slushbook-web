@@ -1976,6 +1976,13 @@ async def create_recipe(recipe_data: RecipeCreate, request: Request):
     recipe_dict = recipe_data.model_dump()
     session_id = recipe_dict.pop('session_id')
     
+    # Convert cl to ml in ingredients
+    for ingredient in recipe_dict.get('ingredients', []):
+        if ingredient.get('unit') == 'cl':
+            # Convert cl to ml (1 cl = 10 ml)
+            ingredient['quantity'] = ingredient.get('quantity', 0) * 10
+            ingredient['unit'] = 'ml'
+    
     # Set approval status based on is_published
     if recipe_dict.get('is_published') and user and user.role != "admin":
         # Non-admin trying to publish - needs approval
