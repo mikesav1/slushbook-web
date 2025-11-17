@@ -97,7 +97,8 @@ const AdminIngredientsPage = () => {
     setFormData({
       name: ingredient.name,
       category: ingredient.category || 'Sirup',
-      default_brix: ingredient.default_brix || 0
+      default_brix: ingredient.default_brix || 0,
+      keywords: ingredient.keywords || ''
     });
     setShowDialog(true);
   };
