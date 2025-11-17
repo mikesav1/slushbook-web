@@ -524,7 +524,7 @@ const EditRecipePage = ({ sessionId }) => {
                   className="px-3 py-2 border border-gray-200 rounded-md"
                 >
                   <option value="ml">ml</option>
-                  <option value="cl">cl</option>
+                  <option value="dl">dl</option>
                   <option value="l">l</option>
                   <option value="g">g</option>
                 </select>
