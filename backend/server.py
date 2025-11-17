@@ -3815,8 +3815,34 @@ async def find_similar_recipes(recipe_id: str, request: Request):
 
 # ===== ADMIN INGREDIENTS MANAGEMENT =====
 
+@api_router.get("/ingredients")
+async def get_ingredients(search: Optional[str] = None):
+    """
+    Get all master ingredients (public endpoint)
+    Supports fuzzy, case-insensitive search
+    """
+    query = {}
+    
+    if search and search.strip():
+        search_term = search.strip()
+        # Case-insensitive regex search on name and category
+        query = {
+            "$or": [
+                {"name": {"$regex": search_term, "$options": "i"}},
+                {"category": {"$regex": search_term, "$options": "i"}}
+            ]
+        }
+    
+    # Get ingredients sorted by name
+    ingredients = await db.master_ingredients.find(
+        query, 
+        {"_id": 0}
+    ).sort("name", 1).to_list(length=None)
+    
+    return ingredients
+
 @api_router.get("/admin/ingredients")
-async def get_all_ingredients(request: Request):
+async def get_all_ingredients_admin(request: Request):
     """Get all master ingredients for admin"""
     user = await get_current_user(request, None, db)
     
