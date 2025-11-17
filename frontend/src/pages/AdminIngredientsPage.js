@@ -120,10 +120,14 @@ const AdminIngredientsPage = () => {
     }
   };
 
-  const filteredIngredients = ingredients.filter(ing =>
-    ing.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    ing.category?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredIngredients = ingredients.filter(ing => {
+    const query = searchQuery.toLowerCase();
+    return (
+      ing.name.toLowerCase().includes(query) ||
+      ing.category?.toLowerCase().includes(query) ||
+      (ing.keywords && ing.keywords.toLowerCase().includes(query))
+    );
+  });
 
   const categories = ['Sirup', 'Energidrik', 'Sodavand', 'Juice', 'Alkohol', 'Basis', 'Frugt', 'Grønt', 'Krydderi', 'Andet'];
 
