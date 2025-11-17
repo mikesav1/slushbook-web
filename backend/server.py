@@ -3483,7 +3483,7 @@ async def confirm_recipe_import(recipes: List[dict], request: Request):
                 recipe_data['is_published'] = False
                 recipe_data['author'] = user.id
                 recipe_data['author_name'] = user.name
-                recipe_data['status'] = 'approved'
+                recipe_data['approval_status'] = 'approved'
                 
                 await db.user_recipes.insert_one(recipe_data)
                 created_count += 1
