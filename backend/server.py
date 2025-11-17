@@ -2024,6 +2024,13 @@ async def update_recipe(recipe_id: str, recipe_data: RecipeCreate, request: Requ
     recipe_dict = recipe_data.model_dump()
     session_id = recipe_dict.pop('session_id')
     
+    # Convert cl to ml in ingredients
+    for ingredient in recipe_dict.get('ingredients', []):
+        if ingredient.get('unit') == 'cl':
+            # Convert cl to ml (1 cl = 10 ml)
+            ingredient['quantity'] = ingredient.get('quantity', 0) * 10
+            ingredient['unit'] = 'ml'
+    
     # Check permissions
     if existing_system:
         # System recipe - only admin can edit
