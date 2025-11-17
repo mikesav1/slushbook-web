@@ -13,7 +13,8 @@ const AdminIngredientsPage = () => {
   const [formData, setFormData] = useState({
     name: '',
     category: 'Sirup',
-    default_brix: 0
+    default_brix: 0,
+    keywords: ''
   });
   const [saving, setSaving] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
