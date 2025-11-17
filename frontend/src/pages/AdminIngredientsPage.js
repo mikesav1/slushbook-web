@@ -66,7 +66,7 @@ const AdminIngredientsPage = () => {
       fetchIngredients();
       setShowDialog(false);
       setEditingIngredient(null);
-      setFormData({ name: '', category: 'Sirup', default_brix: 0 });
+      setFormData({ name: '', category: 'Sirup', default_brix: 0, keywords: '' });
     } catch (error) {
       console.error('Error saving ingredient:', error);
       toast.error(error.response?.data?.detail || 'Kunne ikke gemme ingrediens');
@@ -164,7 +164,7 @@ const AdminIngredientsPage = () => {
             <Button
               onClick={() => {
                 setEditingIngredient(null);
-                setFormData({ name: '', category: 'Sirup', default_brix: 0 });
+                setFormData({ name: '', category: 'Sirup', default_brix: 0, keywords: '' });
                 setShowDialog(true);
               }}
               className="bg-gradient-to-r from-blue-500 to-purple-500"
@@ -308,7 +308,7 @@ const AdminIngredientsPage = () => {
                   onClick={() => {
                     setShowDialog(false);
                     setEditingIngredient(null);
-                    setFormData({ name: '', category: 'Sirup', default_brix: 0 });
+                    setFormData({ name: '', category: 'Sirup', default_brix: 0, keywords: '' });
                   }}
                   variant="outline"
                   className="flex-1"
