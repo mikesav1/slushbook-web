@@ -240,10 +240,14 @@ const PantryPage = ({ sessionId }) => {
             {searchQuery && (
               <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-64 overflow-y-auto">
                 {allIngredients
-                  .filter(ing => 
-                    ing.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    ing.category.toLowerCase().includes(searchQuery.toLowerCase())
-                  )
+                  .filter(ing => {
+                    const query = searchQuery.toLowerCase();
+                    return (
+                      ing.name.toLowerCase().includes(query) ||
+                      ing.category.toLowerCase().includes(query) ||
+                      (ing.keywords && ing.keywords.toLowerCase().includes(query))
+                    );
+                  })
                   .slice(0, 20)
                   .map((ingredient, index) => (
                     <button
