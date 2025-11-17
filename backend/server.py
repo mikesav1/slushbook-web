@@ -1800,7 +1800,10 @@ async def get_recipe(recipe_id: str, session_id: Optional[str] = None, request: 
     if request:
         try:
             user = await get_current_user(request, None, db)
-        except:
+            if user:
+                logger.debug(f"Recipe view - User authenticated: {user.email}")
+        except Exception as e:
+            logger.debug(f"Recipe view - Authentication failed: {str(e)}")
             pass
     
     # Try system recipes first
