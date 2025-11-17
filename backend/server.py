@@ -3841,11 +3841,12 @@ async def get_ingredients(search: Optional[str] = None):
     
     if search and search.strip():
         search_term = search.strip()
-        # Case-insensitive regex search on name and category
+        # Case-insensitive regex search on name, category, and keywords
         query = {
             "$or": [
                 {"name": {"$regex": search_term, "$options": "i"}},
-                {"category": {"$regex": search_term, "$options": "i"}}
+                {"category": {"$regex": search_term, "$options": "i"}},
+                {"keywords": {"$regex": search_term, "$options": "i"}}
             ]
         }
     
