@@ -25,7 +25,7 @@ def test_login_both_environments():
     
     # Environment URLs
     environments = {
-        "PREVIEW": "https://recipemaster-3.preview.emergentagent.com/api",
+        "PREVIEW": "https://tips-forum.preview.emergentagent.com/api",
         "PRODUCTION": "https://slushice-recipes.emergent.host/api"
     }
     
