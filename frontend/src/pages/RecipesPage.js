@@ -51,6 +51,10 @@ const RecipesPage = ({ sessionId }) => {
   }, [typeFilter]);
 
   useEffect(() => {
+    localStorage.setItem('recipeSortBy', sortBy);
+  }, [sortBy]);
+
+  useEffect(() => {
     fetchRecipes();
   }, [sessionId, alcoholFilter, typeFilter, sortBy, includeIngredients, excludeIngredients]);
 
