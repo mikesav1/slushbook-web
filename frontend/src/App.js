@@ -21,6 +21,8 @@ import AdminSandboxPage from "./pages/AdminSandboxPage";
 import AdminIngredientsPage from "./pages/AdminIngredientsPage";
 import AdminMatchImagesPage from "./pages/AdminMatchImagesPage";
 import AdminFixApprovals from "./pages/AdminFixApprovals";
+import AdminSeedIngredients from "./pages/AdminSeedIngredients";
+import SetupPage from "./pages/SetupPage";
 import AdminCommentsPage from "./pages/AdminCommentsPage";
 import TipsPage from "./pages/TipsPage";
 import CreateTipPage from "./pages/CreateTipPage";
