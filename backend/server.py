@@ -913,6 +913,15 @@ async def root():
         "status": "healthy"
     }
 
+@api_router.get("/health")
+async def health_check():
+    """Health check endpoint for deployment systems"""
+    return {
+        "status": "healthy",
+        "message": "SLUSHBOOK API is running",
+        "version": __version__
+    }
+
 # =============================================================================
 # AUTHENTICATION ENDPOINTS
 # =============================================================================
