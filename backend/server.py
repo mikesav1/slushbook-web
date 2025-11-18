@@ -804,7 +804,10 @@ async def seed_recipes():
         )
         doc = recipe.model_dump()
         doc['created_at'] = doc['created_at'].isoformat()
-        await db.recipes.insert_one(doc)
+        try:
+            await db.recipes.insert_one(doc)
+        except Exception as e:
+            logger.warning(f"Failed to insert recipe {recipe_data['name']} (permissions): {e}")
     
     logger.info(f"Seeded {len(recipes_data)} recipes")
 
