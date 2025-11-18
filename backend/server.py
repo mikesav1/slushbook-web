@@ -3405,11 +3405,19 @@ async def import_recipe_from_csv(file: UploadFile = File(...)):
                         import re
                         category_key = re.sub(r'\s+', '-', category_key.strip())
                         
+                        # Handle 'None' string and empty values for brix
+                        brix_value = None
+                        if parts[3] and parts[3].strip().lower() != 'none':
+                            try:
+                                brix_value = float(parts[3])
+                            except ValueError:
+                                brix_value = 0.0  # Default to 0 if can't parse
+                        
                         ingredient = {
                             'name': ingredient_name,
                             'quantity': float(parts[1]),
                             'unit': parts[2],
-                            'brix': float(parts[3]) if parts[3] else None,
+                            'brix': brix_value,
                             'role': parts[4].lower() if len(parts) > 4 else 'required',
                             'category_key': category_key
                         }
