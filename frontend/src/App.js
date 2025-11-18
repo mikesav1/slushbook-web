@@ -199,6 +199,14 @@ const Navigation = () => {
                           Match Billeder
                         </Link>
                         <Link
+                          to="/admin/fix-approvals"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                        >
+                          <FaCheckCircle className="w-4 h-4" />
+                          Godkend Alle
+                        </Link>
+                        <Link
                           to="/admin/links"
                           onClick={() => setIsUserMenuOpen(false)}
                           className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
