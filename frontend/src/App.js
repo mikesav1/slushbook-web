@@ -461,7 +461,9 @@ const AppContent = ({ sessionId }) => {
             <Route path="/admin/comments" element={<AdminCommentsPage />} />
             <Route path="/tips" element={<TipsPage />} />
             <Route path="/tips/create" element={<CreateTipPage />} />
+            <Route path="/setup" element={<SetupPage />} />
             <Route path="/admin/ingredients" element={<AdminIngredientsPage sessionId={effectiveSessionId} />} />
+            <Route path="/admin/seed-ingredients" element={<AdminSeedIngredients />} />
             <Route path="/admin/match-images" element={<AdminMatchImagesPage />} />
             <Route path="/admin/fix-approvals" element={<AdminFixApprovals />} />
             <Route path="/admin/links" element={<AdminLinksPage sessionId={effectiveSessionId} />} />
