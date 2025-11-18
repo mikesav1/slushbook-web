@@ -1342,6 +1342,64 @@ async def update_profile(request: Request, update_data: dict):
 
 
 # =============================================================================
+# ADMIN ENDPOINTS - Setup
+# =============================================================================
+
+@api_router.post("/auth/setup-admin")
+async def setup_admin():
+    """One-time setup endpoint to create admin user"""
+    try:
+        try:
+            admin_exists = await db.users.find_one({"email": "admin@slushbook.dk"})
+            if admin_exists:
+                return {
+                    "message": "Admin user already exists",
+                    "email": "admin@slushbook.dk",
+                    "status": "already_exists"
+                }
+        except Exception as check_error:
+            logger.warning(f"Cannot check for existing admin (permissions): {check_error}")
+        
+        admin_id = str(uuid.uuid4())
+        hashed_password = get_password_hash("admin123")
+        
+        admin_user = {
+            "id": admin_id,
+            "email": "admin@slushbook.dk",
+            "name": "Admin",
+            "role": "admin",
+            "picture": None,
+            "hashed_password": hashed_password,
+            "country": "DK",
+            "language": "dk",
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        try:
+            await db.users.insert_one(admin_user)
+            return {
+                "message": "Admin user created successfully",
+                "email": "admin@slushbook.dk",
+                "password": "admin123",
+                "warning": "PLEASE CHANGE PASSWORD AFTER FIRST LOGIN!",
+                "status": "created"
+            }
+        except Exception as insert_error:
+            if "duplicate" in str(insert_error).lower() or "E11000" in str(insert_error):
+                return {
+                    "message": "Admin user already exists",
+                    "email": "admin@slushbook.dk",
+                    "status": "already_exists"
+                }
+            else:
+                raise insert_error
+    except Exception as e:
+        logger.error(f"Failed to setup admin: {e}")
+        return {
+            "message": f"Could not create admin user. Error: {str(e)}",
+            "status": "error"
+        }
+
 # ADMIN ENDPOINTS - Fix Approvals
 # =============================================================================
 
