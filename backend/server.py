@@ -394,8 +394,12 @@ class AdUpdate(BaseModel):
 
 # Seed initial recipes
 async def seed_recipes():
-    count = await db.recipes.count_documents({"author": "system"})
-    if count > 0:
+    try:
+        count = await db.recipes.count_documents({"author": "system"})
+        if count > 0:
+            return
+    except Exception as e:
+        logger.warning(f"Cannot check existing recipes (permissions): {e}")
         return
     
     recipes_data = [
