@@ -3882,6 +3882,63 @@ async def get_ingredients(search: Optional[str] = None):
     
     return ingredients
 
+@api_router.get("/admin/match-images")
+async def get_recipes_for_image_matching(request: Request):
+    """Get all recipes and cloudinary images for matching"""
+    user = await get_current_user(request, None, db)
+    
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    # Get all system recipes
+    recipes = await db.recipes.find(
+        {"author": "system"},
+        {"_id": 0, "id": 1, "name": 1, "image_url": 1, "description": 1}
+    ).to_list(length=None)
+    
+    # Get cloudinary images
+    try:
+        result = cloudinary.api.resources(
+            type='upload',
+            max_results=500,
+            resource_type='image',
+            prefix='slushbook/recipes'
+        )
+        images = result.get('resources', [])
+        image_list = [{'url': img['secure_url'], 'public_id': img['public_id']} for img in images]
+    except Exception as e:
+        logger.error(f"Failed to fetch cloudinary images: {e}")
+        image_list = []
+    
+    return {
+        "recipes": recipes,
+        "images": image_list
+    }
+
+@api_router.post("/admin/update-recipe-image")
+async def update_recipe_image(data: dict, request: Request):
+    """Update recipe image URL"""
+    user = await get_current_user(request, None, db)
+    
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    recipe_id = data.get('recipe_id')
+    image_url = data.get('image_url')
+    
+    if not recipe_id or not image_url:
+        raise HTTPException(status_code=400, detail="Missing recipe_id or image_url")
+    
+    result = await db.recipes.update_one(
+        {"id": recipe_id},
+        {"$set": {"image_url": image_url}}
+    )
+    
+    if result.modified_count > 0:
+        return {"success": True, "message": "Billede opdateret"}
+    else:
+        return {"success": False, "message": "Opskrift ikke fundet"}
+
 @api_router.get("/admin/ingredients")
 async def get_all_ingredients_admin(request: Request):
     """Get all master ingredients for admin"""
