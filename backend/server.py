@@ -1353,7 +1353,8 @@ async def fix_all_approvals(request: Request):
         raise HTTPException(status_code=403, detail="Kun admin har adgang")
     
     try:
-        problematic = await db.user_recipes.find({
+        # Fix user recipes
+        problematic_user = await db.user_recipes.find({
             "$or": [
                 {"approval_status": "pending"},
                 {"approval_status": None},
@@ -1362,7 +1363,7 @@ async def fix_all_approvals(request: Request):
             ]
         }, {"_id": 0, "id": 1, "name": 1, "author": 1}).to_list(None)
         
-        result = await db.user_recipes.update_many(
+        result_user = await db.user_recipes.update_many(
             {
                 "$or": [
                     {"approval_status": "pending"},
@@ -1379,12 +1380,34 @@ async def fix_all_approvals(request: Request):
             }
         )
         
+        # Fix system recipes (set all to published)
+        problematic_system = await db.recipes.find({
+            "author": "system",
+            "is_published": {"$ne": True}
+        }, {"_id": 0, "id": 1, "name": 1, "author": 1}).to_list(None)
+        
+        result_system = await db.recipes.update_many(
+            {
+                "author": "system",
+                "is_published": {"$ne": True}
+            },
+            {
+                "$set": {
+                    "is_published": True
+                }
+            }
+        )
+        
+        total_found = len(problematic_user) + len(problematic_system)
+        total_updated = result_user.modified_count + result_system.modified_count
+        all_recipes = problematic_user + problematic_system
+        
         return {
             "success": True,
-            "message": f"Godkendt {result.modified_count} opskrifter",
-            "found": len(problematic),
-            "updated": result.modified_count,
-            "recipes": [{"id": r.get("id"), "name": r.get("name"), "author": r.get("author")} for r in problematic[:50]]
+            "message": f"Godkendt {total_updated} opskrifter (bruger: {result_user.modified_count}, system: {result_system.modified_count})",
+            "found": total_found,
+            "updated": total_updated,
+            "recipes": [{"id": r.get("id"), "name": r.get("name"), "author": r.get("author")} for r in all_recipes[:50]]
         }
     except Exception as e:
         logger.error(f"Failed to fix approvals: {e}")
