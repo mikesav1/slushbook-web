@@ -16,7 +16,10 @@ const RecipesPage = ({ sessionId }) => {
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState('default'); // default, alphabetical, rating
+  // Load sortBy from localStorage or use default
+  const [sortBy, setSortBy] = useState(() => {
+    return localStorage.getItem('recipeSortBy') || 'default';
+  });
   // Load filters from localStorage or use defaults
   const [alcoholFilter, setAlcoholFilter] = useState(() => {
     return localStorage.getItem('recipeAlcoholFilter') || 'both';
