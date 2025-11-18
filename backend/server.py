@@ -1342,6 +1342,54 @@ async def update_profile(request: Request, update_data: dict):
 
 
 # =============================================================================
+# ADMIN ENDPOINTS - Fix Approvals
+# =============================================================================
+
+@api_router.post("/admin/fix-all-approvals")
+async def fix_all_approvals(request: Request):
+    """Fix approval status for ALL recipes - approve everything (admin only)"""
+    user = await get_current_user(request, None, db)
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Kun admin har adgang")
+    
+    try:
+        problematic = await db.user_recipes.find({
+            "$or": [
+                {"approval_status": "pending"},
+                {"approval_status": None},
+                {"approval_status": {"$exists": False}},
+                {"status": "pending"}
+            ]
+        }, {"_id": 0, "id": 1, "name": 1, "author": 1}).to_list(None)
+        
+        result = await db.user_recipes.update_many(
+            {
+                "$or": [
+                    {"approval_status": "pending"},
+                    {"approval_status": None},
+                    {"approval_status": {"$exists": False}},
+                    {"status": "pending"}
+                ]
+            },
+            {
+                "$set": {
+                    "approval_status": "approved",
+                    "status": "published"
+                }
+            }
+        )
+        
+        return {
+            "success": True,
+            "message": f"Godkendt {result.modified_count} opskrifter",
+            "found": len(problematic),
+            "updated": result.modified_count,
+            "recipes": [{"id": r.get("id"), "name": r.get("name"), "author": r.get("author")} for r in problematic[:50]]
+        }
+    except Exception as e:
+        logger.error(f"Failed to fix approvals: {e}")
+        raise HTTPException(status_code=500, detail=f"Fejl ved godkendelse: {str(e)}")
+
 # ADMIN ENDPOINTS - Members Management
 # =============================================================================
 
