@@ -4185,7 +4185,10 @@ app.mount("/api/uploads", StaticFiles(directory=str(uploads_dir)), name="uploads
 # Startup event
 @app.on_event("startup")
 async def startup_event():
-    await seed_recipes()
+    try:
+        await seed_recipes()
+    except Exception as e:
+        logger.warning(f"Failed to seed recipes on startup (this is OK for Atlas MongoDB with read-only user): {e}")
     logger.info("SLUSHBOOK API started with integrated redirect service")
 
 @app.on_event("shutdown")
