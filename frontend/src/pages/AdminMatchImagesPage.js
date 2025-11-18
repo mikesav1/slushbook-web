@@ -64,9 +64,11 @@ const AdminMatchImagesPage = () => {
     }
   };
 
-  const filteredRecipes = recipes.filter(recipe =>
-    recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredRecipes = recipes
+    .filter(recipe =>
+      recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) => a.name.localeCompare(b.name, 'da'));
 
   const recipesWithoutCloudinary = recipes.filter(r => 
     !r.image_url.includes('cloudinary')
