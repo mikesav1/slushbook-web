@@ -201,6 +201,14 @@ const Navigation = () => {
                           Match Billeder
                         </Link>
                         <Link
+                          to="/admin/seed-ingredients"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                        >
+                          <FaSeedling className="w-4 h-4" />
+                          Seed Ingredienser
+                        </Link>
+                        <Link
                           to="/admin/fix-approvals"
                           onClick={() => setIsUserMenuOpen(false)}
                           className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
