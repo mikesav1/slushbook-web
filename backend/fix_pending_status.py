@@ -23,7 +23,8 @@ from datetime import datetime, timezone
 # MongoDB connection
 MONGO_URL = os.environ.get('MONGO_URL', 'mongodb://localhost:27017/')
 client = AsyncIOMotorClient(MONGO_URL)
-db = client.slushice
+DB_NAME = os.environ.get('DB_NAME', 'flavor_sync')
+db = client[DB_NAME]
 
 async def fix_pending_recipes():
     print("=" * 60)
