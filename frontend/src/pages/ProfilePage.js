@@ -43,12 +43,12 @@ const ProfilePage = () => {
       // Only include password if user wants to change it
       if (formData.newPassword) {
         if (formData.newPassword !== formData.confirmPassword) {
-          toast.error('Nye passwords stemmer ikke overens');
+          toast.error(t('profile.passwordsDontMatch', 'Nye passwords stemmer ikke overens'));
           setLoading(false);
           return;
         }
         if (formData.newPassword.length < 6) {
-          toast.error('Nyt password skal være mindst 6 tegn');
+          toast.error(t('profile.passwordTooShort', 'Nyt password skal være mindst 6 tegn'));
           setLoading(false);
           return;
         }
