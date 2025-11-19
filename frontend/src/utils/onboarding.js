@@ -105,14 +105,14 @@ export const recipesPageSteps = [
   },
   {
     target: '[data-tour="recipe-favorite"]',
-    content: '❤️ Tilføj til favoritter\n\nKlik på hjertet på et opskriftskort for at gemme den som favorit.\n\nDine favoritter kan du finde under profil-menuen.'
+    content: i18n.t('tour.recipes.step3')
   },
   {
-    content: '🛒 Tip: Åbn en opskrift for mere!\n\nNår du klikker på en opskrift, kan du:\n• Se detaljerede ingredienser og instruktioner\n• Tilføje ingredienser til din indkøbsliste\n• Skalere opskriften til din maskinvolumen\n• Vurdere og dele opskriften'
+    content: i18n.t('tour.recipes.step4')
   },
   {
     target: '[data-tour="add-recipe-card"]',
-    content: '➕ Opret din egen opskrift\n\nDet første kort er "Tilføj Opskrift"-knappen.\n\nHer kan du oprette og dele dine egne slushice-kreationer!\n\nLad os gå derind og se hvordan det virker.'
+    content: i18n.t('tour.recipes.step5')
   }
 ];
 
