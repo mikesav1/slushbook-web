@@ -23,6 +23,7 @@ import AdminMatchImagesPage from "./pages/AdminMatchImagesPage";
 import AdminFixApprovals from "./pages/AdminFixApprovals";
 import AdminDeleteRecipes from "./pages/AdminDeleteRecipes";
 import AdminSeedIngredients from "./pages/AdminSeedIngredients";
+import AdminBadgesPage from "./pages/AdminBadgesPage";
 import SetupPage from "./pages/SetupPage";
 import AdminCommentsPage from "./pages/AdminCommentsPage";
 import TipsPage from "./pages/TipsPage";
