@@ -179,23 +179,26 @@ const MatchFinderPage = ({ sessionId }) => {
       />
       
       <div>
-        <h1 className="text-4xl font-bold mb-2">Find match</h1>
-        <p className="text-gray-600">Opdag hvilke opskrifter du kan lave med dine ingredienser</p>
+        <h1 className="text-4xl font-bold mb-2">{t('matchFinder.title')}</h1>
+        <p className="text-gray-600">{t('matchFinder.subtitle')}</p>
       </div>
 
       {/* Ingredients Display & Actions */}
       <div className="bg-gradient-to-br from-cyan-50 to-coral-50 rounded-2xl p-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
           <div>
-            <h3 className="text-2xl font-bold mb-1">Dine Ingredienser</h3>
+            <h3 className="text-2xl font-bold mb-1">{t('matchFinder.yourIngredients')}</h3>
             <p className="text-gray-600">
-              Du har <span className="font-bold text-cyan-600">{pantryCount}</span> ingrediens{pantryCount !== 1 ? 'er' : ''}
+              {t('matchFinder.ingredientCount', 'Du har {{count}} ingrediens{{plural}}', { 
+                count: pantryCount, 
+                plural: pantryCount !== 1 ? 'er' : '' 
+              })}
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <Link to="/pantry" className="w-full sm:w-auto">
               <Button variant="outline" size="sm" className="w-full" data-tour="add-pantry-button">
-                <FaPlus className="mr-2" /> Tilføj Flere
+                <FaPlus className="mr-2" /> {t('matchFinder.addMore', 'Tilføj Flere')}
               </Button>
             </Link>
             <Button
