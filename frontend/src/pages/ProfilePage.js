@@ -154,8 +154,8 @@ const ProfilePage = () => {
             {user.name.charAt(0).toUpperCase()}
           </div>
           <div>
-            <h1 className="text-3xl font-bold">Min profil</h1>
-            <p className="text-gray-600">{user.role} bruger</p>
+            <h1 className="text-3xl font-bold">{t('profile.myProfile')}</h1>
+            <p className="text-gray-600">{user.role} {t('profile.user', 'bruger')}</p>
           </div>
         </div>
 
@@ -164,11 +164,11 @@ const ProfilePage = () => {
           <div className="space-y-4">
             <h2 className="text-xl font-semibold flex items-center gap-2">
               <FaUser className="text-cyan-500" />
-              Basis information
+              {t('profile.personalInfo')}
             </h2>
 
             <div>
-              <Label htmlFor="name">Navn</Label>
+              <Label htmlFor="name">{t('auth.name')}</Label>
               <Input
                 id="name"
                 name="name"
