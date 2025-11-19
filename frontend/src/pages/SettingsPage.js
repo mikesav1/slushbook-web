@@ -370,7 +370,7 @@ const SettingsPage = ({ sessionId }) => {
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <div className="flex items-center gap-2 mb-4">
           <FaGlobe className="text-blue-500 text-xl" />
-          <h2 className="text-2xl font-bold">Land & Sprog</h2>
+          <h2 className="text-2xl font-bold">{t('settings.countryAndLanguage')}</h2>
         </div>
         <p className="text-gray-600 mb-4">
           Vælg dit land for at se relevante produktlinks. Dit land detekteres automatisk, men du kan ændre det her.
