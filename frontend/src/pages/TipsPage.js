@@ -441,7 +441,7 @@ const TipsPage = () => {
                             {' '}for at kommentere
                           </p>
                         </div>
-                      )}
+                      ))}
                     </div>
                   </div>
                 )}
