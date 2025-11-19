@@ -357,11 +357,11 @@ const SettingsPage = ({ sessionId }) => {
         )}
         
         <div className="mt-4 p-3 bg-blue-50 rounded-lg text-sm text-gray-700">
-          <strong>💡 Tip:</strong> {deviceLimits.max === 1 
-            ? 'Gratis brugere kan kun være logget ind på 1 enhed ad gangen.'
-            : `Du kan være logget ind på op til ${deviceLimits.max} enheder samtidig.`}
+          <strong>💡 {t('common.tip')}:</strong> {deviceLimits.max === 1 
+            ? t('settings.freeDeviceLimit')
+            : t('settings.deviceInfo', { max: deviceLimits.max })}
           {deviceLimits.max < 3 && (
-            <span> Opgrader til Pro for at bruge flere enheder!</span>
+            <span> {t('settings.upgradeForMore')}</span>
           )}
         </div>
       </div>
