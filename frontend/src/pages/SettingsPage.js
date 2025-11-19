@@ -571,7 +571,7 @@ const SettingsPage = ({ sessionId }) => {
         </div>
         <p className="text-gray-600">
           {isAdmin() || isPro() || isEditor()
-            ? `Du har oprettet ${userRecipesCount} opskrift${userRecipesCount !== 1 ? 'er' : ''}`
+            ? t(userRecipesCount === 1 ? 'settings.youHaveCreated' : 'settings.youHaveCreatedPlural', { count: userRecipesCount })
             : canAddRecipe
             ? `Du kan tilføje ${2 - userRecipesCount} mere opskrift${2 - userRecipesCount !== 1 ? 'er' : ''}`
             : 'Gratis limit nået (2/2). Opgradér til Pro for ubegrænset!'}
