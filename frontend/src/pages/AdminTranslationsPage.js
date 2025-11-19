@@ -325,34 +325,34 @@ const AdminTranslationsPage = () => {
       {showAddModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-6 max-w-md w-full mx-4">
-            <h2 className="text-2xl font-bold mb-4">Tilføj Ny Nøgle</h2>
+            <h2 className="text-2xl font-bold mb-4">{t('admin.translations.addNewKey')}</h2>
             
             <div className="space-y-4">
               <div>
-                <Label>Nøgle (f.eks. common.newButton)</Label>
+                <Label>{t('admin.translations.keyLabel')}</Label>
                 <Input
                   value={newKey}
                   onChange={(e) => setNewKey(e.target.value)}
-                  placeholder="section.key"
+                  placeholder={t('admin.translations.keyPlaceholder')}
                 />
               </div>
 
               <div>
-                <Label>Værdi</Label>
+                <Label>{t('admin.translations.valueLabel')}</Label>
                 <Textarea
                   value={newValue}
                   onChange={(e) => setNewValue(e.target.value)}
-                  placeholder="Oversættelsestekst..."
+                  placeholder={t('admin.translations.valuePlaceholder')}
                   rows={3}
                 />
               </div>
 
               <div className="flex gap-2 justify-end">
                 <Button variant="outline" onClick={() => setShowAddModal(false)}>
-                  Annuller
+                  {t('common.cancel')}
                 </Button>
                 <Button onClick={handleAddKey}>
-                  <FaPlus className="mr-2" /> Tilføj
+                  <FaPlus className="mr-2" /> {t('admin.translations.addKey')}
                 </Button>
               </div>
             </div>
