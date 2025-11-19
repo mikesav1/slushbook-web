@@ -35,6 +35,12 @@ const RecipeDetailPage = ({ sessionId }) => {
   const [editCommentText, setEditCommentText] = useState('');
   const [commentsCollapsed, setCommentsCollapsed] = useState(true); // Start collapsed
   
+  // Share state
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [shareLink, setShareLink] = useState('');
+  const [shareLoading, setShareLoading] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
+  
   // Category display name mapper
   const getCategoryDisplayName = (categoryKey) => {
     const categoryMap = {
