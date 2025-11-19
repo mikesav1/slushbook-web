@@ -1247,6 +1247,52 @@ async def complete_tour(request: Request, tour_data: dict):
         logger.error(f"Failed to save tour completion: {e}")
         raise HTTPException(status_code=500, detail="Failed to save tour completion")
 
+@api_router.post("/users/reset-tours")
+async def reset_all_tours(request: Request):
+    """Reset all tours for the current user"""
+    user = await get_current_user(request, None, db)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    try:
+        await db.users.update_one(
+            {"id": user.id},
+            {"$set": {"completed_tours": []}}
+        )
+        
+        return {
+            "success": True,
+            "message": "All tours reset successfully"
+        }
+    except Exception as e:
+        logger.error(f"Failed to reset tours: {e}")
+        raise HTTPException(status_code=500, detail="Failed to reset tours")
+
+@api_router.post("/users/reset-tour")
+async def reset_single_tour(request: Request, tour_data: dict):
+    """Reset a specific tour for the current user"""
+    user = await get_current_user(request, None, db)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    tour_id = tour_data.get("tour_id")
+    if not tour_id:
+        raise HTTPException(status_code=400, detail="tour_id is required")
+    
+    try:
+        await db.users.update_one(
+            {"id": user.id},
+            {"$pull": {"completed_tours": tour_id}}
+        )
+        
+        return {
+            "success": True,
+            "message": f"Tour {tour_id} reset successfully"
+        }
+    except Exception as e:
+        logger.error(f"Failed to reset tour: {e}")
+        raise HTTPException(status_code=500, detail="Failed to reset tour")
+
 
 @api_router.post("/auth/forgot-password")
 async def forgot_password(request: ForgotPasswordRequest):
