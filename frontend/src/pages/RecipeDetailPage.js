@@ -1011,7 +1011,7 @@ const RecipeDetailPage = ({ sessionId }) => {
       {/* Steps */}
       {recipe.steps && recipe.steps.length > 0 && (
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <h2 className="text-2xl font-bold mb-4">Fremgangsmåde</h2>
+          <h2 className="text-2xl font-bold mb-4">{t('recipes.instructions')}</h2>
           <ol className="space-y-3">
             {recipe.steps.map((step, index) => (
               <li key={index} className="flex gap-4">
