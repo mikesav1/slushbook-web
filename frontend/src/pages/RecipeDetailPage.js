@@ -1031,7 +1031,7 @@ const RecipeDetailPage = ({ sessionId }) => {
           className="flex items-center justify-between cursor-pointer hover:bg-gray-50 -mx-6 px-6 py-3 rounded-xl transition-colors mb-4"
           onClick={() => setCommentsCollapsed(!commentsCollapsed)}
         >
-          <h2 className="text-2xl font-bold">💬 Kommentarer ({comments.length})</h2>
+          <h2 className="text-2xl font-bold">💬 {t('recipes.comments')} ({comments.length})</h2>
           {commentsCollapsed ? (
             <FaChevronDown className="text-gray-400" size={20} />
           ) : (
