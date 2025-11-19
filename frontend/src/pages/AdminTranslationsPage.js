@@ -50,7 +50,7 @@ const AdminTranslationsPage = () => {
       setTranslations(loadedTranslations[selectedLang] || {});
     } catch (error) {
       console.error('Error loading translations:', error);
-      toast.error('Kunne ikke indlæse oversættelser');
+      toast.error(t('admin.translations.loadError'));
     } finally {
       setLoading(false);
     }
