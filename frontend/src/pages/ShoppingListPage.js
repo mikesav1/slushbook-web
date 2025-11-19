@@ -138,7 +138,7 @@ const ShoppingListPage = ({ sessionId }) => {
   const handleTourFinish = () => {
     markTourCompleted(TOUR_KEYS.SHOPPING_LIST, API, updateCompletedTours);
     setCurrentTourStep(-1);
-    toast.success('Indkøbsliste guide færdig!');
+    toast.success(t('tour.shopping.tourComplete', 'Indkøbsliste guide færdig!'));
   };
 
 
