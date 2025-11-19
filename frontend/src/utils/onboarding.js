@@ -93,15 +93,15 @@ export const homePageSteps = getHomePageSteps();
 export const recipesPageSteps = [
   {
     // Welcome to recipes page
-    content: '📚 Velkommen til Opskrifter!\n\nHer finder du alle slushice-opskrifter. Lad os se på de vigtigste funktioner.'
+    content: i18n.t('tour.recipes.welcome')
   },
   {
     target: '[data-tour="search-bar"]',
-    content: '🔍 Søg efter opskrifter\n\nBrug søgefeltet til at finde specifikke opskrifter hurtigt. Skriv f.eks. "jordbær" eller "klassisk".'
+    content: i18n.t('tour.recipes.step1')
   },
   {
     target: '[data-tour="type-filter"]',
-    content: '🎨 Filtrer efter type\n\nHer kan du filtrere opskrifter efter kategori.\n\nVælg mellem Klassisk, Tropisk, Cremet, Cocktail og flere andre.'
+    content: i18n.t('tour.recipes.step2')
   },
   {
     target: '[data-tour="recipe-favorite"]',
