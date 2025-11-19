@@ -289,10 +289,10 @@ const AdminTranslationsPage = () => {
                       />
                       <div className="flex gap-2">
                         <Button size="sm" onClick={() => handleSaveEdit(item.key)}>
-                          Gem
+                          {t('common.save')}
                         </Button>
                         <Button size="sm" variant="outline" onClick={() => setEditingKey(null)}>
-                          Annuller
+                          {t('common.cancel')}
                         </Button>
                       </div>
                     </div>
