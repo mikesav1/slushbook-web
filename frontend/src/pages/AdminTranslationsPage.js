@@ -195,7 +195,7 @@ const AdminTranslationsPage = () => {
 
       {/* Language Selector */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-        <Label className="text-sm font-medium mb-2 block">Vælg Sprog</Label>
+        <Label className="text-sm font-medium mb-2 block">{t('admin.translations.selectLanguage')}</Label>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
           {Object.entries(LANGUAGES).map(([code, language]) => (
             <button
