@@ -30,7 +30,7 @@ const EditRecipePage = ({ sessionId }) => {
 
   const fetchRecipe = async () => {
     try {
-      const response = await axios.get(`${API}/recipes/${id}?session_id=${sessionId}`);
+      const response = await axios.get(`${API}/recipes/${id}?session_id=${sessionId}&lang=da`);
       // Allow editing all recipes (removed author check)
       setRecipe(response.data);
       setImagePreview(response.data.image_url);
