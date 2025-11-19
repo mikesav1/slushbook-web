@@ -4821,6 +4821,211 @@ async def calculate_user_badge(user_id: str):
         "next_badge": None if not earned_badge else _get_next_badge(badges, earned_badge)
     }
 
+
+# ==========================================
+# PRO-USER SHARING SYSTEM
+# ==========================================
+
+@api_router.post("/recipes/{recipe_id}/share")
+async def create_recipe_share(
+    recipe_id: str,
+    request: Request,
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
+):
+    """Create a shareable link for a private recipe (Pro users only)"""
+    user = await get_current_user(request, credentials, db)
+    
+    if not user or user.role not in ["pro", "admin", "editor"]:
+        raise HTTPException(status_code=403, detail="Pro membership required to share recipes")
+    
+    # Find recipe and verify ownership
+    recipe = await db.user_recipes.find_one({"id": recipe_id}, {"_id": 0})
+    if not recipe:
+        raise HTTPException(status_code=404, detail="Recipe not found")
+    
+    if recipe["author"] != user.id:
+        raise HTTPException(status_code=403, detail="You can only share your own recipes")
+    
+    # Generate unique share token
+    share_token = secrets.token_urlsafe(16)
+    
+    # Create share record
+    share = {
+        "id": str(uuid.uuid4()),
+        "token": share_token,
+        "recipe_id": recipe_id,
+        "owner_id": user.id,
+        "owner_name": user.name,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "views": 0,
+        "copies": 0,
+        "active": True
+    }
+    
+    await db.recipe_shares.insert_one(share)
+    
+    logger.info(f"User {user.email} created share link for recipe {recipe_id}")
+    
+    return {
+        "token": share_token,
+        "share_url": f"{request.base_url}shared/{share_token}",
+        "message": "Share link created successfully"
+    }
+
+@api_router.get("/shared/{token}")
+async def get_shared_recipe(token: str):
+    """Get a shared recipe by token (no authentication required)"""
+    # Find share record
+    share = await db.recipe_shares.find_one({"token": token, "active": True}, {"_id": 0})
+    
+    if not share:
+        raise HTTPException(status_code=404, detail="Shared recipe not found or link has been revoked")
+    
+    # Get recipe
+    recipe = await db.user_recipes.find_one({"id": share["recipe_id"]}, {"_id": 0})
+    
+    if not recipe:
+        raise HTTPException(status_code=404, detail="Recipe not found")
+    
+    # Increment view count
+    await db.recipe_shares.update_one(
+        {"token": token},
+        {"$inc": {"views": 1}}
+    )
+    
+    # Return recipe with share info
+    return {
+        "recipe": recipe,
+        "shared_by": share["owner_name"],
+        "share_info": {
+            "token": token,
+            "views": share["views"] + 1
+        }
+    }
+
+@api_router.post("/shared/{token}/copy")
+async def copy_shared_recipe(
+    token: str,
+    request: Request,
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
+):
+    """Copy a shared recipe to user's own collection"""
+    user = await get_current_user(request, credentials, db)
+    
+    if not user:
+        raise HTTPException(status_code=401, detail="You must be logged in to copy recipes")
+    
+    # Find share record
+    share = await db.recipe_shares.find_one({"token": token, "active": True}, {"_id": 0})
+    
+    if not share:
+        raise HTTPException(status_code=404, detail="Shared recipe not found")
+    
+    # Get original recipe
+    original = await db.user_recipes.find_one({"id": share["recipe_id"]}, {"_id": 0})
+    
+    if not original:
+        raise HTTPException(status_code=404, detail="Recipe not found")
+    
+    # Create a copy for the user
+    new_recipe = original.copy()
+    new_recipe["id"] = str(uuid.uuid4())
+    new_recipe["author"] = user.id
+    new_recipe["author_name"] = user.name
+    new_recipe["created_at"] = datetime.now(timezone.utc).isoformat()
+    new_recipe["is_published"] = False  # Copied recipe starts as private
+    new_recipe["copied_from"] = share["recipe_id"]
+    new_recipe["original_author"] = share["owner_name"]
+    
+    await db.user_recipes.insert_one(new_recipe)
+    
+    # Increment copy count
+    await db.recipe_shares.update_one(
+        {"token": token},
+        {"$inc": {"copies": 1}}
+    )
+    
+    # Send notification to original owner
+    try:
+        await create_notification(
+            user_id=share["owner_id"],
+            type="system",
+            title="Din opskrift blev kopieret!",
+            message=f'{user.name} kopierede din delte opskrift "{original["name"]}"',
+            link=f"/recipes/{share['recipe_id']}",
+            data={"recipe_id": share["recipe_id"], "copied_by": user.id}
+        )
+    except Exception as e:
+        logger.error(f"Failed to send copy notification: {e}")
+    
+    logger.info(f"User {user.email} copied shared recipe {share['recipe_id']}")
+    
+    return {
+        "success": True,
+        "recipe_id": new_recipe["id"],
+        "message": "Recipe copied to your collection"
+    }
+
+@api_router.delete("/recipes/{recipe_id}/share/{token}")
+async def revoke_recipe_share(
+    recipe_id: str,
+    token: str,
+    request: Request,
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
+):
+    """Revoke a share link (owner only)"""
+    user = await get_current_user(request, credentials, db)
+    
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    # Find share and verify ownership
+    share = await db.recipe_shares.find_one({"token": token, "recipe_id": recipe_id}, {"_id": 0})
+    
+    if not share:
+        raise HTTPException(status_code=404, detail="Share link not found")
+    
+    if share["owner_id"] != user.id and user.role != "admin":
+        raise HTTPException(status_code=403, detail="You can only revoke your own share links")
+    
+    # Deactivate share
+    await db.recipe_shares.update_one(
+        {"token": token},
+        {"$set": {"active": False, "revoked_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    
+    logger.info(f"User {user.email} revoked share link for recipe {recipe_id}")
+    
+    return {"success": True, "message": "Share link revoked"}
+
+@api_router.get("/recipes/{recipe_id}/shares")
+async def get_recipe_shares(
+    recipe_id: str,
+    request: Request,
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
+):
+    """Get all share links for a recipe (owner only)"""
+    user = await get_current_user(request, credentials, db)
+    
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    # Verify recipe ownership
+    recipe = await db.user_recipes.find_one({"id": recipe_id}, {"_id": 0, "author": 1})
+    if not recipe:
+        raise HTTPException(status_code=404, detail="Recipe not found")
+    
+    if recipe["author"] != user.id and user.role != "admin":
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    # Get all shares for this recipe
+    shares = await db.recipe_shares.find(
+        {"recipe_id": recipe_id},
+        {"_id": 0}
+    ).sort("created_at", -1).to_list(length=None)
+    
+    return {"shares": shares}
+
 def _get_next_badge(badges, current_badge):
     """Get the next badge after current one"""
     sorted_badges = sorted(badges, key=lambda x: x['min_recipes'])
