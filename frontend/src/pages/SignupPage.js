@@ -34,12 +34,12 @@ const SignupPage = () => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      toast.error('Passwords stemmer ikke overens');
+      toast.error(t('auth.passwordsDontMatch', 'Passwords stemmer ikke overens'));
       return;
     }
 
     if (formData.password.length < 6) {
-      toast.error('Password skal være mindst 6 tegn');
+      toast.error(t('auth.passwordTooShort', 'Password skal være mindst 6 tegn'));
       return;
     }
 
