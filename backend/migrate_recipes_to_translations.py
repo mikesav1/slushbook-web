@@ -15,13 +15,13 @@ ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 MONGO_URL = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
+DB_NAME = os.environ.get('DB_NAME', 'flavor_sync')
 
 async def migrate_recipes():
     """Migrate all system recipes to new translation structure"""
     
     client = AsyncIOMotorClient(MONGO_URL)
-    # Use explicit database name - adjust if needed
-    db = client.slushbook if 'slushbook' not in MONGO_URL else client.get_default_database()
+    db = client[DB_NAME]
     
     print("🔄 Starting recipe migration to translation structure...")
     
