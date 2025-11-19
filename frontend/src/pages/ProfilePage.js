@@ -198,14 +198,14 @@ const ProfilePage = () => {
           <div className="space-y-4 pt-6 border-t border-gray-200">
             <h2 className="text-xl font-semibold flex items-center gap-2">
               <FaLock className="text-cyan-500" />
-              Skift password
+              {t('profile.changePassword')}
             </h2>
             <p className="text-sm text-gray-600">
-              Lad felterne tomme hvis du ikke vil ændre dit password
+              {t('profile.leaveEmptyIfNoChange', 'Lad felterne tomme hvis du ikke vil ændre dit password')}
             </p>
 
             <div>
-              <Label htmlFor="currentPassword">Nuværende password</Label>
+              <Label htmlFor="currentPassword">{t('profile.currentPassword')}</Label>
               <Input
                 id="currentPassword"
                 name="currentPassword"
@@ -213,12 +213,12 @@ const ProfilePage = () => {
                 value={formData.currentPassword}
                 onChange={handleChange}
                 className="mt-1"
-                placeholder="Kun hvis du vil ændre password"
+                placeholder={t('profile.currentPasswordPlaceholder', 'Kun hvis du vil ændre password')}
               />
             </div>
 
             <div>
-              <Label htmlFor="newPassword">Nyt password</Label>
+              <Label htmlFor="newPassword">{t('profile.newPassword')}</Label>
               <Input
                 id="newPassword"
                 name="newPassword"
@@ -226,12 +226,12 @@ const ProfilePage = () => {
                 value={formData.newPassword}
                 onChange={handleChange}
                 className="mt-1"
-                placeholder="Min. 6 tegn"
+                placeholder={t('profile.newPasswordPlaceholder', 'Min. 6 tegn')}
               />
             </div>
 
             <div>
-              <Label htmlFor="confirmPassword">Bekræft nyt password</Label>
+              <Label htmlFor="confirmPassword">{t('profile.confirmNewPassword')}</Label>
               <Input
                 id="confirmPassword"
                 name="confirmPassword"
