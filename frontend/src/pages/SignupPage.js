@@ -7,8 +7,10 @@ import { API } from '../App';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { COUNTRIES } from '../utils/geolocation';
+import { useTranslation } from 'react-i18next';
 
 const SignupPage = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
