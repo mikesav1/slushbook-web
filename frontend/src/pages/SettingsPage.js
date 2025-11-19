@@ -436,7 +436,7 @@ const SettingsPage = ({ sessionId }) => {
                   onClick={async () => {
                     setSelectedLanguage(code);
                     await setUserLanguage(code);
-                    toast.success(`Sprog ændret til ${language.name}`);
+                    toast.success(t('messages.success.languageChanged', { language: language.name }));
                     // Reload page to apply language change
                     setTimeout(() => {
                       window.location.reload();
