@@ -144,7 +144,6 @@
     "mustNotIncludeLabel": "Must not include (type or select from list)",
     "ingredientPlaceholder": "e.g. strawberry, lemon...",
     "excludeIngredientPlaceholder": "e.g. milk, nuts...",
-    "typeFilter": "Type filter",
     "browseByType": "Browse by type",
     "showingResults": "Showing {{count}} results"
   },
@@ -411,6 +410,32 @@
       "step3": "🔄 Restart guides\n\nNeed to see the guides again?\n\nClick here to reset all onboarding tours and see them from the beginning.",
       "step4": "📖 Full guide\n\nClick this link to read the complete guide to SLUSHBOOK.\n\nHere you'll find detailed instructions, tips and tricks for all features!",
       "tips": "💡 Other settings\n\n• Manage your devices and log out from specific devices\n• Choose your country for relevant product links\n• See your free limits (how many recipes you can create)\n• All your settings are saved automatically"
+    }
+  },
+  "admin": {
+    "translations": {
+      "title": "Translation Editor",
+      "subtitle": "Manage translations for all languages",
+      "export": "Export",
+      "save": "Save Changes",
+      "selectLanguage": "Select Language",
+      "search": "Search",
+      "searchPlaceholder": "Search for key or text...",
+      "section": "Section",
+      "allSections": "All sections",
+      "showing": "Showing {{count}} of {{total}} keys",
+      "addKey": "Add Key",
+      "addNewKey": "Add New Key",
+      "keyLabel": "Key (e.g. common.newButton)",
+      "keyPlaceholder": "section.key",
+      "valueLabel": "Value",
+      "valuePlaceholder": "Translation text...",
+      "loadError": "Could not load translations",
+      "saveSuccess": "Translations saved for {{language}}!",
+      "saveError": "Could not save translations",
+      "exportSuccess": "Translations exported!",
+      "addSuccess": "New key added!",
+      "addError": "Fill in both key and value"
     }
   }
 }
