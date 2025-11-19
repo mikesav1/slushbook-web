@@ -8,19 +8,19 @@ const API = process.env.REACT_APP_BACKEND_URL || '';
 
 // Supported countries and languages
 export const COUNTRIES = {
-  DK: { name: 'Danmark', flag: '🇩🇰', lang: 'dk' },
+  DK: { name: 'Danmark', flag: '🇩🇰', lang: 'da' },
   DE: { name: 'Deutschland', flag: '🇩🇪', lang: 'de' },
   FR: { name: 'France', flag: '🇫🇷', lang: 'fr' },
-  GB: { name: 'United Kingdom', flag: '🇬🇧', lang: 'en-uk' },
-  US: { name: 'United States', flag: '🇺🇸', lang: 'en-us' },
+  GB: { name: 'United Kingdom', flag: '🇬🇧', lang: 'en' },
+  US: { name: 'United States', flag: '🇺🇸', lang: 'en_us' },
 };
 
 export const LANGUAGES = {
-  'dk': { name: 'Dansk', flag: '🇩🇰' },
-  'de': { name: 'Deutsch', flag: '🇩🇪' },
-  'fr': { name: 'Français', flag: '🇫🇷' },
-  'en-uk': { name: 'English (UK)', flag: '🇬🇧' },
-  'en-us': { name: 'English (US)', flag: '🇺🇸' },
+  'da': { name: 'Dansk', flag: '🇩🇰', code: 'da' },
+  'de': { name: 'Deutsch', flag: '🇩🇪', code: 'de' },
+  'fr': { name: 'Français', flag: '🇫🇷', code: 'fr' },
+  'en': { name: 'English (UK)', flag: '🇬🇧', code: 'en' },
+  'en_us': { name: 'English (US)', flag: '🇺🇸', code: 'en_us' },
 };
 
 /**
