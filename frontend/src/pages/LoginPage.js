@@ -212,7 +212,7 @@ const LoginPage = ({ onLogin }) => {
           {/* Google Login */}
           <Button
             type="button"
-            onClick={() => toast.info('Google login coming soon')}
+            onClick={handleGoogleLogin}
             className="w-full py-3 rounded-xl font-medium border-2 border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
           >
             <img 
