@@ -125,7 +125,18 @@
     "eggs": "Eier",
     "citrus": "Zitrusfrüchte",
     "browseByCategory": "Nach Kategorie durchsuchen",
-    "recipesFound": "{{count}} Rezepte gefunden"
+    "recipesFound": "{{count}} Rezepte gefunden",
+    "advancedIngredientSearch": "Erweiterte Zutatensuche",
+    "filtersActive": "Filter aktiv",
+    "quickExcludeLabel": "Schnellausschluss (klicken Sie, um Allergengruppe auszuschließen)",
+    "excludeAllergen": "Ausschließen",
+    "mustIncludeLabel": "Muss enthalten (eingeben oder aus Liste auswählen)",
+    "mustNotIncludeLabel": "Darf nicht enthalten (eingeben oder aus Liste auswählen)",
+    "ingredientPlaceholder": "z.B. Erdbeere, Zitrone...",
+    "excludeIngredientPlaceholder": "z.B. Milch, Nüsse...",
+    "typeFilter": "Typ-Filter",
+    "browseByType": "Nach Typ durchsuchen",
+    "showingResults": "{{count}} Ergebnisse angezeigt"
   },
   "settings": {
     "title": "Einstellungen",
