@@ -599,7 +599,7 @@ const SettingsPage = ({ sessionId }) => {
               </DialogTrigger>
             <DialogContent className="max-h-[90vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle>{isEditMode ? 'Redigér Maskine' : 'Tilføj Maskine'}</DialogTitle>
+                <DialogTitle>{isEditMode ? 'Redigér Maskine' : t('settings.addMachine')}</DialogTitle>
               </DialogHeader>
               <form onSubmit={addMachine} className="space-y-4">
                 <div>
