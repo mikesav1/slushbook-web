@@ -339,7 +339,19 @@
     "noMatches": "Ingen matches fundet",
     "matchScore": "Match score",
     "missingIngredients": "Manglende ingredienser",
-    "viewRecipe": "Se opskrift"
+    "viewRecipe": "Se opskrift",
+    "pantryUpdated": "Dine ingredienser er opdateret! Klik 'Find matches' for at se nye resultater.",
+    "tourComplete": "Match-Finder guide færdig!",
+    "ingredientRemoved": "Ingrediens fjernet",
+    "removeError": "Kunne ikke fjerne ingrediens",
+    "addIngredientsFirst": "Tilføj ingredienser først!",
+    "foundMatches": "Fandt {{count}} matches!",
+    "searchError": "Kunne ikke finde matches",
+    "proFeature": "Match-Finder er en PRO-funktion",
+    "upgradeMessage": "Opgradér til PRO for at matche dine ingredienser med opskrifter og finde ud af hvad du kan lave!",
+    "upgradeToPro": "Opgradér til PRO",
+    "ingredientCount": "Du har {{count}} ingrediens{{plural}}",
+    "addMore": "Tilføj Flere"
   },
   "shoppingList": {
     "title": "Indkøbsliste",
