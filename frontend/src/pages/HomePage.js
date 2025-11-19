@@ -226,7 +226,7 @@ const HomePage = ({ sessionId }) => {
         <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
           <div className="flex items-center gap-4">
             <h2 className="text-2xl font-bold">
-              {sortBy === 'latest' ? 'Seneste opskrifter' : 'Mest populære'}
+              {t('home.featuredRecipes')}
             </h2>
             <div className="flex bg-gray-100 rounded-lg p-1">
               <button
@@ -237,7 +237,7 @@ const HomePage = ({ sessionId }) => {
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
-                Seneste
+                {t('common.latest', 'Seneste')}
               </button>
               <button
                 onClick={() => setSortBy('popular')}
@@ -247,12 +247,12 @@ const HomePage = ({ sessionId }) => {
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
-                Populære
+                {t('common.popular', 'Populære')}
               </button>
             </div>
           </div>
           <Link to="/recipes" className="text-cyan-600 hover:text-cyan-700 font-semibold flex items-center gap-2">
-            Se Alle <FaFire />
+            {t('home.exploreAll')} <FaFire />
           </Link>
         </div>
 
