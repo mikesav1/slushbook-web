@@ -205,6 +205,9 @@
     "yourAccount": "Din Konto",
     "youHaveCreated": "Du har oprettet {{count}} opskrift",
     "youHaveCreatedPlural": "Du har oprettet {{count}} opskrifter",
+    "youCanAdd": "Du kan tilføje {{count}} mere opskrift",
+    "youCanAddPlural": "Du kan tilføje {{count}} mere opskrifter",
+    "freeLimitReached": "Gratis limit nået (2/2). Opgradér til Pro for ubegrænset!",
     "settingsTourComplete": "Indstillinger guide færdig!"
   },
   "messages": {
