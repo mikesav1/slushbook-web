@@ -322,8 +322,8 @@ const ShoppingListPage = ({ sessionId }) => {
       ) : items.length === 0 ? (
         <div className="empty-state">
           <div className="empty-state-icon"><FaShoppingCart /></div>
-          <h3 className="text-xl font-bold mb-2">Din indkøbsliste er tom</h3>
-          <p className="text-gray-600">Tilføj manglende ingredienser fra opskrifter</p>
+          <h3 className="text-xl font-bold mb-2">{t('shoppingList.emptyTitle', 'Din indkøbsliste er tom')}</h3>
+          <p className="text-gray-600">{t('shoppingList.emptyDescription', 'Tilføj manglende ingredienser fra opskrifter')}</p>
         </div>
       ) : (
         <div className="space-y-6">
