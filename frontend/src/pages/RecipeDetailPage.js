@@ -1172,6 +1172,8 @@ const RecipeDetailPage = ({ sessionId }) => {
             ))}
           </div>
         )}
+        </>
+        )}
       </div>
     </div>
   );
