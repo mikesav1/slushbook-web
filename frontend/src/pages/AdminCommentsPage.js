@@ -32,6 +32,13 @@ const AdminCommentsPage = () => {
       
       const response = await axios.get(`${API}/admin/comments/all?${params}`);
       setComments(response.data);
+      
+      // Set all comments as collapsed by default
+      const initialCollapsed = {};
+      response.data.forEach(comment => {
+        initialCollapsed[comment.id] = true;
+      });
+      setCollapsedComments(initialCollapsed);
     } catch (error) {
       console.error('Error fetching comments:', error);
       toast.error('Kunne ikke hente kommentarer');
