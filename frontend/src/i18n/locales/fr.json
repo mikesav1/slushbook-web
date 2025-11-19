@@ -146,7 +146,6 @@
     "mustNotIncludeLabel": "Ne doit pas inclure (tapez ou sélectionnez dans la liste)",
     "ingredientPlaceholder": "par ex. fraise, citron...",
     "excludeIngredientPlaceholder": "par ex. lait, noix...",
-    "typeFilter": "Filtre de type",
     "browseByType": "Parcourir par type",
     "showingResults": "Affichage de {{count}} résultats"
   },
@@ -413,6 +412,32 @@
       "step3": "🔄 Redémarrer les guides\n\nBesoin de revoir les guides?\n\nCliquez ici pour réinitialiser toutes les visites guidées et les revoir depuis le début.",
       "step4": "📖 Guide complet\n\nCliquez sur ce lien pour lire le guide complet de SLUSHBOOK.\n\nIci, vous trouverez des instructions détaillées, des conseils et astuces pour toutes les fonctionnalités!",
       "tips": "💡 Autres paramètres\n\n• Gérez vos appareils et déconnectez-vous d'appareils spécifiques\n• Choisissez votre pays pour des liens produits pertinents\n• Consultez vos limites gratuites (combien de recettes vous pouvez créer)\n• Tous vos paramètres sont enregistrés automatiquement"
+    }
+  },
+  "admin": {
+    "translations": {
+      "title": "Éditeur de traductions",
+      "subtitle": "Gérer les traductions pour toutes les langues",
+      "export": "Exporter",
+      "save": "Enregistrer les modifications",
+      "selectLanguage": "Sélectionner la langue",
+      "search": "Rechercher",
+      "searchPlaceholder": "Rechercher une clé ou un texte...",
+      "section": "Section",
+      "allSections": "Toutes les sections",
+      "showing": "Affichage de {{count}} sur {{total}} clés",
+      "addKey": "Ajouter une clé",
+      "addNewKey": "Ajouter une nouvelle clé",
+      "keyLabel": "Clé (par ex. common.newButton)",
+      "keyPlaceholder": "section.clé",
+      "valueLabel": "Valeur",
+      "valuePlaceholder": "Texte de traduction...",
+      "loadError": "Impossible de charger les traductions",
+      "saveSuccess": "Traductions enregistrées pour {{language}}!",
+      "saveError": "Impossible d'enregistrer les traductions",
+      "exportSuccess": "Traductions exportées!",
+      "addSuccess": "Nouvelle clé ajoutée!",
+      "addError": "Veuillez remplir la clé et la valeur"
     }
   }
 }
