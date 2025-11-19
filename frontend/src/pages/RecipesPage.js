@@ -137,7 +137,8 @@ const RecipesPage = ({ sessionId }) => {
     try {
       const params = new URLSearchParams({
         session_id: sessionId,
-        alcohol: alcoholFilter
+        alcohol: alcoholFilter,
+        lang: getUserLanguage()  // Add language parameter
       });
       if (typeFilter) params.append('type', typeFilter);
       if (includeIngredients.length > 0) {
