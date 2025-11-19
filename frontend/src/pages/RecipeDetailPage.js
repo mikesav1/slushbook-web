@@ -1318,8 +1318,7 @@ const RecipeDetailPage = ({ sessionId }) => {
                   </button>
                   <button
                     onClick={() => {
-                      // Optional: Navigate to manage shares page
-                      navigate('/settings#shares');
+                      navigate('/shares');
                       setShowShareModal(false);
                     }}
                     className="flex-1 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 font-medium"
