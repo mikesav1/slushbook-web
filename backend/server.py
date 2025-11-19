@@ -1980,8 +1980,16 @@ async def get_recipes(
                 author_user = await db.users.find_one({"id": recipe['author']}, {"_id": 0, "name": 1})
                 if author_user:
                     recipe['author_name'] = author_user.get('name', 'Ukendt')
+                    # Count author's published recipes for badge system
+                    author_recipe_count = await db.user_recipes.count_documents({
+                        "author": recipe['author'],
+                        "is_published": True,
+                        "approval_status": "approved"
+                    })
+                    recipe['author_recipe_count'] = author_recipe_count
                 else:
                     recipe['author_name'] = 'Ukendt'
+                    recipe['author_recipe_count'] = 0
     else:
         # Even without session_id, add author names for display
         for recipe in all_recipes:
@@ -1989,8 +1997,16 @@ async def get_recipes(
                 author_user = await db.users.find_one({"id": recipe['author']}, {"_id": 0, "name": 1})
                 if author_user:
                     recipe['author_name'] = author_user.get('name', 'Ukendt')
+                    # Count author's published recipes for badge system
+                    author_recipe_count = await db.user_recipes.count_documents({
+                        "author": recipe['author'],
+                        "is_published": True,
+                        "approval_status": "approved"
+                    })
+                    recipe['author_recipe_count'] = author_recipe_count
                 else:
                     recipe['author_name'] = 'Ukendt'
+                    recipe['author_recipe_count'] = 0
     
     return all_recipes
 
