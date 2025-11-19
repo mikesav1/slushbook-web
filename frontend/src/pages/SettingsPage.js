@@ -453,7 +453,7 @@ const SettingsPage = ({ sessionId }) => {
             </div>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Onboarding Tour Reset */}
       {user?.role !== 'guest' && (
