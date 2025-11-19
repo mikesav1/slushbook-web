@@ -390,6 +390,26 @@
       "step4": "🌍 VIGTIGT: Offentlig opskrift\n\nHvis du vil DELE din opskrift med andre brugere, skal du aktivere 'Offentlig opskrift'.\n\n⚠️ OBS: Offentlige opskrifter skal godkendes af admin før de bliver synlige.\n\nPrivate opskrifter er kun synlige for dig.",
       "step5": "✅ Gem din opskrift\n\nNår du er tilfreds med din opskrift, klik 'Opret Opskrift'.\n\nDin opskrift bliver:\n• Tilføjet til din samling med det samme\n• Sendt til godkendelse hvis den er offentlig\n• Klar til at dele hvis den er offentlig og godkendt!",
       "complete": "🎉 Du er nu klar!\n\nDu ved nu hvordan du:\n• Søger og filtrerer opskrifter\n• Tilføjer favoritter\n• Opretter egne opskrifter\n\nGod fornøjelse med at udforske og skabe slushice-opskrifter! 🍹"
+    },
+    "match": {
+      "welcome": "🎯 Velkommen til Match-Finder!\n\nHer kan du finde opskrifter baseret på de ingredienser du allerede har.\n\nLad os se hvordan det virker.",
+      "step1": "📦 Tilføj ingredienser til dit 'skab'\n\nKlik her for at tilføje ingredienser du har derhjemme.\n\nJo flere ingredienser du tilføjer, desto bedre matches får du!",
+      "step2": "🔍 Find matches\n\nNår du har tilføjet dine ingredienser, klik her for at finde opskrifter du kan lave.\n\nSystemet viser opskrifter du kan lave med det du har!",
+      "tips": "💡 Tips til Match-Finder\n\n• Start med at tilføje de basale ingredienser (sukker, citron, vand)\n• Tilføj frugter og smagsvarianter du har\n• Systemet viser hvor mange % match der er\n• Du kan købe manglende ingredienser direkte fra listen!"
+    },
+    "shopping": {
+      "welcome": "🛒 Velkommen til din Indkøbsliste!\n\nHer finder du alle ingredienser du har tilføjet fra opskrifter.\n\nLad os se hvad du kan gøre.",
+      "step1": "✅ Afkryds købte varer\n\nKlik på checkbox for at markere en ingrediens som købt.\n\nKøbte varer forsvinder fra listen.",
+      "step2": "🏪 Køb online\n\nKlik på 'Indkøb hos...' for at købe ingrediensen direkte hos en leverandør.\n\nVi viser automatisk den bedste pris for dit land!",
+      "tips": "💡 Tips til Indkøbsliste\n\n• Tilføj ingredienser ved at åbne en opskrift og klikke 'Tilføj til Liste'\n• Ingredienserne grupperes automatisk\n• Køb online og spar tid!\n• Listen huskes så du kan handle når du vil"
+    },
+    "settings": {
+      "welcome": "⚙️ Velkommen til Indstillinger!\n\nHer kan du tilpasse appen til dine behov.\n\nLad os især se på maskin-indstillingerne.",
+      "step1": "🧊 Dine slush-maskiner\n\nHer kan du tilføje og administrere dine slush-maskiner.\n\nNår du har indstillet din maskine, skaleres opskrifter automatisk til den rigtige størrelse!",
+      "step2": "➕ Tilføj maskine\n\nKlik her for at tilføje en ny maskine.\n\nIndtast navn og tank-volumen (f.eks. 12000 ml).\n\nDette gør opskrifter perfekte til din maskine!",
+      "step3": "🔄 Genstart guider\n\nHar du brug for at se guiderne igen?\n\nKlik her for at nulstille alle onboarding-tours og se dem forfra.",
+      "step4": "📖 Fuld vejledning\n\nKlik på dette link for at læse den komplette vejledning til SLUSHBOOK.\n\nHer finder du detaljerede instruktioner, tips og tricks til alle funktioner!",
+      "tips": "💡 Andre indstillinger\n\n• Administrer dine enheder og log ud fra specifikke enheder\n• Vælg dit land for relevante produktlinks\n• Se dine gratis-limits (hvor mange opskrifter du kan oprette)\n• Alle dine indstillinger gemmes automatisk"
     }
   }
 }
