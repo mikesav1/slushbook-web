@@ -98,7 +98,7 @@ const LoginPage = ({ onLogin }) => {
       }, 500);
     } catch (error) {
       console.error('Login error:', error);
-      toast.error(error.response?.data?.detail || 'Login failed');
+      toast.error(error.response?.data?.detail || t('auth.loginFailed', 'Login failed'));
       setLoading(false);
     }
   };
