@@ -2784,6 +2784,22 @@ async def create_comment(
     
     logger.info(f"Comment created by {user.name} on recipe {comment_data.recipe_id} in {language}")
     
+    # Create notification for recipe author
+    try:
+        recipe = await db.recipes.find_one({"id": comment_data.recipe_id}, {"_id": 0, "author": 1, "name": 1})
+        if recipe and recipe.get("author") and recipe["author"] != user.id:
+            # Only notify if comment is not from the recipe author themselves
+            await create_notification(
+                user_id=recipe["author"],
+                type="comment",
+                title="Ny kommentar på din opskrift",
+                message=f'{user.name} kommenterede på "{recipe.get("name", "din opskrift")}"',
+                link=f"/recipes/{comment_data.recipe_id}",
+                data={"recipe_id": comment_data.recipe_id, "comment_id": comment.id}
+            )
+    except Exception as e:
+        logger.error(f"Failed to create comment notification: {e}")
+    
     return comment
 
 @api_router.put("/comments/{comment_id}", response_model=Comment)
