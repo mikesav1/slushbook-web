@@ -16,6 +16,7 @@ const TipsPage = () => {
   const [newComment, setNewComment] = useState({});
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [showInternational, setShowInternational] = useState(true);
+  const [collapsedComments, setCollapsedComments] = useState({}); // Track collapsed comment sections
 
   const categories = [
     { id: 'all', name: 'Alle', icon: '📚' },
