@@ -250,7 +250,7 @@ const SettingsPage = ({ sessionId }) => {
 
       {/* User Info */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-        <h2 className="text-2xl font-bold mb-4">Din Konto</h2>
+        <h2 className="text-2xl font-bold mb-4">{t('settings.yourAccount')}</h2>
         <div className="space-y-3">
           {user && (
             <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
