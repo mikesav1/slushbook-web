@@ -70,11 +70,11 @@ const LoginPage = ({ onLogin }) => {
       if (response.data.device_limit) {
         const { current, max } = response.data.device_limit;
         if (current >= max) {
-          toast.warning(`Du er nu logget ind på maksimum (${max}) enheder. Ældre sessioner er blevet logget ud.`);
+          toast.warning(t('auth.deviceLimitWarning', `Du er nu logget ind på maksimum ({{max}}) enheder. Ældre sessioner er blevet logget ud.`, { max }));
         }
       }
       
-      toast.success('Login successful!');
+      toast.success(t('auth.loginSuccess', 'Login successful!'));
       
       // CRITICAL: Save session_token to localStorage (since httpOnly cookies don't work)
       if (response.data.session_token) {
