@@ -224,13 +224,13 @@ const AdminTranslationsPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Search */}
           <div>
-            <Label className="text-sm font-medium mb-2 block">Søg</Label>
+            <Label className="text-sm font-medium mb-2 block">{t('admin.translations.search')}</Label>
             <div className="relative">
               <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <Input
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Søg efter nøgle eller tekst..."
+                placeholder={t('admin.translations.searchPlaceholder')}
                 className="pl-10"
               />
             </div>
@@ -238,7 +238,7 @@ const AdminTranslationsPage = () => {
 
           {/* Section Filter */}
           <div>
-            <Label className="text-sm font-medium mb-2 block">Sektion</Label>
+            <Label className="text-sm font-medium mb-2 block">{t('admin.translations.section')}</Label>
             <select
               value={selectedSection}
               onChange={(e) => setSelectedSection(e.target.value)}
