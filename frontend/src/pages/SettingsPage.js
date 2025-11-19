@@ -293,9 +293,9 @@ const SettingsPage = ({ sessionId }) => {
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-2xl font-bold">Dine Enheder</h2>
+            <h2 className="text-2xl font-bold">{t('settings.devices')}</h2>
             <p className="text-sm text-gray-600">
-              Du bruger {deviceLimits.current} af {deviceLimits.max} tilladte enheder
+              {t('settings.deviceLimit', { current: deviceLimits.current, max: deviceLimits.max })}
             </p>
           </div>
           {devices.length > 1 && (
