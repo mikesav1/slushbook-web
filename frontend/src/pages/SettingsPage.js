@@ -14,7 +14,7 @@ import OnboardingTooltip from '../components/OnboardingTooltip';
 import { resetAllTours, resetTour, settingsPageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
 
 const SettingsPage = ({ sessionId }) => {
-  const { user, isAdmin, isPro, isEditor } = useAuth();
+  const { user, isAdmin, isPro, isEditor, updateCompletedTours } = useAuth();
   const [machines, setMachines] = useState([]);
   const [userRecipesCount, setUserRecipesCount] = useState(0);
   const [canAddRecipe, setCanAddRecipe] = useState(true);
