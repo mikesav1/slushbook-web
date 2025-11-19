@@ -285,11 +285,11 @@ const AddRecipePage = ({ sessionId }) => {
     return (
       <div className="max-w-2xl mx-auto fade-in">
         <div className="bg-orange-50 border border-orange-200 rounded-2xl p-8 text-center">
-          <h2 className="text-2xl font-bold mb-4">Gratis Limit Nået</h2>
+          <h2 className="text-2xl font-bold mb-4">{t('addRecipe.limitReached')}</h2>
           <p className="text-gray-700 mb-4">
-            Du har allerede oprettet 2 opskrifter (gratis limit). Opgradér til Pro for ubegrænset adgang!
+            {t('addRecipe.upgradePrompt')}
           </p>
-          <Button onClick={() => navigate('/settings')}>Gå til Indstillinger</Button>
+          <Button onClick={() => navigate('/settings')}>{t('nav.settings')}</Button>
         </div>
       </div>
     );
