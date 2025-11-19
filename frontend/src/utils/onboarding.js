@@ -3,6 +3,8 @@
  * Simple approach - no complex positioning
  */
 
+import i18n from '../i18n/config';
+
 const TOUR_KEYS = {
   HOME: 'tour_home_completed',
   RECIPES: 'tour_recipes_completed',
