@@ -494,6 +494,7 @@ const AppContent = ({ sessionId }) => {
             <Route path="/admin/links" element={<AdminLinksPage sessionId={effectiveSessionId} />} />
             <Route path="/admin/ads" element={<AdminAdsPage />} />
             <Route path="/admin/badges" element={<AdminBadgesPage />} />
+            <Route path="/admin/translations" element={<AdminTranslationsPage />} />
           </Routes>
         </main>
       </div>
