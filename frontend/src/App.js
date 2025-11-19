@@ -115,9 +115,12 @@ const Navigation = () => {
               );
             })}
             
-            {/* User Info / Login */}
+            {/* Notifications & User Info / Login */}
             {user ? (
-              <div className="relative pl-6 border-l border-white/20">
+              <div className="relative pl-6 border-l border-white/20 flex items-center gap-4">
+                {/* Notification Bell */}
+                <NotificationBell />
+                
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                   className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/10 transition-colors"
