@@ -111,7 +111,7 @@ const RecipeDetailPage = ({ sessionId }) => {
 
   const fetchRecipe = async () => {
     try {
-      const response = await axios.get(`${API}/recipes/${id}?session_id=${sessionId}`);
+      const response = await axios.get(`${API}/recipes/${id}?session_id=${sessionId}&lang=${getUserLanguage()}`);
       setRecipe(response.data);
       if (response.data.user_rating) {
         setRating(response.data.user_rating);
