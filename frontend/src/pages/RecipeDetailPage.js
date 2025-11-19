@@ -533,7 +533,7 @@ const RecipeDetailPage = ({ sessionId }) => {
         }
       }
       console.log('[Add to List] Successfully added', addedCount, 'items');
-      toast.success(`Tilføjet ${addedCount} ingredienser til indkøbsliste!`);
+      toast.success(t('recipeDetail.addedToShoppingList', `Tilføjet {{count}} ingredienser til indkøbsliste!`, { count: addedCount }));
     } catch (error) {
       console.error('[Add to List] Error:', error);
       console.error('[Add to List] Error response:', error.response?.data);
