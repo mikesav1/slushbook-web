@@ -425,9 +425,9 @@ const SettingsPage = ({ sessionId }) => {
           
           {/* Language Selector */}
           <div className="mt-6">
-            <Label className="text-sm font-medium mb-2 block">Vælg Sprog</Label>
+            <Label className="text-sm font-medium mb-2 block">{t('settings.selectLanguage')}</Label>
             <p className="text-xs text-gray-500 mb-3">
-              Opskrifter vil blive vist på det valgte sprog (hvis oversættelse findes)
+              {t('settings.languageDesc')}
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {Object.entries(LANGUAGES).map(([code, language]) => (
