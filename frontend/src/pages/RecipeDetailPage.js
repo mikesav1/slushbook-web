@@ -267,7 +267,7 @@ const RecipeDetailPage = ({ sessionId }) => {
     } catch (error) {
       console.error('Error toggling like:', error);
       if (error.response?.status === 403) {
-        toast.error('Kun PRO-brugere kan like kommentarer');
+        toast.error(t('recipeDetail.proOnlyLikes', 'Kun PRO-brugere kan like kommentarer'));
       } else {
         toast.error('Kunne ikke like kommentar');
       }
