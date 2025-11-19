@@ -42,7 +42,12 @@ const AdminTranslationsPage = () => {
       const loadedTranslations = {};
       
       for (const lang of Object.keys(LANGUAGES)) {
-        const response = await axios.get(`${API}/admin/translations/${lang}`);
+        const response = await axios.get(`${API}/admin/translations/${lang}`, {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
         loadedTranslations[lang] = response.data.translations;
       }
       
@@ -50,7 +55,12 @@ const AdminTranslationsPage = () => {
       setTranslations(loadedTranslations[selectedLang] || {});
     } catch (error) {
       console.error('Error loading translations:', error);
-      toast.error(t('admin.translations.loadError'));
+      console.error('Error details:', error.response?.status, error.response?.data);
+      if (error.response?.status === 403) {
+        toast.error('Du skal være logget ind som admin for at se oversættelser');
+      } else {
+        toast.error(t('admin.translations.loadError'));
+      }
     } finally {
       setLoading(false);
     }
