@@ -465,10 +465,10 @@ const RecipesPage = ({ sessionId }) => {
           >
             <div className="flex items-center gap-3">
               <span className="text-lg">🔍</span>
-              <h3 className="text-sm font-semibold text-gray-800">Avanceret Ingrediens-søgning</h3>
+              <h3 className="text-sm font-semibold text-gray-800">{t('recipes.ingredientFilter')}</h3>
               {(includeIngredients.length > 0 || excludeIngredients.length > 0) && (
                 <span className="bg-cyan-600 text-white text-xs px-2 py-0.5 rounded-full font-medium">
-                  {includeIngredients.length + excludeIngredients.length} filtre aktive
+                  {includeIngredients.length + excludeIngredients.length} {t('common.filter')}
                 </span>
               )}
             </div>
@@ -481,7 +481,7 @@ const RecipesPage = ({ sessionId }) => {
                   }}
                   className="text-xs text-cyan-600 hover:text-cyan-800 font-medium bg-white px-2 py-1 rounded-md mr-2"
                 >
-                  Ryd alle
+                  {t('recipes.clearAll')}
                 </button>
               )}
               {isIngredientFilterExpanded ? (
