@@ -366,7 +366,26 @@
     "clearAll": "Clear all",
     "clearCompleted": "Clear completed",
     "itemsCount": "{{count}} items",
-    "shopAt": "Shop at {{supplier}}"
+    "shopAt": "Shop at {{supplier}}",
+    "remainingItems": "{{count}} ingredient{{plural}} remaining",
+    "emptyTitle": "Your shopping list is empty",
+    "emptyDescription": "Add missing ingredients from recipes",
+    "fetchError": "Could not fetch shopping list"
+  },
+  "recipeDetail": {
+    "confirmDeleteComment": "Are you sure you want to delete this comment?",
+    "commentDeleted": "Comment deleted",
+    "deleteCommentError": "Could not delete comment",
+    "proOnlyLikes": "Only PRO users can like comments",
+    "confirmDelete": "Are you sure you want to delete '{{name}}'? This cannot be undone.",
+    "recipeDeleted": "Recipe deleted",
+    "deleteError": "Could not delete recipe",
+    "addedToShoppingList": "Added {{count}} ingredients to shopping list!",
+    "noCommentsYet": "No comments yet. Be the first to comment!",
+    "edited": "edited",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteRecipe": "Delete Recipe"
   },
   "tour": {
     "home": {
