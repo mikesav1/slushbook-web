@@ -4748,6 +4748,200 @@ async def update_translation_file(
         raise HTTPException(status_code=500, detail=f"Failed to update translation file: {str(e)}")
 
 
+# ==========================================
+# NOTIFICATION SYSTEM
+# ==========================================
+
+class Notification(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str  # Recipient user ID
+    type: str  # 'comment', 'favorite', 'new_recipe', 'system', 'approval'
+    title: str
+    message: str
+    link: Optional[str] = None  # Link to relevant page (e.g., /recipes/123)
+    read: bool = False
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    data: Optional[Dict[str, Any]] = None  # Extra data (recipe_id, comment_id, etc.)
+
+class NotificationCreate(BaseModel):
+    user_id: str
+    type: str
+    title: str
+    message: str
+    link: Optional[str] = None
+    data: Optional[Dict[str, Any]] = None
+
+async def create_notification(
+    user_id: str,
+    type: str,
+    title: str,
+    message: str,
+    link: Optional[str] = None,
+    data: Optional[Dict[str, Any]] = None
+):
+    """Helper function to create a notification"""
+    try:
+        notification = {
+            "id": str(uuid.uuid4()),
+            "user_id": user_id,
+            "type": type,
+            "title": title,
+            "message": message,
+            "link": link,
+            "read": False,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "data": data or {}
+        }
+        await db.notifications.insert_one(notification)
+        logger.info(f"Created notification for user {user_id}: {type}")
+        return notification
+    except Exception as e:
+        logger.error(f"Error creating notification: {e}")
+        return None
+
+@api_router.get("/notifications")
+async def get_notifications(
+    request: Request,
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
+    limit: int = 50,
+    unread_only: bool = False
+):
+    """Get user's notifications"""
+    user = await get_current_user(request, credentials, db)
+    
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    # Build query
+    query = {"user_id": user.id}
+    if unread_only:
+        query["read"] = False
+    
+    # Fetch notifications
+    notifications = await db.notifications.find(
+        query,
+        {"_id": 0}
+    ).sort("created_at", -1).limit(limit).to_list(length=None)
+    
+    # Count unread
+    unread_count = await db.notifications.count_documents({
+        "user_id": user.id,
+        "read": False
+    })
+    
+    return {
+        "notifications": notifications,
+        "unread_count": unread_count
+    }
+
+@api_router.put("/notifications/{notification_id}/read")
+async def mark_notification_read(
+    notification_id: str,
+    request: Request,
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
+):
+    """Mark a notification as read"""
+    user = await get_current_user(request, credentials, db)
+    
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    result = await db.notifications.update_one(
+        {"id": notification_id, "user_id": user.id},
+        {"$set": {"read": True}}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Notification not found")
+    
+    return {"success": True}
+
+@api_router.put("/notifications/read-all")
+async def mark_all_notifications_read(
+    request: Request,
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
+):
+    """Mark all notifications as read"""
+    user = await get_current_user(request, credentials, db)
+    
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    result = await db.notifications.update_many(
+        {"user_id": user.id, "read": False},
+        {"$set": {"read": True}}
+    )
+    
+    return {
+        "success": True,
+        "marked_count": result.modified_count
+    }
+
+@api_router.delete("/notifications/{notification_id}")
+async def delete_notification(
+    notification_id: str,
+    request: Request,
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
+):
+    """Delete a notification"""
+    user = await get_current_user(request, credentials, db)
+    
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    result = await db.notifications.delete_one({
+        "id": notification_id,
+        "user_id": user.id
+    })
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Notification not found")
+    
+    return {"success": True}
+
+@api_router.post("/admin/notifications/broadcast")
+async def broadcast_notification(
+    request: Request,
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
+):
+    """Send a notification to all users (admin only)"""
+    user = await get_current_user(request, credentials, db)
+    
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    body = await request.json()
+    title = body.get("title")
+    message = body.get("message")
+    link = body.get("link")
+    
+    if not title or not message:
+        raise HTTPException(status_code=400, detail="Title and message required")
+    
+    # Get all users
+    users = await db.users.find({"role": {"$ne": "guest"}}, {"_id": 0, "id": 1}).to_list(length=None)
+    
+    # Create notification for each user
+    created_count = 0
+    for user_doc in users:
+        await create_notification(
+            user_id=user_doc["id"],
+            type="system",
+            title=title,
+            message=message,
+            link=link
+        )
+        created_count += 1
+    
+    logger.info(f"Admin {user.email} broadcasted notification to {created_count} users")
+    
+    return {
+        "success": True,
+        "recipients": created_count
+    }
+
+
 # Set database for redirect routes
 redirect_routes.set_db(db)
 
