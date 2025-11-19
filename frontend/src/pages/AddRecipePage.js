@@ -524,16 +524,16 @@ const AddRecipePage = ({ sessionId }) => {
         {/* Ingredients */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4 ingredients-section" data-tour="recipe-ingredients">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold">Ingredienser</h2>
+            <h2 className="text-xl font-bold">{t('addRecipe.ingredientsTitle')}</h2>
             <Button type="button" onClick={addIngredient} size="sm">
-              <FaPlus className="mr-2" /> Tilføj
+              <FaPlus className="mr-2" /> {t('addRecipe.addTag')}
             </Button>
           </div>
 
           {recipe.ingredients.map((ingredient, index) => (
             <div key={index} className="p-4 bg-gray-50 rounded-lg space-y-3 ingredient-item">
               <div className="flex items-center justify-between">
-                <span className="font-semibold">Ingrediens {index + 1}</span>
+                <span className="font-semibold">{t('addRecipe.ingredientNumber', { number: index + 1 })}</span>
                 <div className="flex items-center gap-2">
                   {/* Move up button */}
                   {index > 0 && (
@@ -541,7 +541,7 @@ const AddRecipePage = ({ sessionId }) => {
                       type="button"
                       onClick={() => moveIngredientUp(index)}
                       className="text-cyan-500 hover:text-cyan-700 p-1"
-                      title="Flyt op"
+                      title={t('addRecipe.moveUp')}
                     >
                       <FaArrowUp size={14} />
                     </button>
@@ -552,7 +552,7 @@ const AddRecipePage = ({ sessionId }) => {
                       type="button"
                       onClick={() => moveIngredientDown(index)}
                       className="text-cyan-500 hover:text-cyan-700 p-1"
-                      title="Flyt ned"
+                      title={t('addRecipe.moveDown')}
                     >
                       <FaArrowDown size={14} />
                     </button>
@@ -571,18 +571,18 @@ const AddRecipePage = ({ sessionId }) => {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <Input
-                  placeholder="Navn *"
+                  placeholder={t('addRecipe.namePlaceholder')}
                   value={ingredient.name}
                   onChange={(e) => updateIngredient(index, 'name', e.target.value)}
                 />
                 <Input
-                  placeholder="Kategori * (fx sirup.baer)"
+                  placeholder={t('addRecipe.categoryPlaceholder')}
                   value={ingredient.category_key}
                   onChange={(e) => updateIngredient(index, 'category_key', e.target.value)}
                 />
                 <Input
                   type="number"
-                  placeholder="Mængde"
+                  placeholder={t('addRecipe.quantityPlaceholder')}
                   value={ingredient.quantity}
                   onChange={(e) => updateIngredient(index, 'quantity', e.target.value)}
                   onFocus={(e) => e.target.select()}
@@ -602,12 +602,12 @@ const AddRecipePage = ({ sessionId }) => {
                   onChange={(e) => updateIngredient(index, 'role', e.target.value)}
                   className="px-3 py-2 border border-gray-200 rounded-md"
                 >
-                  <option value="required">Nødvendig</option>
-                  <option value="optional">Valgfri</option>
+                  <option value="required">{t('addRecipe.required')}</option>
+                  <option value="optional">{t('addRecipe.optional')}</option>
                 </select>
                 <Input
                   type="number"
-                  placeholder="Brix (valgfrit)"
+                  placeholder={t('addRecipe.brixOptionalPlaceholder')}
                   value={ingredient.brix || ''}
                   onChange={(e) => updateIngredient(index, 'brix', e.target.value)}
                   onFocus={(e) => e.target.select()}
