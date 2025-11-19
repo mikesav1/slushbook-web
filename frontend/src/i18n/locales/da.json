@@ -401,7 +401,21 @@
     "newPassword": "Nyt password",
     "confirmNewPassword": "Bekræft nyt password",
     "saveChanges": "Gem ændringer",
-    "updating": "Opdaterer..."
+    "updating": "Opdaterer...",
+    "user": "bruger",
+    "asGuestYouCan": "Som gæst kan du:",
+    "browseRecipes": "Browse alle opskrifter",
+    "viewDetails": "Se opskrift detaljer",
+    "readGuides": "Læse vejledninger",
+    "withProAccount": "Med Pro konto får du:",
+    "createRecipes": "Opret dine egne opskrifter",
+    "saveFavorites": "Gem favoritter",
+    "shoppingList": "Indkøbsliste",
+    "matchFinder": "Match finder",
+    "pantrySystem": "Pantry system",
+    "leaveEmptyIfNoChange": "Lad felterne tomme hvis du ikke vil ændre dit password",
+    "currentPasswordPlaceholder": "Kun hvis du vil ændre password",
+    "newPasswordPlaceholder": "Min. 6 tegn"
   },
   "shoppingList": {
     "title": "Indkøbsliste",
