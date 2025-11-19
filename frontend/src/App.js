@@ -425,13 +425,15 @@ const AppContent = ({ sessionId }) => {
     console.log('[App] Effective sessionId:', effectiveSessionId);
   }, [user, sessionId, effectiveSessionId]);
 
+  const { t } = useTranslation();
+  
   const navItems = [
-    { path: "/", icon: FaHome, label: "Hjem" },
-    { path: "/recipes", icon: FaBook, label: "Opskrifter" },
+    { path: "/", icon: FaHome, label: t('nav.home') },
+    { path: "/recipes", icon: FaBook, label: t('nav.recipes') },
     { path: "/match", icon: FaMagic, label: "Match" },
-    ...(user && user.role !== 'guest' ? [{ path: "/shopping", icon: FaShoppingCart, label: "Liste" }] : []),
+    ...(user && user.role !== 'guest' ? [{ path: "/shopping", icon: FaShoppingCart, label: t('nav.shoppingList') }] : []),
     ...(user && user.role !== 'guest' ? [{ path: "/favorites", icon: FaHeart, label: "Favoritter" }] : []),
-    { path: "/settings", icon: FaCog, label: "Indstillinger" },
+    { path: "/settings", icon: FaCog, label: t('nav.settings') },
   ];
 
   // Don't show nav on auth pages
