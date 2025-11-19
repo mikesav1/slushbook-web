@@ -11,7 +11,7 @@ import uuid
 from datetime import datetime, timezone, timedelta
 
 # Configuration
-PREVIEW_BASE_URL = "https://slushbook-recovery.preview.emergentagent.com/api"  # Preview environment
+PREVIEW_BASE_URL = "https://recipe-polyglot.preview.emergentagent.com/api"  # Preview environment
 PRODUCTION_BASE_URL = "https://slushice-recipes.emergent.host/api"  # Production environment
 TEST_EMAIL = f"test.user.{int(time.time())}@example.com"
 TEST_PASSWORD = "testpass123"
@@ -7079,7 +7079,7 @@ test,data,here"""
             test_origins = [
                 custom_domain_origin,
                 "https://slushice-recipes.emergent.host",
-                "https://slushbook-recovery.preview.emergentagent.com"
+                "https://recipe-polyglot.preview.emergentagent.com"
             ]
             
             for origin in test_origins:
