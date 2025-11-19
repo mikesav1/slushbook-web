@@ -310,7 +310,7 @@ const SettingsPage = ({ sessionId }) => {
         </div>
         
         {devices.length === 0 ? (
-          <p className="text-gray-500">Ingen aktive enheder fundet</p>
+          <p className="text-gray-500">{t('settings.noActiveDevices')}</p>
         ) : (
           <div className="space-y-3">
             {devices.map((device, index) => (
