@@ -69,7 +69,7 @@ const AddRecipePage = ({ sessionId }) => {
   const handleTourFinish = () => {
     markTourCompleted(TOUR_KEYS.ADD_RECIPE, API, updateCompletedTours);
     setCurrentTourStep(-1);
-    toast.success('🎉 Tour færdig! Du er klar til at bruge appen!');
+    toast.success(t('addRecipe.tourComplete', '🎉 Tour færdig! Du er klar til at bruge appen!'));
     // Optionally navigate back to recipes
     setTimeout(() => {
       navigate('/recipes');
