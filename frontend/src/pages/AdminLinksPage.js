@@ -41,15 +41,15 @@ const AdminLinksPage = () => {
     try {
       setLoading(true);
       
-      console.log('Fetching mappings from:', `${REDIRECT_API}/admin/mappings`);
+      const url = `${REDIRECT_API}/admin/mappings`;
+      const headers = { Authorization: `Bearer ${ADMIN_TOKEN}` };
+      
+      console.log('Fetching mappings from:', url);
+      console.log('Headers:', headers);
+      console.log('Token:', ADMIN_TOKEN);
       
       // Fetch all mappings using the new endpoint
-      const response = await axios.get(
-        `${REDIRECT_API}/admin/mappings`,
-        { 
-          headers: { Authorization: `Bearer ${ADMIN_TOKEN}` }
-        }
-      );
+      const response = await axios.get(url, { headers });
       
       console.log('Mappings response:', response.data.length, 'mappings found');
       
