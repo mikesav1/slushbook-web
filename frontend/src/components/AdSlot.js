@@ -227,7 +227,7 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
             />
           ) : (
             // Fallback for failed images
-            <div className={`w-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white font-semibold ${isBottomBanner ? 'h-32 md:h-40 lg:h-48' : 'h-48'}`}>
+            <div className={`w-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white font-semibold ${isBottomBanner ? 'h-12 sm:h-14 md:h-16' : 'h-48'}`}>
               {ad.title || 'Reklame'}
             </div>
           )}
