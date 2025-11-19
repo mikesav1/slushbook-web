@@ -233,41 +233,39 @@ const GuidePage = () => {
         {/* Tips & Tricks Community */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-            <FaLightbulb className="text-yellow-600" /> 🆕 Community Forum (Tips & Tricks)
+            <FaLightbulb className="text-yellow-600" /> {t('guide.communityForumTitle')}
           </h2>
           <div className="space-y-4 text-gray-700 ml-4">
             <p>
-              Deltag i SLUSHBOOK's community forum og del viden med andre brugere. 
-              Forum dækker maskiner, produkter, rengøring, teknik og meget mere.
+              {t('guide.communityForumDesc')}
             </p>
             
             <div>
-              <h3 className="font-semibold text-lg mb-2">Sådan fungerer det:</h3>
+              <h3 className="font-semibold text-lg mb-2">{t('guide.howItWorks')}</h3>
               <ul className="list-disc pl-6 space-y-2">
-                <li><strong>Læs tips:</strong> Browse tips organiseret i kategorier (maskiner, produkter, rengøring, osv.)</li>
-                <li><strong>Fold ud/ind:</strong> Klik på et tip for at læse hele indholdet</li>
-                <li><strong>Kommenter:</strong> Svar på andres tips og stil spørgsmål (kun PRO)</li>
-                <li><strong>Del viden:</strong> Opret dine egne tips med tekst og billeder (kun PRO)</li>
-                <li><strong>Like:</strong> Giv hjertemarkeringer til nyttige tips (kun PRO)</li>
-                <li><strong>Internationale tips:</strong> Slå "Inkl. internationale" til/fra for at se tips fra andre lande</li>
+                <li><strong>{t('guide.readTips')}</strong></li>
+                <li><strong>{t('guide.expandCollapse')}</strong></li>
+                <li><strong>{t('guide.comment')}</strong></li>
+                <li><strong>{t('guide.shareKnowledge')}</strong></li>
+                <li><strong>{t('guide.like')}</strong></li>
+                <li><strong>{t('guide.internationalTips')}</strong></li>
               </ul>
             </div>
 
             <div className="bg-cyan-50 p-4 rounded-lg mt-4">
-              <p className="font-semibold mb-2">💡 Hurtige tips:</p>
+              <p className="font-semibold mb-2">{t('guide.quickTips')}</p>
               <ul className="list-disc pl-6 space-y-1">
-                <li>Gem dine favoritopskrifter ved at klikke på ⭐ på en opskrift</li>
-                <li>Brug tags til at finde lignende opskrifter (f.eks. #sommer, #barn)</li>
-                <li>Eksperimentér med farver - tilføj naturlige farvestoffer for sjov effekt</li>
-                <li>Tilføj alkohol? Husk at BRIX skal justeres ned, da alkohol sænker frysepunkt</li>
+                <li>{t('guide.saveFavoritesTip')}</li>
+                <li>{t('guide.useTagsTip')}</li>
+                <li>{t('guide.experimentColorsTip')}</li>
+                <li>{t('guide.addAlcoholTip')}</li>
               </ul>
             </div>
 
             <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded mt-4">
-              <p className="font-semibold text-yellow-900 mb-2">⚠️ Vigtigt om opslag</p>
+              <p className="font-semibold text-yellow-900 mb-2">{t('guide.importantAboutPosts')}</p>
               <p className="text-sm text-yellow-800">
-                Tips publiceres øjeblikkeligt uden godkendelse. Som administrator kan vi slette upassende indlæg. 
-                Vær respektfuld og del konstruktiv viden med fællesskabet.
+                {t('guide.postsPublishedInstantly')}
               </p>
             </div>
           </div>
