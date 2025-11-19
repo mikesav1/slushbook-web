@@ -341,7 +341,7 @@ const Navigation = () => {
                   className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-t border-gray-100"
                 >
                   <FaCog className="w-4 h-4" />
-                  Indstillinger
+                  {t('nav.settings')}
                 </Link>
                 
                 <button
