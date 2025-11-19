@@ -358,8 +358,8 @@ const RecipesPage = ({ sessionId }) => {
       />
       
       <div>
-        <h1 className="text-4xl font-bold mb-2">Opskrifter</h1>
-        <p className="text-gray-600">Gennemse {recipes.length} lækre slushice opskrifter</p>
+        <h1 className="text-4xl font-bold mb-2">{t('recipes.title')}</h1>
+        <p className="text-gray-600">{t('recipes.browseCount', { count: recipes.length })}</p>
       </div>
 
       {/* Search and Filters */}
