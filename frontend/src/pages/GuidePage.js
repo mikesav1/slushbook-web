@@ -156,16 +156,16 @@ const GuidePage = () => {
         {/* Match Finder */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-            <FaMagic className="text-purple-600" /> Match Finder
+            <FaMagic className="text-purple-600" /> {t('guide.matchFinderTitle')}
           </h2>
           <div className="space-y-3 text-gray-700 ml-4">
             <p>
-              Match Finder hjælper dig med at finde opskrifter baseret på de ingredienser, du har derhjemme.
+              {t('guide.matchFinderDesc')}
             </p>
             <ol className="list-decimal pl-6 space-y-2">
-              <li>Gå til "Match" i menuen</li>
-              <li>Vælg de ingredienser, du har tilgængelige</li>
-              <li>Se opskrifter sorteret efter hvor godt de matcher</li>
+              <li>{t('guide.matchFinderStep1')}</li>
+              <li>{t('guide.matchFinderStep2')}</li>
+              <li>{t('guide.matchFinderStep3')}</li>
             </ol>
           </div>
         </section>
