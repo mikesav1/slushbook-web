@@ -125,7 +125,18 @@
     "eggs": "Eggs",
     "citrus": "Citrus",
     "browseByCategory": "Browse by category",
-    "recipesFound": "{{count}} recipes found"
+    "recipesFound": "{{count}} recipes found",
+    "advancedIngredientSearch": "Advanced Ingredient Search",
+    "filtersActive": "filters active",
+    "quickExcludeLabel": "Quick exclusion (click to exclude allergen group)",
+    "excludeAllergen": "Exclude",
+    "mustIncludeLabel": "Must include (type or select from list)",
+    "mustNotIncludeLabel": "Must not include (type or select from list)",
+    "ingredientPlaceholder": "e.g. strawberry, lemon...",
+    "excludeIngredientPlaceholder": "e.g. milk, nuts...",
+    "typeFilter": "Type filter",
+    "browseByType": "Browse by type",
+    "showingResults": "Showing {{count}} results"
   },
   "settings": {
     "title": "Settings",
