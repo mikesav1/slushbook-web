@@ -109,8 +109,11 @@ const AdminTranslationsPage = () => {
   // Save translations to backend
   const saveTranslations = async () => {
     try {
+      const token = localStorage.getItem('session_token');
       await axios.post(`${API}/admin/translations/${selectedLang}`, {
         translations: translations
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
       });
       
       // Update all translations state
