@@ -45,9 +45,9 @@ const HomePage = ({ sessionId }) => {
       // Small delay to ensure page is fully loaded
       setTimeout(() => {
         setCurrentTourStep(0);
-      }, 1000);
+      }, 1500);
     }
-  }, [user]);
+  }, [user, featuredRecipes]); // Wait for recipes to load too
 
   const handleTourNext = () => {
     setCurrentTourStep(prev => prev + 1);
