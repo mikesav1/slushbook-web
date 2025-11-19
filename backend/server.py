@@ -3719,6 +3719,7 @@ async def export_recipes_csv(request: Request):
                 tags_str,
                 ingredients_str,
                 steps_str,
+                recipe.get('image_url', ''),  # Billede URL
                 recipe.get('is_free', False),
                 recipe.get('is_published', False),
                 recipe.get('author', 'system')
