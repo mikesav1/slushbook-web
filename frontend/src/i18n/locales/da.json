@@ -323,7 +323,12 @@
     "imageUploaded": "Du har uploadet et billede til denne opskrift.",
     "ensureRights": "Sørg for at du har rettighederne til billedet før du deler opskriften offentligt.",
     "creating": "Opretter...",
-    "createRecipeButton": "Opret Opskrift"
+    "createRecipeButton": "Opret Opskrift",
+    "saveChanges": "Gem Ændringer",
+    "saving": "Gemmer...",
+    "fetchError": "Kunne ikke hente opskrift",
+    "imageSizeError": "Billede må maks være 5MB",
+    "updateError": "Kunne ikke opdatere opskrift"
   },
   "matchFinder": {
     "title": "Match-Finder",
