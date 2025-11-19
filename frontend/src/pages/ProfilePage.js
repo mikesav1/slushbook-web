@@ -179,6 +179,73 @@ const ProfilePage = () => {
           </div>
         </div>
 
+        {/* Badge Section */}
+        {!loadingBadge && badgeInfo && (
+          <div className="mb-6 p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-200">
+            <div className="flex items-center gap-3 mb-4">
+              <FaTrophy className="text-yellow-500 text-2xl" />
+              <h2 className="text-xl font-semibold">Dit Badge</h2>
+            </div>
+
+            {badgeInfo.current_badge ? (
+              <div className="space-y-4">
+                {/* Current Badge */}
+                <div className="flex items-center gap-4">
+                  <div className={`w-20 h-20 rounded-full flex items-center justify-center text-4xl bg-gradient-to-br ${badgeInfo.current_badge.color_gradient} shadow-lg`}>
+                    {badgeInfo.current_badge.emoji}
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold">{badgeInfo.current_badge.name}</h3>
+                    <p className="text-gray-600">{badgeInfo.recipe_count} opskrifter oprettet</p>
+                  </div>
+                </div>
+
+                {/* Progress to Next Badge */}
+                {badgeInfo.next_badge && (
+                  <div className="pt-4 border-t border-purple-200">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-gray-700">
+                        Næste badge: {badgeInfo.next_badge.name} {badgeInfo.next_badge.emoji}
+                      </span>
+                      <span className="text-sm text-gray-600">
+                        {badgeInfo.recipe_count}/{badgeInfo.next_badge.min_recipes}
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3">
+                      <div
+                        className={`h-3 rounded-full bg-gradient-to-r ${badgeInfo.next_badge.color_gradient} transition-all duration-500`}
+                        style={{
+                          width: `${Math.min(100, (badgeInfo.recipe_count / badgeInfo.next_badge.min_recipes) * 100)}%`
+                        }}
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {badgeInfo.next_badge.min_recipes - badgeInfo.recipe_count} opskrifter til næste niveau
+                    </p>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="text-center py-4">
+                <p className="text-gray-600 mb-2">
+                  Opret din første {10 - badgeInfo.recipe_count} opskrifter for at optjene Bronze Chef badge! 🥉
+                </p>
+                <div className="w-full bg-gray-200 rounded-full h-3 mt-3">
+                  <div
+                    className="h-3 rounded-full bg-gradient-to-r from-orange-300 via-amber-400 to-orange-500 transition-all duration-500"
+                    style={{
+                      width: `${Math.min(100, (badgeInfo.recipe_count / 10) * 100)}%`
+                    }}
+                  />
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  {badgeInfo.recipe_count}/10 opskrifter
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
         <form onSubmit={handleUpdateProfile} className="space-y-6">
           {/* Basic Info */}
           <div className="space-y-4">
