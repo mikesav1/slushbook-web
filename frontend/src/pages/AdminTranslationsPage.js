@@ -40,9 +40,8 @@ const AdminTranslationsPage = () => {
       const loadedTranslations = {};
       
       for (const lang of Object.keys(LANGUAGES)) {
-        const response = await fetch(`/locales/${lang}.json`);
-        const data = await response.json();
-        loadedTranslations[lang] = data;
+        const response = await axios.get(`${API}/admin/translations/${lang}`);
+        loadedTranslations[lang] = response.data.translations;
       }
       
       setAllTranslations(loadedTranslations);
