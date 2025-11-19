@@ -97,7 +97,7 @@ export async function detectUserLocation() {
     // Fallback to Denmark
     return {
       country_code: 'DK',
-      language_code: 'dk',
+      language_code: 'da',
       source: 'error-fallback'
     };
   }
