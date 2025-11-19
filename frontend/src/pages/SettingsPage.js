@@ -485,8 +485,8 @@ const SettingsPage = ({ sessionId }) => {
           
           {/* Reset All Tours Button */}
           <Button
-            onClick={() => {
-              resetAllTours();
+            onClick={async () => {
+              await resetAllTours(API);
               toast.success('Alle guider er nulstillet! De vil vises næste gang du besøger siderne.');
             }}
             data-tour="restart-tours-button"
