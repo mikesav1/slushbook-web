@@ -267,14 +267,14 @@ const AddRecipePage = ({ sessionId }) => {
           brix: ing.brix ? parseFloat(ing.brix) : null
         }))
       });
-      toast.success('Opskrift oprettet!');
+      toast.success(t('messages.success.created'));
       navigate(`/recipes/${response.data.id}`);
     } catch (error) {
       console.error('Error creating recipe:', error);
       if (error.response?.status === 403) {
-        toast.error('Gratis limit nået! Maks 2 egne opskrifter.');
+        toast.error(t('addRecipe.limitReached'));
       } else {
-        toast.error('Kunne ikke oprette opskrift');
+        toast.error(t('addRecipe.createError', 'Kunne ikke oprette opskrift'));
       }
     } finally {
       setLoading(false);
