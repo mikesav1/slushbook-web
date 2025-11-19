@@ -53,7 +53,7 @@ const MatchFinderPage = ({ sessionId }) => {
 
   // Start tour for first-time users
   useEffect(() => {
-    if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.MATCH)) {
+    if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.MATCH, user)) {
       setTimeout(() => {
         setCurrentTourStep(0);
       }, 1000);
@@ -65,12 +65,12 @@ const MatchFinderPage = ({ sessionId }) => {
   };
 
   const handleTourSkip = () => {
-    markTourCompleted(TOUR_KEYS.MATCH);
+    markTourCompleted(TOUR_KEYS.MATCH, API);
     setCurrentTourStep(-1);
   };
 
   const handleTourFinish = () => {
-    markTourCompleted(TOUR_KEYS.MATCH);
+    markTourCompleted(TOUR_KEYS.MATCH, API);
     setCurrentTourStep(-1);
     toast.success('Match-Finder guide færdig!');
   };
