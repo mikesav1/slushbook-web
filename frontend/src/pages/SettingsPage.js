@@ -561,12 +561,6 @@ const SettingsPage = ({ sessionId }) => {
         </div>
       )}
 
-          <div className="p-3 bg-blue-50 rounded-lg text-sm text-gray-700">
-            <strong>💡 Tip:</strong> Dit land bruges til at vise relevante produktlinks når du klikker på "Indkøb" knapper.
-          </div>
-        </div>
-      </div>
-
       {/* My Recipes */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <div className="flex items-center justify-between mb-4">
