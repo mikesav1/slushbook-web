@@ -746,26 +746,24 @@ const SettingsPage = ({ sessionId }) => {
 
       {/* About */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-        <h2 className="text-2xl font-bold mb-4">Om SLUSHBOOK</h2>
+        <h2 className="text-2xl font-bold mb-4">{t('settings.aboutTitle')}</h2>
         <div className="space-y-4 text-gray-700">
           <p>
-            SLUSHBOOK er din digitale opskriftsbog og værktøjskasse til alt, hvad der har med slushice at gøre. 
-            Uanset om du er nybegynder eller erfaren entusiast, hjælper appen dig med at finde, tilpasse og gemme 
-            opskrifter, så de passer præcist til din maskine og dine ingredienser.
+            {t('settings.aboutIntro')}
           </p>
           
           <div className="pl-4">
-            <p className="font-semibold mb-2">Du kan:</p>
+            <p className="font-semibold mb-2">{t('settings.youCan')}</p>
             <ul className="list-disc pl-5 space-y-1">
-              <li>Matche dine egne ingredienser med eksisterende opskrifter</li>
-              <li>Skalere mængder automatisk til din ønskede volumen (f.eks. 2 eller 6 liter)</li>
-              <li>Tilføje og gemme dine egne favoritter</li>
-              <li>Få inspiration fra andres opskrifter – og dele dine egne</li>
+              <li>{t('settings.matchIngredients')}</li>
+              <li>{t('settings.scaleAmounts')}</li>
+              <li>{t('settings.saveFavorites')}</li>
+              <li>{t('settings.shareRecipes')}</li>
             </ul>
           </div>
           
           <p>
-            Appen udvikles løbende, og vi arbejder hele tiden på at tilføje nye funktioner og forbedringer.
+            {t('settings.appDevelopment')}
           </p>
           
           <div className="pt-2">
@@ -774,14 +772,14 @@ const SettingsPage = ({ sessionId }) => {
               data-tour="guide-link"
               className="inline-flex items-center gap-2 text-cyan-600 hover:text-cyan-700 font-semibold hover:underline"
             >
-              <FaBook /> Læs den fulde vejledning til SLUSHBOOK her →
+              <FaBook /> {t('settings.readFullGuide')} →
             </Link>
           </div>
         </div>
         
         <div className="mt-6 pt-4 border-t border-gray-200">
           <p className="text-sm text-gray-500">
-            Version 1.0.0 – Skabt med ❤️ for slushice-entusiaster
+            {t('settings.version')}
           </p>
         </div>
       </div>
