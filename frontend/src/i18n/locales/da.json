@@ -1,0 +1,112 @@
+{
+  "common": {
+    "cancel": "Annuller",
+    "save": "Gem",
+    "delete": "Slet",
+    "edit": "Rediger",
+    "close": "Luk",
+    "back": "Tilbage",
+    "next": "Næste",
+    "previous": "Forrige",
+    "confirm": "Bekræft",
+    "loading": "Indlæser...",
+    "search": "Søg",
+    "filter": "Filtrer",
+    "sort": "Sorter",
+    "yes": "Ja",
+    "no": "Nej"
+  },
+  "nav": {
+    "home": "Hjem",
+    "recipes": "Opskrifter",
+    "addRecipe": "Tilføj Opskrift",
+    "matchFinder": "Match-Finder",
+    "shoppingList": "Indkøbsliste",
+    "tips": "Tips & Tricks",
+    "settings": "Indstillinger",
+    "login": "Log ind",
+    "logout": "Log ud",
+    "signup": "Opret konto"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "email": "Email",
+    "password": "Password",
+    "name": "Navn",
+    "confirmPassword": "Bekræft adgangskode",
+    "forgotPassword": "Glemt adgangskode?",
+    "noAccount": "Har du ikke en konto?",
+    "hasAccount": "Har du allerede en konto?",
+    "welcomeBack": "Velkommen tilbage",
+    "createAccount": "Opret din konto"
+  },
+  "home": {
+    "title": "Velkommen til Slush Book",
+    "subtitle": "Opdag fantastiske slushice opskrifter",
+    "featuredRecipes": "Udvalgte Opskrifter",
+    "exploreAll": "Udforsk alle opskrifter",
+    "quickLinks": "Hurtige links",
+    "findMatch": "Find Match",
+    "createRecipe": "Opret Opskrift",
+    "popularRecipes": "Populære Opskrifter"
+  },
+  "recipes": {
+    "title": "Opskrifter",
+    "myRecipes": "Mine Opskrifter",
+    "allRecipes": "Alle Opskrifter",
+    "free": "Gratis",
+    "premium": "Premium",
+    "addToFavorites": "Tilføj til favoritter",
+    "removeFromFavorites": "Fjern fra favoritter",
+    "viewRecipe": "Se opskrift",
+    "ingredients": "Ingredienser",
+    "instructions": "Fremgangsmåde",
+    "prepTime": "Forberedelsestid",
+    "servings": "Portioner",
+    "difficulty": "Sværhedsgrad",
+    "type": "Type",
+    "noRecipes": "Ingen opskrifter fundet",
+    "searchPlaceholder": "Søg efter opskrifter..."
+  },
+  "settings": {
+    "title": "Indstillinger",
+    "language": "Sprog",
+    "selectLanguage": "Vælg Sprog",
+    "languageDesc": "Opskrifter og interface vises på det valgte sprog",
+    "profile": "Profil",
+    "account": "Konto",
+    "preferences": "Præferencer",
+    "logout": "Log ud",
+    "deleteAccount": "Slet konto",
+    "myRecipes": "Mine opskrifter",
+    "devices": "Enheder",
+    "activeDevices": "Aktive enheder",
+    "logoutAllDevices": "Log ud fra alle andre"
+  },
+  "messages": {
+    "success": {
+      "saved": "Gemt!",
+      "deleted": "Slettet!",
+      "updated": "Opdateret!",
+      "created": "Oprettet!",
+      "languageChanged": "Sprog ændret til {{language}}"
+    },
+    "error": {
+      "generic": "Der opstod en fejl",
+      "notFound": "Ikke fundet",
+      "unauthorized": "Ikke autoriseret",
+      "networkError": "Netværksfejl"
+    }
+  },
+  "forms": {
+    "recipeName": "Opskriftsnavn",
+    "description": "Beskrivelse",
+    "ingredients": "Ingredienser",
+    "steps": "Trin",
+    "addIngredient": "Tilføj ingrediens",
+    "addStep": "Tilføj trin",
+    "required": "Påkrævet",
+    "optional": "Valgfri"
+  }
+}
