@@ -94,6 +94,7 @@
   },
   "settings": {
     "title": "Indstillinger",
+    "subtitle": "Administrér din maskine og konto",
     "language": "Sprog",
     "selectLanguage": "Vælg Sprog",
     "languageDesc": "Opskrifter og interface vises på det valgte sprog",
@@ -103,9 +104,22 @@
     "logout": "Log ud",
     "deleteAccount": "Slet konto",
     "myRecipes": "Mine opskrifter",
-    "devices": "Enheder",
+    "devices": "Dine Enheder",
     "activeDevices": "Aktive enheder",
-    "logoutAllDevices": "Log ud fra alle andre"
+    "logoutAllDevices": "Log ud fra alle andre",
+    "confirmLogoutAll": "Log ud fra alle andre enheder?",
+    "devicesLoggedOut": "{{count}} enheder logget ud",
+    "noActiveDevices": "Ingen aktive enheder fundet",
+    "deviceLimit": "Du bruger {{current}} af {{max}} tilladte enheder",
+    "deviceInfo": "Du kan være logget ind på op til {{max}} enheder samtidig",
+    "freeDeviceLimit": "Gratis brugere kan kun være logget ind på 1 enhed ad gangen",
+    "upgradeForMore": "Opgrader til Pro for at bruge flere enheder!",
+    "guides": "Guider & Hjælp",
+    "guidesDesc": "Første gang du brugte appen, fik du vist gule guider. Hvis du vil se dem igen, kan du genstarte dem her",
+    "restartAllGuides": "Genstart Alle Guider",
+    "guidesReset": "Alle guider er nulstillet! De vil vises næste gang du besøger siderne",
+    "administrator": "Administrator",
+    "adminTools": "Admin værktøjer og indstillinger"
   },
   "messages": {
     "success": {

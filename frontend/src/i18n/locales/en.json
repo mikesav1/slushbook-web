@@ -94,6 +94,7 @@
   },
   "settings": {
     "title": "Settings",
+    "subtitle": "Manage your machine and account",
     "language": "Language",
     "selectLanguage": "Select Language",
     "languageDesc": "Recipes and interface will be displayed in the selected language",
@@ -103,9 +104,22 @@
     "logout": "Log out",
     "deleteAccount": "Delete account",
     "myRecipes": "My recipes",
-    "devices": "Devices",
+    "devices": "Your Devices",
     "activeDevices": "Active devices",
-    "logoutAllDevices": "Log out from all others"
+    "logoutAllDevices": "Log out from all others",
+    "confirmLogoutAll": "Log out from all other devices?",
+    "devicesLoggedOut": "{{count}} devices logged out",
+    "noActiveDevices": "No active devices found",
+    "deviceLimit": "You are using {{current}} of {{max}} allowed devices",
+    "deviceInfo": "You can be logged in on up to {{max}} devices simultaneously",
+    "freeDeviceLimit": "Free users can only be logged in on 1 device at a time",
+    "upgradeForMore": "Upgrade to Pro to use more devices!",
+    "guides": "Guides & Help",
+    "guidesDesc": "The first time you used the app, you were shown yellow guides. If you want to see them again, you can restart them here",
+    "restartAllGuides": "Restart All Guides",
+    "guidesReset": "All guides have been reset! They will be shown the next time you visit the pages",
+    "administrator": "Administrator",
+    "adminTools": "Admin tools and settings"
   },
   "messages": {
     "success": {

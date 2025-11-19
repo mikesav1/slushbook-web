@@ -94,6 +94,7 @@
   },
   "settings": {
     "title": "Paramètres",
+    "subtitle": "Gérez votre appareil et votre compte",
     "language": "Langue",
     "selectLanguage": "Sélectionner la langue",
     "languageDesc": "Les recettes et l'interface seront affichées dans la langue sélectionnée",
@@ -103,9 +104,22 @@
     "logout": "Se déconnecter",
     "deleteAccount": "Supprimer le compte",
     "myRecipes": "Mes recettes",
-    "devices": "Appareils",
+    "devices": "Vos appareils",
     "activeDevices": "Appareils actifs",
-    "logoutAllDevices": "Se déconnecter de tous les autres"
+    "logoutAllDevices": "Se déconnecter de tous les autres",
+    "confirmLogoutAll": "Se déconnecter de tous les autres appareils?",
+    "devicesLoggedOut": "{{count}} appareils déconnectés",
+    "noActiveDevices": "Aucun appareil actif trouvé",
+    "deviceLimit": "Vous utilisez {{current}} sur {{max}} appareils autorisés",
+    "deviceInfo": "Vous pouvez être connecté sur jusqu'à {{max}} appareils simultanément",
+    "freeDeviceLimit": "Les utilisateurs gratuits ne peuvent être connectés que sur 1 appareil à la fois",
+    "upgradeForMore": "Passez à Pro pour utiliser plus d'appareils!",
+    "guides": "Guides & Aide",
+    "guidesDesc": "La première fois que vous avez utilisé l'application, des guides jaunes vous ont été montrés. Si vous souhaitez les revoir, vous pouvez les redémarrer ici",
+    "restartAllGuides": "Redémarrer tous les guides",
+    "guidesReset": "Tous les guides ont été réinitialisés! Ils seront affichés la prochaine fois que vous visiterez les pages",
+    "administrator": "Administrateur",
+    "adminTools": "Outils et paramètres d'administration"
   },
   "messages": {
     "success": {
