@@ -384,6 +384,25 @@
     "delete": "Slet",
     "deleteRecipe": "Slet Opskrift"
   },
+  "profile": {
+    "passwordsDontMatch": "Nye passwords stemmer ikke overens",
+    "passwordTooShort": "Nyt password skal være mindst 6 tegn",
+    "currentPasswordRequired": "Indtast dit nuværende password for at ændre det",
+    "profileUpdated": "Profil opdateret!",
+    "updateError": "Kunne ikke opdatere profil",
+    "welcomeTitle": "Velkommen til SLUSHBOOK",
+    "welcomeDescription": "Log ind for at få adgang til din profil og ekstra funktioner",
+    "seeGuide": "Se vejledning",
+    "myProfile": "Min Profil",
+    "editProfile": "Rediger din profil",
+    "personalInfo": "Personlig information",
+    "changePassword": "Skift password",
+    "currentPassword": "Nuværende password",
+    "newPassword": "Nyt password",
+    "confirmNewPassword": "Bekræft nyt password",
+    "saveChanges": "Gem ændringer",
+    "updating": "Opdaterer..."
+  },
   "shoppingList": {
     "title": "Indkøbsliste",
     "subtitle": "Dine ingredienser til næste slushice",
