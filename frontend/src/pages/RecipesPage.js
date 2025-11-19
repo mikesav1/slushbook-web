@@ -575,7 +575,7 @@ const RecipesPage = ({ sessionId }) => {
           {/* Exclude Ingredients */}
           <div className="relative">
             <label className="block text-xs font-medium text-gray-600 mb-2">
-              ❌ Må ikke indeholde (skriv eller vælg fra listen)
+              ❌ {t('recipes.mustNotIncludeLabel')}
             </label>
             <input
               type="text"
@@ -587,7 +587,7 @@ const RecipesPage = ({ sessionId }) => {
               onKeyPress={handleExcludeKeyPress}
               onFocus={() => setShowExcludeSuggestions(true)}
               onBlur={() => setTimeout(() => setShowExcludeSuggestions(false), 200)}
-              placeholder="f.eks. mælk, nødder..."
+              placeholder={t('recipes.excludeIngredientPlaceholder')}
               className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
             
