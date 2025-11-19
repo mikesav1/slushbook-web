@@ -31,6 +31,7 @@ const RecipeDetailPage = ({ sessionId }) => {
   const [newComment, setNewComment] = useState('');
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editCommentText, setEditCommentText] = useState('');
+  const [commentsCollapsed, setCommentsCollapsed] = useState(false);
   
   // Category display name mapper
   const getCategoryDisplayName = (categoryKey) => {
