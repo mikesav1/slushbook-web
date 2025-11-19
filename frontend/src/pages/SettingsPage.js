@@ -12,9 +12,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { COUNTRIES, LANGUAGES, getUserCountry, getUserLanguage, setUserLanguage, updateUserPreferences, refreshUserLocation, detectBrowserLanguage } from '../utils/geolocation';
 import OnboardingTooltip from '../components/OnboardingTooltip';
 import { resetAllTours, resetTour, settingsPageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
+import { useTranslation } from 'react-i18next';
 
 const SettingsPage = ({ sessionId }) => {
   const { user, isAdmin, isPro, isEditor, updateCompletedTours } = useAuth();
+  const { t } = useTranslation();
   const [machines, setMachines] = useState([]);
   const [userRecipesCount, setUserRecipesCount] = useState(0);
   const [canAddRecipe, setCanAddRecipe] = useState(true);
