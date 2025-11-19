@@ -355,6 +355,21 @@
     "ingredientCount": "Du har {{count}} ingrediens{{plural}}",
     "addMore": "Tilføj Flere"
   },
+  "recipeDetail": {
+    "confirmDeleteComment": "Er du sikker på, at du vil slette denne kommentar?",
+    "commentDeleted": "Kommentar slettet",
+    "deleteCommentError": "Kunne ikke slette kommentar",
+    "proOnlyLikes": "Kun PRO-brugere kan like kommentarer",
+    "confirmDelete": "Er du sikker på, at du vil slette '{{name}}'? Dette kan ikke fortrydes.",
+    "recipeDeleted": "Opskrift slettet",
+    "deleteError": "Kunne ikke slette opskrift",
+    "addedToShoppingList": "Tilføjet {{count}} ingredienser til indkøbsliste!",
+    "noCommentsYet": "Ingen kommentarer endnu. Vær den første til at kommentere!",
+    "edited": "redigeret",
+    "edit": "Rediger",
+    "delete": "Slet",
+    "deleteRecipe": "Slet Opskrift"
+  },
   "shoppingList": {
     "title": "Indkøbsliste",
     "subtitle": "Dine ingredienser til næste slushice",
