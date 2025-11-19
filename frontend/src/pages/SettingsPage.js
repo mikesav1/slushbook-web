@@ -838,6 +838,20 @@ const SettingsPage = ({ sessionId }) => {
               <span className="text-red-600">→</span>
             </div>
           </Link>
+          <Link
+            to="/admin/badges"
+            className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-yellow-100"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-bold text-gray-800 flex items-center gap-2">
+                  <span>🏆</span> Badge Management
+                </h3>
+                <p className="text-sm text-gray-600">Administrer bruger achievement badges</p>
+              </div>
+              <span className="text-yellow-600">→</span>
+            </div>
+          </Link>
         </div>
       )}
 
