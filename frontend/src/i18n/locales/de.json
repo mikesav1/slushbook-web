@@ -123,7 +123,17 @@
     "language": "Sprache",
     "selectLanguage": "Sprache wählen",
     "languageDesc": "Rezepte und Benutzeroberfläche werden in der gewählten Sprache angezeigt",
-    "countryAndLanguage": "Land & Sprache"
+    "countryAndLanguage": "Land & Sprache",
+    "aboutTitle": "Über SLUSHBOOK",
+    "aboutIntro": "SLUSHBOOK ist Ihr digitales Rezeptbuch und Werkzeugkasten für alles rund um Slusheis. Egal ob Sie Anfänger oder erfahrener Enthusiast sind, die App hilft Ihnen, Rezepte zu finden, anzupassen und zu speichern, die perfekt zu Ihrer Maschine und Ihren Zutaten passen.",
+    "youCan": "Sie können:",
+    "matchIngredients": "Ihre eigenen Zutaten mit vorhandenen Rezepten abgleichen",
+    "scaleAmounts": "Mengen automatisch auf Ihr gewünschtes Volumen skalieren (z.B. 2 oder 6 Liter)",
+    "saveFavorites": "Ihre eigenen Favoriten hinzufügen und speichern",
+    "shareRecipes": "Inspiration von anderen Rezepten erhalten – und Ihre eigenen teilen",
+    "appDevelopment": "Die App wird kontinuierlich weiterentwickelt und wir arbeiten ständig daran, neue Funktionen und Verbesserungen hinzuzufügen.",
+    "readFullGuide": "Lesen Sie hier die vollständige Anleitung zu SLUSHBOOK",
+    "version": "Version 1.0.0 – Gemacht mit ❤️ für Slusheis-Enthusiasten"
   },
   "messages": {
     "success": {
