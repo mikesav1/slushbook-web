@@ -639,7 +639,7 @@ const RecipesPage = ({ sessionId }) => {
 
         {/* Type Filter */}
         <div data-tour="type-filter">
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Type</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">{t('recipes.typeLabel')}</label>
           
           {/* Mobile: Dropdown */}
           <div className="md:hidden">
@@ -649,10 +649,10 @@ const RecipesPage = ({ sessionId }) => {
                 onChange={(e) => setTypeFilter(e.target.value)}
                 className="w-full px-4 py-3 pr-10 bg-white border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-cyan-500 font-medium"
               >
-                <option value="">Alle typer</option>
+                <option value="">{t('recipes.allTypes')}</option>
                 {types.map((type) => (
                   <option key={type.value} value={type.value}>
-                    {type.label}
+                    {t(`recipes.${type.value}`, type.label)}
                   </option>
                 ))}
               </select>
@@ -669,7 +669,7 @@ const RecipesPage = ({ sessionId }) => {
                   alt={types.find(t => t.value === typeFilter)?.label}
                   className="w-5 h-5 rounded-full"
                 />
-                <span>Filtreret: {types.find(t => t.value === typeFilter)?.label}</span>
+                <span>{t('recipes.filtered')}: {t(`recipes.${typeFilter}`, types.find(t => t.value === typeFilter)?.label)}</span>
               </div>
             )}
           </div>
@@ -685,7 +685,7 @@ const RecipesPage = ({ sessionId }) => {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Alle
+              {t('common.all')}
             </button>
             {types.map((type) => (
               <button
@@ -703,7 +703,7 @@ const RecipesPage = ({ sessionId }) => {
                   alt={type.label}
                   className="w-6 h-6 rounded-full"
                 />
-                {type.label}
+                {t(`recipes.${type.value}`, type.label)}
               </button>
             ))}
           </div>
