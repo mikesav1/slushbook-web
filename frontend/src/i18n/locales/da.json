@@ -14,7 +14,12 @@
     "filter": "Filtrer",
     "sort": "Sorter",
     "yes": "Ja",
-    "no": "Nej"
+    "no": "Nej",
+    "latest": "Seneste",
+    "popular": "Populære",
+    "all": "Alle",
+    "showMore": "Vis mere",
+    "showLess": "Vis mindre"
   },
   "nav": {
     "home": "Hjem",
