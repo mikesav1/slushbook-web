@@ -111,10 +111,10 @@ const AdminTranslationsPage = () => {
         [selectedLang]: translations
       });
       
-      toast.success(`Oversættelser gemt for ${LANGUAGES[selectedLang].name}!`);
+      toast.success(t('admin.translations.saveSuccess', { language: LANGUAGES[selectedLang].name }));
     } catch (error) {
       console.error('Error saving translations:', error);
-      toast.error('Kunne ikke gemme oversættelser');
+      toast.error(t('admin.translations.saveError'));
     }
   };
 
