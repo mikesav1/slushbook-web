@@ -386,21 +386,21 @@ const AddRecipePage = ({ sessionId }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" data-tour="recipe-type">
             {/* Type/Gruppe */}
             <div>
-              <Label>Type/Gruppe *</Label>
+              <Label>{t('addRecipe.type')} *</Label>
               <select
                 value={recipe.type}
                 onChange={(e) => setRecipe({...recipe, type: e.target.value})}
                 className="w-full px-3 py-2 border border-gray-200 rounded-md"
               >
-                <option value="klassisk">Klassisk</option>
-                <option value="juice">Juice</option>
-                <option value="smoothie">Smoothie</option>
-                <option value="sodavand">Sodavand</option>
-                <option value="cocktail">Cocktail</option>
-                <option value="kaffe">Kaffe</option>
-                <option value="sport">Sport</option>
-                <option value="sukkerfri">Sukkerfri</option>
-                <option value="maelk">Mælk</option>
+                <option value="klassisk">{t('recipes.klassisk')}</option>
+                <option value="juice">{t('recipes.juice')}</option>
+                <option value="smoothie">{t('recipes.smoothie')}</option>
+                <option value="sodavand">{t('recipes.sodavand')}</option>
+                <option value="cocktail">{t('recipes.cocktail')}</option>
+                <option value="kaffe">{t('recipes.kaffe')}</option>
+                <option value="sport">{t('recipes.sport')}</option>
+                <option value="sukkerfri">{t('recipes.sukkerfri')}</option>
+                <option value="maelk">{t('recipes.maelk')}</option>
               </select>
             </div>
 
