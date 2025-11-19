@@ -39,8 +39,9 @@ const SettingsPage = ({ sessionId }) => {
   useEffect(() => {
     fetchData();
     fetchDevices();
-    // Update selected country from localStorage when component mounts
+    // Update selected country and language from localStorage when component mounts
     setSelectedCountry(getUserCountry());
+    setSelectedLanguage(getUserLanguage());
   }, [sessionId]);
 
   // Start tour for first-time users
