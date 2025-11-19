@@ -204,7 +204,7 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
 
   // Carousel for bottom banners
   if (isBottomBanner && availableAds.length > 0) {
-    // Get current 3 ads to display
+    // Get current 3 ads to display (always prepare 3 for desktop, CSS will hide extras on mobile/tablet)
     const currentAds = [];
     for (let i = 0; i < 3; i++) {
       const index = (carouselStartIndex + i) % availableAds.length;
@@ -221,7 +221,7 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
         }}
       >
         <div className="max-w-7xl mx-auto px-4 py-2">
-          {/* Grid: 1 på mobil, 2 på tablet, 3 på desktop */}
+          {/* Grid with responsive hiding: 1 på mobil, 2 på tablet, 3 på desktop */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {currentAds.map((adItem, index) => (
               <a
