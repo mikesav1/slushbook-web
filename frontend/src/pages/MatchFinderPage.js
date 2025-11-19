@@ -74,7 +74,7 @@ const MatchFinderPage = ({ sessionId }) => {
   const handleTourFinish = () => {
     markTourCompleted(TOUR_KEYS.MATCH, API, updateCompletedTours);
     setCurrentTourStep(-1);
-    toast.success('Match-Finder guide færdig!');
+    toast.success(t('matchFinder.tourComplete', 'Match-Finder guide færdig!'));
   };
 
 
