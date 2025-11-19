@@ -4035,28 +4035,44 @@ async def toggle_recipe_free_status(recipe_id: str, request: Request):
         "is_free": new_free_status
     }
 
-@api_router.post("/admin/approve-recipe/{recipe_id}")
-async def approve_recipe(recipe_id: str, request: Request):
-    """Approve a pending recipe"""
-    user = await get_current_user(request, None, db)
-    
+@api_router.put("/admin/recipes/{recipe_id}/approve")
+async def approve_recipe(
+    recipe_id: str,
+    request: Request,
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
+):
+    """Approve a recipe (admin only)"""
+    user = await get_current_user(request, credentials, db)
     if not user or user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
     
-    # Update recipe status
-    result = await db.user_recipes.update_one(
-        {"id": recipe_id},
-        {"$set": {
-            "approval_status": "approved",
-            "approved_at": datetime.now(timezone.utc).isoformat(),
-            "rejection_reason": None
-        }}
-    )
-    
-    if result.modified_count == 0:
+    # Find recipe
+    recipe = await db.user_recipes.find_one({"id": recipe_id}, {"_id": 0})
+    if not recipe:
         raise HTTPException(status_code=404, detail="Recipe not found")
     
-    return {"success": True, "message": "Opskrift godkendt"}
+    # Update approval status
+    await db.user_recipes.update_one(
+        {"id": recipe_id},
+        {"$set": {"approval_status": "approved", "status": "published"}}
+    )
+    
+    # Create notification for recipe author
+    try:
+        author_id = recipe.get("author")
+        if author_id and author_id != "system":
+            await create_notification(
+                user_id=author_id,
+                type="approval",
+                title="Opskrift godkendt! 🎉",
+                message=f'Din opskrift "{recipe.get("name", "")}" er nu godkendt og offentlig',
+                link=f"/recipes/{recipe_id}",
+                data={"recipe_id": recipe_id, "status": "approved"}
+            )
+    except Exception as e:
+        logger.error(f"Failed to create approval notification: {e}")
+    
+    return {"success": True, "message": "Recipe approved"}
 
 @api_router.post("/admin/bulk-approve-pending")
 async def bulk_approve_pending(request: Request):
