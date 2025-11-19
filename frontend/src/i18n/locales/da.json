@@ -499,5 +499,15 @@
       "addSuccess": "Ny nøgle tilføjet!",
       "addError": "Udfyld både nøgle og værdi"
     }
+  },
+  "guide": {
+    "title": "Vejledning til SLUSHBOOK",
+    "subtitle": "Kom godt i gang med SLUSHBOOK og lær at bruge alle funktionerne",
+    "backToSettings": "Tilbage til Indstillinger",
+    "quickStart": "Hurtig Start",
+    "newUser": "Ny bruger?",
+    "newUserText": "Opret en gratis konto for at gemme favoritter og tilføje egne opskrifter.",
+    "proUser": "Pro bruger?",
+    "proUserText": "Du har ubegrænset adgang til alle opskrifter og funktioner."
   }
 }
