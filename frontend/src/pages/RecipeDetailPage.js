@@ -68,7 +68,7 @@ const RecipeDetailPage = ({ sessionId }) => {
 
   const fetchAllRecipesForNavigation = async () => {
     try {
-      const response = await axios.get(`${API}/recipes?session_id=${sessionId}&alcohol=both`);
+      const response = await axios.get(`${API}/recipes?session_id=${sessionId}&alcohol=both&lang=${getUserLanguage()}`);
       // Sort alphabetically for admin navigation
       const sorted = response.data.sort((a, b) => 
         a.name.localeCompare(b.name, 'da')
