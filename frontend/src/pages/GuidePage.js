@@ -274,10 +274,10 @@ const GuidePage = () => {
         {/* Support */}
         <section className="mb-8 bg-gradient-to-br from-cyan-50 to-blue-50 p-6 rounded-lg">
           <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-            <FaQuestionCircle className="text-cyan-600" /> Brug for hjælp?
+            <FaQuestionCircle className="text-cyan-600" /> {t('guide.needHelpTitle')}
           </h2>
           <p className="text-gray-700">
-            Har du spørgsmål eller feedback? Kontakt os på{' '}
+            {t('guide.needHelpDesc')}{' '}
             <a href="mailto:support@slushbook.dk" className="text-cyan-600 hover:underline font-semibold">
               support@slushbook.dk
             </a>
@@ -290,7 +290,7 @@ const GuidePage = () => {
             to="/settings"
             className="inline-flex items-center gap-2 text-cyan-600 hover:text-cyan-700 font-semibold"
           >
-            <FaArrowLeft /> Tilbage til Indstillinger
+            <FaArrowLeft /> {t('guide.backToSettingsBottom')}
           </Link>
         </div>
       </div>
