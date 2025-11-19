@@ -151,18 +151,18 @@ export const addRecipePageSteps = [
 // Match Finder Page Tour Steps
 export const matchPageSteps = [
   {
-    content: '🎯 Velkommen til Match-Finder!\n\nHer kan du finde opskrifter baseret på de ingredienser du allerede har.\n\nLad os se hvordan det virker.'
+    content: i18n.t('tour.match.welcome')
   },
   {
     target: '[data-tour="add-pantry-button"]',
-    content: '📦 Tilføj ingredienser til dit "skab"\n\nKlik her for at tilføje ingredienser du har derhjemme.\n\nJo flere ingredienser du tilføjer, desto bedre matches får du!'
+    content: i18n.t('tour.match.step1')
   },
   {
     target: '[data-tour="find-matches-button"]',
-    content: '🔍 Find matches\n\nNår du har tilføjet dine ingredienser, klik her for at finde opskrifter du kan lave.\n\nSystemet viser opskrifter du kan lave med det du har!'
+    content: i18n.t('tour.match.step2')
   },
   {
-    content: '💡 Tips til Match-Finder\n\n• Start med at tilføje de basale ingredienser (sukker, citron, vand)\n• Tilføj frugter og smagsvarianter du har\n• Systemet viser hvor mange % match der er\n• Du kan købe manglende ingredienser direkte fra listen!'
+    content: i18n.t('tour.match.tips')
   }
 ];
 
