@@ -4635,6 +4635,108 @@ async def update_user_preferences(
         return {"success": True, "message": "Preferences set (localStorage only)"}
 
 
+# Admin Translation Management Endpoints
+@api_router.get("/admin/translations")
+async def get_available_languages(request: Request):
+    """Get list of available translation languages"""
+    user = await get_current_user(request, None, db)
+    
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    # Define available languages
+    languages = [
+        {"code": "da", "name": "Dansk"},
+        {"code": "en", "name": "English"},
+        {"code": "de", "name": "Deutsch"},
+        {"code": "fr", "name": "Français"},
+        {"code": "en_us", "name": "English (US)"}
+    ]
+    
+    return {"languages": languages}
+
+@api_router.get("/admin/translations/{language_code}")
+async def get_translation_file(language_code: str, request: Request):
+    """Get translation file content for a specific language"""
+    user = await get_current_user(request, None, db)
+    
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    # Validate language code
+    valid_languages = ["da", "en", "de", "fr", "en_us"]
+    if language_code not in valid_languages:
+        raise HTTPException(status_code=400, detail="Invalid language code")
+    
+    # Construct file path
+    translations_dir = Path(__file__).parent.parent / "frontend" / "src" / "i18n" / "locales"
+    file_path = translations_dir / f"{language_code}.json"
+    
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail=f"Translation file not found: {language_code}.json")
+    
+    try:
+        import json
+        with open(file_path, 'r', encoding='utf-8') as f:
+            translations = json.load(f)
+        
+        return {
+            "language_code": language_code,
+            "translations": translations
+        }
+    except Exception as e:
+        logger.error(f"Error reading translation file {language_code}.json: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to read translation file: {str(e)}")
+
+@api_router.post("/admin/translations/{language_code}")
+async def update_translation_file(language_code: str, request: Request):
+    """Update translation file content for a specific language"""
+    user = await get_current_user(request, None, db)
+    
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    # Validate language code
+    valid_languages = ["da", "en", "de", "fr", "en_us"]
+    if language_code not in valid_languages:
+        raise HTTPException(status_code=400, detail="Invalid language code")
+    
+    # Get request body
+    body = await request.json()
+    translations = body.get("translations")
+    
+    if not translations or not isinstance(translations, dict):
+        raise HTTPException(status_code=400, detail="Invalid translations data")
+    
+    # Construct file path
+    translations_dir = Path(__file__).parent.parent / "frontend" / "src" / "i18n" / "locales"
+    file_path = translations_dir / f"{language_code}.json"
+    
+    try:
+        import json
+        
+        # Create backup
+        if file_path.exists():
+            backup_path = translations_dir / f"{language_code}.json.backup"
+            shutil.copy(file_path, backup_path)
+            logger.info(f"Created backup: {backup_path}")
+        
+        # Write new content with pretty formatting
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json.dump(translations, f, ensure_ascii=False, indent=2)
+        
+        logger.info(f"Updated translation file: {language_code}.json by admin {user.email}")
+        
+        return {
+            "success": True,
+            "message": f"Translation file {language_code}.json updated successfully",
+            "language_code": language_code
+        }
+    except Exception as e:
+        logger.error(f"Error updating translation file {language_code}.json: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to update translation file: {str(e)}")
+
+
 # Set database for redirect routes
 redirect_routes.set_db(db)
 
