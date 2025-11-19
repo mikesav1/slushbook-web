@@ -220,11 +220,11 @@ const EditRecipePage = ({ sessionId }) => {
           brix: ing.brix ? parseFloat(ing.brix) : null
         }))
       });
-      toast.success('Opskrift opdateret!');
+      toast.success(t('messages.success.updated'));
       navigate(`/recipes/${id}`);
     } catch (error) {
       console.error('Error updating recipe:', error);
-      toast.error('Kunne ikke opdatere opskrift');
+      toast.error(t('addRecipe.updateError', 'Kunne ikke opdatere opskrift'));
     } finally {
       setSaving(false);
     }
