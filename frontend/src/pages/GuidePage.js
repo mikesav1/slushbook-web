@@ -191,16 +191,16 @@ const GuidePage = () => {
         {/* Settings */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-            <FaCog className="text-gray-600" /> Maskiner & Indstillinger
+            <FaCog className="text-gray-600" /> {t('guide.machinesSettingsTitle')}
           </h2>
           <div className="space-y-3 text-gray-700 ml-4">
             <p>
-              Tilføj dine slush-maskiner under Indstillinger for at få automatisk skalering:
+              {t('guide.machinesSettingsDesc')}
             </p>
             <ul className="list-disc pl-6 space-y-1">
-              <li>Angiv beholder størrelse (f.eks. 6L, 12L)</li>
-              <li>Sæt tab-margin (typisk 5%)</li>
-              <li>Opskrifter vil automatisk tilpasse sig din maskine</li>
+              <li>{t('guide.specifyContainerSize')}</li>
+              <li>{t('guide.setLossMargin')}</li>
+              <li>{t('guide.autoAdjustRecipes')}</li>
             </ul>
           </div>
         </section>
