@@ -15,6 +15,7 @@ const LoginPage = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [processingGoogle, setProcessingGoogle] = useState(false);
   const navigate = useNavigate();
 
   // Generate device fingerprint
