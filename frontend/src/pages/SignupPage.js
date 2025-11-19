@@ -53,11 +53,11 @@ const SignupPage = () => {
         country: formData.country
       });
 
-      toast.success('Konto oprettet! Log venligst ind.');
+      toast.success(t('auth.accountCreated', 'Konto oprettet! Log venligst ind.'));
       navigate('/login');
     } catch (error) {
       console.error('Signup error:', error);
-      toast.error(error.response?.data?.detail || 'Kunne ikke oprette konto');
+      toast.error(error.response?.data?.detail || t('auth.signupFailed', 'Kunne ikke oprette konto'));
     } finally {
       setLoading(false);
     }
