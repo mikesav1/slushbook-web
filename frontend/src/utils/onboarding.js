@@ -13,13 +13,36 @@ const TOUR_KEYS = {
 };
 
 // Check if tour has been completed
-export const isTourCompleted = (tourKey) => {
+export const isTourCompleted = (tourKey, user) => {
+  // If user is logged in, check from user profile
+  if (user && user.completed_tours) {
+    return user.completed_tours.includes(tourKey);
+  }
+  // Fallback to localStorage for guests
   return localStorage.getItem(tourKey) === 'true';
 };
 
 // Mark tour as completed
-export const markTourCompleted = (tourKey) => {
+export const markTourCompleted = async (tourKey, API) => {
+  // Save to localStorage as backup
   localStorage.setItem(tourKey, 'true');
+  
+  // Save to database if API URL is provided
+  if (API) {
+    try {
+      await fetch(`${API}/users/complete-tour`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ tour_id: tourKey })
+      });
+    } catch (error) {
+      console.error('Failed to save tour completion to database:', error);
+      // Don't throw - localStorage fallback already saved
+    }
+  }
 };
 
 // Reset all tours (for testing)
