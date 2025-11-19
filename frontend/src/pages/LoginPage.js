@@ -155,7 +155,7 @@ const LoginPage = ({ onLogin }) => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onFocus={(e) => e.target.select()}
-                placeholder="Password"
+                placeholder={t('auth.password')}
                 required
                 className="w-full px-4 py-3 pr-12 border-2 rounded-xl"
                 style={{ 
@@ -179,7 +179,7 @@ const LoginPage = ({ onLogin }) => {
               className="w-full py-3 rounded-xl font-bold text-white text-lg"
               style={{ backgroundColor: '#7CB342' }}
             >
-              {loading ? 'Logging in...' : 'Sign in'}
+              {loading ? t('auth.loggingIn', 'Logging in...') : t('auth.signIn')}
             </Button>
           </form>
 
@@ -189,13 +189,13 @@ const LoginPage = ({ onLogin }) => {
               to="/signup"
               className="block text-cyan-600 hover:text-cyan-700 font-medium"
             >
-              Opret ny konto
+              {t('auth.createNewAccount', 'Opret ny konto')}
             </Link>
             <Link
               to="/forgot-password"
               className="block text-cyan-600 hover:text-cyan-700 font-medium"
             >
-              Glemt password?
+              {t('auth.forgotPassword')}
             </Link>
           </div>
 
