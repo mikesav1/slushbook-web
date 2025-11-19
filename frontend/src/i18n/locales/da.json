@@ -312,7 +312,16 @@
     "imageRightsLabel": "Jeg bekræfter, at jeg har rettighederne til dette billede",
     "mustConfirmRights": "Du skal bekræfte billedrettigheder",
     "saveAsDraft": "Gem som Kladde",
-    "publishRecipe": "Publicer Opskrift"
+    "publishRecipe": "Publicer Opskrift",
+    "publicRecipe": "🌍 Offentlig opskrift",
+    "privateRecipe": "🔒 Privat opskrift",
+    "publicDescription": "Denne opskrift er synlig for alle brugere",
+    "privateDescription": "Kun du kan se denne opskrift",
+    "imageWarning": "Vigtigt om billede:",
+    "imageUploaded": "Du har uploadet et billede til denne opskrift.",
+    "ensureRights": "Sørg for at du har rettighederne til billedet før du deler opskriften offentligt.",
+    "creating": "Opretter...",
+    "createRecipeButton": "Opret Opskrift"
   },
   "matchFinder": {
     "title": "Match-Finder",
