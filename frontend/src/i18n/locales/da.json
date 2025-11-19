@@ -35,17 +35,26 @@
     "signup": "Opret konto"
   },
   "auth": {
-    "signIn": "Sign in",
-    "signUp": "Sign up",
+    "signIn": "Log ind",
+    "signUp": "Opret konto",
     "email": "Email",
     "password": "Password",
     "name": "Navn",
-    "confirmPassword": "Bekræft adgangskode",
-    "forgotPassword": "Glemt adgangskode?",
+    "confirmPassword": "Bekræft password",
+    "forgotPassword": "Glemt password?",
     "noAccount": "Har du ikke en konto?",
     "hasAccount": "Har du allerede en konto?",
     "welcomeBack": "Velkommen tilbage",
-    "createAccount": "Opret din konto"
+    "createAccount": "Opret din konto",
+    "deviceLimitWarning": "Du er nu logget ind på maksimum ({{max}}) enheder. Ældre sessioner er blevet logget ud.",
+    "loginSuccess": "Login successful!",
+    "loginFailed": "Login failed",
+    "loggingIn": "Logger ind...",
+    "createNewAccount": "Opret ny konto",
+    "passwordsDontMatch": "Passwords stemmer ikke overens",
+    "passwordTooShort": "Password skal være mindst 6 tegn",
+    "accountCreated": "Konto oprettet! Log venligst ind.",
+    "signupFailed": "Kunne ikke oprette konto"
   },
   "home": {
     "title": "Velkommen til Slush Book",
