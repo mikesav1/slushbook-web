@@ -296,9 +296,12 @@ const ShoppingListPage = ({ sessionId }) => {
       
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-4xl font-bold mb-2">Indkøbsliste</h1>
+          <h1 className="text-4xl font-bold mb-2">{t('shoppingList.title')}</h1>
           <p className="text-gray-600">
-            {uncheckedCount} ingrediens{uncheckedCount !== 1 ? 'er' : ''} tilbage
+            {t('shoppingList.remainingItems', `{{count}} ingrediens{{plural}} tilbage`, { 
+              count: uncheckedCount, 
+              plural: uncheckedCount !== 1 ? 'er' : '' 
+            })}
           </p>
         </div>
         {items.some(item => item.checked) && (
@@ -307,7 +310,7 @@ const ShoppingListPage = ({ sessionId }) => {
             data-testid="clear-completed-button"
             variant="outline"
           >
-            Ryd Afkrydsede
+            {t('shoppingList.clearCompleted')}
           </Button>
         )}
       </div>
