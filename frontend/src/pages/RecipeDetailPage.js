@@ -842,6 +842,18 @@ const RecipeDetailPage = ({ sessionId }) => {
                   {recipe.is_favorite ? 'Fjern favorit' : 'Tilføj favorit'}
                 </span>
               </button>
+              
+              {/* Del - Only for Pro users and recipe author */}
+              {isAuthor() && user && user.role !== 'guest' && (
+                <button
+                  onClick={handleShare}
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors"
+                >
+                  <FaShare size={16} />
+                  <span className="text-sm font-medium">Del Opskrift</span>
+                </button>
+              )}
+              
               {/* Slet - Only for admin and recipe author */}
               {(isAdmin() || isAuthor()) && (
                 <button
