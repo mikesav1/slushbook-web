@@ -128,12 +128,12 @@ const ShoppingListPage = ({ sessionId }) => {
   };
 
   const handleTourSkip = () => {
-    markTourCompleted(TOUR_KEYS.SHOPPING_LIST, API);
+    markTourCompleted(TOUR_KEYS.SHOPPING_LIST, API, updateCompletedTours);
     setCurrentTourStep(-1);
   };
 
   const handleTourFinish = () => {
-    markTourCompleted(TOUR_KEYS.SHOPPING_LIST, API);
+    markTourCompleted(TOUR_KEYS.SHOPPING_LIST, API, updateCompletedTours);
     setCurrentTourStep(-1);
     toast.success('Indkøbsliste guide færdig!');
   };
