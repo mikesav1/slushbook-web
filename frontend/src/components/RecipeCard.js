@@ -14,6 +14,20 @@ const RecipeCard = ({ recipe, sessionId, showMatchInfo, onLockedClick }) => {
   // Check if recipe is locked for current user
   const isLocked = !recipe.is_free && (!user || user.role === 'guest');
 
+  // Get badge level based on author's recipe count
+  const getAuthorBadge = (recipeCount) => {
+    if (recipeCount >= 50) {
+      return { level: 'diamond', color: 'from-purple-400 via-pink-400 to-purple-500', icon: '💎', title: 'Diamant Chef - 50+ opskrifter' };
+    } else if (recipeCount >= 40) {
+      return { level: 'gold', color: 'from-yellow-300 via-yellow-400 to-yellow-500', icon: '🥇', title: 'Guld Chef - 40+ opskrifter' };
+    } else if (recipeCount >= 30) {
+      return { level: 'silver', color: 'from-gray-300 via-gray-400 to-gray-300', icon: '🥈', title: 'Sølv Chef - 30+ opskrifter' };
+    } else if (recipeCount >= 10) {
+      return { level: 'bronze', color: 'from-orange-300 via-amber-400 to-orange-500', icon: '🥉', title: 'Bronze Chef - 10+ opskrifter' };
+    }
+    return { level: 'beginner', color: 'from-cyan-500 to-blue-600', icon: '', title: 'Ny opskriftsskaber' };
+  };
+
   const toggleFavorite = async (e) => {
     e.preventDefault();
     try {
