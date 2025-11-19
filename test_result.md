@@ -1225,3 +1225,59 @@ Implement achievement badge system for recipe authors based on published recipe 
 - User badge showcase on profile page
 - Badge notification when user earns new level
 
+
+## Tour Persistence Fix - Completed
+
+**Date:** 2025-01-19
+**Status:** ✅ FIXED
+
+### Issue Reported by User:
+Tours kept reappearing on every page visit even after completing them.
+
+### Root Cause:
+When `markTourCompleted()` was called:
+1. ✅ Tour was saved to backend database correctly
+2. ✅ localStorage was updated as fallback
+3. ❌ **But user object in AuthContext was NOT updated**
+
+Result: Next page load would check `user.completed_tours` which still had the old data, so tour would show again.
+
+### Solution Implemented:
+
+#### AuthContext.js:
+- Added `updateCompletedTours(tourId)` function
+- Updates user state immediately after tour completion
+- Exposed via AuthContext provider
+
+#### onboarding.js:
+- Updated `markTourCompleted` signature: `(tourKey, API, updateCompletedTours)`
+- After successful backend call, immediately updates user context
+- Ensures tour won't show again without page refresh
+
+#### All Page Components Updated:
+1. HomePage.js
+2. RecipesPage.js
+3. MatchFinderPage.js
+4. AddRecipePage.js
+5. ShoppingListPage.js
+6. SettingsPage.js
+
+Each now:
+- Imports `updateCompletedTours` from useAuth()
+- Passes it to `markTourCompleted()` calls
+
+### How It Works Now:
+1. User completes tour → `markTourCompleted()` called
+2. Backend saves to database ✅
+3. localStorage updated ✅
+4. **User context updated immediately** ✅
+5. Next page check: `isTourCompleted()` sees updated user.completed_tours
+6. Tour does NOT show again ✅
+
+### Testing Required:
+1. Complete a tour on one page
+2. Navigate to another page
+3. Tour should NOT reappear
+4. Refresh page - tour still should NOT appear
+5. Check different tours on different pages
+
