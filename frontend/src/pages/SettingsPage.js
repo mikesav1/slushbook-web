@@ -594,7 +594,7 @@ const SettingsPage = ({ sessionId }) => {
             <Dialog open={isAddMachineOpen} onOpenChange={setIsAddMachineOpen}>
               <DialogTrigger asChild>
                 <Button data-testid="add-machine-button" data-tour="add-machine-button" variant="outline">
-                  <FaPlus className="mr-2" /> Tilføj Maskine
+                  <FaPlus className="mr-2" /> {t('settings.addMachine')}
                 </Button>
               </DialogTrigger>
             <DialogContent className="max-h-[90vh] overflow-y-auto">
