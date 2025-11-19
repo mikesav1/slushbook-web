@@ -25,6 +25,24 @@ const ProfilePage = () => {
     confirmPassword: ''
   });
 
+  // Fetch badge info
+  useEffect(() => {
+    if (user?.id) {
+      fetchBadgeInfo();
+    }
+  }, [user?.id]);
+
+  const fetchBadgeInfo = async () => {
+    try {
+      const response = await axios.get(`${API}/user/${user.id}/badge`);
+      setBadgeInfo(response.data);
+    } catch (error) {
+      console.error('Error fetching badge info:', error);
+    } finally {
+      setLoadingBadge(false);
+    }
+  };
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
