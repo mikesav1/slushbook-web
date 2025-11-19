@@ -45,7 +45,16 @@
     "noAccount": "Don't have an account?",
     "hasAccount": "Already have an account?",
     "welcomeBack": "Welcome back",
-    "createAccount": "Create your account"
+    "createAccount": "Create your account",
+    "deviceLimitWarning": "You are now logged in on the maximum ({{max}}) devices. Older sessions have been logged out.",
+    "loginSuccess": "Login successful!",
+    "loginFailed": "Login failed",
+    "loggingIn": "Logging in...",
+    "createNewAccount": "Create new account",
+    "passwordsDontMatch": "Passwords don't match",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "accountCreated": "Account created! Please log in.",
+    "signupFailed": "Could not create account"
   },
   "home": {
     "title": "Welcome to Slush Book",
