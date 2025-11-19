@@ -28,8 +28,13 @@ const FavoritesPage = ({ sessionId }) => {
   return (
     <div className="space-y-6 fade-in" data-testid="favorites-page">
       <div>
-        <h1 className="text-4xl font-bold mb-2">Mine Favoritter</h1>
-        <p className="text-gray-600">{favorites.length} favorit opskrift{favorites.length !== 1 ? 'er' : ''}</p>
+        <h1 className="text-4xl font-bold mb-2">{t('favorites.title')}</h1>
+        <p className="text-gray-600">
+          {t('favorites.count', '{{count}} favorit opskrift{{plural}}', { 
+            count: favorites.length, 
+            plural: favorites.length !== 1 ? 'er' : '' 
+          })}
+        </p>
       </div>
 
       {loading ? (
@@ -39,8 +44,8 @@ const FavoritesPage = ({ sessionId }) => {
       ) : favorites.length === 0 ? (
         <div className="empty-state">
           <div className="empty-state-icon"><FaHeart /></div>
-          <h3 className="text-xl font-bold mb-2">Ingen favoritter endnu</h3>
-          <p className="text-gray-600">Tilføj dine yndlings opskrifter her</p>
+          <h3 className="text-xl font-bold mb-2">{t('favorites.noFavoritesYet')}</h3>
+          <p className="text-gray-600">{t('favorites.addYourFavorites')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
