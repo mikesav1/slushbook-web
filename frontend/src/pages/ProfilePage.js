@@ -251,7 +251,7 @@ const ProfilePage = () => {
               className="flex-1 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700"
             >
               <FaSave className="mr-2" />
-              {loading ? 'Gemmer...' : 'Gem ændringer'}
+              {loading ? t('profile.updating') : t('profile.saveChanges')}
             </Button>
             <Button
               type="button"
