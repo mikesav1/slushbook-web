@@ -423,14 +423,45 @@
       "step2": "🏪 Buy online\n\nClick 'Shop at...' to buy the ingredient directly from a supplier.\n\nWe automatically show the best price for your country!",
       "tips": "💡 Tips for Shopping List\n\n• Add ingredients by opening a recipe and clicking 'Add to List'\n• Ingredients are grouped automatically\n• Buy online and save time!\n• The list is remembered so you can shop when you want",
       "tourComplete": "Shopping list guide complete!"
-    },
-    "settings": {
-      "welcome": "⚙️ Welcome to Settings!\n\nHere you can customize the app to your needs.\n\nLet's especially look at the machine settings.",
-      "step1": "🧊 Your slush machines\n\nHere you can add and manage your slush machines.\n\nWhen you've set up your machine, recipes are automatically scaled to the right size!",
-      "step2": "➕ Add machine\n\nClick here to add a new machine.\n\nEnter name and tank volume (e.g. 12000 ml).\n\nThis makes recipes perfect for your machine!",
-      "step3": "🔄 Restart guides\n\nNeed to see the guides again?\n\nClick here to reset all onboarding tours and see them from the beginning.",
-      "step4": "📖 Full guide\n\nClick this link to read the complete guide to SLUSHBOOK.\n\nHere you'll find detailed instructions, tips and tricks for all features!",
-      "tips": "💡 Other settings\n\n• Manage your devices and log out from specific devices\n• Choose your country for relevant product links\n• See your free limits (how many recipes you can create)\n• All your settings are saved automatically"
     }
+  },
+  "profile": {
+    "passwordsDontMatch": "New passwords don't match",
+    "passwordTooShort": "New password must be at least 6 characters",
+    "currentPasswordRequired": "Enter your current password to change it",
+    "profileUpdated": "Profile updated!",
+    "updateError": "Could not update profile",
+    "welcomeTitle": "Welcome to SLUSHBOOK",
+    "welcomeDescription": "Log in to access your profile and extra features",
+    "seeGuide": "See guide",
+    "myProfile": "My Profile",
+    "editProfile": "Edit your profile",
+    "personalInfo": "Personal information",
+    "changePassword": "Change password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password",
+    "saveChanges": "Save changes",
+    "updating": "Updating...",
+    "user": "user",
+    "asGuestYouCan": "As a guest you can:",
+    "browseRecipes": "Browse all recipes",
+    "viewDetails": "View recipe details",
+    "readGuides": "Read guides",
+    "withProAccount": "With Pro account you get:",
+    "createRecipes": "Create your own recipes",
+    "saveFavorites": "Save favorites",
+    "shoppingList": "Shopping list",
+    "matchFinder": "Match finder",
+    "pantrySystem": "Pantry system",
+    "leaveEmptyIfNoChange": "Leave fields empty if you don't want to change your password",
+    "currentPasswordPlaceholder": "Only if you want to change password",
+    "newPasswordPlaceholder": "Min. 6 characters"
+  },
+  "favorites": {
+    "title": "My Favorites",
+    "count": "{{count}} favorite recipe{{plural}}",
+    "noFavoritesYet": "No favorites yet",
+    "addYourFavorites": "Add your favorite recipes here"
   }
 }
