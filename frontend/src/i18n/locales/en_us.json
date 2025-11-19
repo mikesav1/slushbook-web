@@ -297,6 +297,52 @@
     "noItems": "No items on the list yet",
     "clearAll": "Clear all",
     "clearCompleted": "Clear completed",
-    "itemsCount": "{{count}} items"
+    "itemsCount": "{{count}} items",
+    "shopAt": "Shop at {{supplier}}"
+  },
+  "tour": {
+    "home": {
+      "welcomeWithName": "🎉 Welcome to Slush Book, {{name}}!",
+      "welcome": "🎉 Welcome to Slush Book!",
+      "step1": "Here you can explore recipes, find inspiration and add your own slushie creations.\n\nBefore we get started, you'll get a few quick tips on how to use the app best.\n\nPress Next to see where to find settings and your favorites.",
+      "step2": "👤 Here you'll find the profile icon (or the gear on mobile).\n\nHere you can open the menu with Settings, Favorites and Log out.\n\nYou can also restart this guide under Settings later."
+    },
+    "recipes": {
+      "welcome": "📚 Welcome to Recipes!\n\nHere you'll find all slushie recipes. Let's look at the key features.",
+      "step1": "🔍 Search for recipes\n\nUse the search field to find specific recipes quickly. For example, type 'strawberry' or 'classic'.",
+      "step2": "🎨 Filter by type\n\nHere you can filter recipes by category.\n\nChoose between Classic, Tropical, Creamy, Cocktail and several others.",
+      "step3": "❤️ Add to favorites\n\nClick the heart on a recipe card to save it as a favorite.\n\nYou can find your favorites under the profile menu.",
+      "step4": "🛒 Tip: Open a recipe for more!\n\nWhen you click on a recipe, you can:\n• See detailed ingredients and instructions\n• Add ingredients to your shopping list\n• Scale the recipe to your machine volume\n• Rate and share the recipe",
+      "step5": "➕ Create your own recipe\n\nThe first card is the 'Add Recipe' button.\n\nHere you can create and share your own slushie creations!\n\nLet's go in there and see how it works."
+    },
+    "addRecipe": {
+      "welcome": "✨ Welcome to Create Recipe!\n\nHere you can create and share your own slushie creations.\n\nLet's go through how to create a recipe step by step.",
+      "step1": "📝 Recipe name\n\nGive your recipe a catchy and descriptive name!\n\nFor example, 'Summer Strawberry', 'Tropical Paradise' or 'Creamy Blueberry'.",
+      "step2": "🎨 Type and category\n\nChoose what type of recipe it is (Classic, Juice, Smoothie, Cocktail etc.).\n\nYou can also choose color, sugar level and whether it contains alcohol.",
+      "step3": "🥤 Ingredients\n\nHere you add all the ingredients to your recipe.\n\n• Search for existing ingredients\n• Or create new ingredients\n• Specify quantity and unit\n• You can add more ingredients with the 'Add' button",
+      "step4": "🌍 IMPORTANT: Public recipe\n\nIf you want to SHARE your recipe with other users, you need to activate 'Public recipe'.\n\n⚠️ NOTE: Public recipes must be approved by admin before they become visible.\n\nPrivate recipes are only visible to you.",
+      "step5": "✅ Save your recipe\n\nWhen you're satisfied with your recipe, click 'Create Recipe'.\n\nYour recipe will be:\n• Added to your collection immediately\n• Sent for approval if it's public\n• Ready to share if it's public and approved!",
+      "complete": "🎉 You're now ready!\n\nYou now know how to:\n• Search and filter recipes\n• Add favorites\n• Create your own recipes\n\nEnjoy exploring and creating slushie recipes! 🍹"
+    },
+    "match": {
+      "welcome": "🎯 Welcome to Match Finder!\n\nHere you can find recipes based on the ingredients you already have.\n\nLet's see how it works.",
+      "step1": "📦 Add ingredients to your 'pantry'\n\nClick here to add ingredients you have at home.\n\nThe more ingredients you add, the better matches you get!",
+      "step2": "🔍 Find matches\n\nOnce you've added your ingredients, click here to find recipes you can make.\n\nThe system shows recipes you can make with what you have!",
+      "tips": "💡 Tips for Match Finder\n\n• Start by adding basic ingredients (sugar, lemon, water)\n• Add fruits and flavors you have\n• The system shows how many % match there is\n• You can buy missing ingredients directly from the list!"
+    },
+    "shopping": {
+      "welcome": "🛒 Welcome to your Shopping List!\n\nHere you'll find all ingredients you've added from recipes.\n\nLet's see what you can do.",
+      "step1": "✅ Check off purchased items\n\nClick the checkbox to mark an ingredient as purchased.\n\nPurchased items disappear from the list.",
+      "step2": "🏪 Buy online\n\nClick 'Shop at...' to buy the ingredient directly from a supplier.\n\nWe automatically show the best price for your country!",
+      "tips": "💡 Tips for Shopping List\n\n• Add ingredients by opening a recipe and clicking 'Add to List'\n• Ingredients are grouped automatically\n• Buy online and save time!\n• The list is remembered so you can shop when you want"
+    },
+    "settings": {
+      "welcome": "⚙️ Welcome to Settings!\n\nHere you can customize the app to your needs.\n\nLet's especially look at the machine settings.",
+      "step1": "🧊 Your slush machines\n\nHere you can add and manage your slush machines.\n\nWhen you've set up your machine, recipes are automatically scaled to the right size!",
+      "step2": "➕ Add machine\n\nClick here to add a new machine.\n\nEnter name and tank volume (e.g. 12000 ml).\n\nThis makes recipes perfect for your machine!",
+      "step3": "🔄 Restart guides\n\nNeed to see the guides again?\n\nClick here to reset all onboarding tours and see them from the beginning.",
+      "step4": "📖 Full guide\n\nClick this link to read the complete guide to SLUSHBOOK.\n\nHere you'll find detailed instructions, tips and tricks for all features!",
+      "tips": "💡 Other settings\n\n• Manage your devices and log out from specific devices\n• Choose your country for relevant product links\n• See your free limits (how many recipes you can create)\n• All your settings are saved automatically"
+    }
   }
 }
