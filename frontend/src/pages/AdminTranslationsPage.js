@@ -18,6 +18,7 @@ const LANGUAGES = {
 };
 
 const AdminTranslationsPage = () => {
+  const { t } = useTranslation();
   const [selectedLang, setSelectedLang] = useState('da');
   const [translations, setTranslations] = useState({});
   const [allTranslations, setAllTranslations] = useState({});
