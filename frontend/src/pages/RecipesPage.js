@@ -520,7 +520,7 @@ const RecipesPage = ({ sessionId }) => {
           {/* Include Ingredients */}
           <div className="relative">
             <label className="block text-xs font-medium text-gray-600 mb-2">
-              ✅ Skal indeholde (skriv eller vælg fra listen)
+              ✅ {t('recipes.mustIncludeLabel')}
             </label>
             <input
               type="text"
@@ -532,7 +532,7 @@ const RecipesPage = ({ sessionId }) => {
               onKeyPress={handleIncludeKeyPress}
               onFocus={() => setShowIncludeSuggestions(true)}
               onBlur={() => setTimeout(() => setShowIncludeSuggestions(false), 200)}
-              placeholder="f.eks. jordbær, citron..."
+              placeholder={t('recipes.ingredientPlaceholder')}
               className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
             
