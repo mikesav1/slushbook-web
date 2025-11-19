@@ -499,10 +499,10 @@ const AddRecipePage = ({ sessionId }) => {
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                placeholder="Tilføj tag..."
+                placeholder={t('addRecipe.tagPlaceholder')}
               />
               <Button type="button" onClick={addTag}>
-                Tilføj
+                {t('addRecipe.addTag')}
               </Button>
             </div>
             <div className="flex flex-wrap gap-2">
