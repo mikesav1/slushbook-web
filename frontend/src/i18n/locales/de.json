@@ -401,7 +401,8 @@
       "welcome": "🛒 Willkommen bei Ihrer Einkaufsliste!\n\nHier finden Sie alle Zutaten, die Sie von Rezepten hinzugefügt haben.\n\nSchauen wir uns an, was Sie tun können.",
       "step1": "✅ Gekaufte Artikel abhaken\n\nKlicken Sie auf das Kontrollkästchen, um eine Zutat als gekauft zu markieren.\n\nGekaufte Artikel verschwinden von der Liste.",
       "step2": "🏪 Online kaufen\n\nKlicken Sie auf 'Einkaufen bei...', um die Zutat direkt bei einem Anbieter zu kaufen.\n\nWir zeigen automatisch den besten Preis für Ihr Land!",
-      "tips": "💡 Tipps für die Einkaufsliste\n\n• Fügen Sie Zutaten hinzu, indem Sie ein Rezept öffnen und auf 'Zur Liste hinzufügen' klicken\n• Zutaten werden automatisch gruppiert\n• Kaufen Sie online und sparen Sie Zeit!\n• Die Liste wird gespeichert, damit Sie einkaufen können, wann Sie möchten"
+      "tips": "💡 Tipps für die Einkaufsliste\n\n• Fügen Sie Zutaten hinzu, indem Sie ein Rezept öffnen und auf 'Zur Liste hinzufügen' klicken\n• Zutaten werden automatisch gruppiert\n• Kaufen Sie online und sparen Sie Zeit!\n• Die Liste wird gespeichert, damit Sie einkaufen können, wann Sie möchten",
+      "tourComplete": "Einkaufslisten-Anleitung abgeschlossen!"
     },
     "settings": {
       "welcome": "⚙️ Willkommen bei den Einstellungen!\n\nHier können Sie die App an Ihre Bedürfnisse anpassen.\n\nSchauen wir uns besonders die Maschineneinstellungen an.",
