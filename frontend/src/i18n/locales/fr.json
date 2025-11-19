@@ -1,0 +1,112 @@
+{
+  "common": {
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "confirm": "Confirmer",
+    "loading": "Chargement...",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "yes": "Oui",
+    "no": "Non"
+  },
+  "nav": {
+    "home": "Accueil",
+    "recipes": "Recettes",
+    "addRecipe": "Ajouter une recette",
+    "matchFinder": "Match-Finder",
+    "shoppingList": "Liste de courses",
+    "tips": "Conseils & Astuces",
+    "settings": "Paramètres",
+    "login": "Se connecter",
+    "logout": "Se déconnecter",
+    "signup": "S'inscrire"
+  },
+  "auth": {
+    "signIn": "Se connecter",
+    "signUp": "S'inscrire",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "name": "Nom",
+    "confirmPassword": "Confirmer le mot de passe",
+    "forgotPassword": "Mot de passe oublié?",
+    "noAccount": "Vous n'avez pas de compte?",
+    "hasAccount": "Vous avez déjà un compte?",
+    "welcomeBack": "Bienvenue",
+    "createAccount": "Créer votre compte"
+  },
+  "home": {
+    "title": "Bienvenue sur Slush Book",
+    "subtitle": "Découvrez d'incroyables recettes de slush",
+    "featuredRecipes": "Recettes en vedette",
+    "exploreAll": "Explorer toutes les recettes",
+    "quickLinks": "Accès rapide",
+    "findMatch": "Trouver une correspondance",
+    "createRecipe": "Créer une recette",
+    "popularRecipes": "Recettes populaires"
+  },
+  "recipes": {
+    "title": "Recettes",
+    "myRecipes": "Mes recettes",
+    "allRecipes": "Toutes les recettes",
+    "free": "Gratuit",
+    "premium": "Premium",
+    "addToFavorites": "Ajouter aux favoris",
+    "removeFromFavorites": "Retirer des favoris",
+    "viewRecipe": "Voir la recette",
+    "ingredients": "Ingrédients",
+    "instructions": "Instructions",
+    "prepTime": "Temps de préparation",
+    "servings": "Portions",
+    "difficulty": "Difficulté",
+    "type": "Type",
+    "noRecipes": "Aucune recette trouvée",
+    "searchPlaceholder": "Rechercher des recettes..."
+  },
+  "settings": {
+    "title": "Paramètres",
+    "language": "Langue",
+    "selectLanguage": "Sélectionner la langue",
+    "languageDesc": "Les recettes et l'interface seront affichées dans la langue sélectionnée",
+    "profile": "Profil",
+    "account": "Compte",
+    "preferences": "Préférences",
+    "logout": "Se déconnecter",
+    "deleteAccount": "Supprimer le compte",
+    "myRecipes": "Mes recettes",
+    "devices": "Appareils",
+    "activeDevices": "Appareils actifs",
+    "logoutAllDevices": "Se déconnecter de tous les autres"
+  },
+  "messages": {
+    "success": {
+      "saved": "Enregistré!",
+      "deleted": "Supprimé!",
+      "updated": "Mis à jour!",
+      "created": "Créé!",
+      "languageChanged": "Langue changée en {{language}}"
+    },
+    "error": {
+      "generic": "Une erreur s'est produite",
+      "notFound": "Non trouvé",
+      "unauthorized": "Non autorisé",
+      "networkError": "Erreur réseau"
+    }
+  },
+  "forms": {
+    "recipeName": "Nom de la recette",
+    "description": "Description",
+    "ingredients": "Ingrédients",
+    "steps": "Étapes",
+    "addIngredient": "Ajouter un ingrédient",
+    "addStep": "Ajouter une étape",
+    "required": "Requis",
+    "optional": "Optionnel"
+  }
+}
