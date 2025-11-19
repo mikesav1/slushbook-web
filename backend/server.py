@@ -4637,9 +4637,12 @@ async def update_user_preferences(
 
 # Admin Translation Management Endpoints
 @api_router.get("/admin/translations")
-async def get_available_languages(request: Request):
+async def get_available_languages(
+    request: Request,
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
+):
     """Get list of available translation languages"""
-    user = await get_current_user(request, None, db)
+    user = await get_current_user(request, credentials, db)
     
     if not user or user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
