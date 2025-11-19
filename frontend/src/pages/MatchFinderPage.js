@@ -56,9 +56,10 @@ const MatchFinderPage = ({ sessionId }) => {
   // Start tour for first-time users
   useEffect(() => {
     if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.MATCH, user)) {
+      console.log('[Tour] Starting match finder tour...');
       setTimeout(() => {
         setCurrentTourStep(0);
-      }, 1000);
+      }, 1500);
     }
   }, [user]);
 
