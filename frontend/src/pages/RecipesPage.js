@@ -425,16 +425,16 @@ const RecipesPage = ({ sessionId }) => {
           <div className="mb-4">
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               <FaSortAlphaDown className="inline mr-2" />
-              Sortering
+              {t('recipes.sorting')}
             </label>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-white"
             >
-              <option value="default">Standard (Nyeste først)</option>
-              <option value="alphabetical">Alfabetisk (A-Z)</option>
-              <option value="rating">Højeste vurdering</option>
+              <option value="default">{t('recipes.sortDefault')}</option>
+              <option value="alphabetical">{t('recipes.sortAlphabetical')}</option>
+              <option value="rating">{t('recipes.sortRating')}</option>
             </select>
           </div>
         )}
