@@ -233,17 +233,17 @@ const RecipeDetailPage = ({ sessionId }) => {
   };
 
   const handleDeleteComment = async (commentId) => {
-    if (!window.confirm('Er du sikker på, at du vil slette denne kommentar?')) {
+    if (!window.confirm(t('recipeDetail.confirmDeleteComment', 'Er du sikker på, at du vil slette denne kommentar?'))) {
       return;
     }
 
     try {
       await axios.delete(`${API}/comments/${commentId}`);
       setComments(comments.filter(c => c.id !== commentId));
-      toast.success('Kommentar slettet');
+      toast.success(t('recipeDetail.commentDeleted', 'Kommentar slettet'));
     } catch (error) {
       console.error('Error deleting comment:', error);
-      toast.error('Kunne ikke slette kommentar');
+      toast.error(t('recipeDetail.deleteCommentError', 'Kunne ikke slette kommentar'));
     }
   };
 
