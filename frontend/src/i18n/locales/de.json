@@ -64,7 +64,9 @@
     "quickLinks": "Schnellzugriff",
     "findMatch": "Match finden",
     "createRecipe": "Rezept erstellen",
-    "popularRecipes": "Beliebte Rezepte"
+    "popularRecipes": "Beliebte Rezepte",
+    "heroTitle": "Finde deine perfekte",
+    "heroSubtitle": "Slushie-Rezept"
   },
   "recipes": {
     "title": "Rezepte",
