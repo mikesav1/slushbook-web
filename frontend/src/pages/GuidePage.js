@@ -173,17 +173,17 @@ const GuidePage = () => {
         {/* Shopping List */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-            <FaShoppingCart className="text-green-600" /> Indkøbsliste
+            <FaShoppingCart className="text-green-600" /> {t('guide.shoppingListTitle')}
           </h2>
           <div className="space-y-3 text-gray-700 ml-4">
             <p>
-              Opret en indkøbsliste direkte fra dine opskrifter:
+              {t('guide.shoppingListDesc')}
             </p>
             <ol className="list-decimal pl-6 space-y-2">
-              <li>Åbn en opskrift</li>
-              <li>Klik på "Tilføj til liste" ved de ingredienser, du mangler</li>
-              <li>Gå til "Liste" i menuen for at se din samlede indkøbsliste</li>
-              <li>Klik på købslinks for at købe direkte hos leverandører</li>
+              <li>{t('guide.shoppingListStep1')}</li>
+              <li>{t('guide.shoppingListStep2')}</li>
+              <li>{t('guide.shoppingListStep3')}</li>
+              <li>{t('guide.shoppingListStep4')}</li>
             </ol>
           </div>
         </section>
