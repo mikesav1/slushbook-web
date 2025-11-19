@@ -370,7 +370,7 @@ const RecipesPage = ({ sessionId }) => {
           <input
             type="text"
             data-testid="search-input"
-            placeholder="Søg opskrifter..."
+            placeholder={t('recipes.searchPlaceholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500"
