@@ -392,9 +392,13 @@
     "add": "Tilføj",
     "noItems": "Ingen varer på listen endnu",
     "clearAll": "Ryd alle",
-    "clearCompleted": "Ryd afsluttede",
+    "clearCompleted": "Ryd afslyttede",
     "itemsCount": "{{count}} varer",
-    "shopAt": "Indkøb hos {{supplier}}"
+    "shopAt": "Indkøb hos {{supplier}}",
+    "remainingItems": "{{count}} ingrediens{{plural}} tilbage",
+    "emptyTitle": "Din indkøbsliste er tom",
+    "emptyDescription": "Tilføj manglende ingredienser fra opskrifter",
+    "fetchError": "Kunne ikke hente indkøbsliste"
   },
   "tour": {
     "home": {
