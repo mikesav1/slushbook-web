@@ -63,6 +63,8 @@ const TipsPage = () => {
       setExpandedTipId(null);
     } else {
       setExpandedTipId(tipId);
+      // Set comments as collapsed by default when expanding tip
+      setCollapsedComments(prev => ({ ...prev, [tipId]: true }));
       // Fetch comments when expanding
       if (!comments[tipId]) {
         fetchComments(tipId);
