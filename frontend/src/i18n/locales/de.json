@@ -297,6 +297,52 @@
     "noItems": "Noch keine Artikel auf der Liste",
     "clearAll": "Alle löschen",
     "clearCompleted": "Erledigte löschen",
-    "itemsCount": "{{count}} Artikel"
+    "itemsCount": "{{count}} Artikel",
+    "shopAt": "Einkaufen bei {{supplier}}"
+  },
+  "tour": {
+    "home": {
+      "welcomeWithName": "🎉 Willkommen bei Slush Book, {{name}}!",
+      "welcome": "🎉 Willkommen bei Slush Book!",
+      "step1": "Hier können Sie Rezepte erkunden, Inspiration finden und Ihre eigenen Slushie-Kreationen hinzufügen.\n\nBevor wir beginnen, erhalten Sie einige schnelle Tipps zur besten Nutzung der App.\n\nDrücken Sie Weiter, um zu sehen, wo Sie Einstellungen und Ihre Favoriten finden.",
+      "step2": "👤 Hier finden Sie das Profil-Symbol (oder das Zahnrad auf Mobilgeräten).\n\nHier können Sie das Menü mit Einstellungen, Favoriten und Abmelden öffnen.\n\nSie können diese Anleitung später unter Einstellungen neu starten."
+    },
+    "recipes": {
+      "welcome": "📚 Willkommen bei den Rezepten!\n\nHier finden Sie alle Slushie-Rezepte. Schauen wir uns die wichtigsten Funktionen an.",
+      "step1": "🔍 Nach Rezepten suchen\n\nVerwenden Sie das Suchfeld, um schnell bestimmte Rezepte zu finden. Geben Sie zum Beispiel 'Erdbeere' oder 'klassisch' ein.",
+      "step2": "🎨 Nach Typ filtern\n\nHier können Sie Rezepte nach Kategorie filtern.\n\nWählen Sie zwischen Klassisch, Tropisch, Cremig, Cocktail und mehreren anderen.",
+      "step3": "❤️ Zu Favoriten hinzufügen\n\nKlicken Sie auf das Herz einer Rezeptkarte, um sie als Favorit zu speichern.\n\nSie finden Ihre Favoriten im Profil-Menü.",
+      "step4": "🛒 Tipp: Öffnen Sie ein Rezept für mehr!\n\nWenn Sie auf ein Rezept klicken, können Sie:\n• Detaillierte Zutaten und Anweisungen sehen\n• Zutaten zu Ihrer Einkaufsliste hinzufügen\n• Das Rezept auf Ihr Maschinenvolumen skalieren\n• Das Rezept bewerten und teilen",
+      "step5": "➕ Erstellen Sie Ihr eigenes Rezept\n\nDie erste Karte ist die Schaltfläche 'Rezept hinzufügen'.\n\nHier können Sie Ihre eigenen Slushie-Kreationen erstellen und teilen!\n\nLassen Sie uns hineingehen und sehen, wie es funktioniert."
+    },
+    "addRecipe": {
+      "welcome": "✨ Willkommen bei Rezept erstellen!\n\nHier können Sie Ihre eigenen Slushie-Kreationen erstellen und teilen.\n\nLassen Sie uns Schritt für Schritt durchgehen, wie Sie ein Rezept erstellen.",
+      "step1": "📝 Rezeptname\n\nGeben Sie Ihrem Rezept einen einprägsamen und beschreibenden Namen!\n\nZum Beispiel 'Sommer-Erdbeere', 'Tropisches Paradies' oder 'Cremige Blaubeere'.",
+      "step2": "🎨 Typ und Kategorie\n\nWählen Sie, um welche Art von Rezept es sich handelt (Klassisch, Saft, Smoothie, Cocktail usw.).\n\nSie können auch Farbe, Zuckergehalt und ob es Alkohol enthält, wählen.",
+      "step3": "🥤 Zutaten\n\nHier fügen Sie alle Zutaten zu Ihrem Rezept hinzu.\n\n• Suchen Sie nach vorhandenen Zutaten\n• Oder erstellen Sie neue Zutaten\n• Geben Sie Menge und Einheit an\n• Sie können weitere Zutaten mit der Schaltfläche 'Hinzufügen' hinzufügen",
+      "step4": "🌍 WICHTIG: Öffentliches Rezept\n\nWenn Sie Ihr Rezept mit anderen Benutzern TEILEN möchten, müssen Sie 'Öffentliches Rezept' aktivieren.\n\n⚠️ HINWEIS: Öffentliche Rezepte müssen vom Administrator genehmigt werden, bevor sie sichtbar werden.\n\nPrivate Rezepte sind nur für Sie sichtbar.",
+      "step5": "✅ Speichern Sie Ihr Rezept\n\nWenn Sie mit Ihrem Rezept zufrieden sind, klicken Sie auf 'Rezept erstellen'.\n\nIhr Rezept wird:\n• Sofort zu Ihrer Sammlung hinzugefügt\n• Zur Genehmigung gesendet, wenn es öffentlich ist\n• Bereit zum Teilen, wenn es öffentlich und genehmigt ist!",
+      "complete": "🎉 Sie sind jetzt bereit!\n\nSie wissen jetzt, wie Sie:\n• Rezepte suchen und filtern\n• Favoriten hinzufügen\n• Eigene Rezepte erstellen\n\nViel Spaß beim Erkunden und Erstellen von Slushie-Rezepten! 🍹"
+    },
+    "match": {
+      "welcome": "🎯 Willkommen beim Match-Finder!\n\nHier können Sie Rezepte basierend auf den Zutaten finden, die Sie bereits haben.\n\nSchauen wir uns an, wie es funktioniert.",
+      "step1": "📦 Fügen Sie Zutaten zu Ihrer 'Speisekammer' hinzu\n\nKlicken Sie hier, um Zutaten hinzuzufügen, die Sie zu Hause haben.\n\nJe mehr Zutaten Sie hinzufügen, desto bessere Treffer erhalten Sie!",
+      "step2": "🔍 Treffer finden\n\nSobald Sie Ihre Zutaten hinzugefügt haben, klicken Sie hier, um Rezepte zu finden, die Sie machen können.\n\nDas System zeigt Rezepte, die Sie mit dem machen können, was Sie haben!",
+      "tips": "💡 Tipps für Match-Finder\n\n• Beginnen Sie mit dem Hinzufügen von Grundzutaten (Zucker, Zitrone, Wasser)\n• Fügen Sie Früchte und Aromen hinzu, die Sie haben\n• Das System zeigt den %-Treffer an\n• Sie können fehlende Zutaten direkt von der Liste kaufen!"
+    },
+    "shopping": {
+      "welcome": "🛒 Willkommen bei Ihrer Einkaufsliste!\n\nHier finden Sie alle Zutaten, die Sie von Rezepten hinzugefügt haben.\n\nSchauen wir uns an, was Sie tun können.",
+      "step1": "✅ Gekaufte Artikel abhaken\n\nKlicken Sie auf das Kontrollkästchen, um eine Zutat als gekauft zu markieren.\n\nGekaufte Artikel verschwinden von der Liste.",
+      "step2": "🏪 Online kaufen\n\nKlicken Sie auf 'Einkaufen bei...', um die Zutat direkt bei einem Anbieter zu kaufen.\n\nWir zeigen automatisch den besten Preis für Ihr Land!",
+      "tips": "💡 Tipps für die Einkaufsliste\n\n• Fügen Sie Zutaten hinzu, indem Sie ein Rezept öffnen und auf 'Zur Liste hinzufügen' klicken\n• Zutaten werden automatisch gruppiert\n• Kaufen Sie online und sparen Sie Zeit!\n• Die Liste wird gespeichert, damit Sie einkaufen können, wann Sie möchten"
+    },
+    "settings": {
+      "welcome": "⚙️ Willkommen bei den Einstellungen!\n\nHier können Sie die App an Ihre Bedürfnisse anpassen.\n\nSchauen wir uns besonders die Maschineneinstellungen an.",
+      "step1": "🧊 Ihre Slush-Maschinen\n\nHier können Sie Ihre Slush-Maschinen hinzufügen und verwalten.\n\nWenn Sie Ihre Maschine eingerichtet haben, werden Rezepte automatisch auf die richtige Größe skaliert!",
+      "step2": "➕ Maschine hinzufügen\n\nKlicken Sie hier, um eine neue Maschine hinzuzufügen.\n\nGeben Sie Name und Tankvolumen ein (z.B. 12000 ml).\n\nDies macht Rezepte perfekt für Ihre Maschine!",
+      "step3": "🔄 Anleitungen neu starten\n\nMüssen Sie die Anleitungen erneut sehen?\n\nKlicken Sie hier, um alle Onboarding-Touren zurückzusetzen und sie von vorne zu sehen.",
+      "step4": "📖 Vollständige Anleitung\n\nKlicken Sie auf diesen Link, um die vollständige Anleitung zu SLUSHBOOK zu lesen.\n\nHier finden Sie detaillierte Anweisungen, Tipps und Tricks für alle Funktionen!",
+      "tips": "💡 Weitere Einstellungen\n\n• Verwalten Sie Ihre Geräte und melden Sie sich von bestimmten Geräten ab\n• Wählen Sie Ihr Land für relevante Produktlinks\n• Sehen Sie Ihre kostenlosen Limits (wie viele Rezepte Sie erstellen können)\n• Alle Ihre Einstellungen werden automatisch gespeichert"
+    }
   }
 }
