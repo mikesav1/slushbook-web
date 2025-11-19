@@ -1215,6 +1215,37 @@ async def logout(request: Request, response: Response):
     return {"message": "Logged out successfully"}
 
 
+@api_router.post("/users/complete-tour")
+async def complete_tour(request: Request, tour_data: dict):
+    """Mark a tour as completed for the current user"""
+    user = await get_current_user(request, None, db)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    tour_id = tour_data.get("tour_id")
+    if not tour_id:
+        raise HTTPException(status_code=400, detail="tour_id is required")
+    
+    try:
+        # Add tour_id to user's completed_tours if not already there
+        result = await db.users.update_one(
+            {"id": user.id},
+            {"$addToSet": {"completed_tours": tour_id}}
+        )
+        
+        # Get updated user
+        updated_user = await db.users.find_one({"id": user.id}, {"_id": 0})
+        
+        return {
+            "success": True,
+            "message": f"Tour {tour_id} marked as completed",
+            "completed_tours": updated_user.get("completed_tours", [])
+        }
+    except Exception as e:
+        logger.error(f"Failed to save tour completion: {e}")
+        raise HTTPException(status_code=500, detail="Failed to save tour completion")
+
+
 @api_router.post("/auth/forgot-password")
 async def forgot_password(request: ForgotPasswordRequest):
     """Request password reset"""
