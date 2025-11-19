@@ -265,7 +265,7 @@ const SettingsPage = ({ sessionId }) => {
             </div>
           )}
           <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-            <span className="text-gray-700">Mine opskrifter</span>
+            <span className="text-gray-700">{t('settings.myRecipes')}</span>
             <span className="font-semibold">
               {userRecipesCount} {(isAdmin() || isPro() || isEditor()) ? '(ubegrænset)' : '/ 2'}
             </span>
