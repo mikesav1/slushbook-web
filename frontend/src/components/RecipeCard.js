@@ -100,39 +100,42 @@ const RecipeCard = ({ recipe, sessionId, showMatchInfo, onLockedClick }) => {
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
         
-        {/* Author Badge - Top Left */}
-        {recipe.is_published && recipe.author !== 'system' && recipe.author_name && (
-          <div className="absolute top-4 left-4">
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                window.location.href = `/recipes?author=${recipe.author}`;
-              }}
-              className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 text-white rounded-full text-base font-bold flex items-center justify-center shadow-lg hover:scale-110 transition-transform border-2 border-white"
-              title={`Se opskrifter fra ${recipe.author_name}`}
-            >
-              {recipe.author_name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2)}
-            </button>
-          </div>
-        )}
-        
         {/* Icons - Top Right */}
-        <div className="absolute top-4 right-4 flex gap-2">
+        <div className="absolute top-4 right-4 flex items-center gap-2">
           {recipe.alcohol_flag && (
             <span className="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
               <FaWineBottle size={12} /> 18+
             </span>
           )}
+          
+          {/* Author Badge - next to heart, same size */}
+          {recipe.is_published && recipe.author !== 'system' && recipe.author_name && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = `/recipes?author=${recipe.author}`;
+              }}
+              className={`w-10 h-10 bg-gradient-to-br ${getAuthorBadge(recipe.author_recipe_count || 0).color} text-white rounded-full text-sm font-bold flex items-center justify-center shadow-lg hover:scale-110 transition-transform border-2 border-white relative`}
+              title={`${recipe.author_name} - ${getAuthorBadge(recipe.author_recipe_count || 0).title}`}
+            >
+              {getAuthorBadge(recipe.author_recipe_count || 0).icon ? (
+                <span className="text-lg">{getAuthorBadge(recipe.author_recipe_count || 0).icon}</span>
+              ) : (
+                <span>{recipe.author_name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2)}</span>
+              )}
+            </button>
+          )}
+          
           <button
             onClick={toggleFavorite}
             data-testid={`favorite-button-${recipe.id}`}
             data-tour="recipe-favorite"
-            className="bg-white/90 backdrop-blur-sm p-2 rounded-full hover:bg-white transition-colors"
+            className="bg-white/90 backdrop-blur-sm p-2 rounded-full hover:bg-white transition-colors w-10 h-10 flex items-center justify-center"
           >
             {isFavorite ? (
-              <FaHeart className="text-red-500" />
+              <FaHeart className="text-red-500" size={18} />
             ) : (
-              <FaRegHeart className="text-gray-600" />
+              <FaRegHeart className="text-gray-600" size={18} />
             )}
           </button>
         </div>
