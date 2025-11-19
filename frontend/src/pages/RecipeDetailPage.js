@@ -9,11 +9,13 @@ import { Label } from '../components/ui/label';
 import { useAuth } from '../context/AuthContext';
 import { toSentenceCase } from '../utils/textUtils';
 import { getUserCountry, getUserLanguage, detectUserLocation } from '../utils/geolocation';
+import { useTranslation } from 'react-i18next';
 
 const RecipeDetailPage = ({ sessionId }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user, isAdmin } = useAuth();
+  const { t } = useTranslation();
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [scaledData, setScaledData] = useState(null);
