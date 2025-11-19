@@ -116,7 +116,7 @@ const ShoppingListPage = ({ sessionId }) => {
 
   // Start tour for first-time users
   useEffect(() => {
-    if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.SHOPPING_LIST) && items.length > 0) {
+    if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.SHOPPING_LIST, user) && items.length > 0) {
       setTimeout(() => {
         setCurrentTourStep(0);
       }, 1000);
@@ -128,12 +128,12 @@ const ShoppingListPage = ({ sessionId }) => {
   };
 
   const handleTourSkip = () => {
-    markTourCompleted(TOUR_KEYS.SHOPPING_LIST);
+    markTourCompleted(TOUR_KEYS.SHOPPING_LIST, API);
     setCurrentTourStep(-1);
   };
 
   const handleTourFinish = () => {
-    markTourCompleted(TOUR_KEYS.SHOPPING_LIST);
+    markTourCompleted(TOUR_KEYS.SHOPPING_LIST, API);
     setCurrentTourStep(-1);
     toast.success('Indkøbsliste guide færdig!');
   };
