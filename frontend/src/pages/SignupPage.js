@@ -89,7 +89,7 @@ const SignupPage = () => {
 
         {/* Signup Form - Semi-transparent background */}
         <div className="rounded-3xl shadow-xl p-6 sm:p-8" style={{backgroundColor: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(10px)'}}>
-          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Opret konto</h2>
+          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">{t('auth.createAccount')}</h2>
 
           <form onSubmit={handleSignup} className="space-y-4">
             {/* Name */}
@@ -99,7 +99,7 @@ const SignupPage = () => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="Navn"
+                placeholder={t('auth.name')}
                 required
                 className="w-full px-4 py-3 border-2 rounded-xl"
                 style={{ 
