@@ -50,6 +50,87 @@ const LoginPage = ({ onLogin }) => {
     return 'Unknown Device';
   };
 
+  // Google OAuth Handler
+  const handleGoogleLogin = () => {
+    // Redirect to Emergent Auth with our app as redirect target
+    const redirectUrl = window.location.origin + '/'; // Redirect to homepage after auth
+    const authUrl = `https://auth.emergentagent.com/?redirect=${encodeURIComponent(redirectUrl)}`;
+    window.location.href = authUrl;
+  };
+
+  // Check for Google OAuth callback (session_id in URL fragment)
+  React.useEffect(() => {
+    const processGoogleCallback = async () => {
+      // Check if we have session_id in URL fragment
+      const hash = window.location.hash;
+      if (!hash || !hash.includes('session_id=')) {
+        return;
+      }
+
+      setProcessingGoogle(true);
+
+      try {
+        // Extract session_id from URL fragment
+        const sessionId = hash.split('session_id=')[1]?.split('&')[0];
+        
+        if (!sessionId) {
+          throw new Error('No session ID found');
+        }
+
+        console.log('Processing Google OAuth session...');
+
+        // Exchange session_id for user data via our backend
+        const response = await axios.post(
+          `${API}/auth/google/session`,
+          {},
+          {
+            headers: {
+              'X-Session-ID': sessionId
+            },
+            withCredentials: true
+          }
+        );
+
+        // Save session token
+        if (response.data.token) {
+          localStorage.setItem('session_token', response.data.token);
+        }
+
+        // Save user data
+        if (response.data.user) {
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+        }
+
+        // Clean URL (remove fragment)
+        window.history.replaceState(null, '', window.location.pathname);
+
+        toast.success('Google login successful!');
+
+        // Notify parent and navigate
+        if (onLogin) {
+          onLogin(response.data.user);
+        }
+
+        // Navigate to main app
+        setTimeout(() => {
+          navigate('/');
+          window.location.reload(); // Force refresh to update auth state
+        }, 500);
+
+      } catch (error) {
+        console.error('Google auth error:', error);
+        toast.error(error.response?.data?.detail || 'Google login failed');
+        
+        // Clean URL on error too
+        window.history.replaceState(null, '', window.location.pathname);
+      } finally {
+        setProcessingGoogle(false);
+      }
+    };
+
+    processGoogleCallback();
+  }, [navigate, onLogin]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
