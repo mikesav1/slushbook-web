@@ -4693,9 +4693,13 @@ async def get_translation_file(
         raise HTTPException(status_code=500, detail=f"Failed to read translation file: {str(e)}")
 
 @api_router.post("/admin/translations/{language_code}")
-async def update_translation_file(language_code: str, request: Request):
+async def update_translation_file(
+    language_code: str, 
+    request: Request,
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
+):
     """Update translation file content for a specific language"""
-    user = await get_current_user(request, None, db)
+    user = await get_current_user(request, credentials, db)
     
     if not user or user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
