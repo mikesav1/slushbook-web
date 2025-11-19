@@ -237,7 +237,10 @@ const SharedRecipePage = () => {
           </p>
           <div className="flex gap-3">
             <Button
-              onClick={() => navigate('/signup')}
+              onClick={() => {
+                localStorage.setItem('return_to_shared', token);
+                navigate('/signup');
+              }}
               className="bg-cyan-600 hover:bg-cyan-700"
             >
               Kom i gang gratis
