@@ -439,5 +439,15 @@
       "addSuccess": "Neuer Schlüssel hinzugefügt!",
       "addError": "Bitte füllen Sie sowohl Schlüssel als auch Wert aus"
     }
+  },
+  "guide": {
+    "title": "Anleitung für SLUSHBOOK",
+    "subtitle": "Erste Schritte mit SLUSHBOOK und Kennenlernen aller Funktionen",
+    "backToSettings": "Zurück zu Einstellungen",
+    "quickStart": "Schnellstart",
+    "newUser": "Neuer Benutzer?",
+    "newUserText": "Erstellen Sie ein kostenloses Konto, um Favoriten zu speichern und eigene Rezepte hinzuzufügen.",
+    "proUser": "Pro-Benutzer?",
+    "proUserText": "Sie haben unbegrenzten Zugriff auf alle Rezepte und Funktionen."
   }
 }
