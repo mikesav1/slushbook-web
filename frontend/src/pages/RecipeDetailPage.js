@@ -476,7 +476,7 @@ const RecipeDetailPage = ({ sessionId }) => {
   };
 
   const deleteRecipe = async () => {
-    if (!window.confirm(`Er du sikker på, at du vil slette "${recipe.name}"? Dette kan ikke fortrydes.`)) {
+    if (!window.confirm(t('recipeDetail.confirmDelete', `Er du sikker på, at du vil slette "{{name}}"? Dette kan ikke fortrydes.`, { name: recipe.name }))) {
       return;
     }
 
@@ -484,11 +484,11 @@ const RecipeDetailPage = ({ sessionId }) => {
       await axios.delete(`${API}/recipes/${id}`, {
         withCredentials: true
       });
-      toast.success('Opskrift slettet');
+      toast.success(t('recipeDetail.recipeDeleted', 'Opskrift slettet'));
       navigate('/recipes');
     } catch (error) {
       console.error('Error deleting recipe:', error);
-      toast.error(error.response?.data?.detail || 'Kunne ikke slette opskrift');
+      toast.error(error.response?.data?.detail || t('recipeDetail.deleteError', 'Kunne ikke slette opskrift'));
     }
   };
 
