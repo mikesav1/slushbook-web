@@ -180,15 +180,15 @@ const AdminTranslationsPage = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold mb-2">Oversættelseseditor</h1>
-          <p className="text-gray-600">Administrer oversættelser for alle sprog</p>
+          <h1 className="text-4xl font-bold mb-2">{t('admin.translations.title')}</h1>
+          <p className="text-gray-600">{t('admin.translations.subtitle')}</p>
         </div>
         <div className="flex gap-2">
           <Button onClick={exportTranslations} variant="outline">
-            <FaDownload className="mr-2" /> Eksporter
+            <FaDownload className="mr-2" /> {t('admin.translations.export')}
           </Button>
           <Button onClick={saveTranslations} className="bg-green-600 hover:bg-green-700">
-            <FaSave className="mr-2" /> Gem Ændringer
+            <FaSave className="mr-2" /> {t('admin.translations.save')}
           </Button>
         </div>
       </div>
