@@ -94,8 +94,8 @@ const ProfilePage = () => {
               <FaUser />
             </div>
             <div>
-              <h1 className="text-3xl font-bold mb-2">Velkommen til SLUSHBOOK</h1>
-              <p className="text-gray-600">Log ind for at få adgang til din profil og ekstra funktioner</p>
+              <h1 className="text-3xl font-bold mb-2">{t('profile.welcomeTitle', 'Velkommen til SLUSHBOOK')}</h1>
+              <p className="text-gray-600">{t('profile.welcomeDescription', 'Log ind for at få adgang til din profil og ekstra funktioner')}</p>
             </div>
             
             <div className="flex flex-col gap-3 max-w-md mx-auto">
@@ -103,21 +103,21 @@ const ProfilePage = () => {
                 onClick={() => navigate('/login')}
                 className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 w-full"
               >
-                Log ind
+                {t('auth.signIn')}
               </Button>
               <Button 
                 onClick={() => navigate('/signup')}
                 variant="outline"
                 className="w-full"
               >
-                Opret konto
+                {t('auth.createAccount')}
               </Button>
               <Button 
                 onClick={() => navigate('/guide')}
                 variant="outline"
                 className="border-cyan-500 text-cyan-600 hover:bg-cyan-50 w-full"
               >
-                📖 Se vejledning
+                📖 {t('profile.seeGuide', 'Se vejledning')}
               </Button>
             </div>
 
