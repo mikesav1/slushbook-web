@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import './i18n/config'; // Initialize i18n
 import { toast, Toaster } from "sonner";
 import { FaHome, FaBook, FaBoxOpen, FaShoppingCart, FaHeart, FaSearch, FaCog, FaMagic, FaPlus, FaSignOutAlt, FaSeedling, FaLink, FaAd, FaLightbulb, FaImage, FaCheckCircle, FaTrash } from "react-icons/fa";
 import "@/App.css";
