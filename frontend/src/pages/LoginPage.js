@@ -174,9 +174,19 @@ const LoginPage = ({ onLogin }) => {
       // Save user data
       onLogin(response.data.user);
       
-      // Navigate to home
+      // Check if user came from shared recipe page
+      const returnToShared = localStorage.getItem('return_to_shared');
+      
+      // Navigate to appropriate page
       setTimeout(() => {
-        navigate('/');
+        if (returnToShared) {
+          // Clear the token and navigate back to shared recipe
+          localStorage.removeItem('return_to_shared');
+          navigate(`/shared/${returnToShared}`);
+          toast.success('Du kan nu kopiere opskriften til din samling!');
+        } else {
+          navigate('/');
+        }
       }, 500);
     } catch (error) {
       console.error('Login error:', error);
