@@ -208,23 +208,23 @@ const GuidePage = () => {
         {/* BRIX */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-            <FaTint className="text-blue-600" /> Hvad er BRIX?
+            <FaTint className="text-blue-600" /> {t('guide.brixTitle')}
           </h2>
           <div className="space-y-3 text-gray-700 ml-4">
             <p>
-              BRIX er målet for sukkerindhold i din slushice. Det påvirker både frysepunkt og konsistens.
+              {t('guide.brixDesc')}
             </p>
             <div className="bg-cyan-50 p-4 rounded-lg mt-4">
-              <p className="font-semibold mb-2">Tommelfingerregel:</p>
+              <p className="font-semibold mb-2">{t('guide.brixRuleOfThumb')}</p>
               <ul className="list-disc pl-6 space-y-1">
-                <li><strong>10-12 BRIX:</strong> Meget let, hurtig frysning (god til kolde dage)</li>
-                <li><strong>13-15 BRIX:</strong> Standard (fungerer godt året rundt)</li>
-                <li><strong>16-18 BRIX:</strong> Sød og cremet (god til varme dage)</li>
+                <li><strong>10-12 BRIX:</strong> {t('guide.brix10to12')}</li>
+                <li><strong>13-15 BRIX:</strong> {t('guide.brix13to15')}</li>
+                <li><strong>16-18 BRIX:</strong> {t('guide.brix16to18')}</li>
               </ul>
             </div>
             <p className="mt-3">
               <Link to="/brix-info" className="text-cyan-600 hover:underline">
-                Læs mere om BRIX her →
+                {t('guide.readMoreBrix')}
               </Link>
             </p>
           </div>
