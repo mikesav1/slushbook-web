@@ -397,9 +397,10 @@ const TipsPage = () => {
                           </div>
                         ))}
                       </div>
+                      )}
 
                       {/* Add Comment */}
-                      {user && user.role !== 'guest' ? (
+                      {!collapsedComments[tip.id] && (user && user.role !== 'guest' ? (
                         <div className="flex gap-2">
                           <input
                             type="text"
