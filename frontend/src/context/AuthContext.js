@@ -61,6 +61,17 @@ export const AuthProvider = ({ children }) => {
   const isEditor = () => user?.role === 'editor' || user?.role === 'admin';
   const isAdmin = () => user?.role === 'admin';
 
+  // Update user's completed tours (called after tour completion)
+  const updateCompletedTours = (tourId) => {
+    if (user) {
+      setUser({
+        ...user,
+        completed_tours: [...(user.completed_tours || []), tourId]
+      });
+      console.log('[AuthContext] Updated completed_tours with:', tourId);
+    }
+  };
+
   return (
     <AuthContext.Provider value={{
       user,
@@ -68,6 +79,7 @@ export const AuthProvider = ({ children }) => {
       login,
       logout,
       checkAuth,
+      updateCompletedTours,
       isGuest,
       isPro,
       isEditor,
