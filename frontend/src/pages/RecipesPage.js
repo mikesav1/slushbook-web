@@ -718,8 +718,8 @@ const RecipesPage = ({ sessionId }) => {
       ) : filteredRecipes.length === 0 ? (
         <div className="empty-state">
           <div className="empty-state-icon">🔍</div>
-          <h3 className="text-xl font-bold mb-2">Ingen opskrifter fundet</h3>
-          <p className="text-gray-600">Prøv at ændre dine filtre eller søgeord</p>
+          <h3 className="text-xl font-bold mb-2">{t('recipes.noRecipes')}</h3>
+          <p className="text-gray-600">{t('recipes.tryDifferentFilters', 'Prøv at ændre dine filtre eller søgeord')}</p>
         </div>
       ) : (
         <div>
