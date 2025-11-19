@@ -4638,6 +4638,48 @@ async def get_public_badges():
     
     return sorted(badges, key=lambda x: x['min_recipes'])
 
+async def calculate_user_badge(user_id: str):
+    """Calculate which badge a user should have based on recipe count"""
+    # Get badge configs
+    badges = await db.badges.find({}, {"_id": 0}).to_list(100)
+    if not badges:
+        badges = [
+            {"level": "bronze", "min_recipes": 10, "emoji": "🥉", "name": "Bronze Chef"},
+            {"level": "silver", "min_recipes": 30, "emoji": "🥈", "name": "Sølv Chef"},
+            {"level": "gold", "min_recipes": 40, "emoji": "🥇", "name": "Guld Chef"},
+            {"level": "diamond", "min_recipes": 50, "emoji": "💎", "name": "Diamant Chef"}
+        ]
+    
+    # Count user's recipes
+    recipe_count = await db.user_recipes.count_documents({"author": user_id})
+    
+    # Find highest badge they've earned
+    earned_badge = None
+    for badge in sorted(badges, key=lambda x: x['min_recipes'], reverse=True):
+        if recipe_count >= badge['min_recipes']:
+            earned_badge = badge
+            break
+    
+    return {
+        "recipe_count": recipe_count,
+        "current_badge": earned_badge,
+        "next_badge": None if not earned_badge else _get_next_badge(badges, earned_badge)
+    }
+
+def _get_next_badge(badges, current_badge):
+    """Get the next badge after current one"""
+    sorted_badges = sorted(badges, key=lambda x: x['min_recipes'])
+    for i, badge in enumerate(sorted_badges):
+        if badge['level'] == current_badge['level'] and i < len(sorted_badges) - 1:
+            return sorted_badges[i + 1]
+    return None
+
+@api_router.get("/user/{user_id}/badge")
+async def get_user_badge(user_id: str):
+    """Get user's current badge and progress"""
+    result = await calculate_user_badge(user_id)
+    return result
+
 
 # ==========================================
 # GEOLOCATION & INTERNATIONALIZATION
