@@ -724,7 +724,7 @@ const RecipesPage = ({ sessionId }) => {
       ) : (
         <div>
           <p className="text-sm text-gray-600 mb-4">
-            Viser {filteredRecipes.length} opskrift{filteredRecipes.length !== 1 ? 'er' : ''}
+            {filteredRecipes.length !== 1 ? t('recipes.showingCountPlural', { count: filteredRecipes.length }) : t('recipes.showingCount', { count: filteredRecipes.length })}
           </p>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {/* Add Recipe Card - First in grid */}
@@ -744,10 +744,10 @@ const RecipesPage = ({ sessionId }) => {
                 {/* Content matching RecipeCard */}
                 <div className="p-5 flex flex-col flex-grow justify-center">
                   <h3 className="font-bold text-lg text-center text-purple-700">
-                    Tilføj din egen opskrift
+                    {t('recipes.addYourOwnRecipe')}
                   </h3>
                   <p className="text-sm text-gray-600 text-center mt-2">
-                    Opret og del dine egne slush opskrifter
+                    {t('recipes.createAndShare')}
                   </p>
                 </div>
               </div>
