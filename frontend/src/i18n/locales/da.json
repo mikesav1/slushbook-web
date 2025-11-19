@@ -189,7 +189,9 @@
     "shareRecipes": "Få inspiration fra andres opskrifter – og dele dine egne",
     "appDevelopment": "Appen udvikles løbende, og vi arbejder hele tiden på at tilføje nye funktioner og forbedringer.",
     "readFullGuide": "Læs den fulde vejledning til SLUSHBOOK her",
-    "version": "Version 1.0.0 – Skabt med ❤️ for slushice-entusiaster"
+    "version": "Version 1.0.0 – Skabt med ❤️ for slushice-entusiaster",
+    "autoDetect": "Auto-detekter",
+    "countryTip": "Dit valgte sprog bruges til opskrifter og interface, samt til at vise relevante produktlinks når du klikker på 'Indkøb' knapper"
   },
   "messages": {
     "success": {
