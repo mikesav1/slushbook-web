@@ -333,7 +333,19 @@
     "noMatches": "No matches found",
     "matchScore": "Match score",
     "missingIngredients": "Missing ingredients",
-    "viewRecipe": "View recipe"
+    "viewRecipe": "View recipe",
+    "pantryUpdated": "Your ingredients have been updated! Click 'Find matches' to see new results.",
+    "tourComplete": "Match Finder guide complete!",
+    "ingredientRemoved": "Ingredient removed",
+    "removeError": "Could not remove ingredient",
+    "addIngredientsFirst": "Add ingredients first!",
+    "foundMatches": "Found {{count}} matches!",
+    "searchError": "Could not find matches",
+    "proFeature": "Match Finder is a PRO feature",
+    "upgradeMessage": "Upgrade to PRO to match your ingredients with recipes and find out what you can make!",
+    "upgradeToPro": "Upgrade to PRO",
+    "ingredientCount": "You have {{count}} ingredient{{plural}}",
+    "addMore": "Add More"
   },
   "shoppingList": {
     "title": "Shopping List",
