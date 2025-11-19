@@ -3,8 +3,10 @@ import axios from 'axios';
 import { FaHeart } from 'react-icons/fa';
 import { API } from '../App';
 import RecipeCard from '../components/RecipeCard';
+import { useTranslation } from 'react-i18next';
 
 const FavoritesPage = ({ sessionId }) => {
+  const { t } = useTranslation();
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
 
