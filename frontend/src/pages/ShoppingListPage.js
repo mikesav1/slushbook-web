@@ -42,6 +42,7 @@ const BuyButton = ({ mappingId, redirectApi, fetchSupplier, userCountry }) => {
 
 const ShoppingListPage = ({ sessionId }) => {
   const { user, updateCompletedTours } = useAuth();
+  const { t } = useTranslation();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [supplierCache, setSupplierCache] = useState({});
