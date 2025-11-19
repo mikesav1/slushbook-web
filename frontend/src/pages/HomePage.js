@@ -193,7 +193,7 @@ const HomePage = ({ sessionId }) => {
               <p className="text-lg md:text-xl text-gray-800 mb-8" style={{
                 textShadow: '1px 1px 4px rgba(255,255,255,0.8)'
               }}>
-                Opdag lækre slushice opskrifter, match med dine ingredienser, og skalér automatisk til din maskine
+                {t('home.subtitle')}
               </p>
               
               <div className="flex flex-wrap gap-4 justify-start">
@@ -201,19 +201,19 @@ const HomePage = ({ sessionId }) => {
                   to="/match"
                   className="px-8 py-4 bg-gradient-to-r from-teal-400 to-cyan-500 text-white rounded-full hover:from-teal-500 hover:to-cyan-600 font-semibold text-lg shadow-lg transition-all transform hover:scale-105"
                 >
-                  Find et match
+                  {t('home.findMatch')}
                 </Link>
                 <Link
                   to="/recipes"
                   className="px-8 py-4 bg-white text-gray-800 rounded-full hover:bg-gray-100 font-semibold text-lg shadow-lg border-2 border-gray-300 transition-all transform hover:scale-105"
                 >
-                  Gennemse alle
+                  {t('home.exploreAll')}
                 </Link>
                 <Link
                   to="/recipes?sort=rating"
                   className="px-8 py-4 bg-gradient-to-r from-purple-400 to-pink-500 text-white rounded-full hover:from-purple-500 hover:to-pink-600 font-semibold text-lg shadow-lg transition-all transform hover:scale-105"
                 >
-                  Højest vurderet
+                  {t('home.popularRecipes')}
                 </Link>
               </div>
             </div>
