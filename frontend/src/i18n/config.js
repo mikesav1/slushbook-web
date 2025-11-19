@@ -26,4 +26,7 @@ i18n
     },
   });
 
+// Make i18n available globally
+window.i18n = i18n;
+
 export default i18n;
