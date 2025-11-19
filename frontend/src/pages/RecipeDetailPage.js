@@ -1025,7 +1025,17 @@ const RecipeDetailPage = ({ sessionId }) => {
 
       {/* Comments Section */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-        <h2 className="text-2xl font-bold mb-6">💬 Kommentarer ({comments.length})</h2>
+        <div 
+          className="flex items-center justify-between cursor-pointer hover:bg-gray-50 -mx-6 px-6 py-3 rounded-xl transition-colors mb-4"
+          onClick={() => setCommentsCollapsed(!commentsCollapsed)}
+        >
+          <h2 className="text-2xl font-bold">💬 Kommentarer ({comments.length})</h2>
+          {commentsCollapsed ? (
+            <FaChevronDown className="text-gray-400" size={20} />
+          ) : (
+            <FaChevronUp className="text-gray-400" size={20} />
+          )}
+        </div>
         
         {/* Add Comment - Pro users only */}
         {user && user.role !== 'guest' ? (
