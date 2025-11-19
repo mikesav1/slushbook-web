@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { 
   FaArrowLeft, 
   FaBook, 
@@ -14,6 +15,7 @@ import {
 } from 'react-icons/fa';
 
 const GuidePage = () => {
+  const { t } = useTranslation();
   return (
     <div className="max-w-4xl mx-auto space-y-6 fade-in">
       {/* Header */}
