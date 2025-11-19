@@ -1470,3 +1470,56 @@ This is **EXPECTED** - the endpoints correctly reject unauthenticated requests.
 
 **FEATURE COMPLETE & READY FOR USE** 🚀
 
+
+---
+
+## German Internationalization Fix - IN PROGRESS
+
+**Date:** 2025-11-19
+**Agent:** E1 (Fork continuation)
+**Status:** 🟡 IN PROGRESS
+
+### Completed Work:
+
+#### ✅ GuidePage.js - FULLY TRANSLATED
+- **File:** `/app/frontend/src/pages/GuidePage.js`
+- **Status:** ✅ COMPLETE
+- Added 80+ new translation keys to guide section
+- All hardcoded Danish text replaced with t() function calls
+- Tested on German language - works perfectly
+
+**New Translation Keys Added:**
+- guide.recipesTitle, findRecipes, findRecipesDesc
+- guide.filterType, filterAlcohol, searchNameIngredients
+- guide.advancedSearch, allergenFilters, commentsReviews
+- guide.scaling, addOwnRecipes, copyrightNoticeTitle
+- guide.favoritesRatingsTitle, saveFavoritesTitle
+- guide.matchFinderTitle, shoppingListTitle
+- guide.machinesSettingsTitle, brixTitle
+- guide.communityForumTitle, needHelpTitle
+- ...and 70+ more keys
+
+**Testing Results:**
+✅ All sections properly translated in German
+✅ Navigation breadcrumbs translated
+✅ All headings and descriptions translated
+✅ Warning messages and tips translated
+✅ Links and buttons translated
+
+#### 🟡 Other Pages - MINOR ISSUES FOUND
+
+**Issues Found:**
+1. RecipesPage.js - "Viser X opskrifter" still in Danish (should be German)
+2. SettingsPage.js - "Din Konto" still in Danish (should be "Ihr Konto")
+3. SettingsPage.js - Device message still in Danish
+
+**Next Steps:**
+- Fix remaining Danish text in RecipesPage.js
+- Fix Settings page Danish text
+- Test RecipeDetailPage for any remaining issues
+
+### Files Modified:
+- `/app/frontend/src/i18n/locales/da.json` - Added 80+ guide keys
+- `/app/frontend/src/i18n/locales/de.json` - Added 80+ guide keys
+- `/app/frontend/src/pages/GuidePage.js` - Full internationalization
+
