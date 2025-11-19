@@ -573,8 +573,8 @@ const SettingsPage = ({ sessionId }) => {
           {isAdmin() || isPro() || isEditor()
             ? t(userRecipesCount === 1 ? 'settings.youHaveCreated' : 'settings.youHaveCreatedPlural', { count: userRecipesCount })
             : canAddRecipe
-            ? `Du kan tilføje ${2 - userRecipesCount} mere opskrift${2 - userRecipesCount !== 1 ? 'er' : ''}`
-            : 'Gratis limit nået (2/2). Opgradér til Pro for ubegrænset!'}
+            ? t((2 - userRecipesCount) === 1 ? 'settings.youCanAdd' : 'settings.youCanAddPlural', { count: 2 - userRecipesCount })
+            : t('settings.freeLimitReached')}
         </p>
       </div>
 
