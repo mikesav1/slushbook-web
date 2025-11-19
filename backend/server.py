@@ -1403,6 +1403,30 @@ async def setup_admin():
 # ADMIN ENDPOINTS - Fix Approvals
 # =============================================================================
 
+@api_router.post("/admin/delete-all-recipes")
+async def delete_all_recipes(request: Request):
+    """Delete ALL system recipes (admin only) - USE WITH CAUTION"""
+    user = await get_current_user(request, None, db)
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Kun admin har adgang")
+    
+    try:
+        # Get count before deletion
+        count_before = await db.recipes.count_documents({'author': 'system'})
+        
+        # Delete all system recipes
+        result = await db.recipes.delete_many({'author': 'system'})
+        
+        return {
+            "success": True,
+            "message": f"Slettet {result.deleted_count} system opskrifter",
+            "deleted": result.deleted_count,
+            "count_before": count_before
+        }
+    except Exception as e:
+        logger.error(f"Failed to delete recipes: {e}")
+        raise HTTPException(status_code=500, detail=f"Fejl ved sletning: {str(e)}")
+
 @api_router.post("/admin/fix-all-approvals")
 async def fix_all_approvals(request: Request):
     """Fix approval status for ALL recipes - approve everything (admin only)"""
