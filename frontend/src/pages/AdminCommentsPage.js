@@ -178,8 +178,11 @@ const AdminCommentsPage = () => {
                   : 'border-gray-200 hover:border-blue-200'
               }`}
             >
-              {/* Header */}
-              <div className="flex items-start justify-between mb-3">
+              {/* Header - Clickable to collapse */}
+              <div 
+                className="flex items-start justify-between mb-3 cursor-pointer hover:bg-gray-50 -mx-6 px-6 py-3 rounded-lg transition-colors"
+                onClick={() => setCollapsedComments(prev => ({ ...prev, [comment.id]: !prev[comment.id] }))}
+              >
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
                     <span className="font-semibold text-lg">{comment.user_name}</span>
