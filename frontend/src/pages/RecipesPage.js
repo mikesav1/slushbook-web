@@ -10,7 +10,7 @@ import OnboardingTooltip from '../components/OnboardingTooltip';
 import { recipesPageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
 
 const RecipesPage = ({ sessionId }) => {
-  const { user } = useAuth();
+  const { user, updateCompletedTours } = useAuth();
   const navigate = useNavigate();
   const [recipes, setRecipes] = useState([]);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
