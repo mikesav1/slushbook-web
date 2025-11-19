@@ -95,12 +95,12 @@ const RecipesPage = ({ sessionId }) => {
   };
 
   const handleTourSkip = () => {
-    markTourCompleted(TOUR_KEYS.RECIPES, API);
+    markTourCompleted(TOUR_KEYS.RECIPES, API, updateCompletedTours);
     setCurrentTourStep(-1);
   };
 
   const handleTourFinish = () => {
-    markTourCompleted(TOUR_KEYS.RECIPES, API);
+    markTourCompleted(TOUR_KEYS.RECIPES, API, updateCompletedTours);
     setCurrentTourStep(-1);
     
     // Navigate to Add Recipe page to continue tour
