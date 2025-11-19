@@ -9,10 +9,12 @@ import { useAuth } from '../context/AuthContext';
 import OnboardingTooltip from '../components/OnboardingTooltip';
 import { recipesPageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
 import { getUserLanguage } from '../utils/geolocation';
+import { useTranslation } from 'react-i18next';
 
 const RecipesPage = ({ sessionId }) => {
   const { user, updateCompletedTours } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [recipes, setRecipes] = useState([]);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
