@@ -508,6 +508,7 @@ const AppContent = ({ sessionId }) => {
             <Route path="/admin/ads" element={<AdminAdsPage />} />
             <Route path="/admin/badges" element={<AdminBadgesPage />} />
             <Route path="/admin/translations" element={<AdminTranslationsPage />} />
+            <Route path="/shared/:token" element={<SharedRecipePage />} />
           </Routes>
         </main>
       </div>
