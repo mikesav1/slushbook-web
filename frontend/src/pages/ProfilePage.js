@@ -8,8 +8,10 @@ import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { Label } from '../components/ui/label';
 import { FaUser, FaEnvelope, FaLock, FaSave } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 const ProfilePage = () => {
+  const { t } = useTranslation();
   const { user, checkAuth } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
