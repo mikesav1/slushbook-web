@@ -120,9 +120,10 @@ const ShoppingListPage = ({ sessionId }) => {
   // Start tour for first-time users
   useEffect(() => {
     if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.SHOPPING_LIST, user) && items.length > 0) {
+      console.log('[Tour] Starting shopping list tour...');
       setTimeout(() => {
         setCurrentTourStep(0);
-      }, 1000);
+      }, 1500);
     }
   }, [user, items]);
 
