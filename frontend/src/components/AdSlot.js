@@ -204,6 +204,13 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
 
   // Carousel for bottom banners
   if (isBottomBanner && availableAds.length > 0) {
+    // Get current 3 ads to display
+    const currentAds = [];
+    for (let i = 0; i < 3; i++) {
+      const index = (carouselStartIndex + i) % availableAds.length;
+      currentAds.push(availableAds[index]);
+    }
+    
     return (
       <div 
         className={`${placementStyles[placement]}`}
@@ -216,32 +223,34 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
         <div className="max-w-7xl mx-auto px-4 py-2">
           {/* Grid: 1 på mobil, 2 på tablet, 3 på desktop */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {availableAds.slice(0, 3).map((adItem, index) => (
+            {currentAds.map((adItem, index) => (
               <a
-                key={index}
+                key={`${carouselStartIndex}-${index}`}
                 href={adItem.link}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => handleClick(adItem)}
-                className="block cursor-pointer overflow-hidden rounded-xl shadow-md bg-transparent hover:shadow-lg transition-all active:scale-[0.98]"
+                className="block cursor-pointer overflow-hidden rounded-xl shadow-md bg-white border border-gray-200 hover:shadow-lg transition-all active:scale-[0.98]"
               >
-                {!adItem._imageError ? (
-                  <img
-                    src={adItem.image}
-                    alt={adItem.title || 'Reklame'}
-                    className="w-full h-auto object-contain max-h-12 sm:max-h-14 md:max-h-16"
-                    style={{ display: 'block' }}
-                    onError={(e) => {
-                      console.error('Ad image failed to load:', adItem.image);
-                      e.target.style.display = 'none';
-                    }}
-                    loading="eager"
-                  />
-                ) : (
-                  <div className="w-full h-12 sm:h-14 md:h-16 bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white font-semibold text-sm">
-                    {adItem.title || 'Reklame'}
-                  </div>
-                )}
+                <div className="p-2">
+                  {!adItem._imageError ? (
+                    <img
+                      src={adItem.image}
+                      alt={adItem.title || 'Reklame'}
+                      className="w-full h-auto object-contain max-h-12 sm:max-h-14 md:max-h-16"
+                      style={{ display: 'block' }}
+                      onError={(e) => {
+                        console.error('Ad image failed to load:', adItem.image);
+                        e.target.style.display = 'none';
+                      }}
+                      loading="eager"
+                    />
+                  ) : (
+                    <div className="w-full h-12 sm:h-14 md:h-16 bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white font-semibold text-sm rounded-lg">
+                      {adItem.title || 'Reklame'}
+                    </div>
+                  )}
+                </div>
               </a>
             ))}
           </div>
