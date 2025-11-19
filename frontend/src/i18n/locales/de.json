@@ -45,7 +45,16 @@
     "noAccount": "Noch kein Konto?",
     "hasAccount": "Bereits ein Konto?",
     "welcomeBack": "Willkommen zurück",
-    "createAccount": "Konto erstellen"
+    "createAccount": "Konto erstellen",
+    "deviceLimitWarning": "Sie sind jetzt auf dem Maximum ({{max}}) Geräten angemeldet. Ältere Sitzungen wurden abgemeldet.",
+    "loginSuccess": "Anmeldung erfolgreich!",
+    "loginFailed": "Anmeldung fehlgeschlagen",
+    "loggingIn": "Anmeldung läuft...",
+    "createNewAccount": "Neues Konto erstellen",
+    "passwordsDontMatch": "Passwörter stimmen nicht überein",
+    "passwordTooShort": "Passwort muss mindestens 6 Zeichen lang sein",
+    "accountCreated": "Konto erstellt! Bitte melden Sie sich an.",
+    "signupFailed": "Konto konnte nicht erstellt werden"
   },
   "home": {
     "title": "Willkommen bei Slush Book",
