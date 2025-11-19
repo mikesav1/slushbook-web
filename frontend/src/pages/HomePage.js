@@ -51,12 +51,12 @@ const HomePage = ({ sessionId }) => {
   };
 
   const handleTourSkip = () => {
-    markTourCompleted(TOUR_KEYS.HOME, API);
+    markTourCompleted(TOUR_KEYS.HOME, API, updateCompletedTours);
     setCurrentTourStep(-1);
   };
 
   const handleTourFinish = () => {
-    markTourCompleted(TOUR_KEYS.HOME, API);
+    markTourCompleted(TOUR_KEYS.HOME, API, updateCompletedTours);
     setCurrentTourStep(-1);
     
     // Navigate to Recipes page to continue tour
