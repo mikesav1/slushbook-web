@@ -364,6 +364,32 @@
     "noItems": "Ingen varer på listen endnu",
     "clearAll": "Ryd alle",
     "clearCompleted": "Ryd afsluttede",
-    "itemsCount": "{{count}} varer"
+    "itemsCount": "{{count}} varer",
+    "shopAt": "Indkøb hos {{supplier}}"
+  },
+  "tour": {
+    "home": {
+      "welcomeWithName": "🎉 Velkommen til Slush Book, {{name}}!",
+      "welcome": "🎉 Velkommen til Slush Book!",
+      "step1": "Her kan du udforske opskrifter, finde inspiration og tilføje dine egne slushice-kreationer.\n\nFør vi går i gang, får du et par hurtige tips til, hvordan du bruger appen bedst.\n\nTryk Næste for at se, hvor du finder indstillinger og dine favoritter.",
+      "step2": "👤 Her finder du profil-ikonet (eller tandhjulet på mobil).\n\nHer kan du åbne menuen med Indstillinger, Favoritter og Log ud.\n\nDu kan også genstarte denne guide under Indstillinger senere."
+    },
+    "recipes": {
+      "welcome": "📚 Velkommen til Opskrifter!\n\nHer finder du alle slushice-opskrifter. Lad os se på de vigtigste funktioner.",
+      "step1": "🔍 Søg efter opskrifter\n\nBrug søgefeltet til at finde specifikke opskrifter hurtigt. Skriv f.eks. 'jordbær' eller 'klassisk'.",
+      "step2": "🎨 Filtrer efter type\n\nHer kan du filtrere opskrifter efter kategori.\n\nVælg mellem Klassisk, Tropisk, Cremet, Cocktail og flere andre.",
+      "step3": "❤️ Tilføj til favoritter\n\nKlik på hjertet på et opskriftskort for at gemme den som favorit.\n\nDine favoritter kan du finde under profil-menuen.",
+      "step4": "🛒 Tip: Åbn en opskrift for mere!\n\nNår du klikker på en opskrift, kan du:\n• Se detaljerede ingredienser og instruktioner\n• Tilføje ingredienser til din indkøbsliste\n• Skalere opskriften til din maskinvolumen\n• Vurdere og dele opskriften",
+      "step5": "➕ Opret din egen opskrift\n\nDet første kort er 'Tilføj Opskrift'-knappen.\n\nHer kan du oprette og dele dine egne slushice-kreationer!\n\nLad os gå derind og se hvordan det virker."
+    },
+    "addRecipe": {
+      "welcome": "✨ Velkommen til Opret Opskrift!\n\nHer kan du skabe og dele dine egne slushice-kreationer.\n\nLad os gennemgå hvordan du opretter en opskrift trin for trin.",
+      "step1": "📝 Opskriftens navn\n\nGiv din opskrift et catchy og beskrivende navn!\n\nF.eks. 'Sommer Jordbær', 'Tropisk Paradise' eller 'Cremet Blåbær'.",
+      "step2": "🎨 Type og kategori\n\nVælg hvilken type opskrift det er (Klassisk, Juice, Smoothie, Cocktail osv.).\n\nDu kan også vælge farve, sukkergrad og om den indeholder alkohol.",
+      "step3": "🥤 Ingredienser\n\nHer tilføjer du alle ingredienserne til din opskrift.\n\n• Søg efter eksisterende ingredienser\n• Eller opret nye ingredienser\n• Angiv mængde og enhed\n• Du kan tilføje flere ingredienser med 'Tilføj' knappen",
+      "step4": "🌍 VIGTIGT: Offentlig opskrift\n\nHvis du vil DELE din opskrift med andre brugere, skal du aktivere 'Offentlig opskrift'.\n\n⚠️ OBS: Offentlige opskrifter skal godkendes af admin før de bliver synlige.\n\nPrivate opskrifter er kun synlige for dig.",
+      "step5": "✅ Gem din opskrift\n\nNår du er tilfreds med din opskrift, klik 'Opret Opskrift'.\n\nDin opskrift bliver:\n• Tilføjet til din samling med det samme\n• Sendt til godkendelse hvis den er offentlig\n• Klar til at dele hvis den er offentlig og godkendt!",
+      "complete": "🎉 Du er nu klar!\n\nDu ved nu hvordan du:\n• Søger og filtrerer opskrifter\n• Tilføjer favoritter\n• Opretter egne opskrifter\n\nGod fornøjelse med at udforske og skabe slushice-opskrifter! 🍹"
+    }
   }
 }
