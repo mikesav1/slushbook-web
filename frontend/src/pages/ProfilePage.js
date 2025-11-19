@@ -53,7 +53,7 @@ const ProfilePage = () => {
           return;
         }
         if (!formData.currentPassword) {
-          toast.error('Indtast dit nuværende password for at ændre det');
+          toast.error(t('profile.currentPasswordRequired', 'Indtast dit nuværende password for at ændre det'));
           setLoading(false);
           return;
         }
