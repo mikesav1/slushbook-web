@@ -201,7 +201,11 @@
     "readFullGuide": "Læs den fulde vejledning til SLUSHBOOK her",
     "version": "Version 1.0.0 – Skabt med ❤️ for slushice-entusiaster",
     "autoDetect": "Auto-detekter",
-    "countryTip": "Dit valgte sprog bruges til opskrifter og interface, samt til at vise relevante produktlinks når du klikker på 'Indkøb' knapper"
+    "countryTip": "Dit valgte sprog bruges til opskrifter og interface, samt til at vise relevante produktlinks når du klikker på 'Indkøb' knapper",
+    "yourAccount": "Din Konto",
+    "youHaveCreated": "Du har oprettet {{count}} opskrift",
+    "youHaveCreatedPlural": "Du har oprettet {{count}} opskrifter",
+    "settingsTourComplete": "Indstillinger guide færdig!"
   },
   "messages": {
     "success": {
