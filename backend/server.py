@@ -2120,6 +2120,9 @@ async def get_recipe(recipe_id: str, session_id: Optional[str] = None, request: 
         })
     # ===== END TEMPORARY =====
     
+    # Apply translation
+    recipe = apply_translation(recipe, lang)
+    
     return recipe
 
 @api_router.delete("/recipes/{recipe_id}")
