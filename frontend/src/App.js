@@ -218,6 +218,14 @@ const Navigation = () => {
                           Godkend Alle
                         </Link>
                         <Link
+                          to="/admin/delete-recipes"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                        >
+                          <FaTrash className="w-4 h-4" />
+                          Slet Alle Opskrifter
+                        </Link>
+                        <Link
                           to="/admin/links"
                           onClick={() => setIsUserMenuOpen(false)}
                           className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
