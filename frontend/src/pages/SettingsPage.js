@@ -56,12 +56,12 @@ const SettingsPage = ({ sessionId }) => {
   };
 
   const handleTourSkip = () => {
-    markTourCompleted(TOUR_KEYS.SETTINGS, API);
+    markTourCompleted(TOUR_KEYS.SETTINGS, API, updateCompletedTours);
     setCurrentTourStep(-1);
   };
 
   const handleTourFinish = () => {
-    markTourCompleted(TOUR_KEYS.SETTINGS, API);
+    markTourCompleted(TOUR_KEYS.SETTINGS, API, updateCompletedTours);
     setCurrentTourStep(-1);
     toast.success('Indstillinger guide færdig!');
   };
