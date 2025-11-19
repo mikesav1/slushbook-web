@@ -39,7 +39,7 @@ const BuyButton = ({ mappingId, redirectApi, fetchSupplier, userCountry }) => {
 };
 
 const ShoppingListPage = ({ sessionId }) => {
-  const { user } = useAuth();
+  const { user, updateCompletedTours } = useAuth();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [supplierCache, setSupplierCache] = useState({});
