@@ -1135,3 +1135,93 @@ Restore the old version's author attribution for user-created recipes:
 - ✅ Click-through to see all recipes from same author
 - ✅ Visual consistency with previous version restored
 
+
+## Badge System & Admin Management - Completed
+
+**Date:** 2025-01-19
+**Status:** ✅ COMPLETED
+
+### User Request
+Implement achievement badge system for recipe authors based on published recipe count:
+- Badges should appear next to favorite heart on recipe cards
+- Different badge levels for 10, 30, 40, and 50+ recipes
+- Admin interface to upload custom badge images
+
+### Implementation
+
+#### Badge Levels:
+1. **Bronze (10-29 recipes):** 🥉 Orange gradient
+2. **Silver (30-39 recipes):** 🥈 Gray gradient
+3. **Gold (40-49 recipes):** 🥇 Yellow gradient
+4. **Diamond (50+ recipes):** 💎 Purple/pink gradient
+
+#### Frontend Changes:
+**RecipeCard.js:**
+- Moved author badge from top-left to top-right (next to heart)
+- Same size as favorite heart (w-10 h-10)
+- Dynamic badge display based on `author_recipe_count`
+- Function `getAuthorBadge()` determines level, color, icon
+- Displays custom image if uploaded, otherwise emoji
+
+**AdminBadgesPage.js (NEW):**
+- Full badge management interface
+- Upload custom badge images (max 2MB)
+- Edit badge names, minimum recipes, emojis
+- Live preview of all badges
+- Cloudinary integration for image hosting
+- Info boxes explaining badge system
+
+**SettingsPage.js:**
+- Added "🏆 Badge Management" link in admin section
+- Placed under "Produkt-Links"
+
+**App.js:**
+- Added route: `/admin/badges` → AdminBadgesPage
+
+#### Backend Changes:
+**server.py:**
+- Added `author_recipe_count` to all recipe endpoints
+- Counts only published & approved recipes per author
+- Badge management endpoints:
+  - `GET /admin/badges` - Get all badge configs
+  - `PUT /admin/badges/{level}` - Update badge config
+  - `POST /admin/badges/upload` - Upload custom image
+  - `GET /badges/config` - Public endpoint for frontend
+- Database: `badges` collection stores custom configurations
+
+### Badge Configuration Fields:
+- `level`: bronze, silver, gold, diamond
+- `min_recipes`: Minimum recipe count for this level
+- `image_url`: Custom uploaded badge image (optional)
+- `emoji`: Fallback icon if no image
+- `name`: Display name (e.g., "Bronze Chef")
+- `color_gradient`: Tailwind gradient classes
+
+### Testing:
+✅ Created 15 test recipes for Kim
+✅ Bronze badge (🥉) appears next to heart on user recipes
+✅ Badge tooltip shows "Admin - Bronze Chef - 10+ opskrifter"
+✅ Admin page loads correctly with all 4 badges
+✅ Upload functionality ready (Cloudinary integrated)
+✅ Edit functionality working
+
+### Files Created/Modified:
+1. `/app/frontend/src/pages/AdminBadgesPage.js` - NEW (433 lines)
+2. `/app/backend/server.py` - Added badge endpoints & author_recipe_count logic
+3. `/app/frontend/src/components/RecipeCard.js` - Badge positioning & logic
+4. `/app/frontend/src/pages/SettingsPage.js` - Added badge management link
+5. `/app/frontend/src/App.js` - Added route
+
+### Impact:
+✅ Gamification of user engagement (achievement system)
+✅ Recognition for active recipe contributors
+✅ Visual distinction of experienced users
+✅ Admin control over badge appearance and thresholds
+✅ Scalable system for future badge additions
+
+### Future Enhancements (Optional):
+- Additional badge tiers (75, 100, 200+ recipes)
+- Special badges for other achievements (most liked, most viewed)
+- User badge showcase on profile page
+- Badge notification when user earns new level
+
