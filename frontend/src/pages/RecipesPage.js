@@ -388,14 +388,14 @@ const RecipesPage = ({ sessionId }) => {
 
         {/* Alkohol Filter - Toggle Switch */}
         <div className="mb-4">
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Alkohol filter</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">{t('recipes.alcoholFilter')}</label>
           <div className="flex items-center gap-3 px-4 py-2 bg-gray-50 rounded-lg w-fit">
             <button
               onClick={() => setAlcoholFilter('none')}
               data-testid="alcohol-filter-none"
               className={`text-sm font-medium transition-colors ${alcoholFilter === 'none' ? 'text-gray-900 font-bold' : 'text-gray-400'}`}
             >
-              Uden alkohol
+              {t('recipes.withoutAlcohol')}
             </button>
             <button
               onClick={() => setAlcoholFilter(alcoholFilter === 'none' ? 'only' : 'none')}
@@ -415,7 +415,7 @@ const RecipesPage = ({ sessionId }) => {
               data-testid="alcohol-filter-only"
               className={`text-sm font-medium transition-colors ${alcoholFilter === 'only' ? 'text-gray-900 font-bold' : 'text-gray-400'}`}
             >
-              Med alkohol
+              {t('recipes.withAlcohol')}
             </button>
           </div>
         </div>
