@@ -144,7 +144,6 @@
     "mustNotIncludeLabel": "Darf nicht enthalten (eingeben oder aus Liste auswählen)",
     "ingredientPlaceholder": "z.B. Erdbeere, Zitrone...",
     "excludeIngredientPlaceholder": "z.B. Milch, Nüsse...",
-    "typeFilter": "Typ-Filter",
     "browseByType": "Nach Typ durchsuchen",
     "showingResults": "{{count}} Ergebnisse angezeigt"
   },
@@ -411,6 +410,32 @@
       "step3": "🔄 Anleitungen neu starten\n\nMüssen Sie die Anleitungen erneut sehen?\n\nKlicken Sie hier, um alle Onboarding-Touren zurückzusetzen und sie von vorne zu sehen.",
       "step4": "📖 Vollständige Anleitung\n\nKlicken Sie auf diesen Link, um die vollständige Anleitung zu SLUSHBOOK zu lesen.\n\nHier finden Sie detaillierte Anweisungen, Tipps und Tricks für alle Funktionen!",
       "tips": "💡 Weitere Einstellungen\n\n• Verwalten Sie Ihre Geräte und melden Sie sich von bestimmten Geräten ab\n• Wählen Sie Ihr Land für relevante Produktlinks\n• Sehen Sie Ihre kostenlosen Limits (wie viele Rezepte Sie erstellen können)\n• Alle Ihre Einstellungen werden automatisch gespeichert"
+    }
+  },
+  "admin": {
+    "translations": {
+      "title": "Übersetzungseditor",
+      "subtitle": "Verwalten Sie Übersetzungen für alle Sprachen",
+      "export": "Exportieren",
+      "save": "Änderungen speichern",
+      "selectLanguage": "Sprache wählen",
+      "search": "Suchen",
+      "searchPlaceholder": "Nach Schlüssel oder Text suchen...",
+      "section": "Bereich",
+      "allSections": "Alle Bereiche",
+      "showing": "Zeige {{count}} von {{total}} Schlüsseln",
+      "addKey": "Schlüssel hinzufügen",
+      "addNewKey": "Neuen Schlüssel hinzufügen",
+      "keyLabel": "Schlüssel (z.B. common.newButton)",
+      "keyPlaceholder": "bereich.schlüssel",
+      "valueLabel": "Wert",
+      "valuePlaceholder": "Übersetzungstext...",
+      "loadError": "Übersetzungen konnten nicht geladen werden",
+      "saveSuccess": "Übersetzungen für {{language}} gespeichert!",
+      "saveError": "Übersetzungen konnten nicht gespeichert werden",
+      "exportSuccess": "Übersetzungen exportiert!",
+      "addSuccess": "Neuer Schlüssel hinzugefügt!",
+      "addError": "Bitte füllen Sie sowohl Schlüssel als auch Wert aus"
     }
   }
 }
