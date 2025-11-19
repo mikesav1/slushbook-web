@@ -230,7 +230,9 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => handleClick(adItem)}
-                className="block cursor-pointer overflow-hidden rounded-xl shadow-md bg-white border border-gray-200 hover:shadow-lg transition-all active:scale-[0.98]"
+                className={`block cursor-pointer overflow-hidden rounded-xl shadow-md bg-white border border-gray-200 hover:shadow-lg transition-all active:scale-[0.98] ${
+                  index === 2 ? 'hidden lg:block' : index === 1 ? 'hidden md:block' : ''
+                }`}
               >
                 <div className="p-2">
                   {!adItem._imageError ? (
