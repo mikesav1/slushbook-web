@@ -421,6 +421,39 @@ const SettingsPage = ({ sessionId }) => {
             </Button>
           </div>
           
+          {/* Language Selector */}
+          <div className="mt-6">
+            <Label className="text-sm font-medium mb-2 block">Vælg Sprog</Label>
+            <p className="text-xs text-gray-500 mb-3">
+              Opskrifter vil blive vist på det valgte sprog (hvis oversættelse findes)
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {Object.entries(LANGUAGES).map(([code, language]) => (
+                <button
+                  key={code}
+                  onClick={async () => {
+                    setSelectedLanguage(code);
+                    await setUserLanguage(code);
+                    toast.success(`Sprog ændret til ${language.name}`);
+                    // Reload page to apply language change
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 500);
+                  }}
+                  className={`flex items-center gap-2 p-3 rounded-lg border-2 transition-all ${
+                    selectedLanguage === code
+                      ? 'border-blue-500 bg-blue-50'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <span className="text-2xl">{language.flag}</span>
+                  <span className="text-sm font-medium">{language.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Onboarding Tour Reset */}
       {user?.role !== 'guest' && (
