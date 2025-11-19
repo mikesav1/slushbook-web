@@ -7,8 +7,10 @@ import { API } from '../App';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { updateUserPreferences } from '../utils/geolocation';
+import { useTranslation } from 'react-i18next';
 
 const LoginPage = ({ onLogin }) => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
