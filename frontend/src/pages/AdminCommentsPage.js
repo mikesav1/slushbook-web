@@ -13,6 +13,7 @@ const AdminCommentsPage = () => {
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('all'); // all, visible, hidden
   const [languageFilter, setLanguageFilter] = useState('all'); // all, da, de, en, etc.
+  const [collapsedComments, setCollapsedComments] = useState({}); // Track collapsed comments
 
   useEffect(() => {
     if (!isAdmin) {
