@@ -322,11 +322,11 @@ const AddRecipePage = ({ sessionId }) => {
       <form onSubmit={submitRecipe} className="space-y-6">
         {/* Basic Info */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
-          <h2 className="text-xl font-bold">Basis Information</h2>
+          <h2 className="text-xl font-bold">{t('addRecipe.basicInfo')}</h2>
           
           {/* Image Upload */}
           <div>
-            <Label>Billede</Label>
+            <Label>{t('addRecipe.image')}</Label>
             <div className="mt-2 space-y-3">
               {imagePreview ? (
                 <div className="relative">
@@ -349,8 +349,8 @@ const AddRecipePage = ({ sessionId }) => {
               ) : (
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
                   <FaPlus className="mx-auto text-gray-400 mb-2" size={32} />
-                  <p className="text-gray-600 mb-2">Upload billede</p>
-                  <p className="text-xs text-gray-500">Maks 5MB - JPG, PNG</p>
+                  <p className="text-gray-600 mb-2">{t('addRecipe.uploadImage')}</p>
+                  <p className="text-xs text-gray-500">{t('addRecipe.imageLimit', 'Maks 5MB - JPG, PNG')}</p>
                 </div>
               )}
               <input
@@ -363,22 +363,22 @@ const AddRecipePage = ({ sessionId }) => {
           </div>
           
           <div data-tour="recipe-name">
-            <Label>Navn *</Label>
+            <Label>{t('addRecipe.name')} *</Label>
             <Input
               data-testid="recipe-name-input"
               value={recipe.name}
               onChange={(e) => setRecipe({...recipe, name: e.target.value})}
-              placeholder="fx Min Specielle Jordbær Slush"
+              placeholder={t('addRecipe.namePlaceholder')}
             />
           </div>
 
           <div>
-            <Label>Beskrivelse *</Label>
+            <Label>{t('addRecipe.description')} *</Label>
             <Textarea
               data-testid="recipe-description-input"
               value={recipe.description}
               onChange={(e) => setRecipe({...recipe, description: e.target.value})}
-              placeholder="Beskriv din opskrift..."
+              placeholder={t('addRecipe.descriptionPlaceholder')}
               rows={3}
             />
           </div>
