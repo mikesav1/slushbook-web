@@ -2237,6 +2237,28 @@ async def create_recipe(recipe_data: RecipeCreate, request: Request):
     doc['created_at'] = doc['created_at'].isoformat()
     
     await db.user_recipes.insert_one(doc)
+    
+    # Create notification for all pro users when a new recipe is published
+    if recipe.is_published and recipe.approval_status == 'approved':
+        try:
+            # Get all pro/admin users except the author
+            users = await db.users.find({
+                "role": {"$in": ["pro", "admin", "editor"]},
+                "id": {"$ne": author_id}
+            }, {"_id": 0, "id": 1}).to_list(length=None)
+            
+            for user_doc in users:
+                await create_notification(
+                    user_id=user_doc["id"],
+                    type="new_recipe",
+                    title="Ny opskrift tilgængelig!",
+                    message=f'{author_name} har delt en ny opskrift: "{recipe.name}"',
+                    link=f"/recipes/{recipe.id}",
+                    data={"recipe_id": recipe.id, "author_id": author_id}
+                )
+        except Exception as e:
+            logger.error(f"Failed to create new recipe notifications: {e}")
+    
     return recipe
 
 @api_router.put("/recipes/{recipe_id}", response_model=Recipe)
