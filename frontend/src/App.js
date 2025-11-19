@@ -262,7 +262,7 @@ const Navigation = () => {
                       className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 border-t border-gray-100 mt-2"
                     >
                       <FaCog className="w-4 h-4" />
-                      Indstillinger
+                      {t('nav.settings')}
                     </Link>
                     <button
                       onClick={async () => {
@@ -273,7 +273,7 @@ const Navigation = () => {
                       className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 border-t border-gray-100"
                     >
                       <FaSignOutAlt className="w-4 h-4" />
-                      Log ud
+                      {t('nav.logout')}
                     </button>
                   </div>
                 )}
