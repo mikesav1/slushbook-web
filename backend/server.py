@@ -4120,32 +4120,47 @@ async def bulk_approve_pending(request: Request):
         "count": total_updated
     }
 
-@api_router.post("/admin/reject-recipe/{recipe_id}")
-async def reject_recipe(recipe_id: str, request: Request):
-    """Reject a pending recipe with reason"""
-    user = await get_current_user(request, None, db)
-    
+@api_router.put("/admin/recipes/{recipe_id}/reject")
+async def reject_recipe(
+    recipe_id: str,
+    request: Request,
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
+):
+    """Reject a recipe (admin only)"""
+    user = await get_current_user(request, credentials, db)
     if not user or user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
     
-    # Get reason from body
     body = await request.json()
-    reason = body.get('reason', 'Ingen grund angivet')
+    reason = body.get("reason", "Din opskrift opfylder ikke vores retningslinjer")
     
-    # Update recipe status
-    result = await db.user_recipes.update_one(
-        {"id": recipe_id},
-        {"$set": {
-            "approval_status": "rejected",
-            "rejection_reason": reason,
-            "is_published": False  # Ensure rejected recipes are private
-        }}
-    )
-    
-    if result.modified_count == 0:
+    # Find recipe
+    recipe = await db.user_recipes.find_one({"id": recipe_id}, {"_id": 0})
+    if not recipe:
         raise HTTPException(status_code=404, detail="Recipe not found")
     
-    return {"success": True, "message": "Opskrift afvist"}
+    # Update approval status
+    await db.user_recipes.update_one(
+        {"id": recipe_id},
+        {"$set": {"approval_status": "rejected", "rejection_reason": reason}}
+    )
+    
+    # Create notification for recipe author
+    try:
+        author_id = recipe.get("author")
+        if author_id and author_id != "system":
+            await create_notification(
+                user_id=author_id,
+                type="approval",
+                title="Opskrift afvist",
+                message=f'Din opskrift "{recipe.get("name", "")}" blev afvist. Årsag: {reason}',
+                link=f"/recipes/{recipe_id}",
+                data={"recipe_id": recipe_id, "status": "rejected", "reason": reason}
+            )
+    except Exception as e:
+        logger.error(f"Failed to create rejection notification: {e}")
+    
+    return {"success": True, "message": "Recipe rejected"}
 
 @api_router.post("/admin/hide-from-sandbox/{recipe_id}")
 async def hide_from_sandbox(recipe_id: str, request: Request):
