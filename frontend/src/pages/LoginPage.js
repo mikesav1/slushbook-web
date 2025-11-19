@@ -324,6 +324,8 @@ const LoginPage = ({ onLogin }) => {
               Fortsæt som gæst (begrænset adgang)
             </Button>
           </div>
+            </>
+          )}
         </div>
       </div>
     </div>
