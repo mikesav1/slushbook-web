@@ -70,7 +70,7 @@ const HomePage = ({ sessionId }) => {
   const fetchFeaturedRecipes = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API}/recipes?session_id=${sessionId}`);
+      const response = await axios.get(`${API}/recipes?session_id=${sessionId}&lang=${getUserLanguage()}`);
       
       // Show ALL recipes on homepage (both free and locked)
       // But sort so free recipes appear first, then locked recipes
