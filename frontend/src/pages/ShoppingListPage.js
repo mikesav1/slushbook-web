@@ -8,9 +8,11 @@ import { getUserCountry, detectUserLocation } from '../utils/geolocation';
 import { useAuth } from '../context/AuthContext';
 import OnboardingTooltip from '../components/OnboardingTooltip';
 import { shoppingListPageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
+import { useTranslation } from 'react-i18next';
 
 // BuyButton component to display dynamic supplier
 const BuyButton = ({ mappingId, redirectApi, fetchSupplier, userCountry }) => {
+  const { t } = useTranslation();
   const [supplierInfo, setSupplierInfo] = useState(null);
 
   useEffect(() => {
