@@ -47,8 +47,7 @@ const AdminLinksPage = () => {
       const response = await axios.get(
         `${REDIRECT_API}/admin/mappings`,
         { 
-          headers: { Authorization: `Bearer ${ADMIN_TOKEN}` },
-          withCredentials: true
+          headers: { Authorization: `Bearer ${ADMIN_TOKEN}` }
         }
       );
       
