@@ -219,8 +219,14 @@ const AdminCommentsPage = () => {
                   </div>
                 </div>
 
-                {/* Action Buttons */}
-                <div className="flex gap-2">
+                {/* Collapse icon and Action Buttons */}
+                <div className="flex gap-2 items-center">
+                  {collapsedComments[comment.id] ? (
+                    <FaChevronDown className="text-gray-400" size={16} />
+                  ) : (
+                    <FaChevronUp className="text-gray-400" size={16} />
+                  )}
+                  <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
                   <button
                     onClick={() => toggleCommentStatus(comment.id, comment.status)}
                     className={`p-2 rounded-lg transition-colors ${
