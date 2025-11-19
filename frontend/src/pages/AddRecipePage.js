@@ -82,7 +82,7 @@ const AddRecipePage = ({ sessionId }) => {
       const response = await axios.get(`${API}/user/${sessionId}/limits`);
       setCanAdd(response.data.can_add_recipe);
       if (!response.data.can_add_recipe) {
-        toast.error('Gratis limit nået! Maks 2 egne opskrifter.');
+        toast.error(t('addRecipe.limitReached'));
       }
     } catch (error) {
       console.error('Error checking limits:', error);
