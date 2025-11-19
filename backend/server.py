@@ -4382,6 +4382,49 @@ async def delete_ad(ad_id: str, request: Request):
 
 
 # ==========================================
+# TRANSLATION HELPERS
+# ==========================================
+
+def apply_translation(recipe: dict, lang: str = "da") -> dict:
+    """
+    Apply language-specific translation to recipe.
+    Falls back to English if requested language not available.
+    Falls back to Danish if English not available.
+    """
+    # If no translations field, return as-is (legacy recipe or user recipe)
+    if "translations" not in recipe:
+        return recipe
+    
+    translations = recipe.get("translations", {})
+    
+    # Try requested language
+    if lang in translations:
+        translation = translations[lang]
+    # Fallback to English
+    elif "en" in translations:
+        translation = translations["en"]
+    # Fallback to Danish
+    elif "da" in translations:
+        translation = translations["da"]
+    # No translations available
+    else:
+        return recipe
+    
+    # Apply translation to recipe
+    recipe_copy = recipe.copy()
+    recipe_copy["name"] = translation.get("name", recipe.get("name", ""))
+    recipe_copy["description"] = translation.get("description", recipe.get("description", ""))
+    recipe_copy["steps"] = translation.get("steps", recipe.get("steps", []))
+    
+    # Keep original translations object for admin purposes
+    # but mark which language is currently displayed
+    recipe_copy["_current_language"] = lang
+    recipe_copy["_available_languages"] = list(translations.keys())
+    
+    return recipe_copy
+
+
+# ==========================================
 # BADGE MANAGEMENT
 # ==========================================
 
