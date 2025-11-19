@@ -2015,7 +2015,7 @@ async def get_recipes(
     return all_recipes
 
 @api_router.get("/recipes/{recipe_id}")
-async def get_recipe(recipe_id: str, session_id: Optional[str] = None, request: Request = None):
+async def get_recipe(recipe_id: str, session_id: Optional[str] = None, request: Request = None, lang: str = "da"):
     # Get current user if logged in
     user = None
     if request:
