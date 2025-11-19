@@ -30,9 +30,26 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
     fetchAds();
   }, [user, placement]);
 
-  // Separate effect for rotation - runs when availableAds change
+  // Carousel rotation for bottom banners
   useEffect(() => {
-    if ((user && user.role !== 'guest') || availableAds.length <= 1) {
+    if ((user && user.role !== 'guest') || availableAds.length <= 3 || placement !== 'bottom_banner') {
+      return;
+    }
+
+    // Rotate carousel every 15 seconds
+    const rotationInterval = setInterval(() => {
+      setCarouselStartIndex((prev) => {
+        const next = prev + 3;
+        return next >= availableAds.length ? 0 : next;
+      });
+    }, 15000);
+
+    return () => clearInterval(rotationInterval);
+  }, [user, availableAds, placement]);
+
+  // Separate effect for rotation - runs when availableAds change (for regular ads)
+  useEffect(() => {
+    if ((user && user.role !== 'guest') || availableAds.length <= 1 || placement === 'bottom_banner') {
       return;
     }
 
