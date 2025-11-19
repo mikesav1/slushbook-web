@@ -44,7 +44,7 @@ const SettingsPage = ({ sessionId }) => {
 
   // Start tour for first-time users
   useEffect(() => {
-    if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.SETTINGS)) {
+    if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.SETTINGS, user)) {
       setTimeout(() => {
         setCurrentTourStep(0);
       }, 1000);
@@ -56,12 +56,12 @@ const SettingsPage = ({ sessionId }) => {
   };
 
   const handleTourSkip = () => {
-    markTourCompleted(TOUR_KEYS.SETTINGS);
+    markTourCompleted(TOUR_KEYS.SETTINGS, API);
     setCurrentTourStep(-1);
   };
 
   const handleTourFinish = () => {
-    markTourCompleted(TOUR_KEYS.SETTINGS);
+    markTourCompleted(TOUR_KEYS.SETTINGS, API);
     setCurrentTourStep(-1);
     toast.success('Indstillinger guide færdig!');
   };
