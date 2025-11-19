@@ -129,7 +129,7 @@ const LoginPage = ({ onLogin }) => {
 
         {/* Login Form - Semi-transparent background */}
         <div className="rounded-3xl shadow-xl p-6 sm:p-8" style={{backgroundColor: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(10px)'}}>
-          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Log ind</h2>
+          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">{t('auth.signIn')}</h2>
 
           <form onSubmit={handleLogin} className="space-y-4">
             {/* Email */}
@@ -138,7 +138,7 @@ const LoginPage = ({ onLogin }) => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
+                placeholder={t('auth.email')}
                 required
                 className="w-full px-4 py-3 border-2 rounded-xl"
                 style={{ 
