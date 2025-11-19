@@ -448,6 +448,14 @@
     "newUser": "Neuer Benutzer?",
     "newUserText": "Erstellen Sie ein kostenloses Konto, um Favoriten zu speichern und eigene Rezepte hinzuzufügen.",
     "proUser": "Pro-Benutzer?",
-    "proUserText": "Sie haben unbegrenzten Zugriff auf alle Rezepte und Funktionen."
+    "proUserText": "Sie haben unbegrenzten Zugriff auf alle Rezepte und Funktionen.",
+    "recipes": {
+      "title": "Rezepte",
+      "description": "Gehen Sie zu \"Rezepte\" im Menü und verwenden Sie die Filter, um genau das zu finden, wonach Sie suchen:",
+      "filterByCategory": "Nach Kategorie filtern (Slush, Smoothie usw.)",
+      "filterByDifficulty": "Nach Schwierigkeitsgrad filtern",
+      "search": "Nach bestimmten Zutaten suchen",
+      "createOwn": "Erstellen Sie Ihre eigenen Rezepte und teilen Sie sie!"
+    }
   }
 }
