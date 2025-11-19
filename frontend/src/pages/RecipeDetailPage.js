@@ -483,7 +483,12 @@ const RecipeDetailPage = ({ sessionId }) => {
 
   // Share recipe
   const handleShare = async () => {
-    if (!user || user.role === 'guest') {
+    if (!user) {
+      toast.error('Du skal være logget ind for at dele opskrifter');
+      return;
+    }
+    
+    if (!['pro', 'admin', 'editor'].includes(user.role)) {
       toast.error('Du skal være Pro-bruger for at dele opskrifter');
       return;
     }
