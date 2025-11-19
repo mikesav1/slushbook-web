@@ -620,9 +620,9 @@ const AddRecipePage = ({ sessionId }) => {
         {/* Steps */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4 steps-section">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold">Fremgangsmåde</h2>
+            <h2 className="text-xl font-bold">{t('addRecipe.stepsTitle')}</h2>
             <Button type="button" onClick={addStep} size="sm">
-              <FaPlus className="mr-2" /> Tilføj Trin
+              <FaPlus className="mr-2" /> {t('addRecipe.addStepButton')}
             </Button>
           </div>
 
@@ -634,7 +634,7 @@ const AddRecipePage = ({ sessionId }) => {
               <Textarea
                 value={step}
                 onChange={(e) => updateStep(index, e.target.value)}
-                placeholder={`Trin ${index + 1}...`}
+                placeholder={t('addRecipe.stepPlaceholder', { number: index + 1 })}
                 rows={2}
                 className="flex-1"
               />
@@ -644,7 +644,7 @@ const AddRecipePage = ({ sessionId }) => {
                     type="button"
                     onClick={() => moveStepUp(index)}
                     className="text-cyan-500 hover:text-cyan-700 p-1"
-                    title="Flyt op"
+                    title={t('addRecipe.moveUp')}
                   >
                     <FaArrowUp size={14} />
                   </button>
