@@ -311,12 +311,12 @@ const AddRecipePage = ({ sessionId }) => {
         data-testid="back-button"
         className="flex items-center gap-2 text-cyan-600 hover:text-cyan-700 font-semibold"
       >
-        <FaArrowLeft /> Tilbage
+        <FaArrowLeft /> {t('common.back')}
       </button>
 
       <div>
-        <h1 className="text-4xl font-bold mb-2">Tilføj opskrift</h1>
-        <p className="text-gray-600">Opret din egen slushice opskrift</p>
+        <h1 className="text-4xl font-bold mb-2">{t('addRecipe.title')}</h1>
+        <p className="text-gray-600">{t('addRecipe.createYourOwn', 'Opret din egen slushice opskrift')}</p>
       </div>
 
       <form onSubmit={submitRecipe} className="space-y-6">
