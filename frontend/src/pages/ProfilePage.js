@@ -65,7 +65,7 @@ const ProfilePage = () => {
         withCredentials: true
       });
 
-      toast.success('Profil opdateret!');
+      toast.success(t('profile.profileUpdated', 'Profil opdateret!'));
       
       // Refresh user data
       await checkAuth();
@@ -79,7 +79,7 @@ const ProfilePage = () => {
       });
     } catch (error) {
       console.error('Update profile error:', error);
-      toast.error(error.response?.data?.detail || 'Kunne ikke opdatere profil');
+      toast.error(error.response?.data?.detail || t('profile.updateError', 'Kunne ikke opdatere profil'));
     } finally {
       setLoading(false);
     }
