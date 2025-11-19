@@ -65,12 +65,12 @@ const MatchFinderPage = ({ sessionId }) => {
   };
 
   const handleTourSkip = () => {
-    markTourCompleted(TOUR_KEYS.MATCH, API);
+    markTourCompleted(TOUR_KEYS.MATCH, API, updateCompletedTours);
     setCurrentTourStep(-1);
   };
 
   const handleTourFinish = () => {
-    markTourCompleted(TOUR_KEYS.MATCH, API);
+    markTourCompleted(TOUR_KEYS.MATCH, API, updateCompletedTours);
     setCurrentTourStep(-1);
     toast.success('Match-Finder guide færdig!');
   };
