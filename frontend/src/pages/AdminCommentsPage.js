@@ -249,21 +249,26 @@ const AdminCommentsPage = () => {
                   >
                     <FaTrash size={18} />
                   </button>
+                  </div>
                 </div>
               </div>
 
-              {/* Comment Body */}
-              <div className="bg-gray-50 rounded-lg p-4 mb-3">
-                <p className="text-gray-800 whitespace-pre-wrap">{comment.comment}</p>
-              </div>
+              {/* Comment Body - Collapsible */}
+              {!collapsedComments[comment.id] && (
+                <>
+                  <div className="bg-gray-50 rounded-lg p-4 mb-3">
+                    <p className="text-gray-800 whitespace-pre-wrap">{comment.comment}</p>
+                  </div>
 
-              {/* Footer Stats */}
-              <div className="flex items-center gap-4 text-sm text-gray-600">
-                <div className="flex items-center gap-1">
-                  <FaHeart className="text-pink-500" />
-                  <span>{comment.likes || 0} likes</span>
-                </div>
-              </div>
+                  {/* Footer Stats */}
+                  <div className="flex items-center gap-4 text-sm text-gray-600">
+                    <div className="flex items-center gap-1">
+                      <FaHeart className="text-pink-500" />
+                      <span>{comment.likes || 0} likes</span>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           ))}
         </div>
