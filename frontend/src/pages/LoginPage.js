@@ -211,9 +211,17 @@ const LoginPage = ({ onLogin }) => {
 
         {/* Login Form - Semi-transparent background */}
         <div className="rounded-3xl shadow-xl p-6 sm:p-8" style={{backgroundColor: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(10px)'}}>
-          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">{t('auth.signIn')}</h2>
+          {processingGoogle ? (
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-600 mx-auto mb-4"></div>
+              <p className="text-gray-700 font-medium">Processing Google login...</p>
+              <p className="text-sm text-gray-500 mt-2">Please wait...</p>
+            </div>
+          ) : (
+            <>
+              <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">{t('auth.signIn')}</h2>
 
-          <form onSubmit={handleLogin} className="space-y-4">
+              <form onSubmit={handleLogin} className="space-y-4">
             {/* Email */}
             <div>
               <Input
