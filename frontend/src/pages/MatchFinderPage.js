@@ -11,7 +11,7 @@ import OnboardingTooltip from '../components/OnboardingTooltip';
 import { matchPageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
 
 const MatchFinderPage = ({ sessionId }) => {
-  const { user } = useAuth();
+  const { user, updateCompletedTours } = useAuth();
   const [matches, setMatches] = useState(null);
   const [loading, setLoading] = useState(false);
   const [pantryCount, setPantryCount] = useState(0);
