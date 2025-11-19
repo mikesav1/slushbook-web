@@ -11,7 +11,7 @@ import re
 from datetime import datetime, timezone, timedelta
 
 # Configuration
-BASE_URL = "https://recipe-polyglot.preview.emergentagent.com/api"
+BASE_URL = "https://polyglot-panel.preview.emergentagent.com/api"
 
 class EmptyCategoryKeyTester:
     def __init__(self):
