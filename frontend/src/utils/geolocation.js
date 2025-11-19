@@ -177,10 +177,55 @@ export function getUserCountry() {
 /**
  * Get user's current language preference
  * 
- * @returns {string} Language code
+ * @returns {string} Language code (da, de, fr, en, en_us)
  */
 export function getUserLanguage() {
-  return localStorage.getItem('user_language') || 'dk';
+  return localStorage.getItem('user_language') || 'da';
+}
+
+/**
+ * Set user's language preference
+ * 
+ * @param {string} languageCode - Language code (da, de, fr, en, en_us)
+ */
+export async function setUserLanguage(languageCode) {
+  localStorage.setItem('user_language', languageCode);
+  
+  // Also save to backend for logged-in users
+  try {
+    await fetch(`${API}/api/user/preferences`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        language_code: languageCode
+      })
+    });
+  } catch (error) {
+    console.error('Error saving language preference:', error);
+  }
+}
+
+/**
+ * Detect browser language and return matching language code
+ * 
+ * @returns {string} Language code (da, de, fr, en, en_us)
+ */
+export function detectBrowserLanguage() {
+  const browserLang = navigator.language || navigator.userLanguage;
+  const langCode = browserLang.toLowerCase();
+  
+  // Map browser language codes to our language codes
+  if (langCode.startsWith('da')) return 'da';
+  if (langCode.startsWith('de')) return 'de';
+  if (langCode.startsWith('fr')) return 'fr';
+  if (langCode.startsWith('en-us')) return 'en_us';
+  if (langCode.startsWith('en')) return 'en';
+  
+  // Default to Danish
+  return 'da';
 }
 
 /**
