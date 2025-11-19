@@ -13,7 +13,7 @@ import OnboardingTooltip from '../components/OnboardingTooltip';
 import { addRecipePageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
 
 const AddRecipePage = ({ sessionId }) => {
-  const { user } = useAuth();
+  const { user, updateCompletedTours } = useAuth();
   const navigate = useNavigate();
   const [canAdd, setCanAdd] = useState(true);
   const [loading, setLoading] = useState(false);
