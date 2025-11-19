@@ -695,7 +695,7 @@ const EditRecipePage = ({ sessionId }) => {
             disabled={saving || (recipe.is_published && imageFile && !imageRightsConfirmed)}
             className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700"
           >
-            {saving ? 'Gemmer...' : 'Gem Ændringer'}
+            {saving ? t('addRecipe.saving') : t('addRecipe.saveChanges', 'Gem Ændringer')}
           </Button>
         </div>
       </form>
