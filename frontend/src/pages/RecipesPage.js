@@ -630,7 +630,7 @@ const RecipesPage = ({ sessionId }) => {
           {/* Results count */}
           {(includeIngredients.length > 0 || excludeIngredients.length > 0) && (
             <div className="text-xs text-gray-500 pt-2 border-t border-gray-100">
-              📊 Viser {filteredRecipes.length} opskrifter med de valgte filtre
+              📊 {t('recipes.showingWithFilters', { count: filteredRecipes.length })}
             </div>
           )}
             </div>
