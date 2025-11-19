@@ -23,14 +23,14 @@ export const isTourCompleted = (tourKey, user) => {
 };
 
 // Mark tour as completed
-export const markTourCompleted = async (tourKey, API) => {
+export const markTourCompleted = async (tourKey, API, updateCompletedTours) => {
   // Save to localStorage as backup
   localStorage.setItem(tourKey, 'true');
   
   // Save to database if API URL is provided
   if (API) {
     try {
-      await fetch(`${API}/users/complete-tour`, {
+      const response = await fetch(`${API}/users/complete-tour`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,6 +38,12 @@ export const markTourCompleted = async (tourKey, API) => {
         credentials: 'include',
         body: JSON.stringify({ tour_id: tourKey })
       });
+      
+      if (response.ok && updateCompletedTours) {
+        // Update user context immediately so tour doesn't show again
+        updateCompletedTours(tourKey);
+        console.log('[Onboarding] Tour completed and user context updated:', tourKey);
+      }
     } catch (error) {
       console.error('Failed to save tour completion to database:', error);
       // Don't throw - localStorage fallback already saved
