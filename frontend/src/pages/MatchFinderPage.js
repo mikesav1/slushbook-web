@@ -9,9 +9,11 @@ import { Button } from '../components/ui/button';
 import { useAuth } from '../context/AuthContext';
 import OnboardingTooltip from '../components/OnboardingTooltip';
 import { matchPageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
+import { useTranslation } from 'react-i18next';
 
 const MatchFinderPage = ({ sessionId }) => {
   const { user, updateCompletedTours } = useAuth();
+  const { t } = useTranslation();
   const [matches, setMatches] = useState(null);
   const [loading, setLoading] = useState(false);
   const [pantryCount, setPantryCount] = useState(0);
