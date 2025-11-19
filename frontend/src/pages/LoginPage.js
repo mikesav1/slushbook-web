@@ -111,10 +111,19 @@ const LoginPage = ({ onLogin }) => {
           onLogin(response.data.user);
         }
 
-        // Navigate to main app
+        // Check if user came from shared recipe page
+        const returnToShared = localStorage.getItem('return_to_shared');
+
+        // Navigate to appropriate page
         setTimeout(() => {
-          navigate('/');
-          window.location.reload(); // Force refresh to update auth state
+          if (returnToShared) {
+            localStorage.removeItem('return_to_shared');
+            navigate(`/shared/${returnToShared}`);
+            toast.success('Du kan nu kopiere opskriften til din samling!');
+          } else {
+            navigate('/');
+            window.location.reload(); // Force refresh to update auth state
+          }
         }, 500);
 
       } catch (error) {
