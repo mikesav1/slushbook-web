@@ -55,7 +55,9 @@
     "quickLinks": "Hurtige links",
     "findMatch": "Find Match",
     "createRecipe": "Opret Opskrift",
-    "popularRecipes": "Populære Opskrifter"
+    "popularRecipes": "Populære Opskrifter",
+    "heroTitle": "Find din perfekte",
+    "heroSubtitle": "Slushice Opskrift"
   },
   "recipes": {
     "title": "Opskrifter",
