@@ -41,6 +41,7 @@ import BrixInfoPage from "./pages/BrixInfoPage";
 import AdminLinksPage from "./pages/AdminLinksPage";
 import AdminAdsPage from "./pages/AdminAdsPage";
 import AdminTranslationsPage from "./pages/AdminTranslationsPage";
+import SharedRecipePage from "./pages/SharedRecipePage";
 import AdSlot from "./components/AdSlot";
 import GuidePage from "./pages/GuidePage";
 
