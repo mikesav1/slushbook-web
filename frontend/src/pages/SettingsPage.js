@@ -589,7 +589,7 @@ const SettingsPage = ({ sessionId }) => {
       {/* Machines */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100" data-tour="machine-section">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold">Mine Maskiner</h2>
+          <h2 className="text-2xl font-bold">{t('settings.myMachines')}</h2>
           {user ? (
             <Dialog open={isAddMachineOpen} onOpenChange={setIsAddMachineOpen}>
               <DialogTrigger asChild>
