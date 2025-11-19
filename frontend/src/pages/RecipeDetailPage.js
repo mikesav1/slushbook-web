@@ -8,7 +8,7 @@ import { Button } from '../components/ui/button';
 import { Label } from '../components/ui/label';
 import { useAuth } from '../context/AuthContext';
 import { toSentenceCase } from '../utils/textUtils';
-import { getUserCountry, detectUserLocation } from '../utils/geolocation';
+import { getUserCountry, getUserLanguage, detectUserLocation } from '../utils/geolocation';
 
 const RecipeDetailPage = ({ sessionId }) => {
   const { id } = useParams();
