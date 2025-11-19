@@ -508,6 +508,14 @@
     "newUser": "Ny bruger?",
     "newUserText": "Opret en gratis konto for at gemme favoritter og tilføje egne opskrifter.",
     "proUser": "Pro bruger?",
-    "proUserText": "Du har ubegrænset adgang til alle opskrifter og funktioner."
+    "proUserText": "Du har ubegrænset adgang til alle opskrifter og funktioner.",
+    "recipes": {
+      "title": "Opskrifter",
+      "description": "Gå til \"Opskrifter\" i menuen og brug filtrene til at finde præcis det, du leder efter:",
+      "filterByCategory": "Filtrer efter kategori (slush, smoothie osv.)",
+      "filterByDifficulty": "Filtrer efter sværhedsgrad",
+      "search": "Søg efter specifikke ingredienser",
+      "createOwn": "Opret dine egne opskrifter og del dem!"
+    }
   }
 }
