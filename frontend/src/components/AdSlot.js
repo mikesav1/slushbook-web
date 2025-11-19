@@ -158,11 +158,11 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
     return countryMap[language] || 'DK'; // Default to Denmark
   };
 
-  const handleClick = async () => {
-    if (ad) {
+  const handleClick = async (adItem = ad) => {
+    if (adItem) {
       // Track click
       try {
-        await axios.post(`${API}/ads/${ad.id}/click`);
+        await axios.post(`${API}/ads/${adItem.id}/click`);
       } catch (error) {
         console.error('Error tracking click:', error);
       }
