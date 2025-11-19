@@ -246,7 +246,7 @@ const AdminTranslationsPage = () => {
             >
               {getSections().map(section => (
                 <option key={section} value={section}>
-                  {section === 'all' ? 'Alle sektioner' : section}
+                  {section === 'all' ? t('admin.translations.allSections') : section}
                 </option>
               ))}
             </select>
@@ -255,10 +255,10 @@ const AdminTranslationsPage = () => {
 
         <div className="mt-4 flex justify-between items-center">
           <p className="text-sm text-gray-600">
-            Viser {filteredTranslations.length} af {flattenObject(translations).length} nøgler
+            {t('admin.translations.showing', { count: filteredTranslations.length, total: flattenObject(translations).length })}
           </p>
           <Button onClick={() => setShowAddModal(true)} size="sm">
-            <FaPlus className="mr-2" /> Tilføj Nøgle
+            <FaPlus className="mr-2" /> {t('admin.translations.addKey')}
           </Button>
         </div>
       </div>
