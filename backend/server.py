@@ -3562,6 +3562,11 @@ async def import_recipe_from_csv(file: UploadFile = File(...)):
             if row.get('Tags'):
                 tags = [t.strip() for t in row['Tags'].split(';') if t.strip()]
             
+            # Get image URL from CSV, or use placeholder if not provided
+            image_url = row.get('Image_URL', '').strip()
+            if not image_url:
+                image_url = '/api/images/placeholder.jpg'
+            
             # Create recipe preview
             recipe_preview = {
                 'name': row.get('Navn', ''),
@@ -3574,7 +3579,7 @@ async def import_recipe_from_csv(file: UploadFile = File(...)):
                 'tags': tags,
                 'ingredients': ingredients,
                 'steps': steps,
-                'image_url': '/api/images/placeholder.jpg',
+                'image_url': image_url,
                 'author': 'system',
                 'author_name': 'SLUSHBOOK'
             }
