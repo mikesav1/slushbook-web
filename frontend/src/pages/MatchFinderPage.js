@@ -105,7 +105,7 @@ const MatchFinderPage = ({ sessionId }) => {
 
   const findMatches = async () => {
     if (pantryCount === 0) {
-      toast.error('Tilføj ingredienser først!');
+      toast.error(t('matchFinder.addIngredientsFirst', 'Tilføj ingredienser først!'));
       return;
     }
 
@@ -128,10 +128,10 @@ const MatchFinderPage = ({ sessionId }) => {
       // Save matches to sessionStorage
       sessionStorage.setItem(`matches_${sessionId}`, JSON.stringify(response.data));
       
-      toast.success(`Fandt ${response.data.can_make_now?.length || 0} matches!`);
+      toast.success(t('matchFinder.foundMatches', `Fandt ${response.data.can_make_now?.length || 0} matches!`, { count: response.data.can_make_now?.length || 0 }));
     } catch (error) {
       console.error('Error finding matches:', error);
-      toast.error('Kunne ikke finde matches');
+      toast.error(t('matchFinder.searchError', 'Kunne ikke finde matches'));
     } finally {
       setLoading(false);
     }
