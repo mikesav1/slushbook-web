@@ -1037,6 +1037,8 @@ const RecipeDetailPage = ({ sessionId }) => {
           )}
         </div>
         
+        {!commentsCollapsed && (
+        <>
         {/* Add Comment - Pro users only */}
         {user && user.role !== 'guest' ? (
           <div className="mb-6">
