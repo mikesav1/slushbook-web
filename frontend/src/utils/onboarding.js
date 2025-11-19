@@ -169,18 +169,18 @@ export const matchPageSteps = [
 // Shopping List Page Tour Steps
 export const shoppingListPageSteps = [
   {
-    content: '🛒 Velkommen til din Indkøbsliste!\n\nHer finder du alle ingredienser du har tilføjet fra opskrifter.\n\nLad os se hvad du kan gøre.'
+    content: i18n.t('tour.shopping.welcome')
   },
   {
     target: '[data-tour="shopping-item"]',
-    content: '✅ Afkryds købte varer\n\nKlik på checkbox for at markere en ingrediens som købt.\n\nKøbte varer forsvinder fra listen.'
+    content: i18n.t('tour.shopping.step1')
   },
   {
     target: '[data-tour="buy-button"]',
-    content: '🏪 Køb online\n\nKlik på "Indkøb hos..." for at købe ingrediensen direkte hos en leverandør.\n\nVi viser automatisk den bedste pris for dit land!'
+    content: i18n.t('tour.shopping.step2')
   },
   {
-    content: '💡 Tips til Indkøbsliste\n\n• Tilføj ingredienser ved at åbne en opskrift og klikke "Tilføj til Liste"\n• Ingredienserne grupperes automatisk\n• Køb online og spar tid!\n• Listen huskes så du kan handle når du vil'
+    content: i18n.t('tour.shopping.tips')
   }
 ];
 
