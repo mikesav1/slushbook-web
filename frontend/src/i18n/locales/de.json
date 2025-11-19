@@ -180,7 +180,9 @@
     "shareRecipes": "Inspiration von den Rezepten anderer erhalten – und Ihre eigenen teilen",
     "appDevelopment": "Die App wird kontinuierlich weiterentwickelt und wir arbeiten ständig daran, neue Funktionen und Verbesserungen hinzuzufügen.",
     "readFullGuide": "Lesen Sie die vollständige Anleitung zu SLUSHBOOK hier",
-    "version": "Version 1.0.0 – Mit ❤️ für Slushie-Enthusiasten gemacht"
+    "version": "Version 1.0.0 – Mit ❤️ für Slushie-Enthusiasten gemacht",
+    "autoDetect": "Auto-Erkennung",
+    "countryTip": "Die ausgewählte Sprache wird für Rezepte und die Benutzeroberfläche verwendet sowie um relevante Produktlinks anzuzeigen, wenn Sie auf 'Einkaufen'-Schaltflächen klicken"
   },
   "messages": {
     "success": {
