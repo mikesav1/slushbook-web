@@ -244,8 +244,8 @@ const SettingsPage = ({ sessionId }) => {
       />
       
       <div>
-        <h1 className="text-4xl font-bold mb-2">Indstillinger</h1>
-        <p className="text-gray-600">Administrér din maskine og konto</p>
+        <h1 className="text-4xl font-bold mb-2">{t('settings.title')}</h1>
+        <p className="text-gray-600">{t('settings.subtitle')}</p>
       </div>
 
       {/* User Info */}
