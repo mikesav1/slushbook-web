@@ -417,6 +417,12 @@
     "currentPasswordPlaceholder": "Kun hvis du vil ændre password",
     "newPasswordPlaceholder": "Min. 6 tegn"
   },
+  "favorites": {
+    "title": "Mine Favoritter",
+    "count": "{{count}} favorit opskrift{{plural}}",
+    "noFavoritesYet": "Ingen favoritter endnu",
+    "addYourFavorites": "Tilføj dine yndlings opskrifter her"
+  },
   "shoppingList": {
     "title": "Indkøbsliste",
     "subtitle": "Dine ingredienser til næste slushice",
