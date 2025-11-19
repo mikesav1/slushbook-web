@@ -234,12 +234,12 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
                   index === 2 ? 'hidden lg:block' : index === 1 ? 'hidden md:block' : ''
                 }`}
               >
-                <div className="p-2">
+                <div className="p-3">
                   {!adItem._imageError ? (
                     <img
                       src={adItem.image}
                       alt={adItem.title || 'Reklame'}
-                      className="w-full h-auto object-contain max-h-12 sm:max-h-14 md:max-h-16"
+                      className="w-full h-auto object-contain h-32 md:h-16 lg:h-16"
                       style={{ display: 'block' }}
                       onError={(e) => {
                         console.error('Ad image failed to load:', adItem.image);
@@ -248,7 +248,7 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
                       loading="eager"
                     />
                   ) : (
-                    <div className="w-full h-12 sm:h-14 md:h-16 bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white font-semibold text-sm rounded-lg">
+                    <div className="w-full h-32 md:h-16 lg:h-16 bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white font-semibold text-sm rounded-lg">
                       {adItem.title || 'Reklame'}
                     </div>
                   )}
