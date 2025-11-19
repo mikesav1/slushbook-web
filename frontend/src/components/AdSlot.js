@@ -17,6 +17,7 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
   const [loading, setLoading] = useState(true);
   const [availableAds, setAvailableAds] = useState([]);
   const [animating, setAnimating] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     // Don't show ads to PRO users (but show to guests and non-logged users)
