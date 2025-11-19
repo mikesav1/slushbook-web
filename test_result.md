@@ -1018,3 +1018,54 @@ Updated all 6 page components to use new database-backed tour functions:
 - Comprehensive backend testing confirmed all functionality working
 - Feature ready for production deployment
 
+
+## Onboarding Tour - Mobile Optimization & Draggable
+
+**Date:** 2025-01-19
+**Status:** ✅ COMPLETED
+
+### User Request
+Tour guide var for stor på telefoner og fyldte hele skærmen. Ønskede at:
+1. Tour skal være mindre på mobil
+2. Tour skal være flytbar så man kan se hvad der henvises til
+
+### Changes Made
+
+#### Mobile Optimizations:
+- ✅ Reduced width from 90% to 85% on mobile
+- ✅ Added max-height constraint: 75vh on mobile (vs 85vh on desktop)
+- ✅ Smaller text: base size instead of lg on mobile
+- ✅ Smaller buttons: py-2.5 instead of py-3 on mobile
+- ✅ Shorter "skip" text on mobile to save space
+
+#### Draggable Functionality:
+- ✅ Added drag handle at top with visual indicator (3 vertical bars)
+- ✅ Touch support for mobile devices (touchstart, touchmove, touchend)
+- ✅ Mouse support for desktop (mousedown, mousemove, mouseup)
+- ✅ Smooth transitions when not dragging
+- ✅ Visual feedback: cursor changes grab → grabbing
+- ✅ Position resets when step changes
+
+#### Visual Improvements:
+- ✅ Drag handle with yellow background to indicate it's draggable
+- ✅ Instructional text: "👆 Hold og træk for at flytte" (mobile) / "🖱️ Træk for at flytte" (desktop)
+- ✅ Step indicator moved to top for better visibility
+- ✅ X button moved to drag handle area
+
+### Technical Implementation
+- Added React hooks: useState, useRef for drag state management
+- Touch event handlers: handleTouchStart, handleTouchMove, handleTouchEnd
+- Mouse event handlers: handleMouseDown, handleMouseMove, handleMouseUp
+- Position state with x/y offset tracking
+- Mobile detection with window.innerWidth check
+- Responsive classes using Tailwind's md: breakpoints
+
+### Files Modified
+- `/app/frontend/src/components/OnboardingTooltip.js`
+
+### Impact
+✅ Better mobile UX - users can now see highlighted elements while reading tour
+✅ No more full-screen blocking tooltip on phones
+✅ Intuitive drag interaction works on all devices
+✅ Maintains professional appearance on desktop
+
