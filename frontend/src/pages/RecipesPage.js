@@ -81,7 +81,7 @@ const RecipesPage = ({ sessionId }) => {
 
   // Start tour if coming from HomePage and tour not completed
   useEffect(() => {
-    if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.RECIPES) && isTourCompleted(TOUR_KEYS.HOME)) {
+    if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.RECIPES, user) && isTourCompleted(TOUR_KEYS.HOME, user)) {
       console.log('[Tour] Starting recipes tour...');
       setTimeout(() => {
         setCurrentTourStep(0);
@@ -95,12 +95,12 @@ const RecipesPage = ({ sessionId }) => {
   };
 
   const handleTourSkip = () => {
-    markTourCompleted(TOUR_KEYS.RECIPES);
+    markTourCompleted(TOUR_KEYS.RECIPES, API);
     setCurrentTourStep(-1);
   };
 
   const handleTourFinish = () => {
-    markTourCompleted(TOUR_KEYS.RECIPES);
+    markTourCompleted(TOUR_KEYS.RECIPES, API);
     setCurrentTourStep(-1);
     
     // Navigate to Add Recipe page to continue tour
