@@ -44,7 +44,7 @@ const MatchFinderPage = ({ sessionId }) => {
       
       // Notify user that they should re-run match
       if (pantryCount > 0) {
-        toast.info('Dine ingredienser er opdateret! Klik "Find matches" for at se nye resultater.', {
+        toast.info(t('matchFinder.pantryUpdated', 'Dine ingredienser er opdateret! Klik "Find matches" for at se nye resultater.'), {
           duration: 4000
         });
       }
