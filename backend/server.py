@@ -3690,7 +3690,7 @@ async def export_recipes_csv(request: Request):
         writer = csv.writer(output)
         
         # Header
-        writer.writerow(['Navn', 'Beskrivelse', 'Type', 'Farve', 'Brix', 'Volumen', 'Alkohol', 'Tags', 'Ingredienser', 'Fremgangsmåde', 'Is_Free', 'Is_Published', 'Author'])
+        writer.writerow(['Navn', 'Beskrivelse', 'Type', 'Farve', 'Brix', 'Volumen', 'Alkohol', 'Tags', 'Ingredienser', 'Fremgangsmåde', 'Image_URL', 'Is_Free', 'Is_Published', 'Author'])
         
         for recipe in all_recipes:
             # Format ingredients: Navn:Mængde:Enhed:Brix:Rolle (separated by ;)
