@@ -1,0 +1,112 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "confirm": "Confirm",
+    "loading": "Loading...",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "nav": {
+    "home": "Home",
+    "recipes": "Recipes",
+    "addRecipe": "Add Recipe",
+    "matchFinder": "Match Finder",
+    "shoppingList": "Shopping List",
+    "tips": "Tips & Tricks",
+    "settings": "Settings",
+    "login": "Log in",
+    "logout": "Log out",
+    "signup": "Sign up"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "confirmPassword": "Confirm password",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "welcomeBack": "Welcome back",
+    "createAccount": "Create your account"
+  },
+  "home": {
+    "title": "Welcome to Slush Book",
+    "subtitle": "Discover amazing slushie recipes",
+    "featuredRecipes": "Featured Recipes",
+    "exploreAll": "Explore all recipes",
+    "quickLinks": "Quick links",
+    "findMatch": "Find Match",
+    "createRecipe": "Create Recipe",
+    "popularRecipes": "Popular Recipes"
+  },
+  "recipes": {
+    "title": "Recipes",
+    "myRecipes": "My Recipes",
+    "allRecipes": "All Recipes",
+    "free": "Free",
+    "premium": "Premium",
+    "addToFavorites": "Add to favourites",
+    "removeFromFavorites": "Remove from favourites",
+    "viewRecipe": "View recipe",
+    "ingredients": "Ingredients",
+    "instructions": "Instructions",
+    "prepTime": "Prep time",
+    "servings": "Servings",
+    "difficulty": "Difficulty",
+    "type": "Type",
+    "noRecipes": "No recipes found",
+    "searchPlaceholder": "Search for recipes..."
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "selectLanguage": "Select Language",
+    "languageDesc": "Recipes and interface will be displayed in the selected language",
+    "profile": "Profile",
+    "account": "Account",
+    "preferences": "Preferences",
+    "logout": "Log out",
+    "deleteAccount": "Delete account",
+    "myRecipes": "My recipes",
+    "devices": "Devices",
+    "activeDevices": "Active devices",
+    "logoutAllDevices": "Log out from all others"
+  },
+  "messages": {
+    "success": {
+      "saved": "Saved!",
+      "deleted": "Deleted!",
+      "updated": "Updated!",
+      "created": "Created!",
+      "languageChanged": "Language changed to {{language}}"
+    },
+    "error": {
+      "generic": "An error occurred",
+      "notFound": "Not found",
+      "unauthorized": "Unauthorized",
+      "networkError": "Network error"
+    }
+  },
+  "forms": {
+    "recipeName": "Recipe name",
+    "description": "Description",
+    "ingredients": "Ingredients",
+    "steps": "Steps",
+    "addIngredient": "Add ingredient",
+    "addStep": "Add step",
+    "required": "Required",
+    "optional": "Optional"
+  }
+}
