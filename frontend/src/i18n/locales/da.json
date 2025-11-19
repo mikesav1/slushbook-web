@@ -136,7 +136,16 @@
     "excludeIngredientPlaceholder": "f.eks. mælk, nødder...",
     "typeFilter": "Type filter",
     "browseByType": "Gennemse efter type",
-    "showingResults": "Viser {{count}} resultater"
+    "showingResults": "Viser {{count}} resultater",
+    "showingWithFilters": "Viser {{count}} opskrifter med de valgte filtre",
+    "typeLabel": "Type",
+    "allTypes": "Alle typer",
+    "filtered": "Filtreret",
+    "tryDifferentFilters": "Prøv at ændre dine filtre eller søgeord",
+    "showingCount": "Viser {{count}} opskrift",
+    "showingCountPlural": "Viser {{count}} opskrifter",
+    "addYourOwnRecipe": "Tilføj din egen opskrift",
+    "createAndShare": "Opret og del dine egne slush opskrifter"
   },
   "settings": {
     "title": "Indstillinger",
