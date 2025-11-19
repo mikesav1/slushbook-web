@@ -678,12 +678,12 @@ const AddRecipePage = ({ sessionId }) => {
           <div className="flex items-center justify-between mb-4">
             <div className="flex-1">
               <h3 className="text-lg font-bold text-gray-800 mb-1">
-                {recipe.is_published ? '🌍 Offentlig opskrift' : '🔒 Privat opskrift'}
+                {recipe.is_published ? t('addRecipe.publicRecipe', '🌍 Offentlig opskrift') : t('addRecipe.privateRecipe', '🔒 Privat opskrift')}
               </h3>
               <p className="text-sm text-gray-600">
                 {recipe.is_published 
-                  ? 'Denne opskrift er synlig for alle brugere' 
-                  : 'Kun du kan se denne opskrift'}
+                  ? t('addRecipe.publicDescription', 'Denne opskrift er synlig for alle brugere')
+                  : t('addRecipe.privateDescription', 'Kun du kan se denne opskrift')}
               </p>
             </div>
             <button
@@ -713,10 +713,10 @@ const AddRecipePage = ({ sessionId }) => {
             <div className="mt-4 pt-4 border-t border-gray-200">
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
                 <p className="text-sm text-amber-800 mb-2">
-                  ⚠️ <strong>Vigtigt om billede:</strong> Du har uploadet et billede til denne opskrift.
+                  ⚠️ <strong>{t('addRecipe.imageWarning', 'Vigtigt om billede:')}</strong> {t('addRecipe.imageUploaded', 'Du har uploadet et billede til denne opskrift.')}
                 </p>
                 <p className="text-xs text-amber-700">
-                  Sørg for at du har rettighederne til billedet før du deler opskriften offentligt.
+                  {t('addRecipe.ensureRights', 'Sørg for at du har rettighederne til billedet før du deler opskriften offentligt.')}
                 </p>
               </div>
               <label className="flex items-start gap-3 cursor-pointer">
@@ -727,7 +727,7 @@ const AddRecipePage = ({ sessionId }) => {
                   className="mt-1 w-4 h-4 text-cyan-600 rounded focus:ring-cyan-500"
                 />
                 <span className="text-sm text-gray-700">
-                  Jeg bekræfter at jeg har rettighederne til det uploadede billede. 
+                  {t('addRecipe.imageRightsLabel')}
                   <span className="text-red-600">*</span>
                 </span>
               </label>
@@ -742,7 +742,7 @@ const AddRecipePage = ({ sessionId }) => {
             variant="outline"
             onClick={() => navigate(-1)}
           >
-            Annullér
+            {t('common.cancel')}
           </Button>
           <Button
             type="submit"
@@ -751,7 +751,7 @@ const AddRecipePage = ({ sessionId }) => {
             data-tour="recipe-submit"
             className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700"
           >
-            {loading ? 'Opretter...' : 'Opret Opskrift'}
+            {loading ? t('addRecipe.creating', 'Opretter...') : t('addRecipe.createRecipeButton', 'Opret Opskrift')}
           </Button>
         </div>
       </form>
