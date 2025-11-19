@@ -162,7 +162,7 @@ const AdminTranslationsPage = () => {
     link.href = url;
     link.download = `${selectedLang}.json`;
     link.click();
-    toast.success('Oversættelser eksporteret!');
+    toast.success(t('admin.translations.exportSuccess'));
   };
 
   const filteredTranslations = getFilteredTranslations();
