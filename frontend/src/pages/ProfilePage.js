@@ -122,22 +122,22 @@ const ProfilePage = () => {
             </div>
 
             <div className="pt-6 border-t border-gray-200">
-              <h3 className="font-semibold mb-3">Som gæst kan du:</h3>
+              <h3 className="font-semibold mb-3">{t('profile.asGuestYouCan', 'Som gæst kan du:')}</h3>
               <ul className="text-left space-y-2 text-gray-600 max-w-md mx-auto">
-                <li>✓ Browse alle opskrifter</li>
-                <li>✓ Se opskrift detaljer</li>
-                <li>✓ Læse vejledninger</li>
+                <li>✓ {t('profile.browseRecipes', 'Browse alle opskrifter')}</li>
+                <li>✓ {t('profile.viewDetails', 'Se opskrift detaljer')}</li>
+                <li>✓ {t('profile.readGuides', 'Læse vejledninger')}</li>
               </ul>
             </div>
 
             <div className="pt-4">
-              <h3 className="font-semibold mb-3">Med Pro konto får du:</h3>
+              <h3 className="font-semibold mb-3">{t('profile.withProAccount', 'Med Pro konto får du:')}</h3>
               <ul className="text-left space-y-2 text-gray-600 max-w-md mx-auto">
-                <li>🌟 Opret dine egne opskrifter</li>
-                <li>🌟 Gem favoritter</li>
-                <li>🌟 Indkøbsliste</li>
-                <li>🌟 Match finder</li>
-                <li>🌟 Pantry system</li>
+                <li>🌟 {t('profile.createRecipes', 'Opret dine egne opskrifter')}</li>
+                <li>🌟 {t('profile.saveFavorites', 'Gem favoritter')}</li>
+                <li>🌟 {t('profile.shoppingList', 'Indkøbsliste')}</li>
+                <li>🌟 {t('profile.matchFinder', 'Match finder')}</li>
+                <li>🌟 {t('profile.pantrySystem', 'Pantry system')}</li>
               </ul>
             </div>
           </div>
