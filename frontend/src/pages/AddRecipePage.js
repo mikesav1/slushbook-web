@@ -407,12 +407,12 @@ const AddRecipePage = ({ sessionId }) => {
             {/* Sukkergrad */}
             <div>
               <Label className="flex items-center gap-2">
-                Sukkergrad (°Bx)
+                {t('addRecipe.sugarLevel')}
                 <button
                   type="button"
                   onClick={() => setShowBrixInfo(!showBrixInfo)}
                   className="text-cyan-600 hover:text-cyan-700 transition-colors"
-                  title="Klik for mere information"
+                  title={t('addRecipe.clickForInfo')}
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
@@ -430,12 +430,12 @@ const AddRecipePage = ({ sessionId }) => {
                 <div className="text-sm mt-2 bg-gradient-to-r from-cyan-50 to-blue-50 border-l-4 border-cyan-500 p-3 rounded-r animate-in fade-in slide-in-from-top-2 duration-200">
                   <p className="font-semibold text-cyan-900 mb-1 flex items-center gap-2">
                     <span className="text-lg">ℹ️</span>
-                    <span>Sukkerindhold</span>
+                    <span>{t('addRecipe.sugarContent')}</span>
                   </p>
                   <p className="text-gray-700 text-xs leading-relaxed">
-                    Brix måler sukkerindholdet i din opskrift.<br/>
-                    <span className="text-gray-600">Anbefalet: 13-15°Bx for god konsistens.</span><br/>
-                    <a href="/brix-info" className="text-cyan-600 underline mt-1 inline-block" target="_blank">Læs mere om Brix →</a>
+                    {t('addRecipe.brixInfo')}<br/>
+                    <span className="text-gray-600">{t('addRecipe.brixRecommended')}</span><br/>
+                    <a href="/brix-info" className="text-cyan-600 underline mt-1 inline-block" target="_blank">{t('addRecipe.readMoreBrix')}</a>
                   </p>
                 </div>
               )}
