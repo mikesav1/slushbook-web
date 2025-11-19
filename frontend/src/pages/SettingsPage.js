@@ -566,14 +566,14 @@ const SettingsPage = ({ sessionId }) => {
       {/* My Recipes */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold">Mine opskrifter</h2>
+          <h2 className="text-2xl font-bold">{t('settings.myRecipes')}</h2>
           <Link to="/add-recipe">
             <Button
               disabled={!canAddRecipe}
               data-testid="add-recipe-button"
               className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700"
             >
-              <FaPlus className="mr-2" /> Tilføj opskrift
+              <FaPlus className="mr-2" /> {t('settings.addRecipe')}
             </Button>
           </Link>
         </div>
