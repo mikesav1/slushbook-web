@@ -434,7 +434,8 @@
       "welcome": "🛒 Velkommen til din Indkøbsliste!\n\nHer finder du alle ingredienser du har tilføjet fra opskrifter.\n\nLad os se hvad du kan gøre.",
       "step1": "✅ Afkryds købte varer\n\nKlik på checkbox for at markere en ingrediens som købt.\n\nKøbte varer forsvinder fra listen.",
       "step2": "🏪 Køb online\n\nKlik på 'Indkøb hos...' for at købe ingrediensen direkte hos en leverandør.\n\nVi viser automatisk den bedste pris for dit land!",
-      "tips": "💡 Tips til Indkøbsliste\n\n• Tilføj ingredienser ved at åbne en opskrift og klikke 'Tilføj til Liste'\n• Ingredienserne grupperes automatisk\n• Køb online og spar tid!\n• Listen huskes så du kan handle når du vil"
+      "tips": "💡 Tips til Indkøbsliste\n\n• Tilføj ingredienser ved at åbne en opskrift og klikke 'Tilføj til Liste'\n• Ingredienserne grupperes automatisk\n• Køb online og spar tid!\n• Listen huskes så du kan handle når du vil",
+      "tourComplete": "Indkøbsliste guide færdig!"
     },
     "settings": {
       "welcome": "⚙️ Velkommen til Indstillinger!\n\nHer kan du tilpasse appen til dine behov.\n\nLad os især se på maskin-indstillingerne.",
