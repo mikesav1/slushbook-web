@@ -373,69 +373,33 @@ const SettingsPage = ({ sessionId }) => {
           <h2 className="text-2xl font-bold">{t('settings.countryAndLanguage')}</h2>
         </div>
         <p className="text-gray-600 mb-4">
-          Vælg dit land for at se relevante produktlinks. Dit land detekteres automatisk, men du kan ændre det her.
+          {t('settings.languageDesc')}
         </p>
         
         <div className="space-y-4">
+          {/* Combined Language Selector */}
           <div>
-            <Label className="text-sm font-medium mb-2 block">Vælg Land</Label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {Object.entries(COUNTRIES).map(([code, country]) => (
-                <button
-                  key={code}
-                  onClick={async () => {
-                    setSelectedCountry(code);
-                    await updateUserPreferences(code, country.lang);
-                    toast.success(`Land ændret til ${country.name}`);
-                  }}
-                  className={`flex items-center gap-2 p-3 rounded-lg border-2 transition-all ${
-                    selectedCountry === code
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                >
-                  <span className="text-2xl">{country.flag}</span>
-                  <span className="text-sm font-medium">{country.name}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-          
-          <div className="flex gap-2">
-            <Button
-              onClick={async () => {
-                setDetectingCountry(true);
-                try {
-                  const result = await refreshUserLocation();
-                  setSelectedCountry(result.country_code);
-                  toast.success(`Land detekteret: ${COUNTRIES[result.country_code]?.name || result.country_code}`);
-                } catch (error) {
-                  toast.error('Kunne ikke detektere land');
-                } finally {
-                  setDetectingCountry(false);
-                }
-              }}
-              disabled={detectingCountry}
-              variant="outline"
-              className="flex-1"
-            >
-              {detectingCountry ? 'Detekterer...' : '🔄 Gendetekter Land Automatisk'}
-            </Button>
-          </div>
-          
-          {/* Language Selector */}
-          <div className="mt-6">
             <Label className="text-sm font-medium mb-2 block">{t('settings.selectLanguage')}</Label>
-            <p className="text-xs text-gray-500 mb-3">
-              {t('settings.languageDesc')}
-            </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {Object.entries(LANGUAGES).map(([code, language]) => (
                 <button
                   key={code}
                   onClick={async () => {
                     setSelectedLanguage(code);
+                    // Set country based on language (map language to country)
+                    const countryMapping = {
+                      'da': 'dk',
+                      'de': 'de',
+                      'en': 'gb',
+                      'en_us': 'us',
+                      'fr': 'fr'
+                    };
+                    const countryCode = countryMapping[code] || 'dk';
+                    setSelectedCountry(countryCode);
+                    
                     await setUserLanguage(code);
+                    await updateUserPreferences(countryCode, code);
+                    
                     toast.success(t('messages.success.languageChanged', { language: language.name }));
                     // Reload page to apply language change
                     setTimeout(() => {
@@ -455,8 +419,36 @@ const SettingsPage = ({ sessionId }) => {
             </div>
           </div>
           
+          <div className="flex gap-2">
+            <Button
+              onClick={async () => {
+                setDetectingCountry(true);
+                try {
+                  const result = await refreshUserLocation();
+                  const detectedLang = COUNTRIES[result.country_code]?.lang || 'da';
+                  setSelectedCountry(result.country_code);
+                  setSelectedLanguage(detectedLang);
+                  await setUserLanguage(detectedLang);
+                  toast.success(`${t('settings.language')}: ${LANGUAGES[detectedLang]?.name || detectedLang}`);
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 500);
+                } catch (error) {
+                  toast.error(t('messages.error.generic'));
+                } finally {
+                  setDetectingCountry(false);
+                }
+              }}
+              disabled={detectingCountry}
+              variant="outline"
+              className="flex-1"
+            >
+              {detectingCountry ? t('common.loading') : `🔄 ${t('settings.autoDetect', 'Auto-detect')}`}
+            </Button>
+          </div>
+          
           <div className="p-3 bg-blue-50 rounded-lg text-sm text-gray-700 mt-4">
-            <strong>💡 Tip:</strong> Dit land bruges til at vise relevante produktlinks når du klikker på "Indkøb" knapper.
+            <strong>💡 {t('common.tip', 'Tip')}:</strong> {t('settings.countryTip', 'Dit land bruges til at vise relevante produktlinks når du klikker på "Indkøb" knapper.')}
           </div>
         </div>
       </div>
