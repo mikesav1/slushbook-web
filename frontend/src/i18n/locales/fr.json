@@ -403,7 +403,8 @@
       "welcome": "🛒 Bienvenue dans votre Liste de Courses!\n\nIci, vous trouverez tous les ingrédients que vous avez ajoutés depuis les recettes.\n\nVoyons ce que vous pouvez faire.",
       "step1": "✅ Cochez les articles achetés\n\nCliquez sur la case à cocher pour marquer un ingrédient comme acheté.\n\nLes articles achetés disparaissent de la liste.",
       "step2": "🏪 Acheter en ligne\n\nCliquez sur 'Acheter chez...' pour acheter l'ingrédient directement chez un fournisseur.\n\nNous affichons automatiquement le meilleur prix pour votre pays!",
-      "tips": "💡 Conseils pour la Liste de Courses\n\n• Ajoutez des ingrédients en ouvrant une recette et en cliquant sur 'Ajouter à la liste'\n• Les ingrédients sont regroupés automatiquement\n• Achetez en ligne et gagnez du temps!\n• La liste est mémorisée pour que vous puissiez faire vos courses quand vous voulez"
+      "tips": "💡 Conseils pour la Liste de Courses\n\n• Ajoutez des ingrédients en ouvrant une recette et en cliquant sur 'Ajouter à la liste'\n• Les ingrédients sont regroupés automatiquement\n• Achetez en ligne et gagnez du temps!\n• La liste est mémorisée pour que vous puissiez faire vos courses quand vous voulez",
+      "tourComplete": "Guide de la liste de courses terminé!"
     },
     "settings": {
       "welcome": "⚙️ Bienvenue dans les Paramètres!\n\nIci, vous pouvez personnaliser l'application selon vos besoins.\n\nVoyons surtout les paramètres de la machine.",
