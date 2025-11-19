@@ -354,10 +354,21 @@ const TipsPage = () => {
 
                     {/* Comments Section */}
                     <div className="p-4 border-t border-gray-200">
-                      <h4 className="font-bold text-gray-700 mb-3">💬 Svar ({tipComments.length})</h4>
+                      <div 
+                        className="flex items-center justify-between cursor-pointer hover:bg-gray-50 -mx-4 px-4 py-2 rounded-lg transition-colors"
+                        onClick={() => setCollapsedComments(prev => ({ ...prev, [tip.id]: !prev[tip.id] }))}
+                      >
+                        <h4 className="font-bold text-gray-700">💬 Svar ({tipComments.length})</h4>
+                        {collapsedComments[tip.id] ? (
+                          <FaChevronDown className="text-gray-400" size={16} />
+                        ) : (
+                          <FaChevronUp className="text-gray-400" size={16} />
+                        )}
+                      </div>
                       
                       {/* Comment List */}
-                      <div className="space-y-3 mb-4">
+                      {!collapsedComments[tip.id] && (
+                      <div className="space-y-3 mb-4 mt-3">
                         {tipComments.map((comment) => (
                           <div key={comment.id} className="bg-gray-50 rounded-lg p-3">
                             <div className="flex justify-between items-start mb-2">
