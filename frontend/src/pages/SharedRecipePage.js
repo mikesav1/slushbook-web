@@ -136,14 +136,22 @@ const SharedRecipePage = () => {
         ) : (
           <div className="flex flex-col sm:flex-row gap-3">
             <Button
-              onClick={() => navigate('/signup')}
+              onClick={() => {
+                // Save token to return after signup
+                localStorage.setItem('return_to_shared', token);
+                navigate('/signup');
+              }}
               className="bg-white text-blue-600 hover:bg-blue-50 font-semibold"
             >
               <FaUserPlus className="mr-2" />
               Opret konto for at gemme
             </Button>
             <Button
-              onClick={() => navigate('/login')}
+              onClick={() => {
+                // Save token to return after login
+                localStorage.setItem('return_to_shared', token);
+                navigate('/login');
+              }}
               variant="outline"
               className="border-white text-white hover:bg-white hover:bg-opacity-10"
             >
