@@ -1074,7 +1074,8 @@ async def login(request: LoginRequest, response: Response, http_request: Request
             "role": user_doc["role"],
             "picture": user_doc.get("picture"),
             "country": user_doc.get("country_preference", user_doc.get("country", "DK")),  # Read from country_preference first
-            "language": user_doc.get("language_preference", user_doc.get("language", "dk"))  # Read from language_preference first
+            "language": user_doc.get("language_preference", user_doc.get("language", "dk")),  # Read from language_preference first
+            "completed_tours": user_doc.get("completed_tours", [])  # Include completed tours
         },
         "session_token": session_token,
         "device_limit": {
