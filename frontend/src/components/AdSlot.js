@@ -202,9 +202,9 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
           onClick={handleClick}
           className={`block cursor-pointer overflow-hidden ${
             isBottomBanner 
-              ? 'rounded-xl shadow-md' 
-              : 'rounded-lg shadow-md hover:shadow-lg transition-shadow'
-          } bg-white border border-gray-200 active:scale-[0.98] ${
+              ? 'rounded-xl shadow-md bg-transparent border-0' 
+              : 'rounded-lg shadow-md hover:shadow-lg transition-shadow bg-white border border-gray-200'
+          } active:scale-[0.98] ${
             animating ? 'animate-zoom-in' : ''
           }`}
           style={{
