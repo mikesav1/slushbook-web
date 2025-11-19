@@ -11,9 +11,11 @@ import { Textarea } from '../components/ui/textarea';
 import { useAuth } from '../context/AuthContext';
 import OnboardingTooltip from '../components/OnboardingTooltip';
 import { addRecipePageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
+import { useTranslation } from 'react-i18next';
 
 const AddRecipePage = ({ sessionId }) => {
   const { user, updateCompletedTours } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [canAdd, setCanAdd] = useState(true);
   const [loading, setLoading] = useState(false);
