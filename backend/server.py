@@ -1315,6 +1315,122 @@ async def reset_password(request: ResetPasswordRequest):
     return {"message": "Password reset successful"}
 
 
+@api_router.post("/auth/google/session")
+async def process_google_session(request: Request, response: Response):
+    """Process Emergent Google OAuth session and create/link user account"""
+    try:
+        # Get session_id from header
+        session_id = request.headers.get("X-Session-ID")
+        if not session_id:
+            raise HTTPException(status_code=400, detail="Missing X-Session-ID header")
+        
+        # Exchange session_id for user data from Emergent Auth
+        import httpx
+        async with httpx.AsyncClient() as client:
+            auth_response = await client.get(
+                "https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data",
+                headers={"X-Session-ID": session_id},
+                timeout=10.0
+            )
+            
+            if auth_response.status_code != 200:
+                raise HTTPException(status_code=401, detail="Invalid session")
+            
+            google_user = auth_response.json()
+        
+        # Extract user info
+        email = google_user.get("email")
+        name = google_user.get("name")
+        google_id = google_user.get("id")
+        picture = google_user.get("picture")
+        emergent_session_token = google_user.get("session_token")
+        
+        if not email or not google_id:
+            raise HTTPException(status_code=400, detail="Missing user data from Google")
+        
+        # Check if user exists by email
+        existing_user = await db.users.find_one({"email": email}, {"_id": 0})
+        
+        if existing_user:
+            # Link Google account to existing user
+            user_id = existing_user["id"]
+            
+            # Update with Google info if not already set
+            update_fields = {}
+            if not existing_user.get("google_id"):
+                update_fields["google_id"] = google_id
+            if picture and not existing_user.get("profile_picture"):
+                update_fields["profile_picture"] = picture
+            
+            if update_fields:
+                await db.users.update_one(
+                    {"id": user_id},
+                    {"$set": update_fields}
+                )
+            
+            logger.info(f"Linked Google account to existing user: {email}")
+        else:
+            # Create new user account
+            user_id = str(uuid.uuid4())
+            new_user = {
+                "id": user_id,
+                "email": email,
+                "name": name or email.split("@")[0],
+                "google_id": google_id,
+                "profile_picture": picture,
+                "hashed_password": None,  # No password for Google-only users
+                "role": "guest",  # Regular user, not Pro
+                "country": None,
+                "created_at": datetime.now(timezone.utc).isoformat(),
+                "badge_level": None
+            }
+            
+            await db.users.insert_one(new_user)
+            logger.info(f"Created new user via Google OAuth: {email}")
+        
+        # Create our own session
+        session_token = secrets.token_urlsafe(32)
+        expires_at = datetime.now(timezone.utc) + timedelta(days=7)
+        
+        session = {
+            "id": str(uuid.uuid4()),
+            "session_token": session_token,
+            "user_id": user_id,
+            "expires_at": expires_at,
+            "created_at": datetime.now(timezone.utc),
+            "emergent_session_token": emergent_session_token  # Store Emergent's token too
+        }
+        
+        await db.user_sessions.insert_one(session)
+        
+        # Set httpOnly cookie
+        response.set_cookie(
+            key="session_token",
+            value=session_token,
+            httponly=True,
+            secure=True,
+            samesite="none",
+            max_age=7 * 24 * 60 * 60,  # 7 days
+            path="/"
+        )
+        
+        # Return user data
+        user = await db.users.find_one({"id": user_id}, {"_id": 0, "hashed_password": 0})
+        
+        return {
+            "token": session_token,
+            "user": user,
+            "message": "Google authentication successful"
+        }
+        
+    except httpx.RequestError as e:
+        logger.error(f"Error communicating with Emergent Auth: {e}")
+        raise HTTPException(status_code=503, detail="Authentication service unavailable")
+    except Exception as e:
+        logger.error(f"Error processing Google session: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @api_router.put("/auth/profile")
 async def update_profile(request: Request, update_data: dict):
     """Update user profile"""
