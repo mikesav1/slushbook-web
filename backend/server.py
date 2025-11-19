@@ -4381,6 +4381,126 @@ async def delete_ad(ad_id: str, request: Request):
 
 
 # ==========================================
+# BADGE MANAGEMENT
+# ==========================================
+
+class BadgeConfig(BaseModel):
+    level: str  # 'bronze', 'silver', 'gold', 'diamond'
+    min_recipes: int
+    image_url: Optional[str] = None
+    emoji: str
+    name: str
+    color_gradient: str
+
+@api_router.get("/admin/badges")
+async def get_badges(request: Request):
+    """Get all badge configurations (admin only)"""
+    user = await get_current_user(request, None, db)
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Kun admin har adgang")
+    
+    badges = await db.badges.find({}, {"_id": 0}).to_list(100)
+    
+    # If no badges exist, return defaults
+    if not badges:
+        badges = [
+            {
+                "level": "bronze",
+                "min_recipes": 10,
+                "image_url": None,
+                "emoji": "🥉",
+                "name": "Bronze Chef",
+                "color_gradient": "from-orange-300 via-amber-400 to-orange-500"
+            },
+            {
+                "level": "silver",
+                "min_recipes": 30,
+                "image_url": None,
+                "emoji": "🥈",
+                "name": "Sølv Chef",
+                "color_gradient": "from-gray-300 via-gray-400 to-gray-300"
+            },
+            {
+                "level": "gold",
+                "min_recipes": 40,
+                "image_url": None,
+                "emoji": "🥇",
+                "name": "Guld Chef",
+                "color_gradient": "from-yellow-300 via-yellow-400 to-yellow-500"
+            },
+            {
+                "level": "diamond",
+                "min_recipes": 50,
+                "image_url": None,
+                "emoji": "💎",
+                "name": "Diamant Chef",
+                "color_gradient": "from-purple-400 via-pink-400 to-purple-500"
+            }
+        ]
+    
+    return sorted(badges, key=lambda x: x['min_recipes'])
+
+@api_router.put("/admin/badges/{level}")
+async def update_badge(level: str, badge_data: dict, request: Request):
+    """Update badge configuration (admin only)"""
+    user = await get_current_user(request, None, db)
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Kun admin har adgang")
+    
+    # Validate level
+    if level not in ['bronze', 'silver', 'gold', 'diamond']:
+        raise HTTPException(status_code=400, detail="Ugyldigt badge level")
+    
+    # Update or insert badge config
+    result = await db.badges.update_one(
+        {"level": level},
+        {"$set": badge_data},
+        upsert=True
+    )
+    
+    return {"message": "Badge opdateret", "level": level}
+
+@api_router.post("/admin/badges/upload")
+async def upload_badge_image(level: str, file: UploadFile = File(...)):
+    """Upload custom badge image to Cloudinary (admin only)"""
+    try:
+        # Read file content
+        contents = await file.read()
+        
+        # Upload to Cloudinary
+        result = cloudinary.uploader.upload(
+            contents,
+            folder="badges",
+            public_id=f"badge_{level}_{uuid.uuid4().hex[:8]}",
+            resource_type="image"
+        )
+        
+        return {
+            "message": "Badge billede uploadet",
+            "image_url": result['secure_url'],
+            "level": level
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Upload fejl: {str(e)}")
+
+@api_router.get("/badges/config")
+async def get_public_badges():
+    """Get badge configurations for frontend (public)"""
+    badges = await db.badges.find({}, {"_id": 0}).to_list(100)
+    
+    # If no badges exist, return defaults
+    if not badges:
+        badges = [
+            {"level": "bronze", "min_recipes": 10, "emoji": "🥉", "name": "Bronze Chef", "color_gradient": "from-orange-300 via-amber-400 to-orange-500"},
+            {"level": "silver", "min_recipes": 30, "emoji": "🥈", "name": "Sølv Chef", "color_gradient": "from-gray-300 via-gray-400 to-gray-300"},
+            {"level": "gold", "min_recipes": 40, "emoji": "🥇", "name": "Guld Chef", "color_gradient": "from-yellow-300 via-yellow-400 to-yellow-500"},
+            {"level": "diamond", "min_recipes": 50, "emoji": "💎", "name": "Diamant Chef", "color_gradient": "from-purple-400 via-pink-400 to-purple-500"}
+        ]
+    
+    return sorted(badges, key=lambda x: x['min_recipes'])
+
+
+# ==========================================
 # GEOLOCATION & INTERNATIONALIZATION
 # ==========================================
 
