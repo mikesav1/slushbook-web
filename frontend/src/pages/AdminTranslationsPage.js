@@ -141,7 +141,7 @@ const AdminTranslationsPage = () => {
   // Handle add new key
   const handleAddKey = () => {
     if (!newKey || !newValue) {
-      toast.error('Udfyld både nøgle og værdi');
+      toast.error(t('admin.translations.addError'));
       return;
     }
     
@@ -150,7 +150,7 @@ const AdminTranslationsPage = () => {
     setShowAddModal(false);
     setNewKey('');
     setNewValue('');
-    toast.success('Ny nøgle tilføjet!');
+    toast.success(t('admin.translations.addSuccess'));
   };
 
   // Export translations
