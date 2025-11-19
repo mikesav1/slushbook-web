@@ -1069,3 +1069,69 @@ Tour guide var for stor på telefoner og fyldte hele skærmen. Ønskede at:
 ✅ Intuitive drag interaction works on all devices
 ✅ Maintains professional appearance on desktop
 
+
+## User Recipe Author Attribution - Completed
+
+**Date:** 2025-01-19
+**Status:** ✅ COMPLETED
+
+### User Request
+Restore the old version's author attribution for user-created recipes:
+1. Author badge with initials in top-left corner of recipe cards
+2. Author info ("Forfatter: [name]") on recipe detail page
+
+### Implementation
+
+#### RecipeCard Component:
+**Changes Made:**
+- ✅ Moved author badge from top-right to **top-left** corner (matching old version)
+- ✅ Increased badge size from w-10 h-10 to **w-12 h-12** for better visibility
+- ✅ Badge shows up to 2 initials from author name in uppercase
+- ✅ Gradient background: `from-cyan-500 to-blue-600` with white text
+- ✅ White border (2px) for better contrast against images
+- ✅ Hover effect: scale-110 transition
+- ✅ Clickable: redirects to `/recipes?author={author_id}` to see all recipes from that author
+
+**Display Logic:**
+- Only shown when:
+  - `recipe.is_published === true`
+  - `recipe.author !== 'system'`
+  - `recipe.author_name` exists
+
+#### RecipeDetailPage Component:
+**Existing Implementation Verified:**
+- ✅ "Forfatter:" label in gray (`text-gray-600`)
+- ✅ Circular avatar with gradient (`from-cyan-500 to-blue-600`)
+- ✅ Initials displayed in white (up to 2 characters)
+- ✅ Author name in cyan (`text-cyan-600`)
+- ✅ Clickable: navigates to filtered recipes by author
+- ✅ Positioned directly below recipe title
+
+### Visual Specifications
+**Colors:**
+- Badge background: Linear gradient from cyan-500 (#06B6D4) to blue-600 (#2563EB)
+- Border: White 2px solid
+- Text (initials): White
+- Author name: Cyan-600 (#0891B2)
+- "Forfatter:" label: Gray-600 (#4B5563)
+
+**Sizes:**
+- Recipe card badge: 48px × 48px (w-12 h-12)
+- Detail page avatar: 32px × 32px (w-8 h-8)
+
+### Testing
+✅ Created test user recipe "Kims Special Slush"
+✅ Verified badge appears in top-left corner of recipe card
+✅ Verified author info appears on recipe detail page
+✅ Verified clickable functionality to filter recipes by author
+✅ Verified visual styling matches old version
+
+### Files Modified
+- `/app/frontend/src/components/RecipeCard.js` (lines 88-119)
+
+### Impact
+- ✅ User-created recipes are now clearly distinguished from system recipes
+- ✅ Users can easily see who created a recipe
+- ✅ Click-through to see all recipes from same author
+- ✅ Visual consistency with previous version restored
+
