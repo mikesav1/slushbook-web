@@ -217,7 +217,7 @@ const AdSlot = ({ placement = 'bottom_banner' }) => {
             <img
               src={ad.image}
               alt={ad.title || 'Reklame'}
-              className={`w-full h-auto object-cover ${isBottomBanner ? 'max-h-12 sm:max-h-14 md:max-h-16' : ''}`}
+              className={`w-full h-auto ${isBottomBanner ? 'object-contain max-h-12 sm:max-h-14 md:max-h-16' : 'object-cover'}`}
               style={{ display: 'block' }}
               onError={(e) => {
                 console.error('Ad image failed to load during display:', ad.image);
