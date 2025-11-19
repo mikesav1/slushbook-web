@@ -176,67 +176,98 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          // Only allow closing via X button or skip button, not by clicking overlay
         }}
         style={{ pointerEvents: 'auto' }}
       />
       
-      {/* Tooltip - Always centered on screen */}
+      {/* Tooltip - Draggable and mobile-optimized */}
       <div
-        className="fixed z-[10000] bg-yellow-50 border-4 border-yellow-400 rounded-2xl shadow-2xl p-6 w-[90%] max-w-md"
+        ref={tooltipRef}
+        className={`fixed z-[10000] bg-yellow-50 border-4 border-yellow-400 rounded-2xl shadow-2xl ${
+          isMobile 
+            ? 'w-[85%] max-h-[75vh]' // Mobile: smaller width and max height
+            : 'w-[90%] max-w-md max-h-[85vh]' // Desktop: normal size
+        } overflow-y-auto ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
         style={{
-          top: '50%',
+          top: isMobile ? '50%' : '50%',
           left: '50%',
-          transform: 'translate(-50%, -50%)'
+          transform: `translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px))`,
+          touchAction: 'none',
+          transition: isDragging ? 'none' : 'transform 0.3s ease'
         }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onMouseDown={handleMouseDown}
       >
-        {/* Close button */}
-        <button
-          onClick={onSkip}
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl font-bold leading-none"
-          aria-label="Luk"
-        >
-          ×
-        </button>
-        
-        {/* Content */}
-        <div className="text-gray-800 mb-5 text-lg font-medium leading-relaxed whitespace-pre-line">
-          {step.content}
-        </div>
-        
-        {/* Buttons */}
-        <div className="flex flex-col gap-3">
-          <div className="flex justify-between items-center gap-3">
-            {/* Step indicator */}
-            <span className="text-sm text-gray-600 font-semibold">
-              {currentStep + 1} / {steps.length}
+        {/* Drag handle area - visual indicator */}
+        <div className="drag-handle bg-yellow-100 rounded-t-xl py-2 px-4 flex items-center justify-between border-b-2 border-yellow-300 cursor-grab active:cursor-grabbing">
+          <div className="flex items-center gap-2">
+            <div className="flex gap-1">
+              <div className="w-1 h-4 bg-yellow-400 rounded"></div>
+              <div className="w-1 h-4 bg-yellow-400 rounded"></div>
+              <div className="w-1 h-4 bg-yellow-400 rounded"></div>
+            </div>
+            <span className="text-xs text-gray-500 font-medium">
+              {isMobile ? '👆 Hold og træk for at flytte' : '🖱️ Træk for at flytte'}
             </span>
-            
-            {/* Next/Done button */}
-            {isLast ? (
-              <button
-                onClick={onFinish}
-                className="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
-              >
-                Færdig ✓
-              </button>
-            ) : (
-              <button
-                onClick={onNext}
-                className="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
-              >
-                Næste →
-              </button>
-            )}
           </div>
           
-          {/* Skip button */}
+          {/* Close button */}
           <button
             onClick={onSkip}
-            className="text-sm text-gray-500 hover:text-gray-700 text-center py-2"
+            className="text-gray-500 hover:text-gray-700 text-2xl font-bold leading-none p-1"
+            aria-label="Luk"
           >
-            Spring over (kan genstartes under Indstillinger ⚙️)
+            ×
           </button>
+        </div>
+
+        {/* Content area */}
+        <div className={`${isMobile ? 'p-4' : 'p-6'}`}>
+          {/* Step indicator at top */}
+          <div className="text-xs text-gray-500 font-semibold mb-3 text-center">
+            Trin {currentStep + 1} af {steps.length}
+          </div>
+          
+          {/* Content */}
+          <div className={`text-gray-800 mb-4 ${isMobile ? 'text-base' : 'text-lg'} font-medium leading-relaxed whitespace-pre-line`}>
+            {step.content}
+          </div>
+          
+          {/* Buttons */}
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-between items-center gap-2">
+              {/* Next/Done button */}
+              {isLast ? (
+                <button
+                  onClick={onFinish}
+                  className={`flex-1 bg-yellow-500 hover:bg-yellow-600 text-white ${
+                    isMobile ? 'px-4 py-2.5 text-base' : 'px-8 py-3 text-lg'
+                  } rounded-xl font-bold shadow-lg hover:shadow-xl transition-all`}
+                >
+                  Færdig ✓
+                </button>
+              ) : (
+                <button
+                  onClick={onNext}
+                  className={`flex-1 bg-yellow-500 hover:bg-yellow-600 text-white ${
+                    isMobile ? 'px-4 py-2.5 text-base' : 'px-8 py-3 text-lg'
+                  } rounded-xl font-bold shadow-lg hover:shadow-xl transition-all`}
+                >
+                  Næste →
+                </button>
+              )}
+            </div>
+            
+            {/* Skip button */}
+            <button
+              onClick={onSkip}
+              className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-500 hover:text-gray-700 text-center py-2`}
+            >
+              Spring over {!isMobile && '(kan genstartes under Indstillinger ⚙️)'}
+            </button>
+          </div>
         </div>
       </div>
     </>
