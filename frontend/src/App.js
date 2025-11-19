@@ -504,7 +504,7 @@ const AppContent = ({ sessionId }) => {
       {!isAuthPage && (
         <div className="lg:hidden border-t border-gray-200 bg-white fixed bottom-0 left-0 right-0 z-40 shadow-lg">
           <div className="grid grid-cols-5 gap-1 p-2">
-            {/* Hjem */}
+            {/* Home */}
             <Link
               to="/"
               className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
@@ -512,10 +512,10 @@ const AppContent = ({ sessionId }) => {
               }`}
             >
               <FaHome size={18} />
-              <span className="text-xs font-medium">Hjem</span>
+              <span className="text-xs font-medium">{t('nav.home')}</span>
             </Link>
             
-            {/* Opskrifter */}
+            {/* Recipes */}
             <Link
               to="/recipes"
               className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
@@ -523,7 +523,7 @@ const AppContent = ({ sessionId }) => {
               }`}
             >
               <FaBook size={18} />
-              <span className="text-xs font-medium">Opskrifter</span>
+              <span className="text-xs font-medium">{t('nav.recipes')}</span>
             </Link>
             
             {/* Match */}
