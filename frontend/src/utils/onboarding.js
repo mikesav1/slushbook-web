@@ -54,15 +54,46 @@ export const markTourCompleted = async (tourKey, API, updateCompletedTours) => {
 };
 
 // Reset all tours (for testing)
-export const resetAllTours = () => {
+export const resetAllTours = async (API) => {
   Object.values(TOUR_KEYS).forEach(key => {
     localStorage.removeItem(key);
   });
+  
+  // Reset in backend too
+  if (API) {
+    try {
+      await fetch(`${API}/users/reset-tours`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include'
+      });
+    } catch (error) {
+      console.error('Failed to reset tours in backend:', error);
+    }
+  }
 };
 
 // Reset individual tour
-export const resetTour = (tourKey) => {
+export const resetTour = async (tourKey, API) => {
   localStorage.removeItem(tourKey);
+  
+  // Reset in backend too
+  if (API) {
+    try {
+      await fetch(`${API}/users/reset-tour`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ tour_id: tourKey })
+      });
+    } catch (error) {
+      console.error('Failed to reset tour in backend:', error);
+    }
+  }
 };
 
 // HomePage Tour Steps - Function to include user's first name
