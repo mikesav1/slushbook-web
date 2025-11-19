@@ -191,6 +191,11 @@ export function getUserLanguage() {
 export async function setUserLanguage(languageCode) {
   localStorage.setItem('user_language', languageCode);
   
+  // Update i18next language
+  if (window.i18n) {
+    window.i18n.changeLanguage(languageCode);
+  }
+  
   // Also save to backend for logged-in users
   try {
     await fetch(`${API}/api/user/preferences`, {
