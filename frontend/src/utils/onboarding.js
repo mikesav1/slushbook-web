@@ -187,26 +187,26 @@ export const shoppingListPageSteps = [
 // Settings Page Tour Steps (Machine setup)
 export const settingsPageSteps = [
   {
-    content: '⚙️ Velkommen til Indstillinger!\n\nHer kan du tilpasse appen til dine behov.\n\nLad os især se på maskin-indstillingerne.'
+    content: i18n.t('tour.settings.welcome')
   },
   {
     target: '[data-tour="machine-section"]',
-    content: '🧊 Dine slush-maskiner\n\nHer kan du tilføje og administrere dine slush-maskiner.\n\nNår du har indstillet din maskine, skaleres opskrifter automatisk til den rigtige størrelse!'
+    content: i18n.t('tour.settings.step1')
   },
   {
     target: '[data-tour="add-machine-button"]',
-    content: '➕ Tilføj maskine\n\nKlik her for at tilføje en ny maskine.\n\nIndtast navn og tank-volumen (f.eks. 12000 ml).\n\nDette gør opskrifter perfekte til din maskine!'
+    content: i18n.t('tour.settings.step2')
   },
   {
     target: '[data-tour="restart-tours-button"]',
-    content: '🔄 Genstart guider\n\nHar du brug for at se guiderne igen?\n\nKlik her for at nulstille alle onboarding-tours og se dem forfra.'
+    content: i18n.t('tour.settings.step3')
   },
   {
     target: '[data-tour="guide-link"]',
-    content: '📖 Fuld vejledning\n\nKlik på dette link for at læse den komplette vejledning til SLUSHBOOK.\n\nHer finder du detaljerede instruktioner, tips og tricks til alle funktioner!'
+    content: i18n.t('tour.settings.step4')
   },
   {
-    content: '💡 Andre indstillinger\n\n• Administrer dine enheder og log ud fra specifikke enheder\n• Vælg dit land for relevante produktlinks\n• Se dine gratis-limits (hvor mange opskrifter du kan oprette)\n• Alle dine indstillinger gemmes automatisk'
+    content: i18n.t('tour.settings.tips')
   }
 ];
 
