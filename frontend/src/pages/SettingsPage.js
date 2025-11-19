@@ -29,6 +29,7 @@ const SettingsPage = ({ sessionId }) => {
     loss_margin_pct: 5
   });
   const [selectedCountry, setSelectedCountry] = useState(getUserCountry());
+  const [selectedLanguage, setSelectedLanguage] = useState(getUserLanguage());
   const [detectingCountry, setDetectingCountry] = useState(false);
   const [devices, setDevices] = useState([]);
   const [deviceLimits, setDeviceLimits] = useState({ current: 0, max: 1 });
