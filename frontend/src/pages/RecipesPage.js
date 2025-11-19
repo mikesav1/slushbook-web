@@ -451,7 +451,7 @@ const RecipesPage = ({ sessionId }) => {
           >
             <FaFilter />
             <span className="font-medium">
-              {showMyRecipes ? 'Viser egne opskrifter' : 'Vis egne opskrifter'}
+              {showMyRecipes ? t('recipes.myRecipes') : t('recipes.showMyRecipes')}
             </span>
           </button>
         </div>
