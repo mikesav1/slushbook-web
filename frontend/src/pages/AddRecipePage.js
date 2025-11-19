@@ -47,7 +47,7 @@ const AddRecipePage = ({ sessionId }) => {
 
   // Start tour if coming from RecipesPage
   useEffect(() => {
-    if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.ADD_RECIPE) && isTourCompleted(TOUR_KEYS.RECIPES)) {
+    if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.ADD_RECIPE, user) && isTourCompleted(TOUR_KEYS.RECIPES, user)) {
       console.log('[Tour] Starting add recipe tour...');
       setTimeout(() => {
         setCurrentTourStep(0);
@@ -60,12 +60,12 @@ const AddRecipePage = ({ sessionId }) => {
   };
 
   const handleTourSkip = () => {
-    markTourCompleted(TOUR_KEYS.ADD_RECIPE);
+    markTourCompleted(TOUR_KEYS.ADD_RECIPE, API);
     setCurrentTourStep(-1);
   };
 
   const handleTourFinish = () => {
-    markTourCompleted(TOUR_KEYS.ADD_RECIPE);
+    markTourCompleted(TOUR_KEYS.ADD_RECIPE, API);
     setCurrentTourStep(-1);
     toast.success('🎉 Tour færdig! Du er klar til at bruge appen!');
     // Optionally navigate back to recipes
