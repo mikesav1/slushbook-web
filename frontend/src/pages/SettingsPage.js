@@ -67,7 +67,7 @@ const SettingsPage = ({ sessionId }) => {
   const handleTourFinish = () => {
     markTourCompleted(TOUR_KEYS.SETTINGS, API, updateCompletedTours);
     setCurrentTourStep(-1);
-    toast.success('Indstillinger guide færdig!');
+    toast.success(t('settings.settingsTourComplete'));
   };
   
   const fetchDevices = async () => {
