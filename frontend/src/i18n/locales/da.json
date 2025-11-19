@@ -277,7 +277,17 @@
     "publishing_": "Publicerer...",
     "cancel": "Annuller",
     "limitReached": "Du har nået grænsen for gratis opskrifter",
-    "upgradePrompt": "Opgrader for at tilføje flere"
+    "upgradePrompt": "Opgrader for at tilføje flere",
+    "tourComplete": "🎉 Tour færdig! Du er klar til at bruge appen!",
+    "createError": "Kunne ikke oprette opskrift",
+    "createYourOwn": "Opret din egen slushice opskrift",
+    "imageLimit": "Maks 5MB - JPG, PNG",
+    "sugarLevel": "Sukkergrad (°Bx)",
+    "clickForInfo": "Klik for mere information",
+    "sugarContent": "Sukkerindhold",
+    "brixInfo": "Brix måler sukkerindholdet i din opskrift.",
+    "brixRecommended": "Anbefalet: 13-15°Bx for god konsistens.",
+    "readMoreBrix": "Læs mere om Brix →"
   },
   "matchFinder": {
     "title": "Match-Finder",
