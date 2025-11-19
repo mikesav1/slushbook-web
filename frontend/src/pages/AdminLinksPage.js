@@ -41,11 +41,18 @@ const AdminLinksPage = () => {
     try {
       setLoading(true);
       
+      console.log('Fetching mappings from:', `${REDIRECT_API}/admin/mappings`);
+      
       // Fetch all mappings using the new endpoint
       const response = await axios.get(
         `${REDIRECT_API}/admin/mappings`,
-        { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
+        { 
+          headers: { Authorization: `Bearer ${ADMIN_TOKEN}` },
+          withCredentials: true
+        }
       );
+      
+      console.log('Mappings response:', response.data.length, 'mappings found');
       
       // For each mapping, fetch its options with delay to avoid rate limiting
       const allData = [];
@@ -54,29 +61,38 @@ const AdminLinksPage = () => {
         try {
           // Add small delay between requests to avoid 429
           if (i > 0) {
-            await new Promise(resolve => setTimeout(resolve, 200));
+            await new Promise(resolve => setTimeout(resolve, 100)); // Reduced from 200ms to 100ms
           }
           
           const optionsResponse = await axios.get(
             `${REDIRECT_API}/admin/mapping/${mapping.id}`,
-            { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }
+            { 
+              headers: { Authorization: `Bearer ${ADMIN_TOKEN}` },
+              withCredentials: true
+            }
           );
           if (optionsResponse.data) {
             allData.push(optionsResponse.data);
+            console.log(`Fetched mapping ${i+1}/${response.data.length}: ${mapping.name}`);
           }
         } catch (error) {
-          console.log(`Error fetching options for ${mapping.name}:`, error.message);
+          console.error(`Error fetching options for ${mapping.name}:`, error);
+          // Still add mapping without options
+          allData.push({ mapping, options: [] });
         }
       }
       
+      console.log('Final allData:', allData.length, 'mappings with options');
       setMappings(allData);
       
       if (allData.length === 0) {
         toast.info('Ingen mappings fundet. Tilføj din første!');
+      } else {
+        toast.success(`Hentet ${allData.length} produkt-links`);
       }
     } catch (error) {
       console.error('Error fetching mappings:', error);
-      toast.error('Kunne ikke hente produkt-links');
+      toast.error(`Kunne ikke hente produkt-links: ${error.message}`);
     } finally {
       setLoading(false);
     }
