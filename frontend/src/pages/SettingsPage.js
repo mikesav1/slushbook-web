@@ -452,6 +452,10 @@ const SettingsPage = ({ sessionId }) => {
               ))}
             </div>
           </div>
+          
+          <div className="p-3 bg-blue-50 rounded-lg text-sm text-gray-700 mt-4">
+            <strong>💡 Tip:</strong> Dit land bruges til at vise relevante produktlinks når du klikker på "Indkøb" knapper.
+          </div>
         </div>
       </div>
 
