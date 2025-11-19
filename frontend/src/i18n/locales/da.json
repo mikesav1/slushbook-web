@@ -125,7 +125,18 @@
     "eggs": "Æg",
     "citrus": "Citrus",
     "browseByCategory": "Gennemse efter kategori",
-    "recipesFound": "{{count}} opskrifter fundet"
+    "recipesFound": "{{count}} opskrifter fundet",
+    "advancedIngredientSearch": "Avanceret Ingrediens-søgning",
+    "filtersActive": "filtre aktive",
+    "quickExcludeLabel": "Hurtig udelukkelse (klik for at udelukke allergen-gruppe)",
+    "excludeAllergen": "Udeluk",
+    "mustIncludeLabel": "Skal indeholde (skriv eller vælg fra listen)",
+    "mustNotIncludeLabel": "Må ikke indeholde (skriv eller vælg fra listen)",
+    "ingredientPlaceholder": "f.eks. jordbær, citron...",
+    "excludeIngredientPlaceholder": "f.eks. mælk, nødder...",
+    "typeFilter": "Type filter",
+    "browseByType": "Gennemse efter type",
+    "showingResults": "Viser {{count}} resultater"
   },
   "settings": {
     "title": "Indstillinger",
