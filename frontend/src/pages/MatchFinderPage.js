@@ -91,7 +91,7 @@ const MatchFinderPage = ({ sessionId }) => {
   const removeIngredient = async (itemId) => {
     try {
       await axios.delete(`${API}/pantry/${sessionId}/${itemId}`);
-      toast.success('Ingrediens fjernet');
+      toast.success(t('matchFinder.ingredientRemoved', 'Ingrediens fjernet'));
       
       // Clear matches since pantry changed
       setMatches(null);
@@ -99,7 +99,7 @@ const MatchFinderPage = ({ sessionId }) => {
       checkPantry(); // Refresh pantry count
     } catch (error) {
       console.error('Error removing ingredient:', error);
-      toast.error('Kunne ikke fjerne ingrediens');
+      toast.error(t('matchFinder.removeError', 'Kunne ikke fjerne ingrediens'));
     }
   };
 
