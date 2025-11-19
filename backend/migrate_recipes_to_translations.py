@@ -20,7 +20,8 @@ async def migrate_recipes():
     """Migrate all system recipes to new translation structure"""
     
     client = AsyncIOMotorClient(MONGO_URL)
-    db = client.get_default_database()
+    # Use explicit database name - adjust if needed
+    db = client.slushbook if 'slushbook' not in MONGO_URL else client.get_default_database()
     
     print("🔄 Starting recipe migration to translation structure...")
     
