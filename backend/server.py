@@ -2238,6 +2238,45 @@ async def create_recipe(recipe_data: RecipeCreate, request: Request):
     
     await db.user_recipes.insert_one(doc)
     
+    # Check for badge achievement (only for registered users, not guests)
+    if user and user.id == author_id:
+        try:
+            # Get user's previous badge info
+            user_doc = await db.users.find_one({"id": user.id}, {"_id": 0, "badge_level": 1})
+            previous_badge = user_doc.get("badge_level") if user_doc else None
+            
+            # Calculate current badge
+            badge_info = await calculate_user_badge(user.id)
+            current_badge = badge_info.get("current_badge")
+            
+            # Check if user earned a new badge
+            if current_badge and current_badge["level"] != previous_badge:
+                # Update user's badge in database
+                await db.users.update_one(
+                    {"id": user.id},
+                    {"$set": {
+                        "badge_level": current_badge["level"],
+                        "badge_earned_at": datetime.now(timezone.utc).isoformat()
+                    }}
+                )
+                
+                # Send notification about new badge
+                await create_notification(
+                    user_id=user.id,
+                    type="system",
+                    title=f"🏆 Nyt Badge Optjent!",
+                    message=f'Tillykke! Du har optjent "{current_badge["name"]}" badge {current_badge["emoji"]}',
+                    link="/profile",
+                    data={
+                        "badge_level": current_badge["level"],
+                        "recipe_count": badge_info["recipe_count"]
+                    }
+                )
+                
+                logger.info(f"User {user.email} earned badge: {current_badge['level']}")
+        except Exception as e:
+            logger.error(f"Failed to check badge achievement: {e}")
+    
     # Create notification for all pro users when a new recipe is published
     if recipe.is_published and recipe.approval_status == 'approved':
         try:
