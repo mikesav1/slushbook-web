@@ -2564,6 +2564,9 @@ async def get_favorites(
             recipe['created_at'] = datetime.fromisoformat(recipe['created_at'])
         recipe['is_favorite'] = True
     
+    # Apply translations (use 'da' as default for favorites)
+    all_recipes = [apply_translation(recipe, "da") for recipe in all_recipes]
+    
     return all_recipes
 
 @api_router.post("/favorites")
