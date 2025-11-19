@@ -125,7 +125,18 @@
     "eggs": "Œufs",
     "citrus": "Agrumes",
     "browseByCategory": "Parcourir par catégorie",
-    "recipesFound": "{{count}} recettes trouvées"
+    "recipesFound": "{{count}} recettes trouvées",
+    "advancedIngredientSearch": "Recherche avancée d'ingrédients",
+    "filtersActive": "filtres actifs",
+    "quickExcludeLabel": "Exclusion rapide (cliquez pour exclure un groupe d'allergènes)",
+    "excludeAllergen": "Exclure",
+    "mustIncludeLabel": "Doit inclure (tapez ou sélectionnez dans la liste)",
+    "mustNotIncludeLabel": "Ne doit pas inclure (tapez ou sélectionnez dans la liste)",
+    "ingredientPlaceholder": "par ex. fraise, citron...",
+    "excludeIngredientPlaceholder": "par ex. lait, noix...",
+    "typeFilter": "Filtre de type",
+    "browseByType": "Parcourir par type",
+    "showingResults": "Affichage de {{count}} résultats"
   },
   "settings": {
     "title": "Paramètres",
