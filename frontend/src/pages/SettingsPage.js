@@ -466,7 +466,7 @@ const SettingsPage = ({ sessionId }) => {
         <div className="bg-yellow-50 rounded-2xl p-6 shadow-sm border border-yellow-200 mt-6">
           <div className="flex items-center gap-2 mb-4">
             <FaQuestionCircle className="text-yellow-600 text-xl" />
-            <h2 className="text-2xl font-bold">Guider & Hjælp</h2>
+            <h2 className="text-2xl font-bold">{t('settings.guides')}</h2>
           </div>
           
           {/* Tips & Tricks Link */}
@@ -488,7 +488,7 @@ const SettingsPage = ({ sessionId }) => {
           </Link>
 
           <p className="text-gray-700 mb-4">
-            Første gang du brugte appen, fik du vist gule guider. Hvis du vil se dem igen, kan du genstarte dem her.
+            {t('settings.guidesDesc')}
           </p>
           
           {/* Reset All Tours Button */}
