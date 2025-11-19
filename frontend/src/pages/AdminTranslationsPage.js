@@ -39,14 +39,12 @@ const AdminTranslationsPage = () => {
   const loadAllTranslations = async () => {
     setLoading(true);
     try {
+      const token = localStorage.getItem('session_token');
       const loadedTranslations = {};
       
       for (const lang of Object.keys(LANGUAGES)) {
         const response = await axios.get(`${API}/admin/translations/${lang}`, {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json'
-          }
+          headers: { Authorization: `Bearer ${token}` }
         });
         loadedTranslations[lang] = response.data.translations;
       }
