@@ -36,6 +36,7 @@ class User(BaseModel):
     role: str = "guest"  # guest, pro, editor, admin
     picture: Optional[str] = None
     created_at: datetime
+    completed_tours: list[str] = Field(default_factory=list)  # List of completed tour IDs
 
 
 class UserInDB(User):
