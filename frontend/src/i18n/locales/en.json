@@ -421,7 +421,8 @@
       "welcome": "🛒 Welcome to your Shopping List!\n\nHere you'll find all ingredients you've added from recipes.\n\nLet's see what you can do.",
       "step1": "✅ Check off purchased items\n\nClick the checkbox to mark an ingredient as purchased.\n\nPurchased items disappear from the list.",
       "step2": "🏪 Buy online\n\nClick 'Shop at...' to buy the ingredient directly from a supplier.\n\nWe automatically show the best price for your country!",
-      "tips": "💡 Tips for Shopping List\n\n• Add ingredients by opening a recipe and clicking 'Add to List'\n• Ingredients are grouped automatically\n• Buy online and save time!\n• The list is remembered so you can shop when you want"
+      "tips": "💡 Tips for Shopping List\n\n• Add ingredients by opening a recipe and clicking 'Add to List'\n• Ingredients are grouped automatically\n• Buy online and save time!\n• The list is remembered so you can shop when you want",
+      "tourComplete": "Shopping list guide complete!"
     },
     "settings": {
       "welcome": "⚙️ Welcome to Settings!\n\nHere you can customize the app to your needs.\n\nLet's especially look at the machine settings.",
