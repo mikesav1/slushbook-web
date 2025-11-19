@@ -54,51 +54,50 @@ const GuidePage = () => {
         {/* Features */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-            <FaBook className="text-cyan-600" /> Opskrifter
+            <FaBook className="text-cyan-600" /> {t('guide.recipesTitle')}
           </h2>
           <div className="space-y-4 text-gray-700 ml-4">
             <div>
-              <h3 className="font-semibold text-lg mb-2">Find opskrifter</h3>
-              <p>Gå til "Opskrifter" i menuen og brug filtrene til at finde præcis det, du leder efter:</p>
+              <h3 className="font-semibold text-lg mb-2">{t('guide.findRecipes')}</h3>
+              <p>{t('guide.findRecipesDesc')}</p>
               <ul className="list-disc pl-6 mt-2 space-y-1">
-                <li>Filtrer efter type (slush, smoothie, cocktail, osv.)</li>
-                <li>Vælg med eller uden alkohol</li>
-                <li>Søg på navn eller ingredienser</li>
-                <li><strong>🆕 Avanceret søgning:</strong> Inkluder/ekskluder specifikke ingredienser</li>
-                <li><strong>🆕 Allergenfiltre:</strong> Hurtigvalg for mælk, nødder, gluten, citrus, m.m.</li>
+                <li>{t('guide.filterType')}</li>
+                <li>{t('guide.filterAlcohol')}</li>
+                <li>{t('guide.searchNameIngredients')}</li>
+                <li><strong>{t('guide.advancedSearch')}</strong> {t('guide.advancedSearchDesc')}</li>
+                <li><strong>{t('guide.allergenFilters')}</strong> {t('guide.allergenFiltersDesc')}</li>
               </ul>
             </div>
 
             <div>
-              <h3 className="font-semibold text-lg mb-2">🆕 Kommentarer og anmeldelser</h3>
-              <p>Del dine erfaringer med andre brugere:</p>
+              <h3 className="font-semibold text-lg mb-2">{t('guide.commentsReviews')}</h3>
+              <p>{t('guide.commentsReviewsDesc')}</p>
               <ul className="list-disc pl-6 mt-2 space-y-1">
-                <li>Bedøm opskrifter med stjerner (1-5)</li>
-                <li>Skriv kommentarer og tips til andre</li>
-                <li>Se hvad andre synes om opskrifterne</li>
-                <li>PRO brugere kan kommentere ubegrænset</li>
+                <li>{t('guide.rateRecipes')}</li>
+                <li>{t('guide.writeComments')}</li>
+                <li>{t('guide.seeOthersOpinions')}</li>
+                <li>{t('guide.proUnlimitedComments')}</li>
               </ul>
             </div>
 
             <div>
-              <h3 className="font-semibold text-lg mb-2">🆕 Se forfattere</h3>
+              <h3 className="font-semibold text-lg mb-2">{t('guide.seeAuthors')}</h3>
               <p>
-                På opskriftskort kan du se forfatterens initialer. Klik på forfatternavnet på detaljesiden for at se deres profil og andre opskrifter.
+                {t('guide.seeAuthorsDesc')}
               </p>
             </div>
 
             <div>
-              <h3 className="font-semibold text-lg mb-2">Skalering</h3>
+              <h3 className="font-semibold text-lg mb-2">{t('guide.scaling')}</h3>
               <p>
-                Hver opskrift kan automatisk skaleres til den mængde, du har brug for. 
-                Klik på en opskrift, og brug skaleringsværktøjet til at justere volumenet.
+                {t('guide.scalingDesc')}
               </p>
             </div>
 
             <div>
-              <h3 className="font-semibold text-lg mb-2">Tilføj egne opskrifter</h3>
+              <h3 className="font-semibold text-lg mb-2">{t('guide.addOwnRecipes')}</h3>
               <p>
-                Gratis brugere kan tilføje op til 2 opskrifter. Pro brugere har ubegrænset adgang.
+                {t('guide.addOwnRecipesDesc')}
               </p>
               
               {/* Copyright Notice */}
@@ -106,18 +105,18 @@ const GuidePage = () => {
                 <div className="flex items-start gap-3">
                   <span className="text-2xl">⚠️</span>
                   <div>
-                    <h4 className="font-bold text-amber-900 mb-2">Vigtigt om billeder og copyright</h4>
+                    <h4 className="font-bold text-amber-900 mb-2">{t('guide.copyrightNoticeTitle')}</h4>
                     <p className="text-sm text-amber-800 mb-2">
-                      Når du uploader billeder til dine opskrifter, skal du være opmærksom på følgende:
+                      {t('guide.copyrightNoticeDesc')}
                     </p>
                     <ul className="list-disc pl-5 text-sm text-amber-800 space-y-1">
-                      <li><strong>Brug kun egne billeder</strong> eller billeder du har rettighederne til</li>
-                      <li>Du må <strong>ikke</strong> uploade billeder fra internettet uden tilladelse fra rettighedshaveren</li>
-                      <li>Når du gør en opskrift <strong>offentlig</strong>, skal du bekræfte at du har rettighederne til billedet</li>
-                      <li>Private opskrifter kræver ingen særlig bekræftelse</li>
+                      <li><strong>{t('guide.useOwnImages')}</strong></li>
+                      <li>{t('guide.noInternetImages')}</li>
+                      <li>{t('guide.publicRecipeConfirm')}</li>
+                      <li>{t('guide.privateNoConfirm')}</li>
                     </ul>
                     <p className="text-xs text-amber-700 mt-3 italic">
-                      Ved at dele opskrifter med egne billeder beskytter du både dig selv og SLUSHBOOK mod copyright-krænkelser.
+                      {t('guide.copyrightProtection')}
                     </p>
                   </div>
                 </div>
