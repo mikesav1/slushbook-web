@@ -14,7 +14,12 @@
     "filter": "Filter",
     "sort": "Sort",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "latest": "Latest",
+    "popular": "Popular",
+    "all": "All",
+    "showMore": "Show more",
+    "showLess": "Show less"
   },
   "nav": {
     "home": "Home",
@@ -67,7 +72,25 @@
     "difficulty": "Difficulty",
     "type": "Type",
     "noRecipes": "No recipes found",
-    "searchPlaceholder": "Search for recipes..."
+    "searchPlaceholder": "Search for recipes...",
+    "systemRecipes": "System Recipes",
+    "userRecipes": "User Recipes",
+    "steps": "Steps",
+    "color": "Color",
+    "sugarLevel": "Sugar level",
+    "filterByType": "Filter by type",
+    "filterByColor": "Filter by colour",
+    "sortBy": "Sort by",
+    "alphabetical": "Alphabetical",
+    "newest": "Newest",
+    "rating": "Rating",
+    "showFilters": "Show filters",
+    "hideFilters": "Hide filters",
+    "clearFilters": "Clear filters",
+    "author": "Author",
+    "comments": "Comments",
+    "addComment": "Add comment",
+    "writeComment": "Write a comment..."
   },
   "settings": {
     "title": "Settings",

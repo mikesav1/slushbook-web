@@ -14,7 +14,12 @@
     "filter": "Filtrer",
     "sort": "Trier",
     "yes": "Oui",
-    "no": "Non"
+    "no": "Non",
+    "latest": "Récent",
+    "popular": "Populaire",
+    "all": "Tout",
+    "showMore": "Voir plus",
+    "showLess": "Voir moins"
   },
   "nav": {
     "home": "Accueil",
@@ -67,7 +72,25 @@
     "difficulty": "Difficulté",
     "type": "Type",
     "noRecipes": "Aucune recette trouvée",
-    "searchPlaceholder": "Rechercher des recettes..."
+    "searchPlaceholder": "Rechercher des recettes...",
+    "systemRecipes": "Recettes système",
+    "userRecipes": "Recettes utilisateur",
+    "steps": "Étapes",
+    "color": "Couleur",
+    "sugarLevel": "Niveau de sucre",
+    "filterByType": "Filtrer par type",
+    "filterByColor": "Filtrer par couleur",
+    "sortBy": "Trier par",
+    "alphabetical": "Alphabétique",
+    "newest": "Plus récent",
+    "rating": "Évaluation",
+    "showFilters": "Afficher les filtres",
+    "hideFilters": "Masquer les filtres",
+    "clearFilters": "Effacer les filtres",
+    "author": "Auteur",
+    "comments": "Commentaires",
+    "addComment": "Ajouter un commentaire",
+    "writeComment": "Écrire un commentaire..."
   },
   "settings": {
     "title": "Paramètres",
