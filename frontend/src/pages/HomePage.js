@@ -37,7 +37,7 @@ const HomePage = ({ sessionId }) => {
 
   // Start tour for new pro users (first visit)
   useEffect(() => {
-    if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.HOME)) {
+    if (user && user.role !== 'guest' && !isTourCompleted(TOUR_KEYS.HOME, user)) {
       console.log('[Tour] Starting home tour...');
       // Small delay to ensure page is fully loaded
       setTimeout(() => {
@@ -51,12 +51,12 @@ const HomePage = ({ sessionId }) => {
   };
 
   const handleTourSkip = () => {
-    markTourCompleted(TOUR_KEYS.HOME);
+    markTourCompleted(TOUR_KEYS.HOME, API);
     setCurrentTourStep(-1);
   };
 
   const handleTourFinish = () => {
-    markTourCompleted(TOUR_KEYS.HOME);
+    markTourCompleted(TOUR_KEYS.HOME, API);
     setCurrentTourStep(-1);
     
     // Navigate to Recipes page to continue tour
