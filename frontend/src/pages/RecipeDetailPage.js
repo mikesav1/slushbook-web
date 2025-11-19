@@ -1232,6 +1232,101 @@ const RecipeDetailPage = ({ sessionId }) => {
         </>
         )}
       </div>
+      
+      {/* Share Modal */}
+      {showShareModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-2xl font-bold">Del Opskrift</h3>
+              <button
+                onClick={() => {
+                  setShowShareModal(false);
+                  setLinkCopied(false);
+                }}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <FaTimes size={20} />
+              </button>
+            </div>
+
+            {shareLoading ? (
+              <div className="text-center py-8">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <p className="text-gray-600">Opretter delingslink...</p>
+              </div>
+            ) : (
+              <>
+                <div className="mb-4">
+                  <p className="text-gray-600 text-sm mb-3">
+                    Del denne opskrift med venner og familie. De kan se opskriften uden at logge ind.
+                  </p>
+                  
+                  <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={shareLink}
+                        readOnly
+                        className="flex-1 bg-transparent text-sm text-gray-700 outline-none"
+                      />
+                      <button
+                        onClick={copyShareLink}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+                          linkCopied
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-blue-600 text-white hover:bg-blue-700'
+                        }`}
+                      >
+                        {linkCopied ? (
+                          <>
+                            <FaCheck size={16} />
+                            Kopieret!
+                          </>
+                        ) : (
+                          <>
+                            <FaCopy size={16} />
+                            Kopier
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                  <p className="text-sm text-blue-800">
+                    <strong>💡 Tips:</strong> Alle med dette link kan se opskriften. 
+                    Du kan tilbagekalde linket når som helst fra dine indstillinger.
+                  </p>
+                </div>
+
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      setShowShareModal(false);
+                      setLinkCopied(false);
+                    }}
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 font-medium"
+                  >
+                    Luk
+                  </button>
+                  <button
+                    onClick={() => {
+                      // Optional: Navigate to manage shares page
+                      navigate('/settings#shares');
+                      setShowShareModal(false);
+                    }}
+                    className="flex-1 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 font-medium"
+                  >
+                    Administrer delinger
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
