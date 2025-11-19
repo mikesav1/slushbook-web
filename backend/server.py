@@ -2009,6 +2009,9 @@ async def get_recipes(
                     recipe['author_name'] = 'Ukendt'
                     recipe['author_recipe_count'] = 0
     
+    # Apply translations to all recipes
+    all_recipes = [apply_translation(recipe, lang) for recipe in all_recipes]
+    
     return all_recipes
 
 @api_router.get("/recipes/{recipe_id}")
