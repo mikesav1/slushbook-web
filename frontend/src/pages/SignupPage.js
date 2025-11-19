@@ -54,7 +54,15 @@ const SignupPage = () => {
       });
 
       toast.success(t('auth.accountCreated', 'Konto oprettet! Log venligst ind.'));
-      navigate('/login');
+      
+      // Check if user came from shared recipe page
+      const returnToShared = localStorage.getItem('return_to_shared');
+      if (returnToShared) {
+        // Keep the token for after login
+        navigate('/login');
+      } else {
+        navigate('/login');
+      }
     } catch (error) {
       console.error('Signup error:', error);
       toast.error(error.response?.data?.detail || t('auth.signupFailed', 'Kunne ikke oprette konto'));
