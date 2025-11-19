@@ -1281,3 +1281,19 @@ Each now:
 4. Refresh page - tour still should NOT appear
 5. Check different tours on different pages
 
+
+## Language Selector Syntax Fix
+
+**Date:** 2025-01-19
+**Status:** ✅ FIXED
+
+### Issue:
+Syntax error in SettingsPage.js line 456 - incorrect closing bracket `)}` instead of `</div>`
+
+### Fix:
+Changed line 456 from `)}` to `</div>` to properly close the "Land & Sprog" section div instead of a conditional block.
+
+### Impact:
+- Frontend now compiles without errors
+- Language selector displays correctly in Settings
+
