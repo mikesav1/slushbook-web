@@ -682,7 +682,7 @@ const SettingsPage = ({ sessionId }) => {
               className="opacity-50 cursor-not-allowed"
               disabled
             >
-              <FaPlus className="mr-2" /> Tilføj Maskine (Kun Pro)
+              <FaPlus className="mr-2" /> {t('settings.addMachine')} (Kun Pro)
             </Button>
           )}
         </div>
