@@ -38,7 +38,7 @@ const EditRecipePage = ({ sessionId }) => {
       setImagePreview(response.data.image_url);
     } catch (error) {
       console.error('Error fetching recipe:', error);
-      toast.error('Kunne ikke hente opskrift');
+      toast.error(t('addRecipe.fetchError', 'Kunne ikke hente opskrift'));
       navigate('/recipes');
     } finally {
       setLoading(false);
@@ -49,7 +49,7 @@ const EditRecipePage = ({ sessionId }) => {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 5000000) {
-        toast.error('Billede må maks være 5MB');
+        toast.error(t('addRecipe.imageSizeError', 'Billede må maks være 5MB'));
         return;
       }
       setImageFile(file);
