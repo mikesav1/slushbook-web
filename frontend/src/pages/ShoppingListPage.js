@@ -229,7 +229,7 @@ const ShoppingListPage = ({ sessionId }) => {
       setItems(response.data);
     } catch (error) {
       console.error('Error fetching shopping list:', error);
-      toast.error('Kunne ikke hente indkøbsliste');
+      toast.error(t('shoppingList.fetchError'));
     } finally {
       setLoading(false);
     }
