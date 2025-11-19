@@ -481,6 +481,43 @@ const RecipeDetailPage = ({ sessionId }) => {
     }
   };
 
+  // Share recipe
+  const handleShare = async () => {
+    if (!user || user.role === 'guest') {
+      toast.error('Du skal være Pro-bruger for at dele opskrifter');
+      return;
+    }
+
+    setShareLoading(true);
+    setShowShareModal(true);
+
+    try {
+      const token = localStorage.getItem('session_token');
+      const response = await axios.post(
+        `${API}/recipes/${id}/share`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      setShareLink(response.data.share_url);
+    } catch (error) {
+      console.error('Error creating share link:', error);
+      toast.error(error.response?.data?.detail || 'Kunne ikke oprette delingslink');
+      setShowShareModal(false);
+    } finally {
+      setShareLoading(false);
+    }
+  };
+
+  const copyShareLink = () => {
+    navigator.clipboard.writeText(shareLink);
+    setLinkCopied(true);
+    toast.success('Link kopieret!');
+    setTimeout(() => setLinkCopied(false), 2000);
+  };
+
   const deleteRecipe = async () => {
     if (!window.confirm(t('recipeDetail.confirmDelete', `Er du sikker på, at du vil slette "{{name}}"? Dette kan ikke fortrydes.`, { name: recipe.name }))) {
       return;
