@@ -2589,6 +2589,23 @@ async def add_favorite(
     doc['created_at'] = doc['created_at'].isoformat()
     
     await db.favorites.insert_one(doc)
+    
+    # Create notification for recipe author
+    try:
+        recipe = await db.recipes.find_one({"id": recipe_id}, {"_id": 0, "author": 1, "name": 1})
+        if recipe and recipe.get("author") and recipe["author"] != user.id:
+            # Only notify if favorite is not from the recipe author themselves
+            await create_notification(
+                user_id=recipe["author"],
+                type="favorite",
+                title="Ny favorit!",
+                message=f'{user.name} tilføjede din opskrift "{recipe.get("name", "")}" til favoritter',
+                link=f"/recipes/{recipe_id}",
+                data={"recipe_id": recipe_id}
+            )
+    except Exception as e:
+        logger.error(f"Failed to create favorite notification: {e}")
+    
     return {"message": "Added to favorites"}
 
 @api_router.delete("/favorites/{session_id}/{recipe_id}")
