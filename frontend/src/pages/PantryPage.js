@@ -142,8 +142,8 @@ const PantryPage = ({ sessionId }) => {
         <>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-4xl font-bold mb-2">Mine ingredienser</h1>
-              <p className="text-gray-600">Administrer dine ingredienser</p>
+              <h1 className="text-4xl font-bold mb-2">{t('pantry.myIngredients', 'Mine ingredienser')}</h1>
+              <p className="text-gray-600">{t('pantry.manageIngredients', 'Administrer dine ingredienser')}</p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
               <Button 
