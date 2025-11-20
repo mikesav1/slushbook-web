@@ -5514,14 +5514,14 @@ from utils.translation_helper import (
     get_translation_pairs
 )
 
-@api_router.get("/admin/translations")
-async def get_translations(
+@api_router.get("/admin/translations/editor")
+async def get_translations_for_editor(
     language: str,
     request: Request,
     credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
 ):
     """
-    Get all translations for a specific language with Danish master text.
+    Get all translations for a specific language with Danish master text for the simple editor.
     Only accessible to admin users.
     
     Returns: {
