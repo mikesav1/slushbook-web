@@ -661,7 +661,7 @@ const SettingsPage = ({ sessionId }) => {
                     className="flex-1" 
                     data-testid="submit-machine"
                   >
-                    {isEditMode ? 'Gem Ændringer' : t('settings.addMachine')}
+                    {isEditMode ? t('settings.saveChanges') : t('settings.addMachine')}
                   </Button>
                 </div>
               </form>
