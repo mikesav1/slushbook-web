@@ -807,9 +807,9 @@ const SettingsPage = ({ sessionId }) => {
               <div>
                 <h3 className="font-bold text-gray-800 flex items-center gap-2">
                   <FaComments className="text-blue-500" />
-                  💬 Kommentarer
+                  💬 {t('settings.comments')}
                 </h3>
-                <p className="text-sm text-gray-600">Moderer og administrer kommentarer på opskrifter</p>
+                <p className="text-sm text-gray-600">{t('settings.moderateComments')}</p>
               </div>
               <span className="text-blue-600">→</span>
             </div>
