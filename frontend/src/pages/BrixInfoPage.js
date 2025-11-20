@@ -133,24 +133,24 @@ const BrixInfoPage = () => {
         {/* Tips Section */}
         <div className="bg-gradient-to-r from-amber-50 to-yellow-50 rounded-xl shadow-md p-6 border-l-4 border-amber-400">
           <h3 className="text-xl font-bold text-gray-800 mb-3 flex items-center gap-2">
-            💡 Pro Tips
+            💡 {t('brix.proTipsTitle')}
           </h3>
           <ul className="space-y-2 text-gray-700">
             <li className="flex items-start gap-2">
               <span className="text-amber-500 mt-1">•</span>
-              <span>Start altid med det anbefalede Brix-tal for din type slushice</span>
+              <span>{t('brix.tip1')}</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-amber-500 mt-1">•</span>
-              <span>Juster gradvist hvis konsistensen ikke er perfekt</span>
+              <span>{t('brix.tip2')}</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-amber-500 mt-1">•</span>
-              <span>Højere Brix = tykkere slush, men også sødere smag</span>
+              <span>{t('brix.tip3')}</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-amber-500 mt-1">•</span>
-              <span>Lavere Brix = mere flydende, lettere at drikke</span>
+              <span>{t('brix.tip4')}</span>
             </li>
           </ul>
         </div>
