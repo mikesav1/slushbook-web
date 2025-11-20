@@ -469,6 +469,25 @@
     "errorDeleteComment": "Impossible de supprimer le commentaire",
     "onlyProCanLike": "Seuls les utilisateurs PRO peuvent aimer les conseils. Mettez à niveau pour participer!"
   },
+  "matchFinder": {
+    "title": "Match-Finder",
+    "subtitle": "Trouvez la recette parfaite basée sur vos ingrédients",
+    "yourIngredients": "Vos Ingrédients",
+    "ingredientCount": "Vous avez {{count}} ingrédient",
+    "ingredientCountPlural": "Vous avez {{count}} ingrédients",
+    "addMore": "Ajouter Plus",
+    "findMatches": "Trouver des correspondances",
+    "searching": "Recherche...",
+    "noIngredients": "Vous n'avez pas encore d'ingrédients",
+    "readyToMatch": "Prêt à trouver des correspondances?",
+    "clickToMatch": "Cliquez sur \"Trouver des correspondances\" pour voir quelles recettes vous pouvez faire avec vos ingrédients",
+    "clickToMatchShort": "Cliquez sur \"Trouver des correspondances\" pour voir quelles recettes vous pouvez faire",
+    "pantryUpdated": "Vos ingrédients ont été mis à jour! Cliquez sur \"Trouver des correspondances\" pour voir de nouveaux résultats.",
+    "tourComplete": "Guide Match-Finder terminé!",
+    "noMatches": "Aucune recette ne correspond à vos ingrédients",
+    "matchesFound": "{{count}} recette correspond",
+    "matchesFoundPlural": "{{count}} recettes correspondent"
+  },
   "brix": {
     "back": "Retour",
     "title": "Ce que signifie Brix",
