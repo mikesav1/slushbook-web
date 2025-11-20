@@ -821,8 +821,8 @@ const SettingsPage = ({ sessionId }) => {
           >
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-bold text-gray-800">🔍 Sandkasse - Godkend Opskrifter</h3>
-                <p className="text-sm text-gray-600">Godkend eller afvis brugeropskrifter</p>
+                <h3 className="font-bold text-gray-800">🔍 {t('settings.sandbox')}</h3>
+                <p className="text-sm text-gray-600">{t('settings.approveRejectRecipes')}</p>
               </div>
               <span className="text-purple-600">→</span>
             </div>
