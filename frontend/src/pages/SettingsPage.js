@@ -883,8 +883,8 @@ const SettingsPage = ({ sessionId }) => {
       {/* Bruger Platformen Section - Only for admin */}
       {user && user.role === 'admin' && (
         <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-2xl p-6 shadow-lg mt-6">
-          <h2 className="text-2xl font-bold mb-1">Bruger Platformen</h2>
-          <p className="text-white/90 mb-4">Se alle brugere og deres aktivitet</p>
+          <h2 className="text-2xl font-bold mb-1">{t('settings.userPlatform')}</h2>
+          <p className="text-white/90 mb-4">{t('settings.viewAllUsers')}</p>
         </div>
       )}
       
