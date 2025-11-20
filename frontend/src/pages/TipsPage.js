@@ -203,9 +203,9 @@ const TipsPage = () => {
       <div className="bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl p-8 text-white shadow-lg">
         <div className="flex justify-between items-start">
           <div>
-            <h1 className="text-4xl font-bold mb-2">💡 Community Forum</h1>
+            <h1 className="text-4xl font-bold mb-2">💡 {t('tips.communityForum')}</h1>
             <p className="text-cyan-50 text-lg">
-              Del viden, stil spørgsmål og hjælp hinanden
+              {t('tips.subtitle')}
             </p>
           </div>
           {user && user.role !== 'guest' && (
