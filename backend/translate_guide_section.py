@@ -42,16 +42,18 @@ Danish text to translate:
 
 Return ONLY the translated text in {lang_names[target_lang]}, no explanations."""
 
-    response = client.chat.completions.create(
-        model="gpt-4o",
-        messages=[
-            {"role": "system", "content": f"You are a professional translator specializing in UI/UX and food & beverage content. Translate to {lang_names[target_lang]}."},
-            {"role": "user", "content": prompt}
-        ],
-        temperature=0.3
-    )
+    # Create chat instance
+    chat = LlmChat(
+        api_key=api_key,
+        session_id=f"translate_{target_lang}",
+        system_message=f"You are a professional translator specializing in UI/UX and food & beverage content. Translate to {lang_names[target_lang]}."
+    ).with_model("openai", "gpt-4o")
     
-    return response.choices[0].message.content.strip()
+    # Send translation request
+    user_message = UserMessage(text=prompt)
+    response = await chat.send_message(user_message)
+    
+    return response.strip()
 
 def main():
     # Load Danish source
