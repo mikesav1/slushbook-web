@@ -435,11 +435,11 @@ const EditRecipePage = ({ sessionId }) => {
                 <div className="text-sm mt-2 bg-gradient-to-r from-cyan-50 to-blue-50 border-l-4 border-cyan-500 p-3 rounded-r animate-in fade-in slide-in-from-top-2 duration-200">
                   <p className="font-semibold text-cyan-900 mb-1 flex items-center gap-2">
                     <span className="text-lg">ℹ️</span>
-                    <span>Obligatorisk felt</span>
+                    <span>{t('addRecipe.requiredField')}</span>
                   </p>
                   <p className="text-gray-700 text-xs leading-relaxed">
-                    Angiv den <strong>samlede volumen</strong> denne opskrift laver.<br/>
-                    <span className="text-gray-600">Eksempel: 2700ml for en 3L beholder</span>
+                    {t('addRecipe.volumeDescription')}<br/>
+                    <span className="text-gray-600">{t('addRecipe.volumeExample')}</span>
                   </p>
                 </div>
               )}
