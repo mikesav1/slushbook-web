@@ -76,7 +76,7 @@ const TipsPage = () => {
 
   const handleLike = async (tipId) => {
     if (!user || user.role === 'guest') {
-      toast.error('Kun PRO-brugere kan like tips. Opgrader for at deltage!');
+      toast.error(t('tips.onlyProCanLike'));
       return;
     }
 
