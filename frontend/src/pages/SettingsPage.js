@@ -857,8 +857,8 @@ const SettingsPage = ({ sessionId }) => {
           >
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-bold text-gray-800">Produkt-Links</h3>
-                <p className="text-sm text-gray-600">Administrer links til leverandører</p>
+                <h3 className="font-bold text-gray-800">{t('settings.productLinks')}</h3>
+                <p className="text-sm text-gray-600">{t('settings.manageSupplierLinks')}</p>
               </div>
               <span className="text-red-600">→</span>
             </div>
