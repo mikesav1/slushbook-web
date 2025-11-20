@@ -25,13 +25,13 @@ const BrixInfoPage = () => {
         {/* Introduction */}
         <div className="bg-white rounded-xl shadow-md p-6 space-y-4">
           <p className="text-lg text-gray-700 leading-relaxed">
-            <strong>Brix = sukkerindhold i væsken målt i procent</strong> (1°Bx ≈ 1 g sukker pr. 100 g væske).
+            <strong>{t('brix.intro1')}</strong> {t('brix.intro1Detail')}
           </p>
           <p className="text-gray-700 leading-relaxed">
-            Slushice-maskiner fryser ikke væsken til is; de rører konstant, så blandingen ligger lige på kanten af frysning.
+            {t('brix.intro2')}
           </p>
           <p className="text-gray-700 leading-relaxed">
-            Derfor afhænger det rigtige Brix-tal af hvor meget sukker (eller alkohol) der er i.
+            {t('brix.intro3')}
           </p>
         </div>
 
