@@ -437,5 +437,34 @@
       "addSuccess": "New key added!",
       "addError": "Fill in both key and value"
     }
+  },
+  "tips": {
+    "communityForum": "Community Forum",
+    "subtitle": "Share knowledge, ask questions and help each other",
+    "createNewTip": "Create new tip",
+    "categoryAll": "All",
+    "categoryMachines": "Machines",
+    "categoryProducts": "Products & Ingredients",
+    "categoryCleaning": "Cleaning & Maintenance",
+    "categoryTechnical": "Technical & Equipment",
+    "categoryUserTips": "User Tips & Experiences",
+    "categoryAccessories": "Accessories & Serving",
+    "inclInternational": "Incl. international",
+    "onlyLocal": "Only local",
+    "noTipsFound": "No tips found",
+    "international": "International",
+    "likes": "likes",
+    "delete": "Delete",
+    "replies": "Replies",
+    "writeReply": "Write a reply...",
+    "send": "Send",
+    "loginToComment": "Log in to comment",
+    "deleteComment": "Delete comment",
+    "errorFetchTips": "Could not fetch tips",
+    "errorLike": "Could not like tip",
+    "errorDelete": "Could not delete tip",
+    "errorPostComment": "Could not add comment",
+    "errorDeleteComment": "Could not delete comment",
+    "onlyProCanLike": "Only PRO users can like tips. Upgrade to participate!"
   }
 }
