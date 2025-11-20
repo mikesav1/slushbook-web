@@ -43,6 +43,8 @@
     "imageSizeError": "Bild darf maximal 5MB groß sein",
     "imageUploaded": "Sie haben ein Bild für dieses Rezept hochgeladen.",
     "imageWarning": "Wichtig zum Bild:",
+    "chooseImage": "Bild auswählen",
+    "selectedFile": "Ausgewählte Datei",
     "ingredientName": "Zutatname",
     "ingredientNamePlaceholder": "z.B. Erdbeere",
     "ingredientNumber": "Zutat {{number}}",
