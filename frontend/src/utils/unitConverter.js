@@ -5,7 +5,7 @@
  * IMPORTANT: This must match backend/utils/unit_converter.py exactly!
  */
 
-// Conversion factors to ml
+// Conversion factors to ml (for liquids/volume)
 export const UNIT_TO_ML = {
   // Metric
   ml: 1.0,
@@ -15,7 +15,6 @@ export const UNIT_TO_ML = {
   // US/Imperial
   cup: 240.0,         // US cup
   'fl oz': 29.5735,   // US fluid ounce
-  oz: 29.5735,        // Fluid ounce (same as fl oz for liquids)
   tbsp: 14.7868,      // US tablespoon
   tsp: 4.9289,        // US teaspoon
   pint: 473.176,      // US pint
@@ -27,6 +26,17 @@ export const UNIT_TO_ML = {
   'fl oz uk': 28.4131,
   'pint uk': 568.261,
 };
+
+// Mass units - oz can be used for weight
+export const UNIT_TO_G = {
+  g: 1.0,
+  kg: 1000.0,
+  oz: 28.3495,        // Weight ounce (different from fluid oz!)
+};
+
+// Determine if a unit is volume or mass
+export const VOLUME_UNITS = new Set(Object.keys(UNIT_TO_ML));
+export const MASS_UNITS = new Set(Object.keys(UNIT_TO_G));
 
 // Supported units by country
 export const COUNTRY_UNITS = {
