@@ -247,7 +247,9 @@
     "manageSupplierLinks": "Administrer links til leverandører",
     "badgeManagement": "Badge Management",
     "manageUserBadges": "Administrer bruger achievement badges",
-    "members": "Medlemmer"
+    "members": "Medlemmer",
+    "tipsAndTricks": "Tips & Tricks",
+    "tipsAndTricksDesc": "Del erfaringer og lær af fællesskabet om maskiner, produkter og drift"
   },
   "messages": {
     "success": {
