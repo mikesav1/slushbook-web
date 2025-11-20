@@ -809,14 +809,18 @@ async def seed_recipes():
     
     # Load translations from file
     translations_file = os.path.join(os.path.dirname(__file__), 'recipe_translations.json')
+    logger.info(f"[SEED] Looking for translations file at: {translations_file}")
     recipe_translations_map = {}
     try:
         if os.path.exists(translations_file):
+            logger.info(f"[SEED] Translations file exists, loading...")
             with open(translations_file, 'r', encoding='utf-8') as f:
                 recipe_translations_map = json.load(f)
-            logger.info(f"Loaded translations for {len(recipe_translations_map)} recipes")
+            logger.info(f"[SEED] Loaded translations for {len(recipe_translations_map)} recipes")
+        else:
+            logger.warning(f"[SEED] Translations file not found at {translations_file}")
     except Exception as e:
-        logger.warning(f"Could not load recipe translations: {e}")
+        logger.warning(f"[SEED] Could not load recipe translations: {e}")
     
     for recipe_data in recipes_data:
         recipe = Recipe(
