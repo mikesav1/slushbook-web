@@ -510,6 +510,7 @@ const AppContent = ({ sessionId }) => {
             <Route path="/admin/ads" element={<AdminAdsPage />} />
             <Route path="/admin/badges" element={<AdminBadgesPage />} />
             <Route path="/admin/translations" element={<AdminTranslationsPage />} />
+            <Route path="/admin/recipe-translations" element={<AdminRecipeTranslationsPage />} />
             <Route path="/shared/:token" element={<SharedRecipePage />} />
             <Route path="/shares" element={<ManageSharesPage />} />
           </Routes>
