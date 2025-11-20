@@ -80,9 +80,9 @@ const Navigation = () => {
   const navItems = [
     { path: "/", icon: FaHome, label: t('nav.home') },
     { path: "/recipes", icon: FaBook, label: t('nav.recipes') },
-    { path: "/match", icon: FaMagic, label: "Match" },
+    { path: "/match", icon: FaMagic, label: t('nav.match') },
     ...(user && user.role !== 'guest' ? [{ path: "/shopping", icon: FaShoppingCart, label: t('nav.shoppingList') }] : []),
-    ...(user && user.role !== 'guest' ? [{ path: "/favorites", icon: FaHeart, label: "Favoritter" }] : []),
+    ...(user && user.role !== 'guest' ? [{ path: "/favorites", icon: FaHeart, label: t('nav.favorites') }] : []),
     { path: "/settings", icon: FaCog, label: t('nav.settings') },
   ];
 
@@ -445,9 +445,9 @@ const AppContent = ({ sessionId }) => {
   const navItems = [
     { path: "/", icon: FaHome, label: t('nav.home') },
     { path: "/recipes", icon: FaBook, label: t('nav.recipes') },
-    { path: "/match", icon: FaMagic, label: "Match" },
+    { path: "/match", icon: FaMagic, label: t('nav.match') },
     ...(user && user.role !== 'guest' ? [{ path: "/shopping", icon: FaShoppingCart, label: t('nav.shoppingList') }] : []),
-    ...(user && user.role !== 'guest' ? [{ path: "/favorites", icon: FaHeart, label: "Favoritter" }] : []),
+    ...(user && user.role !== 'guest' ? [{ path: "/favorites", icon: FaHeart, label: t('nav.favorites') }] : []),
     { path: "/settings", icon: FaCog, label: t('nav.settings') },
   ];
 
