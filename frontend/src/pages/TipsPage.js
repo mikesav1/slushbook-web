@@ -145,7 +145,7 @@ const TipsPage = () => {
       toast.success('Kommentar tilføjet');
     } catch (error) {
       console.error('Error posting comment:', error);
-      toast.error('Kunne ikke tilføje kommentar');
+      toast.error(t('tips.errorPostComment'));
     }
   };
 
