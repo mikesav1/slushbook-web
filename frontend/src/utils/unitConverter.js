@@ -135,25 +135,34 @@ export function getDefaultUnit(countryCode = 'da') {
 }
 
 /**
- * Normalize an ingredient to store in ml while preserving display unit
+ * Normalize an ingredient to store in base units (ml for volume, g for mass)
  */
 export function normalizeIngredient(ingredient) {
   const originalQuantity = ingredient.quantity || 0;
   const originalUnit = ingredient.unit || 'ml';
   
-  // Convert to ml for storage
-  const quantityMl = convertToMl(originalQuantity, originalUnit);
-  
-  // Store both ml and display values
-  return {
+  const result = {
     ...ingredient,
-    quantity_ml: quantityMl,           // Internal storage
-    display_quantity: originalQuantity, // What user entered
-    display_unit: originalUnit,        // What user selected
-    // Keep quantity and unit for backward compatibility
-    quantity: originalQuantity,
-    unit: originalUnit,
+    display_quantity: originalQuantity,  // What user entered
+    display_unit: originalUnit,          // What user selected
+    quantity: originalQuantity,          // Keep for backward compatibility
+    unit: originalUnit,                  // Keep for backward compatibility
   };
+  
+  // Determine if volume or mass and convert accordingly
+  if (isVolumeUnit(originalUnit)) {
+    result.quantity_ml = convertToMl(originalQuantity, originalUnit);
+    result.unit_type = 'volume';
+  } else if (isMassUnit(originalUnit)) {
+    result.quantity_g = convertToG(originalQuantity, originalUnit);
+    result.unit_type = 'mass';
+  } else {
+    // Unknown unit, store as-is
+    result.quantity_ml = originalQuantity;
+    result.unit_type = 'unknown';
+  }
+  
+  return result;
 }
 
 /**
