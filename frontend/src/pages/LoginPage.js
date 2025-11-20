@@ -203,6 +203,8 @@ const LoginPage = ({ onLogin }) => {
           toast.success('Du kan nu kopiere opskriften til din samling!');
         } else {
           navigate('/');
+          // Force reload to apply language change
+          window.location.reload();
         }
       }, 500);
     } catch (error) {
