@@ -288,7 +288,7 @@ const TipsPage = () => {
                             <>
                               <span>•</span>
                               <span className="text-blue-600 font-medium flex items-center gap-1">
-                                <FaGlobe size={12} /> International
+                                <FaGlobe size={12} /> {t('tips.international')}
                               </span>
                             </>
                           )}
