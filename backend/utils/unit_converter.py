@@ -55,9 +55,17 @@ COUNTRY_DEFAULT_UNIT = {
 }
 
 
+def is_volume_unit(unit: str) -> bool:
+    """Check if unit is a volume unit"""
+    return unit.lower().strip() in VOLUME_UNITS
+
+def is_mass_unit(unit: str) -> bool:
+    """Check if unit is a mass unit"""
+    return unit.lower().strip() in MASS_UNITS
+
 def convert_to_ml(amount: float, unit: str) -> float:
     """
-    Convert any supported unit to ml
+    Convert any supported volume unit to ml
     
     Args:
         amount: The quantity in the original unit
@@ -67,14 +75,35 @@ def convert_to_ml(amount: float, unit: str) -> float:
         Amount in ml
         
     Raises:
-        ValueError: If unit is not supported
+        ValueError: If unit is not a volume unit
     """
     unit_lower = unit.lower().strip()
     
     if unit_lower not in UNIT_TO_ML:
-        raise ValueError(f"Unsupported unit: {unit}. Supported units: {list(UNIT_TO_ML.keys())}")
+        raise ValueError(f"Not a volume unit: {unit}. Volume units: {list(UNIT_TO_ML.keys())}")
     
     return amount * UNIT_TO_ML[unit_lower]
+
+def convert_to_g(amount: float, unit: str) -> float:
+    """
+    Convert any supported mass unit to g
+    
+    Args:
+        amount: The quantity in the original unit
+        unit: The unit to convert from
+        
+    Returns:
+        Amount in g
+        
+    Raises:
+        ValueError: If unit is not a mass unit
+    """
+    unit_lower = unit.lower().strip()
+    
+    if unit_lower not in UNIT_TO_G:
+        raise ValueError(f"Not a mass unit: {unit}. Mass units: {list(UNIT_TO_G.keys())}")
+    
+    return amount * UNIT_TO_G[unit_lower]
 
 
 def convert_from_ml(amount_ml: float, target_unit: str) -> float:
