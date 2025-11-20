@@ -212,7 +212,17 @@
     "status": "Status",
     "lastActive": "Last active",
     "currentDevice": "Current device",
-    "tipsAndTricksDesc": "Share experiences and learn from the community about machines, products and operations"
+    "tipsAndTricksDesc": "Share experiences and learn from the community about machines, products and operations",
+    "tourHome": "Home",
+    "tourRecipes": "Recipes",
+    "tourMatchFinder": "Match Finder",
+    "tourShoppingList": "Shopping List",
+    "tourSettings": "Settings",
+    "tourHomeReset": "Home guide has been reset!",
+    "tourRecipesReset": "Recipes guide has been reset!",
+    "tourMatchFinderReset": "Match Finder guide has been reset!",
+    "tourShoppingListReset": "Shopping List guide has been reset!",
+    "tourSettingsReset": "Settings guide has been reset!"
   },
   "messages": {
     "success": {

@@ -212,7 +212,17 @@
     "status": "Statut",
     "lastActive": "Dernière activité",
     "currentDevice": "Appareil actuel",
-    "tipsAndTricksDesc": "Partagez vos expériences et apprenez de la communauté sur les machines, les produits et les opérations"
+    "tipsAndTricksDesc": "Partagez vos expériences et apprenez de la communauté sur les machines, les produits et les opérations",
+    "tourHome": "Accueil",
+    "tourRecipes": "Recettes",
+    "tourMatchFinder": "Match Finder",
+    "tourShoppingList": "Liste de courses",
+    "tourSettings": "Paramètres",
+    "tourHomeReset": "Le guide d'accueil a été réinitialisé !",
+    "tourRecipesReset": "Le guide des recettes a été réinitialisé !",
+    "tourMatchFinderReset": "Le guide Match Finder a été réinitialisé !",
+    "tourShoppingListReset": "Le guide de la liste de courses a été réinitialisé !",
+    "tourSettingsReset": "Le guide des paramètres a été réinitialisé !"
   },
   "messages": {
     "success": {
