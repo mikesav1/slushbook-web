@@ -248,7 +248,7 @@ const TipsPage = () => {
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
-            <FaGlobe /> {showInternational ? 'Inkl. internationale' : 'Kun lokale'}
+            <FaGlobe /> {showInternational ? t('tips.inclInternational') : t('tips.onlyLocal')}
           </button>
         </div>
       </div>
