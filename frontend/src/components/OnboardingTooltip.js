@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Mobile-friendly draggable onboarding tooltip
@@ -7,6 +8,7 @@ import React, { useState, useRef, useEffect } from 'react';
  * - Responsive positioning
  */
 const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => {
+  const { t } = useTranslation();
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
