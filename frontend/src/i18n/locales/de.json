@@ -7,10 +7,6 @@
     "alcohol": "Enthält Alkohol",
     "alcoholLabel": "Alkohol",
     "alcoholYes": "Ja, dieses Rezept enthält Alkohol",
-    "containsAlcohol": "Enthält Alkohol (18+)",
-    "requiredField": "Pflichtfeld",
-    "volumeDescription": "Geben Sie das <strong>Gesamtvolumen</strong> an, das dieses Rezept ergibt.",
-    "volumeExample": "Beispiel: 2700ml für einen 3L Behälter",
     "baseVolume": "Basisvolumen",
     "baseVolumeHelp": "Standardvolumen, für das dieses Rezept berechnet wurde",
     "baseVolumeInfo": "Volumen, für das dieses Rezept berechnet ist",
@@ -71,6 +67,7 @@
     "removeIngredient": "Zutat entfernen",
     "removeStep": "Schritt entfernen",
     "required": "Erforderlich",
+    "requiredField": "Pflichtfeld",
     "role": "Rolle",
     "roleGarnish": "Garnierung",
     "roleOptional": "Optional",
@@ -101,7 +98,9 @@
     "unit": "Einheit",
     "updateError": "Rezept konnte nicht aktualisiert werden",
     "upgradePrompt": "Upgraden Sie, um weitere hinzuzufügen",
-    "uploadImage": "Bild hochladen"
+    "uploadImage": "Bild hochladen",
+    "volumeDescription": "Geben Sie das <strong>Gesamtvolumen</strong> an, das dieses Rezept ergibt.",
+    "volumeExample": "Beispiel: 2700ml für einen 3L Behälter"
   },
   "admin": {
     "translations": {
@@ -530,7 +529,7 @@
   "pantry": {
     "addFirstIngredient": "Erste Zutat hinzufügen",
     "addIngredientsForSuggestions": "Fügen Sie Zutaten hinzu, um Rezeptvorschläge zu erhalten",
-    "ingredientsEmpty": "Ihre Zutaten sind leer",
+    "ingredientsEmpty": "Deine Zutatenliste ist leer",
     "manageIngredients": "Verwalte deine Zutaten",
     "myIngredients": "Meine Zutaten",
     "quickAddPopular": "Schnellhinzufügung (Beliebt)",
