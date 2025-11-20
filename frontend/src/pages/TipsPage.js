@@ -213,7 +213,7 @@ const TipsPage = () => {
               onClick={() => navigate('/tips/create')}
               className="bg-white text-cyan-600 px-6 py-3 rounded-xl font-semibold hover:bg-cyan-50 transition-colors flex items-center gap-2 shadow-lg"
             >
-              <FaPlus /> Opret nyt tip
+              <FaPlus /> {t('tips.createNewTip')}
             </button>
           )}
         </div>
