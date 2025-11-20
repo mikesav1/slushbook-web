@@ -833,8 +833,8 @@ const SettingsPage = ({ sessionId }) => {
           >
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-bold text-gray-800">🥤 Ingredienser</h3>
-                <p className="text-sm text-gray-600">Administrer master ingrediens-listen</p>
+                <h3 className="font-bold text-gray-800">🥤 {t('settings.ingredients')}</h3>
+                <p className="text-sm text-gray-600">{t('settings.manageMasterIngredients')}</p>
               </div>
               <span className="text-green-600">→</span>
             </div>
