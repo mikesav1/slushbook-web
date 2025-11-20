@@ -243,7 +243,8 @@
     "tipsAndTricksDesc": "Teilen Sie Erfahrungen und lernen Sie von der Community über Maschinen, Produkte und Betrieb",
     "lastActive": "Zuletzt aktiv",
     "currentDevice": "Aktuelles Gerät",
-    "loading": "Lädt..."
+    "loading": "Lädt...",
+    "unlimitedRecipes": "Unbegrenzte Rezepte!"
   },
   "messages": {
     "success": {
