@@ -56,13 +56,13 @@ const BrixInfoPage = () => {
                 {/* Klassisk slushice */}
                 <tr className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 text-gray-800 font-medium">
-                    Klassisk slushice<br />
-                    <span className="text-sm text-gray-500">(sirup + vand)</span>
+                    {t('brix.typeClassic')}<br />
+                    <span className="text-sm text-gray-500">{t('brix.typeClassicSub')}</span>
                   </td>
                   <td className="px-6 py-4 bg-cyan-500 text-white text-center font-bold whitespace-nowrap">
                     12 – 15 °Bx
                   </td>
-                  <td className="px-6 py-4 text-gray-700">Standard for de fleste maskiner.</td>
+                  <td className="px-6 py-4 text-gray-700">{t('brix.typeClassicComment')}</td>
                 </tr>
 
                 {/* Juice-baseret */}
