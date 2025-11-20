@@ -9,7 +9,7 @@ import subprocess
 from datetime import datetime
 
 # Configuration
-BASE_URL = "https://multilingual-app-32.preview.emergentagent.com/api"
+BASE_URL = "https://i18n-workflow-1.preview.emergentagent.com/api"
 
 def log(message):
     print(f"[{datetime.now().strftime('%H:%M:%S')}] {message}")

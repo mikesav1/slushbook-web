@@ -11,7 +11,7 @@ import re
 from datetime import datetime, timezone, timedelta
 
 # Configuration
-BASE_URL = "https://multilingual-app-32.preview.emergentagent.com/api"
+BASE_URL = "https://i18n-workflow-1.preview.emergentagent.com/api"
 
 class ShoppingListTester:
     def __init__(self):
