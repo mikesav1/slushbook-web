@@ -12,6 +12,7 @@ import { useAuth } from '../context/AuthContext';
 import OnboardingTooltip from '../components/OnboardingTooltip';
 import { addRecipePageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
 import { useTranslation } from 'react-i18next';
+import { normalizeIngredient, getSupportedUnits } from '../utils/unitConverter';
 
 const AddRecipePage = ({ sessionId }) => {
   const { user, updateCompletedTours } = useAuth();
