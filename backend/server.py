@@ -805,6 +805,17 @@ async def seed_recipes():
         }
     ]
     
+    # Load translations from file
+    translations_file = os.path.join(os.path.dirname(__file__), 'recipe_translations.json')
+    recipe_translations_map = {}
+    try:
+        if os.path.exists(translations_file):
+            with open(translations_file, 'r', encoding='utf-8') as f:
+                recipe_translations_map = json.load(f)
+            logger.info(f"Loaded translations for {len(recipe_translations_map)} recipes")
+    except Exception as e:
+        logger.warning(f"Could not load recipe translations: {e}")
+    
     for recipe_data in recipes_data:
         recipe = Recipe(
             **recipe_data,
@@ -814,12 +825,30 @@ async def seed_recipes():
         )
         doc = recipe.model_dump()
         doc['created_at'] = doc['created_at'].isoformat()
+        
+        # Add translations if available (match by name since ID doesn't exist yet)
+        if recipe_translations_map:
+            for trans_id, trans_data in recipe_translations_map.items():
+                if trans_data['name'] == recipe_data['name']:
+                    doc['translations'] = trans_data['translations']
+                    break
+        
+        # Ensure Danish translation exists
+        if 'translations' not in doc or 'da' not in doc.get('translations', {}):
+            doc['translations'] = {
+                'da': {
+                    'name': recipe_data['name'],
+                    'description': recipe_data.get('description', ''),
+                    'steps': recipe_data.get('steps', [])
+                }
+            }
+        
         try:
             await db.recipes.insert_one(doc)
         except Exception as e:
             logger.warning(f"Failed to insert recipe {recipe_data['name']} (permissions): {e}")
     
-    logger.info(f"Seeded {len(recipes_data)} recipes")
+    logger.info(f"Seeded {len(recipes_data)} recipes with translations")
 
 # Helper functions
 def calculate_match_score(recipe: Dict, pantry_items: List[Dict]) -> Dict:
