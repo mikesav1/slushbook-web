@@ -16,7 +16,7 @@ const EditRecipePage = ({ sessionId }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user, isAdmin } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [recipe, setRecipe] = useState(null);
@@ -26,6 +26,7 @@ const EditRecipePage = ({ sessionId }) => {
   const [imageRightsConfirmed, setImageRightsConfirmed] = useState(false);
   const [showVolumeInfo, setShowVolumeInfo] = useState(false);
   const [showBrixInfo, setShowBrixInfo] = useState(false);
+  const [supportedUnits, setSupportedUnits] = useState(['ml', 'dl', 'l']);
 
   useEffect(() => {
     fetchRecipe();
