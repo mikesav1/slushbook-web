@@ -255,6 +255,36 @@
     "loading": "Indlæser...",
     "unlimitedRecipes": "Ubegrænset opskrifter!"
   },
+  "tips": {
+    "communityForum": "Community Forum",
+    "subtitle": "Del viden, stil spørgsmål og hjælp hinanden",
+    "createNewTip": "Opret nyt tip",
+    "categoryAll": "Alle",
+    "categoryMachines": "Maskiner",
+    "categoryProducts": "Produkter & Ingredienser",
+    "categoryCleaning": "Rengøring & Vedligehold",
+    "categoryTechnical": "Teknik & Udstyr",
+    "categoryUserTips": "Brugertips & Erfaringer",
+    "categoryAccessories": "Tilbehør & Servering",
+    "inclInternational": "Inkl. internationale",
+    "onlyLocal": "Kun lokale",
+    "noTipsFound": "Ingen tips fundet",
+    "international": "International",
+    "likes": "likes",
+    "delete": "Slet",
+    "replies": "Svar",
+    "writeReply": "Skriv et svar...",
+    "send": "Send",
+    "loginToComment": "Log ind for at kommentere",
+    "deleteComment": "Slet kommentar",
+    "errorFetchTips": "Kunne ikke hente tips",
+    "errorLike": "Kunne ikke like tip",
+    "errorDelete": "Kunne ikke slette tip",
+    "errorPostComment": "Kunne ikke tilføje kommentar",
+    "errorDeleteComment": "Kunne ikke slette kommentar",
+    "onlyProCanLike": "Kun PRO-brugere kan like tips. Opgrader for at deltage!"
+  }
+}
   "messages": {
     "success": {
       "saved": "Gemt!",
