@@ -577,5 +577,14 @@
     "tip2": "Adjust gradually if the consistency isn't perfect",
     "tip3": "Higher Brix = thicker slush, but also sweeter taste",
     "tip4": "Lower Brix = more liquid, easier to drink"
+  },
+  "pantry": {
+    "myIngredients": "My Ingredients",
+    "manageIngredients": "Manage your ingredients",
+    "searchAllIngredients": "Search all ingredients",
+    "quickAddPopular": "Quick Add (Popular)",
+    "ingredientsEmpty": "Your ingredients are empty",
+    "addIngredientsForSuggestions": "Add ingredients to get recipe suggestions",
+    "addFirstIngredient": "Add First Ingredient"
   }
 }

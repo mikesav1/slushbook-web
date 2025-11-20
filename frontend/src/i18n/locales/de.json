@@ -710,5 +710,14 @@
       "tourComplete": "Einkaufslisten-Anleitung abgeschlossen!",
       "welcome": "🛒 Willkommen bei Ihrer Einkaufsliste!\n\nHier finden Sie alle Zutaten, die Sie von Rezepten hinzugefügt haben.\n\nSchauen wir uns an, was Sie tun können."
     }
+  },
+  "pantry": {
+    "myIngredients": "Meine Zutaten",
+    "manageIngredients": "Verwalten Sie Ihre Zutaten",
+    "searchAllIngredients": "Alle Zutaten durchsuchen",
+    "quickAddPopular": "Schnellhinzufügung (Beliebt)",
+    "ingredientsEmpty": "Ihre Zutaten sind leer",
+    "addIngredientsForSuggestions": "Fügen Sie Zutaten hinzu, um Rezeptvorschläge zu erhalten",
+    "addFirstIngredient": "Erste Zutat hinzufügen"
   }
 }

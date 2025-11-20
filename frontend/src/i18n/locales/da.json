@@ -710,5 +710,14 @@
     "needHelpTitle": "Brug for hjælp?",
     "needHelpDesc": "Har du spørgsmål eller feedback? Kontakt os på",
     "backToSettingsBottom": "Tilbage til Indstillinger"
+  },
+  "pantry": {
+    "myIngredients": "Mine ingredienser",
+    "manageIngredients": "Administrer dine ingredienser",
+    "searchAllIngredients": "Søg i alle ingredienser",
+    "quickAddPopular": "Hurtig Tilføjelse (Populære)",
+    "ingredientsEmpty": "Dine ingredienser er tomme",
+    "addIngredientsForSuggestions": "Tilføj ingredienser for at få opskrift-forslag",
+    "addFirstIngredient": "Tilføj Første Ingrediens"
   }
 }
