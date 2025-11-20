@@ -29,6 +29,7 @@ const AdminTranslationsPage = () => {
   
   // State
   const [selectedLanguage, setSelectedLanguage] = useState('de');
+  const [selectedSection, setSelectedSection] = useState('all');
   const [translations, setTranslations] = useState([]);
   const [editedTranslations, setEditedTranslations] = useState({});
   const [searchQuery, setSearchQuery] = useState('');
