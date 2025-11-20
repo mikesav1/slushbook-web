@@ -289,11 +289,6 @@ const SettingsPage = ({ sessionId }) => {
             </span>
           </div>
         </div>
-        <div className="mt-4 p-4 bg-gradient-to-br from-cyan-50 to-coral-50 rounded-lg">
-          <p className="text-sm text-gray-700">
-            {limitMessage || t('settings.loading')}
-          </p>
-        </div>
       </div>
 
       {/* Device Management */}
