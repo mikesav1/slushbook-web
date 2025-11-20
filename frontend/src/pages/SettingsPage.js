@@ -684,7 +684,7 @@ const SettingsPage = ({ sessionId }) => {
             <div className="loading-spinner"></div>
           </div>
         ) : machines.length === 0 ? (
-          <p className="text-gray-600">Ingen maskiner tilføjet endnu. Tilføj din første maskine for auto-skalering.</p>
+          <p className="text-gray-600">{t('settings.noMachinesYet')}</p>
         ) : (
           <div className="space-y-3">
             {machines.map((machine) => (
