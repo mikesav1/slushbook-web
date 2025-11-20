@@ -1995,7 +1995,7 @@ async def get_user_limits(session_id: str, request: Request):
         return {
             "user_recipes_count": count,
             "can_add_recipe": can_add,
-            "limit_message": "Gratis: Maks 2 egne opskrifter. Opgradér til Pro for ubegrænset!" if not can_add else f"Du kan tilføje {2 - count} mere opskrift(er)"
+            "limit_message": ""  # Frontend handles translation using i18n
         }
 
 # Recipes
