@@ -478,6 +478,9 @@
     "updateError": "Kunne ikke opdatere opskrift"
   },
   "recipeDetail": {
+    "back": "Tilbage",
+    "previous": "Forrige",
+    "next": "Næste",
     "confirmDeleteComment": "Er du sikker på, at du vil slette denne kommentar?",
     "commentDeleted": "Kommentar slettet",
     "deleteCommentError": "Kunne ikke slette kommentar",
