@@ -207,7 +207,7 @@
     "yes": "Oui"
   },
   "favorites": {
-    "addYourFavorites": "Ajoutez vos recettes préférées ici",
+    "addYourFavorites": "Ajoutez ici vos recettes préférées",
     "count": "{{count}} recette{{plural}} favorite",
     "noFavoritesYet": "Aucun favori pour le moment",
     "title": "Mes Favoris"
