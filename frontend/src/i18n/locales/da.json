@@ -208,7 +208,15 @@
     "youCanAdd": "Du kan tilføje {{count}} mere opskrift",
     "youCanAddPlural": "Du kan tilføje {{count}} mere opskrifter",
     "freeLimitReached": "Gratis limit nået (2/2). Opgradér til Pro for ubegrænset!",
-    "settingsTourComplete": "Indstillinger guide færdig!"
+    "settingsTourComplete": "Indstillinger guide færdig!",
+    "user": "Bruger",
+    "status": "Status",
+    "unlimited": "ubegrænset",
+    "tourHome": "Hjem",
+    "tourRecipes": "Opskrifter",
+    "tourMatchFinder": "Match Finder",
+    "tourShoppingList": "Indkøbsliste",
+    "tourSettings": "Indstillinger"
   },
   "messages": {
     "success": {
