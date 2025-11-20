@@ -265,7 +265,7 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
               onClick={onSkip}
               className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-500 hover:text-gray-700 text-center py-2`}
             >
-              Spring over {!isMobile && '(kan genstartes under Indstillinger ⚙️)'}
+              {t('common.skipTour', 'Spring over')} {!isMobile && `(${t('common.canRestartInSettings', 'kan genstartes under Indstillinger')} ⚙️)`}
             </button>
           </div>
         </div>
