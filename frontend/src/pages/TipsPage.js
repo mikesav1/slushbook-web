@@ -112,7 +112,7 @@ const TipsPage = () => {
       setTips(tips.filter(tip => tip.id !== tipId));
     } catch (error) {
       console.error('Error deleting tip:', error);
-      toast.error('Kunne ikke slette tip');
+      toast.error(t('tips.errorDelete'));
     }
   };
 
