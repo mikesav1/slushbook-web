@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { FaPlus, FaHeart, FaRegHeart, FaChevronDown, FaChevronUp, FaTrash, FaPaperPlane, FaGlobe } from 'react-icons/fa';
 import { API, BACKEND } from '../App';
 import { useAuth } from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 const TipsPage = () => {
   const navigate = useNavigate();
