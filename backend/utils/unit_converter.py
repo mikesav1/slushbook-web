@@ -28,11 +28,11 @@ UNIT_TO_ML = {
 
 # Supported units by country
 COUNTRY_UNITS = {
-    "da": ["ml", "dl", "l"],                                    # Denmark
-    "de": ["ml", "l"],                                          # Germany  
-    "fr": ["ml", "l"],                                          # France
-    "en": ["ml", "dl", "l", "fl oz", "cup"],                   # UK
-    "en_us": ["cup", "tbsp", "tsp", "fl oz", "oz", "ml"],      # USA
+    "da": ["ml", "dl", "l", "g"],                              # Denmark
+    "de": ["ml", "l", "g"],                                     # Germany  
+    "fr": ["ml", "l", "g"],                                     # France
+    "en": ["ml", "l", "oz", "g"],                              # UK
+    "en_us": ["cup", "tbsp", "tsp", "fl oz", "oz", "g"],      # USA
 }
 
 # Default display unit per country
