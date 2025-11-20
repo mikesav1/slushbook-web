@@ -845,9 +845,14 @@ async def seed_recipes():
             }
         
         try:
-            await db.recipes.insert_one(doc)
+            # Use upsert to insert or update
+            await db.recipes.update_one(
+                {'name': recipe_data['name'], 'author': 'system'},
+                {'$set': doc},
+                upsert=True
+            )
         except Exception as e:
-            logger.warning(f"Failed to insert recipe {recipe_data['name']} (permissions): {e}")
+            logger.warning(f"Failed to upsert recipe {recipe_data['name']}: {e}")
     
     logger.info(f"Seeded {len(recipes_data)} recipes with translations")
 
