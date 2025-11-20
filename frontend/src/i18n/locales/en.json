@@ -508,6 +508,25 @@
     "errorDeleteComment": "Could not delete comment",
     "onlyProCanLike": "Only PRO users can like tips. Upgrade to participate!"
   },
+  "matchFinder": {
+    "title": "Match-Finder",
+    "subtitle": "Find the perfect recipe based on your ingredients",
+    "yourIngredients": "Your Ingredients",
+    "ingredientCount": "You have {{count}} ingredient",
+    "ingredientCountPlural": "You have {{count}} ingredients",
+    "addMore": "Add More",
+    "findMatches": "Find matches",
+    "searching": "Searching...",
+    "noIngredients": "You have no ingredients yet",
+    "readyToMatch": "Ready to find matches?",
+    "clickToMatch": "Click \"Find matches\" to see which recipes you can make with your ingredients",
+    "clickToMatchShort": "Click \"Find matches\" to see which recipes you can make",
+    "pantryUpdated": "Your ingredients have been updated! Click \"Find matches\" to see new results.",
+    "tourComplete": "Match-Finder guide complete!",
+    "noMatches": "No recipes match your ingredients",
+    "matchesFound": "{{count}} recipe matches",
+    "matchesFoundPlural": "{{count}} recipes match"
+  },
   "brix": {
     "back": "Back",
     "title": "What Brix Means",
