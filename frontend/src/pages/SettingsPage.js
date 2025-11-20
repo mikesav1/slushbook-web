@@ -469,10 +469,10 @@ const SettingsPage = ({ sessionId }) => {
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-bold text-lg flex items-center gap-2">
-                  💡 Tips & Tricks
+                  💡 {t('settings.tipsAndTricks')}
                 </h3>
                 <p className="text-cyan-50 text-sm mt-1">
-                  Del erfaringer og lær af fællesskabet om maskiner, produkter og drift
+                  {t('settings.tipsAndTricksDesc')}
                 </p>
               </div>
               <span className="text-2xl">→</span>
