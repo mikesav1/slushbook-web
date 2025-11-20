@@ -45,7 +45,7 @@ const TipsPage = () => {
       setTips(response.data);
     } catch (error) {
       console.error('Error fetching tips:', error);
-      toast.error('Kunne ikke hente tips');
+      toast.error(t('tips.errorFetchTips'));
     } finally {
       setLoading(false);
     }
