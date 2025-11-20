@@ -91,13 +91,13 @@ const BrixInfoPage = () => {
                 {/* Smoothie/milkshake */}
                 <tr className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 text-gray-800 font-medium">
-                    Smoothie-/milkshake-slush
+                    {t('brix.typeSmoothie')}
                   </td>
                   <td className="px-6 py-4 bg-cyan-500 text-white text-center font-bold whitespace-nowrap">
                     13 – 16 °Bx
                   </td>
                   <td className="px-6 py-4 text-gray-700">
-                    Mælkesukker og frugt giver tykkere masse.
+                    {t('brix.typeSmoothieComment')}
                   </td>
                 </tr>
 
