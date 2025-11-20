@@ -237,7 +237,7 @@ const MatchFinderPage = ({ sessionId }) => {
             <p className="text-gray-500 mb-4">{t('matchFinder.noIngredients')}</p>
             <Link to="/pantry">
               <Button className="bg-cyan-500 hover:bg-cyan-600">
-                <FaPlus className="mr-2" /> Tilføj Ingredienser
+                <FaPlus className="mr-2" /> {t('matchFinder.addIngredients', 'Tilføj Ingredienser')}
               </Button>
             </Link>
           </div>
