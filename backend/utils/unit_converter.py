@@ -206,22 +206,28 @@ def normalize_ingredient(ingredient: dict) -> dict:
 
 def denormalize_ingredient(ingredient: dict, target_unit: str = None) -> dict:
     """
-    Convert ingredient from ml storage back to display unit
+    Convert ingredient from base storage (ml or g) back to display unit
     
     Args:
-        ingredient: Dict with 'quantity_ml' and optionally 'display_unit'
+        ingredient: Dict with 'quantity_ml' or 'quantity_g' and optionally 'display_unit'
         target_unit: Override unit to display (optional)
         
     Returns:
         Dict with 'quantity' and 'unit' for display
     """
-    quantity_ml = ingredient.get("quantity_ml", 0)
-    
-    # Use target unit if provided, otherwise use stored display unit, or fall back to ml
+    # Determine display unit
     display_unit = target_unit or ingredient.get("display_unit", "ml")
     
-    # Convert from ml to display unit
-    display_quantity = convert_from_ml(quantity_ml, display_unit)
+    # Convert based on unit type
+    if is_volume_unit(display_unit):
+        quantity_ml = ingredient.get("quantity_ml", 0)
+        display_quantity = convert_from_ml(quantity_ml, display_unit)
+    elif is_mass_unit(display_unit):
+        quantity_g = ingredient.get("quantity_g", 0)
+        display_quantity = quantity_g / UNIT_TO_G[display_unit.lower().strip()]
+    else:
+        # Fallback - use stored quantity
+        display_quantity = ingredient.get("quantity", 0)
     
     return {
         **ingredient,
