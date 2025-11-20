@@ -36,7 +36,7 @@
     "ensureRights": "Stellen Sie sicher, dass Sie die Rechte am Bild haben, bevor Sie das Rezept öffentlich teilen.",
     "fetchError": "Rezept konnte nicht abgerufen werden",
     "image": "Bild",
-    "imageLimit": "Max. 5MB - JPG, PNG",
+    "imageLimit": "Max 5MB - JPG, PNG",
     "imageRights": "Ich bestätige, dass ich die Rechte an diesem Bild habe",
     "imageRightsLabel": "Ich bestätige, dass ich die Rechte an diesem Bild besitze",
     "imageRightsRequired": "Sie müssen die Bildrechte bestätigen",
