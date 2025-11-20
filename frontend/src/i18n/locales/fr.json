@@ -211,7 +211,8 @@
     "youHaveCreatedPlural": "Vous avez créé {{count}} recettes",
     "status": "Statut",
     "lastActive": "Dernière activité",
-    "currentDevice": "Appareil actuel"
+    "currentDevice": "Appareil actuel",
+    "tipsAndTricksDesc": "Partagez vos expériences et apprenez de la communauté sur les machines, les produits et les opérations"
   },
   "messages": {
     "success": {

@@ -211,7 +211,8 @@
     "youHaveCreatedPlural": "You have created {{count}} recipes",
     "status": "Status",
     "lastActive": "Last active",
-    "currentDevice": "Current device"
+    "currentDevice": "Current device",
+    "tipsAndTricksDesc": "Share experiences and learn from the community about machines, products and operations"
   },
   "messages": {
     "success": {
