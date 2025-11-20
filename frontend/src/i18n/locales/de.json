@@ -779,7 +779,7 @@
     "csvImportVendor": "CSV-Import und Lieferantenverwaltung",
     "currentDevice": "Aktuelles Gerät",
     "default": "Standard",
-    "deviceInfo": "Sie können auf bis zu {{max}} Geräten gleichzeitig angemeldet sein",
+    "deviceInfo": "Sie können gleichzeitig auf bis zu{{max}} Geräten angemeldet sein",
     "deviceLimit": "Sie verwenden {{current}} von {{max}} erlaubten Geräten",
     "devices": "Ihre Geräte",
     "devicesLoggedOut": "{{count}} Geräte abgemeldet",
