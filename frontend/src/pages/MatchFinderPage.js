@@ -210,7 +210,7 @@ const MatchFinderPage = ({ sessionId }) => {
               className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 w-full sm:w-auto"
             >
               <FaMagic className="mr-2" />
-              {loading ? 'Søger...' : 'Find matches'}
+              {loading ? t('matchFinder.searching') : t('matchFinder.findMatches')}
             </Button>
           </div>
         </div>
