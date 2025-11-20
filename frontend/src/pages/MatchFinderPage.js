@@ -237,7 +237,7 @@ const MatchFinderPage = ({ sessionId }) => {
         ) : (
           <div className="text-center py-8 bg-white/50 rounded-lg mt-4">
             <FaBoxOpen className="mx-auto text-4xl text-gray-300 mb-3" />
-            <p className="text-gray-500 mb-4">Du har ingen ingredienser endnu</p>
+            <p className="text-gray-500 mb-4">{t('matchFinder.noIngredients')}</p>
             <Link to="/pantry">
               <Button className="bg-cyan-500 hover:bg-cyan-600">
                 <FaPlus className="mr-2" /> Tilføj Ingredienser
