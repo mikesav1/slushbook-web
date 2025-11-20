@@ -52,7 +52,19 @@ export const AuthProvider = ({ children }) => {
       // Clear user state AND localStorage
       setUser(null);
       localStorage.removeItem('session_token');
-      console.log('[AuthContext] Logged out, cleared session_token from localStorage');
+      
+      // Reset language to Danish (default) on logout
+      localStorage.removeItem('user_language');
+      localStorage.removeItem('user_country');
+      localStorage.removeItem('user_country_manual');
+      localStorage.removeItem('user_country_timestamp');
+      
+      // Change i18n back to Danish
+      if (window.i18n) {
+        window.i18n.changeLanguage('da');
+      }
+      
+      console.log('[AuthContext] Logged out, cleared session and language preferences');
     }
   };
 
