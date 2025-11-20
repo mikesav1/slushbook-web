@@ -650,7 +650,7 @@ const RecipeDetailPage = ({ sessionId }) => {
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
               }`}
             >
-              ← Forrige
+              ← {t('recipeDetail.previous')}
             </button>
             <span className="text-sm text-gray-500">
               {allRecipes.length > 0 && recipe && 
