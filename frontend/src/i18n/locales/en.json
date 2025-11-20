@@ -102,8 +102,8 @@
     "updateError": "Could not update recipe",
     "upgradePrompt": "Upgrade to add more",
     "uploadImage": "Upload image",
-    "volumeDescription": "",
-    "volumeExample": ""
+    "volumeDescription": "Specify the <strong>total volume</strong> this recipe makes.",
+    "volumeExample": "Example: 2700ml for a 3L container"
   },
   "admin": {
     "translations": {
