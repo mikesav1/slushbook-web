@@ -138,7 +138,14 @@ const SettingsPage = ({ sessionId }) => {
       setMachines(machinesRes.data);
       setUserRecipesCount(limitsRes.data.user_recipes_count);
       setCanAddRecipe(limitsRes.data.can_add_recipe);
-      setLimitMessage(limitsRes.data.limit_message);
+      
+      // Translate limit message
+      let message = limitsRes.data.limit_message;
+      if (message.includes('__UNLIMITED_RECIPES__')) {
+        const role = message.split(':')[0];
+        message = `${role}: ${t('settings.unlimitedRecipes')}`;
+      }
+      setLimitMessage(message);
     } catch (error) {
       console.error('Error fetching settings:', error);
     } finally {
