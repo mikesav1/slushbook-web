@@ -200,7 +200,11 @@
     "showMore": "Mehr anzeigen",
     "sort": "Sortieren",
     "tip": "Tipp",
-    "yes": "Ja"
+    "yes": "Ja",
+    "dragToMove": "Zum Verschieben ziehen",
+    "holdAndDragToMove": "Halten und ziehen zum Verschieben",
+    "skipTour": "Überspringen",
+    "canRestartInSettings": "kann in den Einstellungen neu gestartet werden"
   },
   "favorites": {
     "addYourFavorites": "Fügen Sie hier Ihre Lieblingsrezepte hinzu",
@@ -350,7 +354,8 @@
     "upgradeMessage": "Upgraden Sie auf PRO, um Ihre Zutaten mit Rezepten abzugleichen und herauszufinden, was Sie machen können!",
     "upgradeToPro": "Auf PRO upgraden",
     "viewRecipe": "Rezept ansehen",
-    "yourIngredients": "Ihre Zutaten"
+    "yourIngredients": "Ihre Zutaten",
+    "addIngredients": "Zutaten hinzufügen"
   },
   "messages": {
     "error": {

@@ -20,7 +20,11 @@
     "all": "Alle",
     "showMore": "Vis mere",
     "showLess": "Vis mindre",
-    "tip": "Tip"
+    "tip": "Tip",
+    "dragToMove": "Træk for at flytte",
+    "holdAndDragToMove": "Hold og træk for at flytte",
+    "skipTour": "Spring over",
+    "canRestartInSettings": "kan genstartes under Indstillinger"
   },
   "nav": {
     "home": "Hjem",
@@ -313,7 +317,8 @@
     "upgradeMessage": "Opgradér til PRO for at matche dine ingredienser med opskrifter og finde ud af hvad du kan lave!",
     "upgradeToPro": "Opgradér til PRO",
     "ingredientCount": "Du har {{count}} ingrediens{{plural}}",
-    "addMore": "Tilføj Flere"
+    "addMore": "Tilføj Flere",
+    "addIngredients": "Tilføj Ingredienser"
   },
   "brix": {
     "back": "Tilbage",

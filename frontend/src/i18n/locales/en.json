@@ -20,7 +20,11 @@
     "all": "All",
     "showMore": "Show more",
     "showLess": "Show less",
-    "tip": "Tip"
+    "tip": "Tip",
+    "dragToMove": "Drag to move",
+    "holdAndDragToMove": "Hold and drag to move",
+    "skipTour": "Skip",
+    "canRestartInSettings": "can be restarted in Settings"
   },
   "nav": {
     "home": "Home",
@@ -376,7 +380,8 @@
     "searchError": "Could not find matches",
     "proFeature": "Match-Finder is a PRO feature",
     "upgradeMessage": "Upgrade to PRO to match your ingredients with recipes and find out what you can make!",
-    "upgradeToPro": "Upgrade to PRO"
+    "upgradeToPro": "Upgrade to PRO",
+    "addIngredients": "Add Ingredients"
   },
   "shoppingList": {
     "title": "Shopping List",

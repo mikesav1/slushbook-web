@@ -20,7 +20,11 @@
     "all": "Tous",
     "showMore": "Voir plus",
     "showLess": "Voir moins",
-    "tip": "Astuce"
+    "tip": "Astuce",
+    "dragToMove": "Glisser pour déplacer",
+    "holdAndDragToMove": "Maintenir et glisser pour déplacer",
+    "skipTour": "Passer",
+    "canRestartInSettings": "peut être redémarré dans les paramètres"
   },
   "nav": {
     "home": "Accueil",
@@ -376,7 +380,8 @@
     "searchError": "Impossible de trouver des correspondances",
     "proFeature": "Match-Finder est une fonctionnalité PRO",
     "upgradeMessage": "Passez à PRO pour faire correspondre vos ingrédients avec des recettes et découvrir ce que vous pouvez faire !",
-    "upgradeToPro": "Passer à PRO"
+    "upgradeToPro": "Passer à PRO",
+    "addIngredients": "Ajouter des ingrédients"
   },
   "shoppingList": {
     "title": "Liste de courses",
