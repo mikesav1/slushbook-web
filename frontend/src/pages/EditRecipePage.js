@@ -236,16 +236,22 @@ const EditRecipePage = ({ sessionId }) => {
     try {
       const imageUrl = await uploadImage();
       
+      // Normalize ingredients to ml before sending to backend
+      const normalizedIngredients = recipe.ingredients.map(ing => {
+        const normalized = normalizeIngredient({
+          ...ing,
+          quantity: parseFloat(ing.quantity),
+          brix: ing.brix ? parseFloat(ing.brix) : null
+        });
+        return normalized;
+      });
+
       await axios.put(`${API}/recipes/${id}`, {
         session_id: sessionId,
         ...recipe,
         image_url: imageUrl,
         target_brix: parseFloat(recipe.target_brix),
-        ingredients: recipe.ingredients.map(ing => ({
-          ...ing,
-          quantity: parseFloat(ing.quantity),
-          brix: ing.brix ? parseFloat(ing.brix) : null
-        }))
+        ingredients: normalizedIngredients
       });
       toast.success(t('messages.success.updated'));
       navigate(`/recipes/${id}`);
