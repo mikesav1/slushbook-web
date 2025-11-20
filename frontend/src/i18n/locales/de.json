@@ -274,8 +274,7 @@
     "errorPostComment": "Kommentar konnte nicht hinzugefügt werden",
     "errorDeleteComment": "Kommentar konnte nicht gelöscht werden",
     "onlyProCanLike": "Nur PRO-Benutzer können Tipps liken. Upgraden Sie, um teilzunehmen!"
-  }
-}
+  },
   "messages": {
     "success": {
       "saved": "Gespeichert!",
