@@ -344,9 +344,11 @@ const AdminTranslationsPage = () => {
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg p-4 z-50">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div>
-              {hasChanges ? (
+              {hasChanges() ? (
                 <p className="text-sm text-orange-600 font-semibold">
-                  ⚠️ Du har ugemte ændringer
+                  ⚠️ Du har ugemte ændringer i {getChangedLanguagesCount()} sprog: {
+                    Object.keys(allEditedTranslations).map(lang => LANGUAGES[lang].flag).join(' ')
+                  }
                 </p>
               ) : (
                 <p className="text-sm text-gray-600">
@@ -356,7 +358,7 @@ const AdminTranslationsPage = () => {
             </div>
             <Button
               onClick={saveAllTranslations}
-              disabled={saving || !hasChanges}
+              disabled={saving || !hasChanges()}
               className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 text-lg font-bold shadow-md"
             >
               {saving ? (
@@ -367,7 +369,7 @@ const AdminTranslationsPage = () => {
               ) : (
                 <>
                   <FaSave className="mr-2" />
-                  💾 Gem alle ændringer
+                  💾 Gem alle ændringer ({getChangedLanguagesCount()} sprog)
                 </>
               )}
             </Button>
