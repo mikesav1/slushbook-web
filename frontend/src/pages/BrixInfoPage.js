@@ -104,14 +104,14 @@ const BrixInfoPage = () => {
                 {/* Alkohol-slush */}
                 <tr className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 text-gray-800 font-medium">
-                    Alkohol-slush<br />
-                    <span className="text-sm text-gray-500">(fx rom, vodka)</span>
+                    {t('brix.typeAlcohol')}<br />
+                    <span className="text-sm text-gray-500">{t('brix.typeAlcoholSub')}</span>
                   </td>
                   <td className="px-6 py-4 bg-cyan-500 text-white text-center font-bold whitespace-nowrap">
                     14 – 18 °Bx
                   </td>
                   <td className="px-6 py-4 text-gray-700">
-                    Alkohol sænker frysepunktet, så du skal hæve Brix for at få den til at sætte sig.
+                    {t('brix.typeAlcoholComment')}
                   </td>
                 </tr>
 
