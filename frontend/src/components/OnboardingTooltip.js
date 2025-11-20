@@ -209,7 +209,7 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
               <div className="w-1 h-4 bg-yellow-400 rounded"></div>
             </div>
             <span className="text-xs text-gray-500 font-medium">
-              {isMobile ? '👆 Hold og træk for at flytte' : '🖱️ Træk for at flytte'}
+              {isMobile ? '👆 ' + t('common.holdAndDragToMove', 'Hold og træk for at flytte') : '🖱️ ' + t('common.dragToMove', 'Træk for at flytte')}
             </span>
           </div>
           
