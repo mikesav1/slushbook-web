@@ -105,7 +105,6 @@
     "volumeDescription": "Indiquez le <strong>volume total</strong> que cette recette produit.",
     "volumeExample": "Exemple : 2700ml pour un récipient de 3L",
     "image": "Image",
-    "uploadImage": "Télécharger une image",
     "chooseImage": "Choisir une image",
     "changeImage": "Changer l'image",
     "changeImageLabel": "Changer l'image",
