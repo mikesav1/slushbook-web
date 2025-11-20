@@ -669,7 +669,7 @@ const RecipeDetailPage = ({ sessionId }) => {
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
               }`}
             >
-              Næste →
+              {t('recipeDetail.next')} →
             </button>
           </div>
         )}
