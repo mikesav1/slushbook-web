@@ -246,6 +246,36 @@
     "loading": "Lädt...",
     "unlimitedRecipes": "Unbegrenzte Rezepte!"
   },
+  "tips": {
+    "communityForum": "Community-Forum",
+    "subtitle": "Teilen Sie Wissen, stellen Sie Fragen und helfen Sie einander",
+    "createNewTip": "Neuen Tipp erstellen",
+    "categoryAll": "Alle",
+    "categoryMachines": "Maschinen",
+    "categoryProducts": "Produkte & Zutaten",
+    "categoryCleaning": "Reinigung & Wartung",
+    "categoryTechnical": "Technik & Ausrüstung",
+    "categoryUserTips": "Benutzertipps & Erfahrungen",
+    "categoryAccessories": "Zubehör & Servieren",
+    "inclInternational": "Inkl. internationale",
+    "onlyLocal": "Nur lokale",
+    "noTipsFound": "Keine Tipps gefunden",
+    "international": "International",
+    "likes": "Likes",
+    "delete": "Löschen",
+    "replies": "Antworten",
+    "writeReply": "Schreiben Sie eine Antwort...",
+    "send": "Senden",
+    "loginToComment": "Anmelden um zu kommentieren",
+    "deleteComment": "Kommentar löschen",
+    "errorFetchTips": "Tipps konnten nicht geladen werden",
+    "errorLike": "Tipp konnte nicht geliked werden",
+    "errorDelete": "Tipp konnte nicht gelöscht werden",
+    "errorPostComment": "Kommentar konnte nicht hinzugefügt werden",
+    "errorDeleteComment": "Kommentar konnte nicht gelöscht werden",
+    "onlyProCanLike": "Nur PRO-Benutzer können Tipps liken. Upgraden Sie, um teilzunehmen!"
+  }
+}
   "messages": {
     "success": {
       "saved": "Gespeichert!",
