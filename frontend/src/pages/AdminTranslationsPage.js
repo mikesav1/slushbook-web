@@ -16,6 +16,13 @@ const LANGUAGES = {
   en_us: { name: 'Engelsk (US)', flag: '🇺🇸' }
 };
 
+const SECTIONS = {
+  all: { name: 'Alle sektioner', icon: '📋' },
+  ui: { name: 'UI & Interface', icon: '🎨' },
+  recipeContent: { name: 'Opskrifter', icon: '📖' },
+  ingredients: { name: 'Ingredienser', icon: '🥕' }
+};
+
 const AdminTranslationsPage = () => {
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
