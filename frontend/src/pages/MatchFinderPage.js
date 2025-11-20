@@ -334,8 +334,12 @@ const MatchFinderPage = ({ sessionId }) => {
       {!matches && !loading && (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">🔍</div>
-          <h3 className="text-xl font-bold mb-2">Klar til at finde matches?</h3>
-          <p className="text-gray-600">Klik på "Find matches" for at se hvilke opskrifter du kan lave</p>
+          <h3 className="text-xl font-bold mb-2">
+            {t('matchFinder.readyToMatch')}
+          </h3>
+          <p className="text-gray-600 text-center">
+            {t('matchFinder.clickToMatch')}
+          </p>
         </div>
       )}
     </div>
