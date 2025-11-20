@@ -420,6 +420,9 @@
     "withProAccount": "Mit Pro-Konto erhalten Sie:"
   },
   "recipeDetail": {
+    "back": "Zurück",
+    "previous": "Vorherige",
+    "next": "Nächste",
     "addedToShoppingList": "{{count}} Zutaten zur Einkaufsliste hinzugefügt!",
     "commentDeleted": "Kommentar gelöscht",
     "confirmDelete": "Möchten Sie '{{name}}' wirklich löschen? Dies kann nicht rückgängig gemacht werden.",
