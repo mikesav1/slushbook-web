@@ -201,7 +201,11 @@
     "autoDetect": "Auto-detect",
     "countryTip": "Your selected language is used for recipes and interface, as well as to show relevant product links when you click 'Shop' buttons",
     "youCanAdd": "You can add {{count}} more recipe",
-    "youCanAddPlural": "You can add {{count}} more recipes"
+    "youCanAddPlural": "You can add {{count}} more recipes",
+    "yourAccount": "Your Account",
+    "user": "User",
+    "unlimited": "unlimited",
+    "noMachinesYet": "No machines added yet. Add your first machine for auto-scaling."
   },
   "messages": {
     "success": {

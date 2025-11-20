@@ -203,7 +203,11 @@
     "autoDetect": "Détection automatique",
     "countryTip": "La langue sélectionnée est utilisée pour les recettes et l'interface, ainsi que pour afficher les liens produits pertinents lorsque vous cliquez sur les boutons 'Acheter'",
     "youCanAdd": "Vous pouvez ajouter {{count}} recette de plus",
-    "youCanAddPlural": "Vous pouvez ajouter {{count}} recettes de plus"
+    "youCanAddPlural": "Vous pouvez ajouter {{count}} recettes de plus",
+    "yourAccount": "Votre compte",
+    "user": "Utilisateur",
+    "unlimited": "illimité",
+    "noMachinesYet": "Aucune machine ajoutée pour le moment. Ajoutez votre première machine pour le mise à l'échelle automatique."
   },
   "messages": {
     "success": {
