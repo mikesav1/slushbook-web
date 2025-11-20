@@ -240,7 +240,10 @@
     "manageUserBadges": "Benutzer-Achievement-Badges verwalten",
     "members": "Mitglieder",
     "tipsAndTricks": "Tipps & Tricks",
-    "tipsAndTricksDesc": "Teilen Sie Erfahrungen und lernen Sie von der Community über Maschinen, Produkte und Betrieb"
+    "tipsAndTricksDesc": "Teilen Sie Erfahrungen und lernen Sie von der Community über Maschinen, Produkte und Betrieb",
+    "lastActive": "Zuletzt aktiv",
+    "currentDevice": "Aktuelles Gerät",
+    "loading": "Lädt..."
   },
   "messages": {
     "success": {
