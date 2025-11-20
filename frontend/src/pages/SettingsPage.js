@@ -487,12 +487,12 @@ const SettingsPage = ({ sessionId }) => {
           <Button
             onClick={async () => {
               await resetAllTours(API);
-              toast.success('Alle guider er nulstillet! De vil vises næste gang du besøger siderne.');
+              toast.success(t('settings.guidesReset'));
             }}
             data-tour="restart-tours-button"
             className="bg-yellow-500 hover:bg-yellow-600 text-white mb-4 w-full"
           >
-            🔄 Genstart Alle Guider
+            🔄 {t('settings.restartAllGuides')}
           </Button>
 
           {/* Individual Tour Reset Buttons */}
@@ -500,56 +500,56 @@ const SettingsPage = ({ sessionId }) => {
             <button
               onClick={async () => {
                 await resetTour(TOUR_KEYS.HOME, API);
-                toast.success('Hjem-guiden er nulstillet!');
+                toast.success(t('settings.tourHomeReset'));
               }}
               className="px-4 py-2 bg-white border-2 border-yellow-300 rounded-lg hover:bg-yellow-100 text-sm font-medium transition-colors"
             >
-              🏠 Hjem
+              🏠 {t('settings.tourHome')}
             </button>
             <button
               onClick={() => {
                 resetTour(TOUR_KEYS.RECIPES);
-                toast.success('Opskrifter-guiden er nulstillet!');
+                toast.success(t('settings.tourRecipesReset'));
               }}
               className="px-4 py-2 bg-white border-2 border-yellow-300 rounded-lg hover:bg-yellow-100 text-sm font-medium transition-colors"
             >
-              📖 Opskrifter
+              📖 {t('settings.tourRecipes')}
             </button>
             <button
               onClick={() => {
                 resetTour(TOUR_KEYS.ADD_RECIPE);
-                toast.success('Tilføj Opskrift-guiden er nulstillet!');
+                toast.success(t('settings.tourAddRecipeReset'));
               }}
               className="px-4 py-2 bg-white border-2 border-yellow-300 rounded-lg hover:bg-yellow-100 text-sm font-medium transition-colors"
             >
-              ➕ Tilføj Opskrift
+              ➕ {t('settings.tourAddRecipe')}
             </button>
             <button
               onClick={() => {
                 resetTour(TOUR_KEYS.MATCH);
-                toast.success('Match Finder-guiden er nulstillet!');
+                toast.success(t('settings.tourMatchFinderReset'));
               }}
               className="px-4 py-2 bg-white border-2 border-yellow-300 rounded-lg hover:bg-yellow-100 text-sm font-medium transition-colors"
             >
-              🔍 Match Finder
+              🔍 {t('settings.tourMatchFinder')}
             </button>
             <button
               onClick={() => {
                 resetTour(TOUR_KEYS.SHOPPING_LIST);
-                toast.success('Indkøbsliste-guiden er nulstillet!');
+                toast.success(t('settings.tourShoppingListReset'));
               }}
               className="px-4 py-2 bg-white border-2 border-yellow-300 rounded-lg hover:bg-yellow-100 text-sm font-medium transition-colors"
             >
-              🛒 Indkøbsliste
+              🛒 {t('settings.tourShoppingList')}
             </button>
             <button
               onClick={() => {
                 resetTour(TOUR_KEYS.SETTINGS);
-                toast.success('Indstillinger-guiden er nulstillet!');
+                toast.success(t('settings.tourSettingsReset'));
               }}
               className="px-4 py-2 bg-white border-2 border-yellow-300 rounded-lg hover:bg-yellow-100 text-sm font-medium transition-colors"
             >
-              ⚙️ Indstillinger
+              ⚙️ {t('settings.tourSettings')}
             </button>
           </div>
         </div>
