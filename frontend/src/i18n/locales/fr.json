@@ -597,5 +597,16 @@
     "ingredientsEmpty": "Vos ingrédients sont vides",
     "addIngredientsForSuggestions": "Ajoutez des ingrédients pour obtenir des suggestions de recettes",
     "addFirstIngredient": "Ajouter le premier ingrédient"
+  },
+  "recipeContent": {
+    "choko-milkshake slush": "Slush milkshake au chocolat",
+    "appelsin dream": "Rêve d'orange"
+  },
+  "ingredients": {
+    "vand": "Eau",
+    "sukker": "Sucre",
+    "chokoladesirup": "Sirop de chocolat",
+    "mælk": "Lait",
+    "appelsinjuice": "Jus d'orange"
   }
 }
