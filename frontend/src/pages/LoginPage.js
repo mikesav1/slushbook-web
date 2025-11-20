@@ -173,11 +173,19 @@ const LoginPage = ({ onLogin }) => {
         console.log('[LoginPage] Saved session_token to localStorage');
       }
       
-      // Save user's country and language preferences to localStorage 
-      // Mark as NOT manual (false) so it doesn't override user's explicit Settings choice
+      // Save user's country and language preferences to localStorage
+      // ALWAYS use the user's database language (mark as manual=false to allow Settings to override later)
       if (response.data.user.country && response.data.user.language) {
-        await updateUserPreferences(response.data.user.country, response.data.user.language, false);
-        console.log(`[LoginPage] Loaded user country preference from database: ${response.data.user.country}`);
+        const userLang = response.data.user.language;
+        await updateUserPreferences(response.data.user.country, userLang, false);
+        
+        // CRITICAL: Also update i18next immediately to ensure UI shows correct language
+        if (window.i18n) {
+          window.i18n.changeLanguage(userLang);
+          console.log(`[LoginPage] Changed i18n language to: ${userLang}`);
+        }
+        
+        console.log(`[LoginPage] Loaded user language from database: ${userLang}`);
       }
       
       // Save user data
