@@ -16,9 +16,9 @@ const BrixInfoPage = () => {
           className="flex items-center gap-2 mb-4 hover:opacity-80 transition-opacity"
         >
           <ArrowLeft className="w-5 h-5" />
-          <span>Tilbage</span>
+          <span>{t('brix.back')}</span>
         </button>
-        <h1 className="text-3xl font-bold">Hvad Brix betyder</h1>
+        <h1 className="text-3xl font-bold">{t('brix.title')}</h1>
       </div>
 
       <div className="px-4 py-6 space-y-8">
