@@ -453,7 +453,7 @@ const EditRecipePage = ({ sessionId }) => {
                   onChange={(e) => setRecipe({...recipe, alcohol_flag: e.target.checked})}
                   className="w-4 h-4"
                 />
-                Indeholder alkohol (18+)
+                {t('addRecipe.containsAlcohol')}
               </Label>
             </div>
           </div>
