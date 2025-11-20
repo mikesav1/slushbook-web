@@ -11,7 +11,7 @@ from datetime import datetime
 
 # Configuration
 DEPLOYED_URL = "https://slushice-recipes.emergent.host/api"
-PREVIEW_URL = "https://unit-converter-13.preview.emergentagent.com/api"
+PREVIEW_URL = "https://multilingual-app-32.preview.emergentagent.com/api"
 TEST_EMAIL = "kimesav@gmail.com"
 TEST_PASSWORD = "admin123"
 
