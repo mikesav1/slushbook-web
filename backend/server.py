@@ -21,6 +21,10 @@ import subprocess
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+# Import unit converter utilities
+import sys
+sys.path.append('/app/backend')
+from utils.unit_converter import convert_to_ml, convert_from_ml, normalize_ingredient, denormalize_ingredient, get_supported_units, UNIT_TO_ML
 
 # Version
 __version__ = "2.0.0"
