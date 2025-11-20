@@ -408,11 +408,10 @@ async def seed_recipes():
     logger.info("[SEED] Starting recipe seeding process...")
     try:
         count = await db.recipes.count_documents({"author": "system"})
-        if count > 0:
-            return
+        logger.info(f"[SEED] Found {count} existing system recipes")
+        # Don't return - allow re-seeding with upsert to update translations
     except Exception as e:
         logger.warning(f"Cannot check existing recipes (permissions): {e}")
-        return
     
     recipes_data = [
         {
