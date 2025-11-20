@@ -97,7 +97,7 @@ const TipsPage = () => {
       }));
     } catch (error) {
       console.error('Error liking tip:', error);
-      toast.error('Kunne ikke like tip');
+      toast.error(t('tips.errorLike'));
     }
   };
 
