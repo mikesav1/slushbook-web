@@ -8,6 +8,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from PIL import Image
 import io
 import os
+import json
 import logging
 from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict
