@@ -342,7 +342,7 @@ const TipsPage = () => {
                           } disabled:opacity-50 disabled:cursor-not-allowed`}
                         >
                           {isLiked ? <FaHeart /> : <FaRegHeart />}
-                          {tip.likes || 0} likes
+                          {tip.likes || 0} {t('tips.likes')}
                         </button>
 
                         {canDeleteTip(tip) && (
