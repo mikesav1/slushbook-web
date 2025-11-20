@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 const TipsPage = () => {
   const navigate = useNavigate();
   const { user, sessionId } = useAuth();
+  const { t } = useTranslation();
   const [tips, setTips] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedTipId, setExpandedTipId] = useState(null);
