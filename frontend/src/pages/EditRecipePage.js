@@ -318,14 +318,29 @@ const EditRecipePage = ({ sessionId }) => {
               </div>
             )}
             <div>
-              <Label>Skift Billede</Label>
+              <Label>{t('addRecipe.changeImageLabel')}</Label>
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
-                className="w-full mt-2"
+                id="recipe-image-upload-edit"
+                className="hidden"
               />
-              <p className="text-xs text-gray-500 mt-1">Maks 5MB - JPG, PNG</p>
+              <label
+                htmlFor="recipe-image-upload-edit"
+                className="block w-full cursor-pointer mt-2"
+              >
+                <div className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg hover:from-cyan-600 hover:to-blue-700 transition-all">
+                  <FaPlus />
+                  <span>{t('addRecipe.chooseImage')}</span>
+                </div>
+                {imageFile && (
+                  <p className="text-xs text-gray-600 mt-1 text-center">
+                    {t('addRecipe.selectedFile')}: {imageFile.name}
+                  </p>
+                )}
+              </label>
+              <p className="text-xs text-gray-500 mt-1">{t('addRecipe.imageLimit')}</p>
             </div>
           </div>
         </div>
