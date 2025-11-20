@@ -36,7 +36,7 @@
     "ensureRights": "Ensure you have the rights to the image before sharing the recipe publicly.",
     "fetchError": "Could not fetch recipe",
     "image": "Image",
-    "imageLimit": "Max. 5MB - JPG, PNG",
+    "imageLimit": "Max 5MB - JPG, PNG",
     "imageRights": "I confirm that I have the rights to this image",
     "imageRightsLabel": "I confirm that I own the rights to this image",
     "imageRightsRequired": "You must confirm image rights",
