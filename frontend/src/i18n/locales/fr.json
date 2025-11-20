@@ -32,7 +32,9 @@
     "settings": "Paramètres",
     "login": "Connexion",
     "logout": "Déconnexion",
-    "signup": "S'inscrire"
+    "signup": "S'inscrire",
+    "match": "Match",
+    "favorites": "Favoris"
   },
   "auth": {
     "signIn": "Connexion",

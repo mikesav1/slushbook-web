@@ -32,7 +32,9 @@
     "settings": "Settings",
     "login": "Log in",
     "logout": "Log out",
-    "signup": "Sign up"
+    "signup": "Sign up",
+    "match": "Match",
+    "favorites": "Favorites"
   },
   "auth": {
     "signIn": "Sign in",

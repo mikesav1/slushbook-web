@@ -32,7 +32,9 @@
     "settings": "Indstillinger",
     "login": "Log ind",
     "logout": "Log ud",
-    "signup": "Opret konto"
+    "signup": "Opret konto",
+    "match": "Match",
+    "favorites": "Favoritter"
   },
   "auth": {
     "signIn": "Log ind",

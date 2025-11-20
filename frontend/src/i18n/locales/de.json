@@ -377,7 +377,9 @@
     "settings": "Einstellungen",
     "shoppingList": "Einkaufsliste",
     "signup": "Registrieren",
-    "tips": "Tipps & Tricks"
+    "tips": "Tipps & Tricks",
+    "match": "Match",
+    "favorites": "Favoriten"
   },
   "profile": {
     "asGuestYouCan": "Als Gast können Sie:",
