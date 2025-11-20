@@ -190,6 +190,29 @@ const AdminTranslationsPage = () => {
         </div>
       </div>
 
+      {/* Section Filter */}
+      <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+        <div className="flex items-center gap-2 mb-4">
+          <span className="font-semibold text-gray-700">Vælg sektion:</span>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {Object.entries(SECTIONS).map(([code, section]) => (
+            <button
+              key={code}
+              onClick={() => setSelectedSection(code)}
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
+                selectedSection === code
+                  ? 'bg-purple-500 text-white shadow-md'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              <span className="text-2xl">{section.icon}</span>
+              <span>{section.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Search Box */}
       <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
         <div className="relative">
