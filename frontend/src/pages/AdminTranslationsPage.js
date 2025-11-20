@@ -317,7 +317,7 @@ const AdminTranslationsPage = () => {
                 </div>
 
                 {/* Show indicator if edited */}
-                {editedTranslations.hasOwnProperty(item.key) && (
+                {allEditedTranslations[selectedLanguage]?.hasOwnProperty(item.key) && (
                   <div className="mt-2">
                     <span className="text-xs text-green-600 font-semibold">
                       ✓ Ændret (endnu ikke gemt)
