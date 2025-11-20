@@ -98,29 +98,46 @@ const AdminTranslationsPage = () => {
 
   const saveAllTranslations = async () => {
     setSaving(true);
+    const changedLanguages = Object.keys(allEditedTranslations);
+    
     try {
       const token = localStorage.getItem('session_token');
+      let savedCount = 0;
       
-      // Build final translations object (merge original + edited)
-      const finalTranslations = {};
-      translations.forEach(item => {
-        finalTranslations[item.key] = getCurrentTranslation(item);
-      });
-      
-      await axios.put(
-        `${API}/admin/translations/editor/${selectedLanguage}`,
-        { translations: finalTranslations },
-        {
+      // Save each language that has changes
+      for (const lang of changedLanguages) {
+        // Load that language's full translations
+        const response = await axios.get(`${API}/admin/translations/editor?language=${lang}`, {
           headers: { Authorization: `Bearer ${token}` },
           withCredentials: true
-        }
-      );
+        });
+        
+        // Build final translations (merge original + edited for this language)
+        const finalTranslations = {};
+        response.data.translations.forEach(item => {
+          const languageEdits = allEditedTranslations[lang] || {};
+          finalTranslations[item.key] = languageEdits.hasOwnProperty(item.key)
+            ? languageEdits[item.key]
+            : item.translation;
+        });
+        
+        // Save this language
+        await axios.put(
+          `${API}/admin/translations/editor/${lang}`,
+          { translations: finalTranslations },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true
+          }
+        );
+        
+        savedCount++;
+      }
       
-      toast.success(`✅ Alle oversættelser gemt for ${LANGUAGES[selectedLanguage].name}`);
-      setHasChanges(false);
-      setEditedTranslations({});
+      toast.success(`✅ Gemt oversættelser for ${savedCount} sprog: ${changedLanguages.map(l => LANGUAGES[l].name).join(', ')}`);
+      setAllEditedTranslations({});
       
-      // Reload to confirm
+      // Reload current language
       await loadTranslations(selectedLanguage);
     } catch (error) {
       console.error('Error saving translations:', error);
