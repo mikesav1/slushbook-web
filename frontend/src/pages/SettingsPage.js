@@ -785,8 +785,8 @@ const SettingsPage = ({ sessionId }) => {
             className="w-full p-6 text-left hover:bg-black/10 transition-colors flex items-center justify-between"
           >
             <div>
-              <h2 className="text-2xl font-bold mb-1">Administrator</h2>
-              <p className="text-white/90">Admin værktøjer og indstillinger</p>
+              <h2 className="text-2xl font-bold mb-1">{t('settings.administrator')}</h2>
+              <p className="text-white/90">{t('settings.adminTools')}</p>
             </div>
             {isAdminSectionExpanded ? (
               <FaChevronUp className="text-white text-xl" />
