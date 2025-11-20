@@ -1987,6 +1987,14 @@ async def get_user_limits(session_id: str, request: Request):
         }
 
 # Recipes
+@api_router.get("/units/supported")
+async def get_supported_units_endpoint(language: str = "da"):
+    """Get supported units for a given language/country"""
+    return {
+        "units": get_supported_units(language),
+        "all_conversions": UNIT_TO_ML
+    }
+
 @api_router.get("/recipes")
 async def get_recipes(
     request: Request,
