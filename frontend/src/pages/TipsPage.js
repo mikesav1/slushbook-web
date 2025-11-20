@@ -350,7 +350,7 @@ const TipsPage = () => {
                             onClick={() => handleDeleteTip(tip.id)}
                             className="ml-auto px-4 py-2 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition-colors flex items-center gap-2 font-medium"
                           >
-                            <FaTrash size={14} /> Slet
+                            <FaTrash size={14} /> {t('tips.delete')}
                           </button>
                         )}
                       </div>
