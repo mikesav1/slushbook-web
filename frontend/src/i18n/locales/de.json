@@ -238,7 +238,9 @@
     "manageSupplierLinks": "Links zu Lieferanten verwalten",
     "badgeManagement": "Badge-Verwaltung",
     "manageUserBadges": "Benutzer-Achievement-Badges verwalten",
-    "members": "Mitglieder"
+    "members": "Mitglieder",
+    "tipsAndTricks": "Tipps & Tricks",
+    "tipsAndTricksDesc": "Teilen Sie Erfahrungen und lernen Sie von der Community über Maschinen, Produkte und Betrieb"
   },
   "messages": {
     "success": {
