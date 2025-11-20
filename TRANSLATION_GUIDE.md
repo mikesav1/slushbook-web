@@ -2,82 +2,108 @@
 
 ## 📥 Step 1: Download CSV
 
-Filen ligger her: `/app/recipe_translations_export.csv`
+**Download linket:** https://i18n-workflow-1.preview.emergentagent.com/recipe_translations_export.csv
 
-Du kan downloade den via:
-- File browser i Emergent
-- Eller via bash: `cat /app/recipe_translations_export.csv > din_lokale_fil.csv`
+Filen indeholder:
+- 81 opskrifter
+- 463 rækker total (1 header + beskrivelser og trin)
+- Ca. 262KB
 
 ## 📊 CSV Format
 
 CSV'en indeholder følgende kolonner:
-- **Recipe ID**: Unikt ID for opskriften
-- **Recipe Name**: Opskriftens navn
-- **Field Type**: "Description" eller "Step"
-- **Step Number**: Trin nummer (kun for steps)
-- **Danish (DA)**: Dansk tekst (master)
-- **German (DE)**: Tysk oversættelse (skal rettes)
-- **French (FR)**: Fransk oversættelse (skal rettes)
-- **English UK (EN)**: Engelsk UK oversættelse (skal rettes)
-- **English US (EN_US)**: Engelsk US oversættelse (skal rettes)
+- **Recipe ID**: Unikt ID for opskriften (BEHOLD SOM DEN ER)
+- **Recipe Name**: Opskriftens navn (BEHOLD SOM DEN ER)
+- **Field Type**: "Description" eller "Step" (BEHOLD SOM DEN ER)
+- **Step Number**: Trin nummer, kun for steps (BEHOLD SOM DEN ER)
+- **Danish (DA)**: Dansk tekst - DIN KILDETEKST (BEHOLD SOM DEN ER)
+- **German (DE)**: Tysk oversættelse (ERSTAT MED KORREKT OVERSÆTTELSE)
+- **French (FR)**: Fransk oversættelse (ERSTAT MED KORREKT OVERSÆTTELSE)
+- **English UK (EN)**: Engelsk UK oversættelse (ERSTAT MED KORREKT OVERSÆTTELSE)
+- **English US (EN_US)**: Engelsk US oversættelse (ERSTAT MED KORREKT OVERSÆTTELSE)
 
 ## 🤖 Step 2: Brug ChatGPT til Oversættelse
 
-### Prompt til ChatGPT:
+### Prompt til ChatGPT (kopier hele denne tekst):
 
 ```
-Jeg har en CSV fil med opskrifts-beskrivelser og trin-for-trin instruktioner der skal oversættes fra dansk til tysk, fransk og engelsk.
+Jeg har en CSV fil med 81 opskrifter (slush-drinks) der skal have professionelle oversættelser fra dansk til tysk, fransk og engelsk.
 
-Format: 
-- Kolonne 1-4: ID, navn, type, trin nummer (behold som de er)
-- Kolonne 5: Dansk tekst (master - behold)
-- Kolonne 6-9: Tysk, Fransk, Engelsk UK, Engelsk US (erstat med korrekte oversættelser)
+VIGTIGT OM FORMAT:
+- CSV'en har 463 rækker (inkl. header)
+- Du skal returnere PRÆCIS samme antal rækker og kolonner
+- Behold alle quotes og kommaer som i originalen
+- Returner den komplette CSV (alle 463 rækker)
 
-Regler:
-1. Behold CSV strukturen præcist (samme antal rækker og kolonner)
-2. Oversæt IKKE: produktnavne (Cocio, Fanta, etc.), emojis, tal, °Bx, ml
-3. Oversæt ALLE andre tekster naturligt og idiomatisk
-4. Brug kulinariske termer korrekt (f.eks. "blend" → DE: "mixen", FR: "mixer", EN: "blend")
-5. Behold tonen: venlig, let forståelig, appetitlig
+HVAD SKAL OVERSÆTTES:
+- Kolonne 6 (German/DE): Erstat med korrekt tysk oversættelse
+- Kolonne 7 (French/FR): Erstat med korrekt fransk oversættelse
+- Kolonne 8 (English UK/EN): Erstat med korrekt engelsk oversættelse
+- Kolonne 9 (English US/EN_US): Erstat med korrekt amerikansk engelsk oversættelse
 
-Her er CSV filen:
-[INDSÆT CSV INDHOLD HER]
+HVAD SKAL IKKE ÆNDRES:
+- Kolonne 1-4: Recipe ID, Recipe Name, Field Type, Step Number (behold præcist)
+- Kolonne 5: Danish (DA) - kildeteksten (behold præcist)
+- Produktnavne: Cocio, Fanta, Sprite, Haribo, etc. (behold uændret i alle sprog)
+- Emojis (behold uændret)
+- Tal og enheder: °Bx, ml, g, % (behold uændret)
+- Linje-skift (\n) i tekst (bevar disse)
 
-Returner den komplette CSV med alle korrekte oversættelser.
+OVERSÆTTELSESREGLER:
+1. Naturlig, idiomatisk oversættelse - ikke ord-for-ord
+2. Brug korrekte kulinariske termer for hvert sprog
+3. Behold tonen: venlig, appetitlig, let forståelig
+4. Tænk på målgruppen: både børn og voksne elsker slush
+5. English UK vs US: UK bruger "flavour", US bruger "flavor", etc.
+
+KVALITETSKRAV:
+- Professionel fødevarebeskrivelse-kvalitet
+- Ingen rester af dansk eller andre sprog i oversættelserne
+- Grammatisk korrekt
+- Lækkert og appetitligt sprog
+
+Her er CSV filen (463 rækker):
+
+[INDSÆT CSV INDHOLD HER - kopiér hele filen fra Excel/tekstprogram]
+
+Returner nu den komplette CSV med alle 463 rækker og korrekte oversættelser i kolonne 6-9.
 ```
 
-## 📤 Step 3: Gem Oversat CSV
+### Tips til arbejdet med ChatGPT:
+1. **Åbn CSV'en i Excel/Google Sheets først** - tjek at den ser korrekt ud
+2. **Kopiér hele CSV indholdet** (alle 463 rækker) fra Excel
+3. **Indsæt i ChatGPT** sammen med prompten ovenfor
+4. **ChatGPT vil muligvis opdele svaret** - bed den fortsætte indtil alle 463 rækker er færdige
+5. **Verificér at du får præcis 463 rækker retur**
 
-1. Kopier den oversatte CSV fra ChatGPT
-2. Gem den som `recipe_translations_import.csv`
-3. Upload til `/app/recipe_translations_import.csv` på serveren
+## 📤 Step 3: Gem den Oversatte CSV
 
-## ⚙️ Step 4: Kør Import Script
+Når ChatGPT er færdig:
 
-```bash
-cd /app/backend
-python3 import_recipes_from_csv.py
-```
+1. **Kopiér hele ChatGPT's svar** (alle 463 rækker)
+2. **Gem som en ny .csv fil på din computer** (f.eks. `recipe_translations_DONE.csv`)
+3. **Åbn filen i Excel** og tjek:
+   - At der er 463 rækker (samme som før)
+   - At kolonne 1-5 er uændret
+   - At kolonne 6-9 har nye, korrekte oversættelser
+   - At der ikke er mærkelige tegn eller formatfejl
+4. **Upload filen tilbage til mig** når du er klar
 
-Dette vil:
-- ✅ Indlæse alle oversættelser fra CSV
-- ✅ Opdatere alle 76 opskrifter i databasen
-- ✅ Gemme backup til recipe_translations.json
-- ✅ Oversættelserne er live med det samme!
+## ⚙️ Step 4: Import (gøres af agent)
 
-## 🎉 Done!
+Når du har uploaded den færdige CSV:
+- Fortæl mig det, og jeg kører import-scriptet
+- Jeg opdaterer alle 81 opskrifter i databasen
+- Oversættelserne er live med det samme!
 
-Alle opskrifter har nu korrekte, professionelle oversættelser!
+## 🎉 Færdig!
+
+Alle opskrifter vil have professionelle, højkvalitets oversættelser!
 
 ---
 
-## Alternativ: Manuel redigering via UI
+## 📝 Bemærkninger
 
-Hvis du foretrækker at rette én og én opskrift:
-1. Gå til `/admin/recipe-translations`
-2. Vælg opskrift
-3. Vælg sprog
-4. Ret tekst
-5. Gem alle ændringer
-
-Men CSV-metoden er MEGET hurtigere for alle 76 opskrifter! 🚀
+- **Hvorfor ikke automatisk oversættelse?** De nuværende maskin-oversættelser er meget dårlige (blandinger af dansk/tysk/fransk). Professionelle oversættelser via ChatGPT giver meget bedre kvalitet.
+- **Hvor lang tid tager det?** ChatGPT bør kunne oversætte hele CSV'en på 5-10 minutter.
+- **Alternativ:** Du kan også bruge den manuelle editor på `/admin/recipe-translations`, men det vil tage mange timer for 81 opskrifter.
