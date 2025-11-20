@@ -30,6 +30,7 @@ const EditRecipePage = ({ sessionId }) => {
 
   useEffect(() => {
     fetchRecipe();
+    fetchSupportedUnits();
   }, [id, sessionId]);
 
   const fetchRecipe = async () => {
