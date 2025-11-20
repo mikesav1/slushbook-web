@@ -429,20 +429,7 @@ const TipsPage = () => {
                       ) : (
                         <div className="text-center py-4 bg-gray-50 rounded-lg">
                           <p className="text-gray-600 text-sm">
-                            <button
-                              onClick={() => navigate('/login')}
-                              className="text-cyan-600 hover:underline font-semibold"
-                            >
-                              Log ind
-                            </button>
-                            {' '}eller{' '}
-                            <button
-                              onClick={() => navigate('/settings')}
-                              className="text-cyan-600 hover:underline font-semibold"
-                            >
-                              opgrader til PRO
-                            </button>
-                            {' '}for at kommentere
+                            {t('tips.loginToComment')}
                           </p>
                         </div>
                       ))}
