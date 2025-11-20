@@ -16,13 +16,14 @@ import { normalizeIngredient, getSupportedUnits } from '../utils/unitConverter';
 
 const AddRecipePage = ({ sessionId }) => {
   const { user, updateCompletedTours } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [canAdd, setCanAdd] = useState(true);
   const [loading, setLoading] = useState(false);
   const [currentTourStep, setCurrentTourStep] = useState(-1);
   const [showVolumeInfo, setShowVolumeInfo] = useState(false);
   const [showBrixInfo, setShowBrixInfo] = useState(false);
+  const [supportedUnits, setSupportedUnits] = useState(['ml', 'dl', 'l']);
   const [recipe, setRecipe] = useState({
     name: '',
     description: '',
