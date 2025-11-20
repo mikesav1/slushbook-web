@@ -182,12 +182,15 @@
   "common": {
     "all": "Alle",
     "back": "Zurück",
+    "canRestartInSettings": "kann in den Einstellungen neu gestartet werden",
     "cancel": "Abbrechen",
     "close": "Schließen",
     "confirm": "Bestätigen",
     "delete": "Löschen",
+    "dragToMove": "Zum Verschieben ziehen",
     "edit": "Bearbeiten",
     "filter": "Filtern",
+    "holdAndDragToMove": "Halten und ziehen zum Verschieben",
     "latest": "Neueste",
     "loading": "Laden...",
     "next": "Weiter",
@@ -198,13 +201,10 @@
     "search": "Suchen",
     "showLess": "Weniger anzeigen",
     "showMore": "Mehr anzeigen",
+    "skipTour": "Überspringen",
     "sort": "Sortieren",
     "tip": "Tipp",
-    "yes": "Ja",
-    "dragToMove": "Zum Verschieben ziehen",
-    "holdAndDragToMove": "Halten und ziehen zum Verschieben",
-    "skipTour": "Überspringen",
-    "canRestartInSettings": "kann in den Einstellungen neu gestartet werden"
+    "yes": "Ja"
   },
   "favorites": {
     "addYourFavorites": "Fügen Sie hier Ihre Lieblingsrezepte hinzu",
@@ -319,15 +319,23 @@
     "exploreAll": "Alle Rezepte erkunden",
     "featuredRecipes": "Empfohlene Rezepte",
     "findMatch": "Match finden",
-    "heroSubtitle": "Slushie-Rezept",
-    "heroTitle": "Finde deine perfekte",
+    "heroSubtitle": "Slush-Eis-Mischung",
+    "heroTitle": "Finde deine",
     "popularRecipes": "Beliebte Rezepte",
     "quickLinks": "Schnellzugriff",
     "subtitle": "Entdecke fantastische Slushie-Rezepte",
     "title": "Willkommen bei Slush Book"
   },
+  "ingredients": {
+    "appelsinjuice": "Orangensaft",
+    "chokoladesirup": "Schokoladensirup",
+    "mælk": "Milch",
+    "sukker": "Zucker",
+    "vand": "Wasser"
+  },
   "matchFinder": {
     "addIngredient": "Zutat hinzufügen",
+    "addIngredients": "Zutaten hinzufügen",
     "addIngredientsFirst": "Fügen Sie zuerst Zutaten hinzu!",
     "addMore": "Mehr hinzufügen",
     "brix": "Brix",
@@ -354,8 +362,7 @@
     "upgradeMessage": "Upgraden Sie auf PRO, um Ihre Zutaten mit Rezepten abzugleichen und herauszufinden, was Sie machen können!",
     "upgradeToPro": "Auf PRO upgraden",
     "viewRecipe": "Rezept ansehen",
-    "yourIngredients": "Ihre Zutaten",
-    "addIngredients": "Zutaten hinzufügen"
+    "yourIngredients": "Ihre Zutaten"
   },
   "messages": {
     "error": {
@@ -374,17 +381,26 @@
   },
   "nav": {
     "addRecipe": "Rezept hinzufügen",
+    "favorites": "Favoriten",
     "home": "Startseite",
     "login": "Anmelden",
     "logout": "Abmelden",
+    "match": "Match",
     "matchFinder": "Match-Finder",
     "recipes": "Rezepte",
     "settings": "Einstellungen",
     "shoppingList": "Einkaufsliste",
     "signup": "Registrieren",
-    "tips": "Tipps & Tricks",
-    "match": "Match",
-    "favorites": "Favoriten"
+    "tips": "Tipps & Tricks"
+  },
+  "pantry": {
+    "addFirstIngredient": "Erste Zutat hinzufügen",
+    "addIngredientsForSuggestions": "Fügen Sie Zutaten hinzu, um Rezeptvorschläge zu erhalten",
+    "ingredientsEmpty": "Ihre Zutaten sind leer",
+    "manageIngredients": "Verwalten Sie Ihre Zutaten",
+    "myIngredients": "Meine Zutaten",
+    "quickAddPopular": "Schnellhinzufügung (Beliebt)",
+    "searchAllIngredients": "Alle Zutaten durchsuchen"
   },
   "profile": {
     "asGuestYouCan": "Als Gast können Sie:",
@@ -419,11 +435,13 @@
     "welcomeTitle": "Willkommen bei SLUSHBOOK",
     "withProAccount": "Mit Pro-Konto erhalten Sie:"
   },
+  "recipeContent": {
+    "appelsin dream": "Orangen-Traum",
+    "choko-milkshake slush": "Schoko-Milchshake-Slush"
+  },
   "recipeDetail": {
-    "back": "Zurück",
-    "previous": "Vorherige",
-    "next": "Nächste",
     "addedToShoppingList": "{{count}} Zutaten zur Einkaufsliste hinzugefügt!",
+    "back": "Zurück",
     "commentDeleted": "Kommentar gelöscht",
     "confirmDelete": "Möchten Sie '{{name}}' wirklich löschen? Dies kann nicht rückgängig gemacht werden.",
     "confirmDeleteComment": "Möchten Sie diesen Kommentar wirklich löschen?",
@@ -433,7 +451,9 @@
     "deleteRecipe": "Rezept löschen",
     "edit": "Bearbeiten",
     "edited": "bearbeitet",
+    "next": "Nächste",
     "noCommentsYet": "Noch keine Kommentare. Seien Sie der Erste, der kommentiert!",
+    "previous": "Vorherige",
     "proOnlyLikes": "Nur PRO-Benutzer können Kommentare liken",
     "recipeDeleted": "Rezept gelöscht"
   },
@@ -713,25 +733,5 @@
       "tourComplete": "Einkaufslisten-Anleitung abgeschlossen!",
       "welcome": "🛒 Willkommen bei Ihrer Einkaufsliste!\n\nHier finden Sie alle Zutaten, die Sie von Rezepten hinzugefügt haben.\n\nSchauen wir uns an, was Sie tun können."
     }
-  },
-  "pantry": {
-    "myIngredients": "Meine Zutaten",
-    "manageIngredients": "Verwalten Sie Ihre Zutaten",
-    "searchAllIngredients": "Alle Zutaten durchsuchen",
-    "quickAddPopular": "Schnellhinzufügung (Beliebt)",
-    "ingredientsEmpty": "Ihre Zutaten sind leer",
-    "addIngredientsForSuggestions": "Fügen Sie Zutaten hinzu, um Rezeptvorschläge zu erhalten",
-    "addFirstIngredient": "Erste Zutat hinzufügen"
-  },
-  "recipeContent": {
-    "choko-milkshake slush": "Schoko-Milchshake-Slush",
-    "appelsin dream": "Orangen-Traum"
-  },
-  "ingredients": {
-    "vand": "Wasser",
-    "sukker": "Zucker",
-    "chokoladesirup": "Schokoladensirup",
-    "mælk": "Milch",
-    "appelsinjuice": "Orangensaft"
   }
 }
