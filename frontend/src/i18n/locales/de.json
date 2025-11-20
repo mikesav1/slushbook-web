@@ -207,7 +207,14 @@
     "tourRecipes": "Rezepte",
     "tourMatchFinder": "Match Finder",
     "tourShoppingList": "Einkaufsliste",
-    "tourSettings": "Einstellungen"
+    "tourSettings": "Einstellungen",
+    "tourAddRecipe": "Rezept hinzufügen",
+    "tourHomeReset": "Startseiten-Anleitung wurde zurückgesetzt!",
+    "tourRecipesReset": "Rezepte-Anleitung wurde zurückgesetzt!",
+    "tourAddRecipeReset": "Rezept hinzufügen-Anleitung wurde zurückgesetzt!",
+    "tourMatchFinderReset": "Match Finder-Anleitung wurde zurückgesetzt!",
+    "tourShoppingListReset": "Einkaufsliste-Anleitung wurde zurückgesetzt!",
+    "tourSettingsReset": "Einstellungs-Anleitung wurde zurückgesetzt!"
   },
   "messages": {
     "success": {
