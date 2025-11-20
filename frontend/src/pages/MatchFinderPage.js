@@ -190,10 +190,7 @@ const MatchFinderPage = ({ sessionId }) => {
           <div>
             <h3 className="text-2xl font-bold mb-1">{t('matchFinder.yourIngredients')}</h3>
             <p className="text-gray-600">
-              {t('matchFinder.ingredientCount', 'Du har {{count}} ingrediens{{plural}}', { 
-                count: pantryCount, 
-                plural: pantryCount !== 1 ? 'er' : '' 
-              })}
+              {t(pantryCount === 1 ? 'matchFinder.ingredientCount' : 'matchFinder.ingredientCountPlural', { count: pantryCount })}
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
