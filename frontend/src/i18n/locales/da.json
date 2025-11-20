@@ -283,8 +283,7 @@
     "errorPostComment": "Kunne ikke tilføje kommentar",
     "errorDeleteComment": "Kunne ikke slette kommentar",
     "onlyProCanLike": "Kun PRO-brugere kan like tips. Opgrader for at deltage!"
-  }
-}
+  },
   "messages": {
     "success": {
       "saved": "Gemt!",
