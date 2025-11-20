@@ -870,9 +870,9 @@ const SettingsPage = ({ sessionId }) => {
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-bold text-gray-800 flex items-center gap-2">
-                  <span>🏆</span> Badge Management
+                  <span>🏆</span> {t('settings.badgeManagement')}
                 </h3>
-                <p className="text-sm text-gray-600">Administrer bruger achievement badges</p>
+                <p className="text-sm text-gray-600">{t('settings.manageUserBadges')}</p>
               </div>
               <span className="text-yellow-600">→</span>
             </div>
