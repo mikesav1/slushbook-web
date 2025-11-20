@@ -61,8 +61,7 @@ const AdminTranslationsPage = () => {
       });
       
       setTranslations(response.data.translations);
-      setEditedTranslations({});
-      setHasChanges(false);
+      // Don't clear edited translations when switching languages
     } catch (error) {
       console.error('Error loading translations:', error);
       toast.error('Kunne ikke indlæse oversættelser');
