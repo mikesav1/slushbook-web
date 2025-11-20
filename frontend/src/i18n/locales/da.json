@@ -249,7 +249,10 @@
     "manageUserBadges": "Administrer bruger achievement badges",
     "members": "Medlemmer",
     "tipsAndTricks": "Tips & Tricks",
-    "tipsAndTricksDesc": "Del erfaringer og lær af fællesskabet om maskiner, produkter og drift"
+    "tipsAndTricksDesc": "Del erfaringer og lær af fællesskabet om maskiner, produkter og drift",
+    "lastActive": "Sidst aktiv",
+    "currentDevice": "Nuværende enhed",
+    "loading": "Indlæser..."
   },
   "messages": {
     "success": {
