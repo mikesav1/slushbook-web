@@ -80,7 +80,7 @@
     "selectCategory": "Sélectionner la catégorie",
     "selectColor": "Sélectionner la couleur",
     "selectType": "Sélectionner le type",
-    "selectedFile": "",
+    "selectedFile": "Fichier sélectionné",
     "stepNumber": "Étape {{number}}",
     "stepPlaceholder": "Décrivez cette étape...",
     "steps": "Instructions",
