@@ -21,13 +21,13 @@ const TipsPage = () => {
   const [collapsedComments, setCollapsedComments] = useState({}); // Track collapsed comment sections (default: collapsed per tip)
 
   const categories = [
-    { id: 'all', name: 'Alle', icon: '📚' },
-    { id: 'maskiner', name: 'Maskiner', icon: '🧊' },
-    { id: 'produkter', name: 'Produkter & Ingredienser', icon: '🍓' },
-    { id: 'rengoring', name: 'Rengøring & Vedligehold', icon: '🧼' },
-    { id: 'teknik', name: 'Teknik & Udstyr', icon: '⚙️' },
-    { id: 'brugertips', name: 'Brugertips & Erfaringer', icon: '💡' },
-    { id: 'tilbehor', name: 'Tilbehør & Servering', icon: '📦' }
+    { id: 'all', name: t('tips.categoryAll'), icon: '📚' },
+    { id: 'maskiner', name: t('tips.categoryMachines'), icon: '🧊' },
+    { id: 'produkter', name: t('tips.categoryProducts'), icon: '🍓' },
+    { id: 'rengoring', name: t('tips.categoryCleaning'), icon: '🧼' },
+    { id: 'teknik', name: t('tips.categoryTechnical'), icon: '⚙️' },
+    { id: 'brugertips', name: t('tips.categoryUserTips'), icon: '💡' },
+    { id: 'tilbehor', name: t('tips.categoryAccessories'), icon: '📦' }
   ];
 
   useEffect(() => {
