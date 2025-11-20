@@ -896,8 +896,8 @@ const SettingsPage = ({ sessionId }) => {
           >
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-bold text-gray-800">👥 Medlemmer</h3>
-                <p className="text-sm text-gray-600">Se alle brugere og deres aktivitet</p>
+                <h3 className="font-bold text-gray-800">👥 {t('settings.members')}</h3>
+                <p className="text-sm text-gray-600">{t('settings.viewAllUsers')}</p>
               </div>
               <span className="text-blue-600">→</span>
             </div>
