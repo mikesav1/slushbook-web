@@ -697,13 +697,13 @@ const SettingsPage = ({ sessionId }) => {
                   <div className="flex-1">
                     <h3 className="font-bold text-lg">{machine.name}</h3>
                     <p className="text-sm text-gray-600">
-                      Beholder: {machine.tank_volumes_ml.map(v => `${v/1000}L`).join(', ')}
+                      {t('settings.container')}: {machine.tank_volumes_ml.map(v => `${v/1000}L`).join(', ')}
                       {' • '}
-                      Tab: {machine.loss_margin_pct}%
+                      {t('settings.loss')}: {machine.loss_margin_pct}%
                     </p>
                     {machine.is_default && (
                       <span className="inline-block mt-2 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
-                        ✓ Standard
+                        ✓ {t('settings.default')}
                       </span>
                     )}
                   </div>
