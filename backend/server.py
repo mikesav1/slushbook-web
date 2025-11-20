@@ -955,6 +955,16 @@ async def signup(request: SignupRequest):
     valid_countries = ["DK", "DE", "FR", "GB", "US"]
     country_code = request.country if request.country in valid_countries else "GB"
     
+    # Map country to language (matching frontend i18n codes)
+    country_to_language = {
+        "DK": "da",      # Danish
+        "DE": "de",      # German
+        "FR": "fr",      # French
+        "GB": "en",      # English UK
+        "US": "en_us"    # English US
+    }
+    language_code = country_to_language.get(country_code, "da")
+    
     user = {
         "id": user_id,
         "email": request.email,
@@ -963,7 +973,7 @@ async def signup(request: SignupRequest):
         "picture": None,
         "hashed_password": hashed_password,
         "country": country_code,  # Save user's country preference
-        "language": "dk" if country_code == "DK" else "en-us",  # Set language based on country
+        "language": language_code,  # Set language based on country
         "created_at": datetime.now(timezone.utc).isoformat()
     }
     
