@@ -779,7 +779,7 @@
     "csvImportVendor": "",
     "currentDevice": "Current device",
     "default": "",
-    "deviceInfo": "You can be logged in on up to {{max}} devices simultaneously",
+    "deviceInfo": "You can be logged in on up to {{max}} devices at the same time",
     "deviceLimit": "You’re using {{current}} out of {{max}} allowed devices",
     "devices": "Your Devices",
     "devicesLoggedOut": "{{count}} devices logged out",
