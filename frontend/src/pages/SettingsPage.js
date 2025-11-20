@@ -625,7 +625,7 @@ const SettingsPage = ({ sessionId }) => {
                   </div>
                 )}
                 <div>
-                  <Label>Beholder Størrelse (ml)</Label>
+                  <Label>{t('settings.containerSize')}</Label>
                   <Input
                     type="number"
                     data-testid="tank-volume-input"
