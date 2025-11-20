@@ -405,6 +405,7 @@ class AdUpdate(BaseModel):
 
 # Seed initial recipes
 async def seed_recipes():
+    logger.info("[SEED] Starting recipe seeding process...")
     try:
         count = await db.recipes.count_documents({"author": "system"})
         if count > 0:
