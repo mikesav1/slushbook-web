@@ -780,7 +780,7 @@
     "currentDevice": "Appareil actuel",
     "default": "",
     "deviceInfo": "Vous pouvez être connecté sur jusqu'à {{max}} appareils simultanément",
-    "deviceLimit": "Vous utilisez {{current}} sur {{max}} appareils autorisés",
+    "deviceLimit": "Vous utilisez {{current}} appareils sur les {{max}} autorisés",
     "devices": "Vos appareils",
     "devicesLoggedOut": "{{count}} appareils déconnectés",
     "editMachine": "",
