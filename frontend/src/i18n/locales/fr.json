@@ -103,7 +103,14 @@
     "upgradePrompt": "Passer à la version supérieure pour en ajouter plus",
     "uploadImage": "Télécharger une image",
     "volumeDescription": "Indiquez le <strong>volume total</strong> que cette recette produit.",
-    "volumeExample": "Exemple : 2700ml pour un récipient de 3L"
+    "volumeExample": "Exemple : 2700ml pour un récipient de 3L",
+    "image": "Image",
+    "uploadImage": "Télécharger une image",
+    "chooseImage": "Choisir une image",
+    "changeImage": "Changer l'image",
+    "changeImageLabel": "Changer l'image",
+    "imageLimit": "Max 5MB - JPG, PNG",
+    "selectedFile": "Fichier sélectionné"
   },
   "admin": {
     "translations": {
