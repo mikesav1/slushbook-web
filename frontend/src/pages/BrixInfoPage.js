@@ -47,9 +47,9 @@ const BrixInfoPage = () => {
             <table className="w-full">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 border-b w-[30%]">Type</th>
-                  <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 border-b w-[20%]">Anbefalet Brix</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 border-b w-[50%]">Kommentar</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 border-b w-[30%]">{t('brix.tableHeaderType')}</th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 border-b w-[20%]">{t('brix.tableHeaderBrix')}</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 border-b w-[50%]">{t('brix.tableHeaderComment')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
