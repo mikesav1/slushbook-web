@@ -117,12 +117,12 @@ const BrixInfoPage = () => {
 
                 {/* Sukkerfri */}
                 <tr className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 text-gray-800 font-medium">Sukkerfri (light)</td>
+                  <td className="px-6 py-4 text-gray-800 font-medium">{t('brix.typeSugarFree')}</td>
                   <td className="px-6 py-4 bg-gray-400 text-white text-center font-bold whitespace-nowrap">
                     0 – 3 °Bx
                   </td>
                   <td className="px-6 py-4 text-gray-700">
-                    Fryser for hårdt, så du skal tilsætte glycerin, frugtsaft eller fortykningsmiddel for at undgå iskrystaller.
+                    {t('brix.typeSugarFreeComment')}
                   </td>
                 </tr>
               </tbody>
