@@ -1963,7 +1963,7 @@ async def get_user_limits(session_id: str, request: Request):
         return {
             "user_recipes_count": count,
             "can_add_recipe": True,
-            "limit_message": f"{user.role.capitalize()}: Ubegrænset opskrifter!"
+            "limit_message": f"{user.role.capitalize()}: __UNLIMITED_RECIPES__"
         }
     else:
         # Guest or regular user - limited to 2
