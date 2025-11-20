@@ -400,6 +400,9 @@
     "fetchError": "Impossible de récupérer la liste de courses"
   },
   "recipeDetail": {
+    "back": "Retour",
+    "previous": "Précédent",
+    "next": "Suivant",
     "confirmDeleteComment": "Êtes-vous sûr de vouloir supprimer ce commentaire?",
     "commentDeleted": "Commentaire supprimé",
     "deleteCommentError": "Impossible de supprimer le commentaire",
