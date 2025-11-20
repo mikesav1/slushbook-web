@@ -33,12 +33,36 @@ const EditRecipePage = ({ sessionId }) => {
     fetchSupportedUnits();
   }, [id, sessionId]);
 
+  const fetchSupportedUnits = async () => {
+    try {
+      const lang = i18n.language || 'da';
+      const response = await axios.get(`${API}/units/supported?language=${lang}`);
+      setSupportedUnits(response.data.units);
+    } catch (error) {
+      console.error('Could not fetch supported units:', error);
+      setSupportedUnits(['ml', 'dl', 'l']);
+    }
+  };
+
   const fetchRecipe = async () => {
     try {
       const response = await axios.get(`${API}/recipes/${id}?session_id=${sessionId}&lang=da`);
-      // Allow editing all recipes (removed author check)
-      setRecipe(response.data);
-      setImagePreview(response.data.image_url);
+      
+      // Denormalize ingredients for display (convert from ml back to display unit)
+      const denormalizedRecipe = {
+        ...response.data,
+        ingredients: response.data.ingredients.map(ing => {
+          // If ingredient has quantity_ml, use denormalize
+          if (ing.quantity_ml) {
+            return denormalizeIngredient(ing);
+          }
+          // Otherwise keep as-is (old format)
+          return ing;
+        })
+      };
+      
+      setRecipe(denormalizedRecipe);
+      setImagePreview(denormalizedRecipe.image_url);
     } catch (error) {
       console.error('Error fetching recipe:', error);
       toast.error(t('addRecipe.fetchError', 'Kunne ikke hente opskrift'));
