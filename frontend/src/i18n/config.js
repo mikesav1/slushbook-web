@@ -24,6 +24,11 @@ i18n
     interpolation: {
       escapeValue: false, // React already escapes
     },
+    // Force cache invalidation for translation updates
+    debug: false,
+    cache: {
+      enabled: false
+    }
   });
 
 // Make i18n available globally
