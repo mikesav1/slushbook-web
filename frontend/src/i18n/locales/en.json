@@ -207,7 +207,11 @@
     "yourAccount": "Your Account",
     "user": "User",
     "unlimited": "unlimited",
-    "noMachinesYet": "No machines added yet. Add your first machine for auto-scaling."
+    "noMachinesYet": "No machines added yet. Add your first machine for auto-scaling.",
+    "youHaveCreatedPlural": "You have created {{count}} recipes",
+    "status": "Status",
+    "lastActive": "Last active",
+    "currentDevice": "Current device"
   },
   "messages": {
     "success": {

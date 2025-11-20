@@ -207,7 +207,11 @@
     "yourAccount": "Votre compte",
     "user": "Utilisateur",
     "unlimited": "illimité",
-    "noMachinesYet": "Aucune machine ajoutée pour le moment. Ajoutez votre première machine pour le mise à l'échelle automatique."
+    "noMachinesYet": "Aucune machine ajoutée pour le moment. Ajoutez votre première machine pour le mise à l'échelle automatique.",
+    "youHaveCreatedPlural": "Vous avez créé {{count}} recettes",
+    "status": "Statut",
+    "lastActive": "Dernière activité",
+    "currentDevice": "Appareil actuel"
   },
   "messages": {
     "success": {
