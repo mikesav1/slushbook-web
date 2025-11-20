@@ -1,0 +1,163 @@
+/**
+ * Unit Converter for Recipe Ingredients
+ * Converts between various volume units and ml (base unit)
+ * 
+ * IMPORTANT: This must match backend/utils/unit_converter.py exactly!
+ */
+
+// Conversion factors to ml
+export const UNIT_TO_ML = {
+  // Metric
+  ml: 1.0,
+  dl: 100.0,
+  l: 1000.0,
+  
+  // US/Imperial
+  cup: 240.0,         // US cup
+  'fl oz': 29.5735,   // US fluid ounce
+  oz: 29.5735,        // Fluid ounce (same as fl oz for liquids)
+  tbsp: 14.7868,      // US tablespoon
+  tsp: 4.9289,        // US teaspoon
+  pint: 473.176,      // US pint
+  quart: 946.353,     // US quart
+  gallon: 3785.41,    // US gallon
+  
+  // UK Imperial (slight differences)
+  'cup uk': 284.131,
+  'fl oz uk': 28.4131,
+  'pint uk': 568.261,
+};
+
+// Supported units by country
+export const COUNTRY_UNITS = {
+  da: ['ml', 'dl', 'l'],                                   // Denmark
+  de: ['ml', 'l'],                                         // Germany  
+  fr: ['ml', 'l'],                                         // France
+  en: ['ml', 'dl', 'l', 'fl oz', 'cup'],                  // UK
+  en_us: ['cup', 'tbsp', 'tsp', 'fl oz', 'oz', 'ml'],     // USA
+};
+
+// Default display unit per country
+export const COUNTRY_DEFAULT_UNIT = {
+  da: 'ml',
+  de: 'ml',
+  fr: 'ml',
+  en: 'ml',
+  en_us: 'cup',
+};
+
+/**
+ * Convert any supported unit to ml
+ */
+export function convertToMl(amount, unit) {
+  const unitLower = unit.toLowerCase().trim();
+  
+  if (!(unitLower in UNIT_TO_ML)) {
+    console.error(`Unsupported unit: ${unit}`);
+    return amount; // Fallback: return as-is
+  }
+  
+  return amount * UNIT_TO_ML[unitLower];
+}
+
+/**
+ * Convert ml to any supported unit
+ */
+export function convertFromMl(amountMl, targetUnit) {
+  const targetUnitLower = targetUnit.toLowerCase().trim();
+  
+  if (!(targetUnitLower in UNIT_TO_ML)) {
+    console.error(`Unsupported unit: ${targetUnit}`);
+    return amountMl; // Fallback: return as-is
+  }
+  
+  return amountMl / UNIT_TO_ML[targetUnitLower];
+}
+
+/**
+ * Convert from one unit to another
+ */
+export function convertUnitToUnit(amount, fromUnit, toUnit) {
+  const mlAmount = convertToMl(amount, fromUnit);
+  return convertFromMl(mlAmount, toUnit);
+}
+
+/**
+ * Get list of supported units for a country
+ */
+export function getSupportedUnits(countryCode = 'da') {
+  return COUNTRY_UNITS[countryCode] || COUNTRY_UNITS.da;
+}
+
+/**
+ * Get the default display unit for a country
+ */
+export function getDefaultUnit(countryCode = 'da') {
+  return COUNTRY_DEFAULT_UNIT[countryCode] || 'ml';
+}
+
+/**
+ * Normalize an ingredient to store in ml while preserving display unit
+ */
+export function normalizeIngredient(ingredient) {
+  const originalQuantity = ingredient.quantity || 0;
+  const originalUnit = ingredient.unit || 'ml';
+  
+  // Convert to ml for storage
+  const quantityMl = convertToMl(originalQuantity, originalUnit);
+  
+  // Store both ml and display values
+  return {
+    ...ingredient,
+    quantity_ml: quantityMl,           // Internal storage
+    display_quantity: originalQuantity, // What user entered
+    display_unit: originalUnit,        // What user selected
+    // Keep quantity and unit for backward compatibility
+    quantity: originalQuantity,
+    unit: originalUnit,
+  };
+}
+
+/**
+ * Convert ingredient from ml storage back to display unit
+ */
+export function denormalizeIngredient(ingredient, targetUnit = null) {
+  const quantityMl = ingredient.quantity_ml || 0;
+  
+  // Use target unit if provided, otherwise use stored display unit, or fall back to ml
+  const displayUnit = targetUnit || ingredient.display_unit || ingredient.unit || 'ml';
+  
+  // Convert from ml to display unit
+  const displayQuantity = convertFromMl(quantityMl, displayUnit);
+  
+  return {
+    ...ingredient,
+    quantity: displayQuantity,
+    unit: displayUnit,
+  };
+}
+
+/**
+ * Round to reasonable precision based on unit
+ */
+export function roundToUnit(amount, unit) {
+  const unitLower = unit.toLowerCase();
+  
+  // For very small units (tsp, tbsp), round to 2 decimals
+  if (['tsp', 'tbsp'].includes(unitLower)) {
+    return Math.round(amount * 100) / 100;
+  }
+  
+  // For oz, fl oz, round to 1 decimal
+  if (unitLower.includes('oz')) {
+    return Math.round(amount * 10) / 10;
+  }
+  
+  // For ml, dl, round to nearest integer
+  if (['ml', 'dl'].includes(unitLower)) {
+    return Math.round(amount);
+  }
+  
+  // For cups, l, round to 2 decimals
+  return Math.round(amount * 100) / 100;
+}
