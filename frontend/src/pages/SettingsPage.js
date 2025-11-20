@@ -637,7 +637,7 @@ const SettingsPage = ({ sessionId }) => {
                   />
                 </div>
                 <div>
-                  <Label>Tab Margin (%)</Label>
+                  <Label>{t('settings.lossMargin')}</Label>
                   <Input
                     type="number"
                     value={newMachine.loss_margin_pct}
