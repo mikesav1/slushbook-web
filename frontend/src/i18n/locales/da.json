@@ -722,5 +722,16 @@
     "ingredientsEmpty": "Dine ingredienser er tomme",
     "addIngredientsForSuggestions": "Tilføj ingredienser for at få opskrift-forslag",
     "addFirstIngredient": "Tilføj Første Ingrediens"
+  },
+  "recipeContent": {
+    "choko-milkshake slush": "Choko-milkshake slush",
+    "appelsin dream": "Appelsin dream"
+  },
+  "ingredients": {
+    "vand": "Vand",
+    "sukker": "Sukker",
+    "chokoladesirup": "Chokoladesirup",
+    "mælk": "Mælk",
+    "appelsinjuice": "Appelsinjuice"
   }
 }
