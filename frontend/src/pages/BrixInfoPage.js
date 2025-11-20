@@ -77,14 +77,14 @@ const BrixInfoPage = () => {
                 {/* Sodavands-slush */}
                 <tr className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 text-gray-800 font-medium">
-                    Sodavands-slush<br />
-                    <span className="text-sm text-gray-500">(cola, Fanta)</span>
+                    {t('brix.typeSoda')}<br />
+                    <span className="text-sm text-gray-500">{t('brix.typeSodaSub')}</span>
                   </td>
                   <td className="px-6 py-4 bg-cyan-500 text-white text-center font-bold whitespace-nowrap">
                     10 – 12 °Bx
                   </td>
                   <td className="px-6 py-4 text-gray-700">
-                    Skal ofte justeres, da sodavand er lidt for sukkerrig.
+                    {t('brix.typeSodaComment')}
                   </td>
                 </tr>
 
