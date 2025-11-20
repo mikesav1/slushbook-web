@@ -284,6 +284,25 @@
     "errorDeleteComment": "Kunne ikke slette kommentar",
     "onlyProCanLike": "Kun PRO-brugere kan like tips. Opgrader for at deltage!"
   },
+  "matchFinder": {
+    "title": "Match-Finder",
+    "subtitle": "Find det perfekte opskrift baseret på dine ingredienser",
+    "yourIngredients": "Dine Ingredienser",
+    "ingredientCount": "Du har {{count}} ingrediens",
+    "ingredientCountPlural": "Du har {{count}} ingredienser",
+    "addMore": "Tilføj Flere",
+    "findMatches": "Find matches",
+    "searching": "Søger...",
+    "noIngredients": "Du har ingen ingredienser endnu",
+    "readyToMatch": "Klar til at finde matches?",
+    "clickToMatch": "Klik på \"Find matches\" for at se hvilke opskrifter du kan lave med dine ingredienser",
+    "clickToMatchShort": "Klik på \"Find matches\" for at se hvilke opskrifter du kan lave",
+    "pantryUpdated": "Dine ingredienser er opdateret! Klik \"Find matches\" for at se nye resultater.",
+    "tourComplete": "Match-Finder guide færdig!",
+    "noMatches": "Ingen opskrifter matcher dine ingredienser",
+    "matchesFound": "{{count}} opskrift matcher",
+    "matchesFoundPlural": "{{count}} opskrifter matcher"
+  },
   "brix": {
     "back": "Tilbage",
     "title": "Hvad Brix betyder",
