@@ -192,7 +192,9 @@
     "readFullGuide": "Lire le guide complet de SLUSHBOOK ici",
     "version": "Version 1.0.0 – Fait avec ❤️ pour les passionnés de slushies",
     "autoDetect": "Détection automatique",
-    "countryTip": "La langue sélectionnée est utilisée pour les recettes et l'interface, ainsi que pour afficher les liens produits pertinents lorsque vous cliquez sur les boutons 'Acheter'"
+    "countryTip": "La langue sélectionnée est utilisée pour les recettes et l'interface, ainsi que pour afficher les liens produits pertinents lorsque vous cliquez sur les boutons 'Acheter'",
+    "youCanAdd": "Vous pouvez ajouter {{count}} recette de plus",
+    "youCanAddPlural": "Vous pouvez ajouter {{count}} recettes de plus"
   },
   "messages": {
     "success": {
@@ -281,22 +283,23 @@
     "upgradePrompt": "Passer à la version supérieure pour en ajouter plus"
   },
   "matchFinder": {
-    "title": "Trouver un match",
+    "title": "Match-Finder",
     "subtitle": "Trouvez la recette parfaite basée sur vos ingrédients",
-    "yourIngredients": "Vos ingrédients",
-    "addIngredient": "Ajouter un ingrédient",
-    "ingredientName": "Nom de l'ingrédient",
-    "quantity": "Quantité",
-    "unit": "Unité",
-    "brix": "Brix",
-    "remove": "Retirer",
+    "yourIngredients": "Vos Ingrédients",
+    "ingredientCount": "Vous avez {{count}} ingrédient",
+    "ingredientCountPlural": "Vous avez {{count}} ingrédients",
+    "addMore": "Ajouter Plus",
     "findMatches": "Trouver des correspondances",
     "searching": "Recherche...",
-    "results": "Résultats",
-    "noMatches": "Aucune correspondance trouvée",
-    "matchScore": "Score de correspondance",
-    "missingIngredients": "Ingrédients manquants",
-    "viewRecipe": "Voir la recette"
+    "noIngredients": "Vous n'avez pas encore d'ingrédients",
+    "readyToMatch": "Prêt à trouver des correspondances?",
+    "clickToMatch": "Cliquez sur \"Trouver des correspondances\" pour voir quelles recettes vous pouvez faire avec vos ingrédients",
+    "clickToMatchShort": "Cliquez sur \"Trouver des correspondances\" pour voir quelles recettes vous pouvez faire",
+    "pantryUpdated": "Vos ingrédients ont été mis à jour! Cliquez sur \"Trouver des correspondances\" pour voir de nouveaux résultats.",
+    "tourComplete": "Guide Match-Finder terminé!",
+    "noMatches": "Aucune recette ne correspond à vos ingrédients",
+    "matchesFound": "{{count}} recette correspond",
+    "matchesFoundPlural": "{{count}} recettes correspondent"
   },
   "shoppingList": {
     "title": "Liste de courses",
@@ -468,25 +471,6 @@
     "errorPostComment": "Impossible d'ajouter le commentaire",
     "errorDeleteComment": "Impossible de supprimer le commentaire",
     "onlyProCanLike": "Seuls les utilisateurs PRO peuvent aimer les conseils. Mettez à niveau pour participer!"
-  },
-  "matchFinder": {
-    "title": "Match-Finder",
-    "subtitle": "Trouvez la recette parfaite basée sur vos ingrédients",
-    "yourIngredients": "Vos Ingrédients",
-    "ingredientCount": "Vous avez {{count}} ingrédient",
-    "ingredientCountPlural": "Vous avez {{count}} ingrédients",
-    "addMore": "Ajouter Plus",
-    "findMatches": "Trouver des correspondances",
-    "searching": "Recherche...",
-    "noIngredients": "Vous n'avez pas encore d'ingrédients",
-    "readyToMatch": "Prêt à trouver des correspondances?",
-    "clickToMatch": "Cliquez sur \"Trouver des correspondances\" pour voir quelles recettes vous pouvez faire avec vos ingrédients",
-    "clickToMatchShort": "Cliquez sur \"Trouver des correspondances\" pour voir quelles recettes vous pouvez faire",
-    "pantryUpdated": "Vos ingrédients ont été mis à jour! Cliquez sur \"Trouver des correspondances\" pour voir de nouveaux résultats.",
-    "tourComplete": "Guide Match-Finder terminé!",
-    "noMatches": "Aucune recette ne correspond à vos ingrédients",
-    "matchesFound": "{{count}} recette correspond",
-    "matchesFoundPlural": "{{count}} recettes correspondent"
   },
   "brix": {
     "back": "Retour",

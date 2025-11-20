@@ -607,8 +607,8 @@
     "viewAllRecipes": "Alle Ihre Rezepte ansehen",
     "viewAllUsers": "Alle Benutzer und ihre Aktivität anzeigen",
     "youCan": "Sie können:",
-    "youCanAdd": "Sie können {{count}} weiteres Rezept hinzufügen",
-    "youCanAddPlural": "Sie können {{count}} weitere Rezepte hinzufügen",
+    "youCanAdd": "Sie können noch {{count}} Rezept hinzufügen",
+    "youCanAddPlural": "Sie können noch {{count}} Rezepte hinzufügen",
     "youHaveCreated": "Sie haben {{count}} Rezept erstellt",
     "youHaveCreatedPlural": "Sie haben {{count}} Rezepte erstellt",
     "yourAccount": "Ihr Konto"

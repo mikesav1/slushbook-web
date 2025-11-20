@@ -190,7 +190,9 @@
     "readFullGuide": "Read the full guide to SLUSHBOOK here",
     "version": "Version 1.0.0 – Made with ❤️ for slushie enthusiasts",
     "autoDetect": "Auto-detect",
-    "countryTip": "Your selected language is used for recipes and interface, as well as to show relevant product links when you click 'Shop' buttons"
+    "countryTip": "Your selected language is used for recipes and interface, as well as to show relevant product links when you click 'Shop' buttons",
+    "youCanAdd": "You can add {{count}} more recipe",
+    "youCanAddPlural": "You can add {{count}} more recipes"
   },
   "messages": {
     "success": {
@@ -279,22 +281,23 @@
     "upgradePrompt": "Upgrade to add more"
   },
   "matchFinder": {
-    "title": "Match Finder",
+    "title": "Match-Finder",
     "subtitle": "Find the perfect recipe based on your ingredients",
     "yourIngredients": "Your Ingredients",
-    "addIngredient": "Add ingredient",
-    "ingredientName": "Ingredient name",
-    "quantity": "Quantity",
-    "unit": "Unit",
-    "brix": "Brix",
-    "remove": "Remove",
+    "ingredientCount": "You have {{count}} ingredient",
+    "ingredientCountPlural": "You have {{count}} ingredients",
+    "addMore": "Add More",
     "findMatches": "Find matches",
     "searching": "Searching...",
-    "results": "Results",
-    "noMatches": "No matches found",
-    "matchScore": "Match score",
-    "missingIngredients": "Missing ingredients",
-    "viewRecipe": "View recipe"
+    "noIngredients": "You have no ingredients yet",
+    "readyToMatch": "Ready to find matches?",
+    "clickToMatch": "Click \"Find matches\" to see which recipes you can make with your ingredients",
+    "clickToMatchShort": "Click \"Find matches\" to see which recipes you can make",
+    "pantryUpdated": "Your ingredients have been updated! Click \"Find matches\" to see new results.",
+    "tourComplete": "Match-Finder guide complete!",
+    "noMatches": "No recipes match your ingredients",
+    "matchesFound": "{{count}} recipe matches",
+    "matchesFoundPlural": "{{count}} recipes match"
   },
   "shoppingList": {
     "title": "Shopping List",
@@ -466,25 +469,6 @@
     "errorPostComment": "Could not add comment",
     "errorDeleteComment": "Could not delete comment",
     "onlyProCanLike": "Only PRO users can like tips. Upgrade to participate!"
-  },
-  "matchFinder": {
-    "title": "Match-Finder",
-    "subtitle": "Find the perfect recipe based on your ingredients",
-    "yourIngredients": "Your Ingredients",
-    "ingredientCount": "You have {{count}} ingredient",
-    "ingredientCountPlural": "You have {{count}} ingredients",
-    "addMore": "Add More",
-    "findMatches": "Find matches",
-    "searching": "Searching...",
-    "noIngredients": "You have no ingredients yet",
-    "readyToMatch": "Ready to find matches?",
-    "clickToMatch": "Click \"Find matches\" to see which recipes you can make with your ingredients",
-    "clickToMatchShort": "Click \"Find matches\" to see which recipes you can make",
-    "pantryUpdated": "Your ingredients have been updated! Click \"Find matches\" to see new results.",
-    "tourComplete": "Match-Finder guide complete!",
-    "noMatches": "No recipes match your ingredients",
-    "matchesFound": "{{count}} recipe matches",
-    "matchesFoundPlural": "{{count}} recipes match"
   },
   "brix": {
     "back": "Back",
