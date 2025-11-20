@@ -39,7 +39,7 @@ const BrixInfoPage = () => {
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
           <div className="bg-gradient-to-r from-[#115DA8] to-[#1e88e5] text-white p-4">
             <h2 className="text-2xl font-bold flex items-center gap-2">
-              🧊 Ideelle Brix-værdier for slushice
+              🧊 {t('brix.tableTitle')}
             </h2>
           </div>
 
