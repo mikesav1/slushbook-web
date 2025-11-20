@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 const BrixInfoPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pb-20">
