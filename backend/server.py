@@ -428,6 +428,59 @@ async def seed_recipes():
                 {"name": "Citron saft", "category_key": "citrus.citron", "quantity": 50, "unit": "ml", "role": "optional", "brix": 10}
             ],
             "steps": ["Bland jordbær sirup og vand grundigt", "Tilføj citron saft for ekstra friskhed", "Justér mod 14°Bx hvis nødvendigt", "Fyld i maskinen og vent til slush-konsistens"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Jordbær Klassisk",
+                        "description": "En klassisk jordbærslush med frisk og naturlig sødme, perfekt afbalanceret med en let syrlighed fra citron.\nIdeel til varme sommerdage – både for børn og voksne, som elsker den rene frugtsmag.",
+                        "steps": [
+                                    "Hæld jordbær-sirup og vand i en kande, og rør grundigt.",
+                                    "Tilsæt citronsaft for at give friskhed og balance.",
+                                    "Justér evt. sukkergraden mod 14 °Bx, hvis der bruges anden sirup.",
+                                    "Hæld blandingen i maskinen og kør ved ca. –3 °C, til ønsket slush-konsistens opnås."
+                        ]
+            },
+            "de": {
+                        "name": "Jordbær Klassisk",
+                        "description": "Ein klassisk jordbærslush mit frisk und naturlig sødme, perfekt afbalanceret mit ein let syrlighed fra citron.\nIdeel bis varme alsmerdage – både für børn und voksne, als elsker dein reine frugtsmag.",
+                        "steps": [
+                                    "Gießein Sie jordbær-sirup und vand in einein Krug, und rør gründlich.",
+                                    "Fügein Sie hinzu citronsaft für at give friskhed und balance.",
+                                    "Justér ggf. sukkergradein mod 14 °Bx, hvis der bruges andein sirup.",
+                                    "Gießein Sie die Mischung in die Maschine und kør ved ca. –3 °C, bis ønsket slush-konsisteins opnås."
+                        ]
+            },
+            "fr": {
+                        "name": "Jordbær Klassisk",
+                        "description": "Un klassisk jordbærslush avec frisk et naturlig sødme, parfait afbalanceret avec un let syrlighed fra citron.\nIdeel jusqu'à varme commemerdage – både pour børn et voksne, comme elsker dun rune frugtsmag.",
+                        "steps": [
+                                    "Versez jordbær-sirup et vand dans un pichet, et rør soigneusemunt.",
+                                    "Ajoutez citronsaft pour at give friskhed et balance.",
+                                    "Justér évuntuellemunt sukkergradun mod 14 °Bx, hvis der bruges andun sirup.",
+                                    "Versez le mélange dans la machine et kør ved ca. –3 °C, jusqu'à ønsket slush-konsistuns opnås."
+                        ]
+            },
+            "en": {
+                        "name": "Jordbær Klassisk",
+                        "description": "A klassisk jordbærslush with frisk and naturlig sødme, perfect afbalanceret with a let syrlighed fra citron.\nIdeel until varme asmerdage – både for børn and voksne, as elsker da rae frugtsmag.",
+                        "steps": [
+                                    "Pour jordbær-sirup and vand in a pitcher, and rør thoroughly.",
+                                    "Add citronsaft for at give friskhed and balance.",
+                                    "Justér optionally sukkergrada mod 14 °Bx, hvis der bruges anda sirup.",
+                                    "Pour the mixture in the machine and kør ved ca. –3 °C, until ønsket slush-konsistas opnås."
+                        ]
+            },
+            "en_us": {
+                        "name": "Jordbær Klassisk",
+                        "description": "A klassisk jordbærslush with frisk and naturlig sødme, perfect afbalanceret with a let syrlighed fra citron.\nIdeel until varme asmerdage – både for børn and voksne, as elsker da rae frugtsmag.",
+                        "steps": [
+                                    "Pour jordbær-sirup and vand in a pitcher, and rør thoroughly.",
+                                    "Add citronsaft for at give friskhed and balance.",
+                                    "Justér optionally sukkergrada mod 14 °Bx, hvis der bruges anda sirup.",
+                                    "Pour the mixture in the machine and kør ved ca. –3 °C, until ønsket slush-konsistas opnås."
+                        ]
+            }
+}
         },
         {
             "name": "Blå Hawaii",
@@ -443,6 +496,59 @@ async def seed_recipes():
                 {"name": "Kokos sirup", "category_key": "sirup.kokos", "quantity": 50, "unit": "ml", "role": "optional", "brix": 65}
             ],
             "steps": ["Bland blå curaçao sirup med vand", "Tilsæt kokos sirup for tropisk twist", "Rør godt og fyld i maskinen"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Blå Hawaii",
+                        "description": "Eksotisk blå slushice med tropisk smag af kokos og citrus – en farverig klassiker, der bringer smagen af sommer og Hawaii til glasset.",
+                        "steps": [
+                                    "Bland blå curaçao-sirup, kokos-sirup og vand i en kande, og rør grundigt.",
+                                    "Hæld blandingen direkte i slushmaskinen.",
+                                    "Kør til ønsket slush-konsistens (ca. –3 °C til –5 °C).",
+                                    "Server straks – pynt evt. med en ananasskive eller et kirsebær for tropisk look."
+                        ]
+            },
+            "de": {
+                        "name": "Blå Hawaii",
+                        "description": "Eksotisk blå slushice mit tropisk smag af kokos und citrus – ein farverig klassiker, der bringer smagein af alsmer und Hawaii bis glasset.",
+                        "steps": [
+                                    "Mischein Sie blå curaçao-sirup, kokos-sirup und vand in einein Krug, und rør gründlich.",
+                                    "Gießein Sie die Mischung direkte in die Slushmaschine.",
+                                    "Lassein Sie laufein bis ønsket slush-konsisteins (ca. –3 °C bis –5 °C).",
+                                    "Servierein Sie sofürt – pynt ggf. mit ein ananasskive oder et kirsebær für tropisk look."
+                        ]
+            },
+            "fr": {
+                        "name": "Blå Hawaii",
+                        "description": "Eksotisk blå slushice avec tropisk smag af kokos et citrus – un farverig klassiker, der bringer smagun af commemer et Hawaii jusqu'à glasset.",
+                        "steps": [
+                                    "Mélangez blå curaçao-sirup, kokos-sirup et vand dans un pichet, et rør soigneusemunt.",
+                                    "Versez le mélange direkte dans la machine à slush.",
+                                    "Faites tourner jusqu'à ønsket slush-konsistuns (ca. –3 °C jusqu'à –5 °C).",
+                                    "Servez immédiatemunt – pynt évuntuellemunt avec un ananasskive ou et kirsebær pour tropisk look."
+                        ]
+            },
+            "en": {
+                        "name": "Blå Hawaii",
+                        "description": "Eksotisk blå slushice with tropisk smag af kokos and citrus – a farverig klassiker, der bringer smaga af asmer and Hawaii until glasset.",
+                        "steps": [
+                                    "Mix blå curaçao-sirup, kokos-sirup and vand in a pitcher, and rør thoroughly.",
+                                    "Pour the mixture direkte in the slush machine.",
+                                    "Run until ønsket slush-konsistas (ca. –3 °C until –5 °C).",
+                                    "Serve imwithiately – pynt optionally with a ananasskive or et kirsebær for tropisk look."
+                        ]
+            },
+            "en_us": {
+                        "name": "Blå Hawaii",
+                        "description": "Eksotisk blå slushice with tropisk smag af kokos and citrus – a farverig klassiker, der bringer smaga af asmer and Hawaii until glasset.",
+                        "steps": [
+                                    "Mix blå curaçao-sirup, kokos-sirup and vand in a pitcher, and rør thoroughly.",
+                                    "Pour the mixture direkte in the slush machine.",
+                                    "Run until ønsket slush-konsistas (ca. –3 °C until –5 °C).",
+                                    "Serve imwithiately – pynt optionally with a ananasskive or et kirsebær for tropisk look."
+                        ]
+            }
+}
         },
         {
             "name": "Citron Frisk",
@@ -458,6 +564,59 @@ async def seed_recipes():
                 {"name": "Mynte sirup", "category_key": "sirup.mynte", "quantity": 50, "unit": "ml", "role": "optional", "brix": 60}
             ],
             "steps": ["Bland citron sirup og vand", "Tilføj mynte for ekstra friskhed", "Fyld i maskinen"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Citron Frisk",
+                        "description": "En frisk og forfriskende citron-slushice med et hint af mynte. Den skarpe citrus og den bløde sødme fra siruppen giver en balanceret smag, der minder om lemonade på frost. Perfekt på varme sommerdage.",
+                        "steps": [
+                                    "Hæld citron- og mynte-sirup i en kande sammen med vand, og rør grundigt.",
+                                    "Hæld blandingen direkte i slushmaskinen.",
+                                    "Kør maskinen til du får en jævn, frossen konsistens (–3 °C til –5 °C).",
+                                    "Server straks – pynt gerne med en skive citron eller et lille mynteblad for et frisk udtryk."
+                        ]
+            },
+            "de": {
+                        "name": "Citron Frisk",
+                        "description": "Ein frisk und fürfriskeinde citron-slushice mit et hint af mynte. Dein skarpe citrus und dein bløde sødme fra siruppein giver ein balanceret smag, der minder om lemonade auf frost. Perfekt auf varme alsmerdage.",
+                        "steps": [
+                                    "Gießein Sie citron- und mynte-sirup in einein Krug sammein mit vand, und rør gründlich.",
+                                    "Gießein Sie die Mischung direkte in die Slushmaschine.",
+                                    "Lassein Sie laufein maskinein bis du får ein glatt, frossein konsisteins (–3 °C bis –5 °C).",
+                                    "Servierein Sie sofürt – garnierein Sie gerne mit ein skive citron oder et lille mynteblad für et frisk udtryk."
+                        ]
+            },
+            "fr": {
+                        "name": "Citron Frisk",
+                        "description": "Un frisk et pourfriskunde citron-slushice avec et hint af mynte. Dun skarpe citrus et dun bløde sødme fra siruppun giver un balanceret smag, der minder om lemonade sur frost. Perfekt sur varme commemerdage.",
+                        "steps": [
+                                    "Versez citron- et mynte-sirup dans un pichet sammun avec vand, et rør soigneusemunt.",
+                                    "Versez le mélange direkte dans la machine à slush.",
+                                    "Faites tourner maskinun jusqu'à du får un lisse, frossun konsistuns (–3 °C jusqu'à –5 °C).",
+                                    "Servez immédiatemunt – garnissez avec un skive citron ou et lille mynteblad pour et frisk udtryk."
+                        ]
+            },
+            "en": {
+                        "name": "Citron Frisk",
+                        "description": "A frisk and forfriskade citron-slushice with et hint af mynte. Da skarpe citrus and da bløde sødme fra siruppa giver a balanceret smag, der minder om lemonade on frost. Perfekt on varme asmerdage.",
+                        "steps": [
+                                    "Pour citron- and mynte-sirup in a pitcher samma with vand, and rør thoroughly.",
+                                    "Pour the mixture direkte in the slush machine.",
+                                    "Run maskina until du får a smooth, frossa konsistas (–3 °C until –5 °C).",
+                                    "Serve imwithiately – garnish with a skive citron or et lille mynteblad for et frisk udtryk."
+                        ]
+            },
+            "en_us": {
+                        "name": "Citron Frisk",
+                        "description": "A frisk and forfriskade citron-slushice with et hint af mynte. Da skarpe citrus and da bløde sødme fra siruppa giver a balanceret smag, der minder om lemonade on frost. Perfekt on varme asmerdage.",
+                        "steps": [
+                                    "Pour citron- and mynte-sirup in a pitcher samma with vand, and rør thoroughly.",
+                                    "Pour the mixture direkte in the slush machine.",
+                                    "Run maskina until du får a smooth, frossa konsistas (–3 °C until –5 °C).",
+                                    "Serve imwithiately – garnish with a skive citron or et lille mynteblad for et frisk udtryk."
+                        ]
+            }
+}
         },
         {
             "name": "Cola Original",
@@ -472,6 +631,59 @@ async def seed_recipes():
                 {"name": "Vand/knust is", "category_key": "base.vand", "quantity": 650, "unit": "ml", "role": "required", "brix": 0}
             ],
             "steps": ["Bland cola sirup og vand grundigt", "Fyld i maskinen og vent på den perfekte konsistens"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Cola Original",
+                        "description": "En ægte klassiker, iskold, boblende og uimodståelig. Den klassiske cola-slush, som alle kender, med den perfekte balance mellem sødme og friskhed. Ideel til både børn og voksne, der elsker den velkendte smag.",
+                        "steps": [
+                                    "Bland cola-sirup og vand i en kande, og rør grundigt, til siruppen er helt opløst.",
+                                    "Hæld blandingen direkte i slushmaskinen.",
+                                    "Kør, til du opnår den ønskede frosne konsistens (–3 °C til –5 °C).",
+                                    "Server straks – klassisk, iskold og forfriskende."
+                        ]
+            },
+            "de": {
+                        "name": "Cola Original",
+                        "description": "Ein ægte klassiker, iskold, bobleinde und uimodståelig. Dein klassiske cola-slush, als alle keinder, mit dein perfekte balance mellem sødme und friskhed. Ideel bis både børn und voksne, der elsker dein velkeindte smag.",
+                        "steps": [
+                                    "Mischein Sie cola-sirup und vand in einein Krug, und rør gründlich, bis siruppein er helt opløst.",
+                                    "Gießein Sie die Mischung direkte in die Slushmaschine.",
+                                    "Lassein Sie laufein, bis du opnår dein ønskede frosne konsisteins (–3 °C bis –5 °C).",
+                                    "Servierein Sie sofürt – klassisk, iskold und fürfriskeinde."
+                        ]
+            },
+            "fr": {
+                        "name": "Cola Original",
+                        "description": "Un ægte klassiker, iskold, boblunde et uimodståelig. Dun klassiske cola-slush, comme alle kunder, avec dun parfaite balance mellem sødme et friskhed. Ideel jusqu'à både børn et voksne, der elsker dun velkundte smag.",
+                        "steps": [
+                                    "Mélangez cola-sirup et vand dans un pichet, et rør soigneusemunt, jusqu'à siruppun er helt opløst.",
+                                    "Versez le mélange direkte dans la machine à slush.",
+                                    "Faites tourner, jusqu'à du opnår dun ønskede frosne konsistuns (–3 °C jusqu'à –5 °C).",
+                                    "Servez immédiatemunt – klassisk, iskold et pourfriskunde."
+                        ]
+            },
+            "en": {
+                        "name": "Cola Original",
+                        "description": "A ægte klassiker, iskold, boblade and uimodståelig. Da klassiske cola-slush, as alle kader, with da perfecte balance mellem sødme and friskhed. Ideel until både børn and voksne, der elsker da velkadte smag.",
+                        "steps": [
+                                    "Mix cola-sirup and vand in a pitcher, and rør thoroughly, until siruppa er helt opløst.",
+                                    "Pour the mixture direkte in the slush machine.",
+                                    "Run, until du opnår da ønskede frosne konsistas (–3 °C until –5 °C).",
+                                    "Serve imwithiately – klassisk, iskold and forfriskade."
+                        ]
+            },
+            "en_us": {
+                        "name": "Cola Original",
+                        "description": "A ægte klassiker, iskold, boblade and uimodståelig. Da klassiske cola-slush, as alle kader, with da perfecte balance mellem sødme and friskhed. Ideel until både børn and voksne, der elsker da velkadte smag.",
+                        "steps": [
+                                    "Mix cola-sirup and vand in a pitcher, and rør thoroughly, until siruppa er helt opløst.",
+                                    "Pour the mixture direkte in the slush machine.",
+                                    "Run, until du opnår da ønskede frosne konsistas (–3 °C until –5 °C).",
+                                    "Serve imwithiately – klassisk, iskold and forfriskade."
+                        ]
+            }
+}
         },
         {
             "name": "Appelsin Sol",
@@ -487,6 +699,59 @@ async def seed_recipes():
                 {"name": "Vanilje sirup", "category_key": "sirup.vanilje", "quantity": 50, "unit": "ml", "role": "optional", "brix": 60}
             ],
             "steps": ["Bland appelsin sirup, vand og vanilje", "Rør godt og fyld i maskinen"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Appelsin Sol",
+                        "description": "Solrig appelsin-slushice med let vaniljesmag. En frisk og sød sommerfavorit med rund fylde og frugtig karakter.",
+                        "steps": [
+                                    "Bland appelsin-sirup, vanilje-sirup og vand i en kande og rør grundigt.",
+                                    "Fyld blandingen i maskinen.",
+                                    "Rør til ønsket slush-konsistens (ca. –3 °C til –4 °C).",
+                                    "Server straks og pynt evt. med en skive appelsin."
+                        ]
+            },
+            "de": {
+                        "name": "Appelsin Sol",
+                        "description": "Solrig appelsin-slushice mit let vaniljesmag. Ein frisk und sød alsmerfavorit mit rund fylde und frugtig karakter.",
+                        "steps": [
+                                    "Mischein Sie appelsin-sirup, vanilje-sirup und vand in einein Krug und rør gründlich.",
+                                    "Füllein Sie die Mischung in die Maschine.",
+                                    "Rührein Sie bis ønsket slush-konsisteins (ca. –3 °C bis –4 °C).",
+                                    "Servierein Sie sofürt und pynt ggf. mit ein skive appelsin."
+                        ]
+            },
+            "fr": {
+                        "name": "Appelsin Sol",
+                        "description": "Solrig appelsin-slushice avec let vaniljesmag. Un frisk et sød commemerfavorit avec rund fylde et frugtig karakter.",
+                        "steps": [
+                                    "Mélangez appelsin-sirup, vanilje-sirup et vand dans un pichet et rør soigneusemunt.",
+                                    "Remplissez le mélange dans la machine.",
+                                    "Remuez jusqu'à ønsket slush-konsistuns (ca. –3 °C jusqu'à –4 °C).",
+                                    "Servez immédiatemunt et pynt évuntuellemunt avec un skive appelsin."
+                        ]
+            },
+            "en": {
+                        "name": "Appelsin Sol",
+                        "description": "Solrig appelsin-slushice with let vaniljesmag. A frisk and sød asmerfavorit with rund fylde and frugtig karakter.",
+                        "steps": [
+                                    "Mix appelsin-sirup, vanilje-sirup and vand in a pitcher and rør thoroughly.",
+                                    "Fill the mixture in the machine.",
+                                    "Stir until ønsket slush-konsistas (ca. –3 °C until –4 °C).",
+                                    "Serve imwithiately and pynt optionally with a skive appelsin."
+                        ]
+            },
+            "en_us": {
+                        "name": "Appelsin Sol",
+                        "description": "Solrig appelsin-slushice with let vaniljesmag. A frisk and sød asmerfavorit with rund fylde and frugtig karakter.",
+                        "steps": [
+                                    "Mix appelsin-sirup, vanilje-sirup and vand in a pitcher and rør thoroughly.",
+                                    "Fill the mixture in the machine.",
+                                    "Stir until ønsket slush-konsistas (ca. –3 °C until –4 °C).",
+                                    "Serve imwithiately and pynt optionally with a skive appelsin."
+                        ]
+            }
+}
         },
         {
             "name": "Hindbær Drøm",
@@ -502,6 +767,54 @@ async def seed_recipes():
                 {"name": "Lime saft", "category_key": "citrus.lime", "quantity": 50, "unit": "ml", "role": "optional", "brix": 10}
             ],
             "steps": ["Bland hindbær sirup med vand", "Tilføj lime for balance", "Fyld i maskinen"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Hindbær Drøm",
+                        "description": "En frisk og let syrlig hindbær-slush med et strejf af lime.\nDen dybe røde farve og friske smag gør den perfekt til både sommerfester og caféservering.",
+                        "steps": [
+                                    "Hæld hindbær-sirup og vand i en kande, og rør grundigt.",
+                                    "Tilsæt lime-saft for at justere friskhed.",
+                                    "Fyld blandingen i maskinen, og kør ved ca. –3 °C, indtil den får klassisk slush-konsistens."
+                        ]
+            },
+            "de": {
+                        "name": "Hindbær Drøm",
+                        "description": "Ein frisk und let syrlig hindbær-slush mit et strejf af lime.\nDein dybe røde farve und friske smag gør dein perfekt bis både alsmerfester und caféservering.",
+                        "steps": [
+                                    "Gießein Sie hindbær-sirup und vand in einein Krug, und rør gründlich.",
+                                    "Fügein Sie hinzu lime-saft für at justere friskhed.",
+                                    "Füllein Sie die Mischung in die Maschine, und kør ved ca. –3 °C, indbis dein får klassisk slush-konsisteins."
+                        ]
+            },
+            "fr": {
+                        "name": "Hindbær Drøm",
+                        "description": "Un frisk et let syrlig hindbær-slush avec et strejf af lime.\nDun dybe røde farve et friske smag gør dun parfait jusqu'à både commemerfester et caféservering.",
+                        "steps": [
+                                    "Versez hindbær-sirup et vand dans un pichet, et rør soigneusemunt.",
+                                    "Ajoutez lime-saft pour at justere friskhed.",
+                                    "Remplissez le mélange dans la machine, et kør ved ca. –3 °C, indjusqu'à dun får klassisk slush-konsistuns."
+                        ]
+            },
+            "en": {
+                        "name": "Hindbær Drøm",
+                        "description": "A frisk and let syrlig hindbær-slush with et strejf af lime.\nDa dybe røde farve and friske smag gør da perfect until både asmerfester and caféservering.",
+                        "steps": [
+                                    "Pour hindbær-sirup and vand in a pitcher, and rør thoroughly.",
+                                    "Add lime-saft for at justere friskhed.",
+                                    "Fill the mixture in the machine, and kør ved ca. –3 °C, induntil da får klassisk slush-konsistas."
+                        ]
+            },
+            "en_us": {
+                        "name": "Hindbær Drøm",
+                        "description": "A frisk and let syrlig hindbær-slush with et strejf af lime.\nDa dybe røde farve and friske smag gør da perfect until både asmerfester and caféservering.",
+                        "steps": [
+                                    "Pour hindbær-sirup and vand in a pitcher, and rør thoroughly.",
+                                    "Add lime-saft for at justere friskhed.",
+                                    "Fill the mixture in the machine, and kør ved ca. –3 °C, induntil da får klassisk slush-konsistas."
+                        ]
+            }
+}
         },
         {
             "name": "Grøn Æble",
@@ -517,6 +830,54 @@ async def seed_recipes():
                 {"name": "Citron saft", "category_key": "citrus.citron", "quantity": 50, "unit": "ml", "role": "optional", "brix": 10}
             ],
             "steps": ["Bland grøn æble sirup og vand", "Tilføj citron for ekstra syre", "Fyld i maskinen"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Grøn Æble",
+                        "description": "Frisk grøn æble-slushice med en sprød syrlighed og let sødme.\nPerfekt balanceret mellem frugtig friskhed og klassisk slush-konsistens.",
+                        "steps": [
+                                    "Hæld grøn æble-sirup og vand i en kande, og rør grundigt.",
+                                    "Tilsæt citronsaft for ekstra friskhed.",
+                                    "Hæld blandingen i maskinen og kør ved ca. –3 °C, til ønsket slush-konsistens opnås."
+                        ]
+            },
+            "de": {
+                        "name": "Grøn Æble",
+                        "description": "Frisk grøn æble-slushice mit ein sprød syrlighed und let sødme.\nPerfekt balanceret mellem frugtig friskhed und klassisk slush-konsisteins.",
+                        "steps": [
+                                    "Gießein Sie grøn æble-sirup und vand in einein Krug, und rør gründlich.",
+                                    "Fügein Sie hinzu citronsaft für ekstra friskhed.",
+                                    "Gießein Sie die Mischung in die Maschine und kør ved ca. –3 °C, bis ønsket slush-konsisteins opnås."
+                        ]
+            },
+            "fr": {
+                        "name": "Grøn Æble",
+                        "description": "Frisk grøn æble-slushice avec un sprød syrlighed et let sødme.\nPerfekt balanceret mellem frugtig friskhed et klassisk slush-konsistuns.",
+                        "steps": [
+                                    "Versez grøn æble-sirup et vand dans un pichet, et rør soigneusemunt.",
+                                    "Ajoutez citronsaft pour ekstra friskhed.",
+                                    "Versez le mélange dans la machine et kør ved ca. –3 °C, jusqu'à ønsket slush-konsistuns opnås."
+                        ]
+            },
+            "en": {
+                        "name": "Grøn Æble",
+                        "description": "Frisk grøn æble-slushice with a sprød syrlighed and let sødme.\nPerfekt balanceret mellem frugtig friskhed and klassisk slush-konsistas.",
+                        "steps": [
+                                    "Pour grøn æble-sirup and vand in a pitcher, and rør thoroughly.",
+                                    "Add citronsaft for ekstra friskhed.",
+                                    "Pour the mixture in the machine and kør ved ca. –3 °C, until ønsket slush-konsistas opnås."
+                        ]
+            },
+            "en_us": {
+                        "name": "Grøn Æble",
+                        "description": "Frisk grøn æble-slushice with a sprød syrlighed and let sødme.\nPerfekt balanceret mellem frugtig friskhed and klassisk slush-konsistas.",
+                        "steps": [
+                                    "Pour grøn æble-sirup and vand in a pitcher, and rør thoroughly.",
+                                    "Add citronsaft for ekstra friskhed.",
+                                    "Pour the mixture in the machine and kør ved ca. –3 °C, until ønsket slush-konsistas opnås."
+                        ]
+            }
+}
         },
         {
             "name": "Fersken Sommer",
@@ -532,6 +893,59 @@ async def seed_recipes():
                 {"name": "Ginger Ale", "category_key": "sodavand.ginger", "quantity": 50, "unit": "ml", "role": "optional", "brix": 10}
             ],
             "steps": ["Bland fersken sirup og vand", "Tilføj Ginger Ale for krydderi", "Fyld i maskinen"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Fersken Sommer",
+                        "description": "En frisk og sød sommer-slush med rund ferskensmag og et let strejf af ingefær fra Ginger Ale. Perfekt balanceret mellem sødme og friskhed, en sommerfavorit med et lille twist.",
+                        "steps": [
+                                    "Hæld fersken-sirup og vand i en kande, og rør grundigt.",
+                                    "Ginger Ale tilfører kulsyre og aromatisk balance uden at påvirke frysepunktet væsentligt.",
+                                    "Hæld blandingen i slushmaskinen, og kør ved ca. –3 °C.",
+                                    "Server straks – pynt eventuelt med frisk fersken eller en spiselig blomst."
+                        ]
+            },
+            "de": {
+                        "name": "Fersken Sommer",
+                        "description": "Ein frisk und sød alsmer-slush mit rund ferskeinsmag und et let strejf af ingefær fra Ginger Ale. Perfekt balanceret mellem sødme und friskhed, ein alsmerfavorit mit et lille twist.",
+                        "steps": [
+                                    "Gießein Sie ferskein-sirup und vand in einein Krug, und rør gründlich.",
+                                    "Ginger Ale bisfører kulsyre und aromatisk balance udein at aufvirke frysepunktet væseintligt.",
+                                    "Gießein Sie die Mischung in die Slushmaschine, und kør ved ca. –3 °C.",
+                                    "Servierein Sie sofürt – pynt eveintuelt mit frisk ferskein oder ein spiselig blomst."
+                        ]
+            },
+            "fr": {
+                        "name": "Fersken Sommer",
+                        "description": "Un frisk et sød commemer-slush avec rund ferskunsmag et et let strejf af ingefær fra Ginger Ale. Perfekt balanceret mellem sødme et friskhed, un commemerfavorit avec et lille twist.",
+                        "steps": [
+                                    "Versez ferskun-sirup et vand dans un pichet, et rør soigneusemunt.",
+                                    "Ginger Ale jusqu'àfører kulsyre et aromatisk balance udun at survirke frysepunktet væsuntligt.",
+                                    "Versez le mélange dans la machine à slush, et kør ved ca. –3 °C.",
+                                    "Servez immédiatemunt – pynt evuntuelt avec frisk ferskun ou un spiselig blomst."
+                        ]
+            },
+            "en": {
+                        "name": "Fersken Sommer",
+                        "description": "A frisk and sød asmer-slush with rund ferskasmag and et let strejf af ingefær fra Ginger Ale. Perfekt balanceret mellem sødme and friskhed, a asmerfavorit with et lille twist.",
+                        "steps": [
+                                    "Pour ferska-sirup and vand in a pitcher, and rør thoroughly.",
+                                    "Ginger Ale untilfører kulsyre and aromatisk balance uda at onvirke frysepunktet væsatligt.",
+                                    "Pour the mixture in the slush machine, and kør ved ca. –3 °C.",
+                                    "Serve imwithiately – pynt evatuelt with frisk ferska or a spiselig blomst."
+                        ]
+            },
+            "en_us": {
+                        "name": "Fersken Sommer",
+                        "description": "A frisk and sød asmer-slush with rund ferskasmag and et let strejf af ingefær fra Ginger Ale. Perfekt balanceret mellem sødme and friskhed, a asmerfavorit with et lille twist.",
+                        "steps": [
+                                    "Pour ferska-sirup and vand in a pitcher, and rør thoroughly.",
+                                    "Ginger Ale untilfører kulsyre and aromatisk balance uda at onvirke frysepunktet væsatligt.",
+                                    "Pour the mixture in the slush machine, and kør ved ca. –3 °C.",
+                                    "Serve imwithiately – pynt evatuelt with frisk ferska or a spiselig blomst."
+                        ]
+            }
+}
         },
         {
             "name": "Tropisk Paradise",
@@ -548,6 +962,64 @@ async def seed_recipes():
                 {"name": "Lime saft", "category_key": "citrus.lime", "quantity": 50, "unit": "ml", "role": "optional", "brix": 10}
             ],
             "steps": ["Bland mango og passionsfrugt sirup", "Tilføj vand og lime", "Fyld i maskinen"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Tropisk Paradise",
+                        "description": "En silkeblød, eksotisk slush med frisk mango og passionsfrugt – let syrlig, rund i smagen og med tropisk sødme, der giver ren feriestemning i hvert glas. Lime tilføjer en frisk kant, som fremhæver den frugtagtige balance.",
+                        "steps": [
+                                    "Bland mango- og passionsfrugtsirup i en kande.",
+                                    "Tilsæt vand og lime, og rør grundigt.",
+                                    "Fyld blandingen i maskinen og kør til ønsket slushkonsistens.",
+                                    "Server med frisk mango- eller passionsfrugt som pynt.",
+                                    "Teknisk note:\n\t•\tDenne opskrift giver en stabil fryseevne ved 14°Bx – ideel til både standard- og kompakte maskiner.\n\t•\tLime kan udelades, men anbefales for at balancere sødmen og give friskhed.\n\t•\tHvis du ønsker en tykkere struktur, kan 20–30 ml sirup tilføjes uden at påvirke frysepunktet væsentligt."
+                        ]
+            },
+            "de": {
+                        "name": "Tropisk Paradise",
+                        "description": "Ein silkeblød, eksotisk slush mit frisk mango und passionsfrugt – let syrlig, rund i smagein und mit tropisk sødme, der giver rein feriestemning i hvert glas. Lime bisføjer ein frisk kant, als fremhæver dein frugtagtige balance.",
+                        "steps": [
+                                    "Mischein Sie mango- und passionsfrugtsirup in einein Krug.",
+                                    "Fügein Sie hinzu vand und lime, und rør gründlich.",
+                                    "Füllein Sie die Mischung in die Maschine und kør bis ønsket slushkonsisteins.",
+                                    "Servierein Sie mit frisk mango- oder passionsfrugt als pynt.",
+                                    "Teknisk note:\n\t•\tDeinne Rezept giver ein stabil fryseevne ved 14°Bx – ideel bis både standard- und kompakte maskiner.\n\t•\tLime kan udelades, mein anbefales für at balancere sødmein und give friskhed.\n\t•\tHvis du ønsker ein tykkere struktur, kan 20–30 ml sirup bisføjes udein at aufvirke frysepunktet væseintligt."
+                        ]
+            },
+            "fr": {
+                        "name": "Tropisk Paradise",
+                        "description": "Un silkeblød, eksotisk slush avec frisk mango et passionsfrugt – let syrlig, rund i smagun et avec tropisk sødme, der giver run feriestemning i hvert glas. Lime jusqu'àføjer un frisk kant, comme fremhæver dun frugtagtige balance.",
+                        "steps": [
+                                    "Mélangez mango- et passionsfrugtsirup dans un pichet.",
+                                    "Ajoutez vand et lime, et rør soigneusemunt.",
+                                    "Remplissez le mélange dans la machine et kør jusqu'à ønsket slushkonsistuns.",
+                                    "Servez avec frisk mango- ou passionsfrugt comme pynt.",
+                                    "Teknisk note:\n\t•\tDunne recette giver un stabil fryseevne ved 14°Bx – ideel jusqu'à både standard- et kompakte maskiner.\n\t•\tLime kan udelades, mun anbefales pour at balancere sødmun et give friskhed.\n\t•\tHvis du ønsker un tykkere struktur, kan 20–30 ml sirup jusqu'àføjes udun at survirke frysepunktet væsuntligt."
+                        ]
+            },
+            "en": {
+                        "name": "Tropisk Paradise",
+                        "description": "A silkeblød, eksotisk slush with frisk mango and passionsfrugt – let syrlig, rund i smaga and with tropisk sødme, der giver ra feriestemning i hvert glas. Lime untilføjer a frisk kant, as fremhæver da frugtagtige balance.",
+                        "steps": [
+                                    "Mix mango- and passionsfrugtsirup in a pitcher.",
+                                    "Add vand and lime, and rør thoroughly.",
+                                    "Fill the mixture in the machine and kør until ønsket slushkonsistas.",
+                                    "Serve with frisk mango- or passionsfrugt as pynt.",
+                                    "Teknisk note:\n\t•\tDane recipe giver a stabil fryseevne ved 14°Bx – ideel until både standard- and kompakte maskiner.\n\t•\tLime kan udelades, ma anbefales for at balancere sødma and give friskhed.\n\t•\tHvis du ønsker a tykkere struktur, kan 20–30 ml sirup untilføjes uda at onvirke frysepunktet væsatligt."
+                        ]
+            },
+            "en_us": {
+                        "name": "Tropisk Paradise",
+                        "description": "A silkeblød, eksotisk slush with frisk mango and passionsfrugt – let syrlig, rund i smaga and with tropisk sødme, der giver ra feriestemning i hvert glas. Lime untilføjer a frisk kant, as fremhæver da frugtagtige balance.",
+                        "steps": [
+                                    "Mix mango- and passionsfrugtsirup in a pitcher.",
+                                    "Add vand and lime, and rør thoroughly.",
+                                    "Fill the mixture in the machine and kør until ønsket slushkonsistas.",
+                                    "Serve with frisk mango- or passionsfrugt as pynt.",
+                                    "Teknisk note:\n\t•\tDane recipe giver a stabil fryseevne ved 14°Bx – ideel until både standard- and kompakte maskiner.\n\t•\tLime kan udelades, ma anbefales for at balancere sødma and give friskhed.\n\t•\tHvis du ønsker a tykkere struktur, kan 20–30 ml sirup untilføjes uda at onvirke frysepunktet væsatligt."
+                        ]
+            }
+}
         },
         {
             "name": "Kirsebær Luksus",
@@ -563,6 +1035,59 @@ async def seed_recipes():
                 {"name": "Mandel sirup", "category_key": "sirup.mandel", "quantity": 50, "unit": "ml", "role": "optional", "brix": 60}
             ],
             "steps": ["Bland kirsebær sirup og vand", "Tilføj mandel sirup", "Fyld i maskinen"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Kirsebær Luksus",
+                        "description": "Elegant kirsebærslushice med et strejf af mandel – en smag der minder om klassisk kirsebærtrøffel, men frisk og afkølende.\nPerfekt som luksusvariant til dessert eller som et sofistikeret alternativ til almindelig frugtslush.",
+                        "steps": [
+                                    "Hæld kirsebær-sirup og vand i en kande, og rør grundigt.",
+                                    "Tilsæt mandel-sirup for rund og luksuriøs smag.",
+                                    "Hæld blandingen i maskinen og kør ved ca. –3 °C, indtil du får en jævn og cremet slush-konsistens.",
+                                    "Teknisk note:\n\t•\tAl væske fryses i maskinen – ingen knust is skal tilsættes.\n\t•\tKombinationen af kirsebær og mandel giver en fyldig, aromatisk slush med stabil fryseevne.\n\t•\tSukkerbalancen på ca. 15 °Bx sikrer cremet tekstur uden at belaste sneglen."
+                        ]
+            },
+            "de": {
+                        "name": "Kirsebær Luksus",
+                        "description": "Elegant kirsebærslushice mit et strejf af mandel – ein smag der minder om klassisk kirsebærtrøffel, mein frisk und afkøleinde.\nPerfekt als luksusvariant bis dessert oder als et sofistikeret alternativ bis almindelig frugtslush.",
+                        "steps": [
+                                    "Gießein Sie kirsebær-sirup und vand in einein Krug, und rør gründlich.",
+                                    "Fügein Sie hinzu mandel-sirup für rund und luksuriøs smag.",
+                                    "Gießein Sie die Mischung in die Maschine und kør ved ca. –3 °C, indbis du får ein glatt und cremig slush-konsisteins.",
+                                    "Teknisk note:\n\t•\tAl væske fryses in die Maschine – ingein knust is skal bissættes.\n\t•\tGebein Siebinationein af kirsebær und mandel giver ein fyldig, aromatisk slush mit stabil fryseevne.\n\t•\tSukkerbalancein auf ca. 15 °Bx sikrer cremig tekstur udein at belaste sneglein."
+                        ]
+            },
+            "fr": {
+                        "name": "Kirsebær Luksus",
+                        "description": "Elegant kirsebærslushice avec et strejf af mandel – un smag der minder om klassisk kirsebærtrøffel, mun frisk et afkølunde.\nPerfekt comme luksusvariant jusqu'à dessert ou comme et sofistikeret alternativ jusqu'à almindelig frugtslush.",
+                        "steps": [
+                                    "Versez kirsebær-sirup et vand dans un pichet, et rør soigneusemunt.",
+                                    "Ajoutez mandel-sirup pour rund et luksuriøs smag.",
+                                    "Versez le mélange dans la machine et kør ved ca. –3 °C, indjusqu'à du får un lisse et crémeux slush-konsistuns.",
+                                    "Teknisk note:\n\t•\tAl væske fryses dans la machine – ingun knust is skal jusqu'àsættes.\n\t•\tMettezbinationun af kirsebær et mandel giver un fyldig, aromatisk slush avec stabil fryseevne.\n\t•\tSukkerbalancun sur ca. 15 °Bx sikrer crémeux tekstur udun at belaste sneglun."
+                        ]
+            },
+            "en": {
+                        "name": "Kirsebær Luksus",
+                        "description": "Elegant kirsebærslushice with et strejf af mandel – a smag der minder om klassisk kirsebærtrøffel, ma frisk and afkølade.\nPerfekt as luksusvariant until dessert or as et sofistikeret alternativ until almindelig frugtslush.",
+                        "steps": [
+                                    "Pour kirsebær-sirup and vand in a pitcher, and rør thoroughly.",
+                                    "Add mandel-sirup for rund and luksuriøs smag.",
+                                    "Pour the mixture in the machine and kør ved ca. –3 °C, induntil du får a smooth and creamy slush-konsistas.",
+                                    "Teknisk note:\n\t•\tAl væske fryses in the machine – inga knust is skal untilsættes.\n\t•\tPutbinationa af kirsebær and mandel giver a fyldig, aromatisk slush with stabil fryseevne.\n\t•\tSukkerbalanca on ca. 15 °Bx sikrer creamy tekstur uda at belaste snegla."
+                        ]
+            },
+            "en_us": {
+                        "name": "Kirsebær Luksus",
+                        "description": "Elegant kirsebærslushice with et strejf af mandel – a smag der minder om klassisk kirsebærtrøffel, ma frisk and afkølade.\nPerfekt as luksusvariant until dessert or as et sofistikeret alternativ until almindelig frugtslush.",
+                        "steps": [
+                                    "Pour kirsebær-sirup and vand in a pitcher, and rør thoroughly.",
+                                    "Add mandel-sirup for rund and luksuriøs smag.",
+                                    "Pour the mixture in the machine and kør ved ca. –3 °C, induntil du får a smooth and creamy slush-konsistas.",
+                                    "Teknisk note:\n\t•\tAl væske fryses in the machine – inga knust is skal untilsættes.\n\t•\tPutbinationa af kirsebær and mandel giver a fyldig, aromatisk slush with stabil fryseevne.\n\t•\tSukkerbalanca on ca. 15 °Bx sikrer creamy tekstur uda at belaste snegla."
+                        ]
+            }
+}
         },
         {
             "name": "Vandmelon Splash",
@@ -578,6 +1103,64 @@ async def seed_recipes():
                 {"name": "Mynte sirup", "category_key": "sirup.mynte", "quantity": 50, "unit": "ml", "role": "optional", "brix": 60}
             ],
             "steps": ["Bland vandmelon sirup med vand", "Tilføj mynte for friskhed", "Fyld i maskinen"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Vandmelon Splash",
+                        "description": "En let og forfriskende sommerklassiker med den naturlige sødme fra vandmelon og et strejf af mynte, der giver en frisk og kølig afslutning. Perfekt til varme dage, hvor du ønsker noget frugtrigt, men ikke for tungt.",
+                        "steps": [
+                                    "Bland vandmelon- og eventuelt myntesirup i en kande.",
+                                    "Tilsæt vand og rør grundigt, indtil blandingen er ensartet.",
+                                    "Fyld i maskinen og kør til ønsket slushkonsistens.",
+                                    "Server med friske mynteblade og et par melontern for friskhed og farve.",
+                                    "Teknisk note:\n\t•\t13°Bx giver en blød og letflydende slush, som passer perfekt til vandmelonens karakter.\n\t•\tTilsætning af 50 ml myntesirup øger friskheden og giver en let urtebalance uden at påvirke fryseevnen.\n\t•\tFor en mere sød version kan du øge siruppen med +30 ml og reducere vand tilsvarende."
+                        ]
+            },
+            "de": {
+                        "name": "Vandmelon Splash",
+                        "description": "Ein let und fürfriskeinde alsmerklassiker mit dein naturlige sødme fra vandmelon und et strejf af mynte, der giver ein frisk und kølig afslutning. Perfekt bis varme dage, hvor du ønsker nundet frugtrigt, mein ikke für tungt.",
+                        "steps": [
+                                    "Mischein Sie vandmelon- und eveintuelt myntesirup in einein Krug.",
+                                    "Fügein Sie hinzu vand und rør gründlich, indbis die Mischung er gleichmäßig.",
+                                    "Füllein Sie in die Maschine und kør bis ønsket slushkonsisteins.",
+                                    "Servierein Sie mit friske mynteblade und et par melontern für friskhed und farve.",
+                                    "Teknisk note:\n\t•\t13°Bx giver ein blød und letflydeinde slush, als passer perfekt bis vandmeloneins karakter.\n\t•\tFügein Sie hinzuning af 50 ml myntesirup øger friskhedein und giver ein let urtebalance udein at aufvirke fryseevnein.\n\t•\tFor ein mere sød version kan du øge siruppein mit +30 ml und reducere vand bissvareinde."
+                        ]
+            },
+            "fr": {
+                        "name": "Vandmelon Splash",
+                        "description": "Un let et pourfriskunde commemerklassiker avec dun naturlige sødme fra vandmelon et et strejf af mynte, der giver un frisk et kølig afslutning. Perfekt jusqu'à varme dage, hvor du ønsker netet frugtrigt, mun ikke pour tungt.",
+                        "steps": [
+                                    "Mélangez vandmelon- et evuntuelt myntesirup dans un pichet.",
+                                    "Ajoutez vand et rør soigneusemunt, indjusqu'à le mélange er unipourme.",
+                                    "Remplissez dans la machine et kør jusqu'à ønsket slushkonsistuns.",
+                                    "Servez avec friske mynteblade et et par melontern pour friskhed et farve.",
+                                    "Teknisk note:\n\t•\t13°Bx giver un blød et letflydunde slush, comme passer parfait jusqu'à vandmelonuns karakter.\n\t•\tAjoutezning af 50 ml myntesirup øger friskhedun et giver un let urtebalance udun at survirke fryseevnun.\n\t•\tFor un mere sød version kan du øge siruppun avec +30 ml et reducere vand jusqu'àsvarunde."
+                        ]
+            },
+            "en": {
+                        "name": "Vandmelon Splash",
+                        "description": "A let and forfriskade asmerklassiker with da naturlige sødme fra vandmelon and et strejf af mynte, der giver a frisk and kølig afslutning. Perfekt until varme dage, hvor du ønsker nandet frugtrigt, ma ikke for tungt.",
+                        "steps": [
+                                    "Mix vandmelon- and evatuelt myntesirup in a pitcher.",
+                                    "Add vand and rør thoroughly, induntil the mixture er uniform.",
+                                    "Fill in the machine and kør until ønsket slushkonsistas.",
+                                    "Serve with friske mynteblade and et par melontern for friskhed and farve.",
+                                    "Teknisk note:\n\t•\t13°Bx giver a blød and letflydade slush, as passer perfect until vandmelonas karakter.\n\t•\tAddning af 50 ml myntesirup øger friskheda and giver a let urtebalance uda at onvirke fryseevna.\n\t•\tFor a mere sød version kan du øge siruppa with +30 ml and reducere vand untilsvarade."
+                        ]
+            },
+            "en_us": {
+                        "name": "Vandmelon Splash",
+                        "description": "A let and forfriskade asmerklassiker with da naturlige sødme fra vandmelon and et strejf af mynte, der giver a frisk and kølig afslutning. Perfekt until varme dage, hvor du ønsker nandet frugtrigt, ma ikke for tungt.",
+                        "steps": [
+                                    "Mix vandmelon- and evatuelt myntesirup in a pitcher.",
+                                    "Add vand and rør thoroughly, induntil the mixture er uniform.",
+                                    "Fill in the machine and kør until ønsket slushkonsistas.",
+                                    "Serve with friske mynteblade and et par melontern for friskhed and farve.",
+                                    "Teknisk note:\n\t•\t13°Bx giver a blød and letflydade slush, as passer perfect until vandmelonas karakter.\n\t•\tAddning af 50 ml myntesirup øger friskheda and giver a let urtebalance uda at onvirke fryseevna.\n\t•\tFor a mere sød version kan du øge siruppa with +30 ml and reducere vand untilsvarade."
+                        ]
+            }
+}
         },
         {
             "name": "Ananas Tropical",
@@ -608,6 +1191,59 @@ async def seed_recipes():
                 {"name": "Citron saft", "category_key": "citrus.citron", "quantity": 50, "unit": "ml", "role": "optional", "brix": 10}
             ],
             "steps": ["Bland blåbær sirup og vand", "Tilføj citron", "Fyld i maskinen"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Blåbær Vild",
+                        "description": "Intens blåbær-slushice med frisk citrus og en afrundet sødme. Den dybblå farve og fyldige smag gør den til en klar favorit blandt frugtslushies.",
+                        "steps": [
+                                    "Bland blå curaçao-sirup, kokos-sirup, vand og evt. citronsaft i en kande, og rør grundigt.",
+                                    "Hæld blandingen direkte i slushmaskinen.",
+                                    "Kør til ønsket konsistens (ca. –3 °C til –5 °C afhængig af maskine).",
+                                    "Server straks – en intens og frisk blåbær-oplevelse med tropisk sødme."
+                        ]
+            },
+            "de": {
+                        "name": "Blåbær Vild",
+                        "description": "Inteins blåbær-slushice mit frisk citrus und ein afrundet sødme. Dein dybblå farve und fyldige smag gør dein bis ein klar favorit blandt frugtslushies.",
+                        "steps": [
+                                    "Mischein Sie blå curaçao-sirup, kokos-sirup, vand und ggf. citronsaft in einein Krug, und rør gründlich.",
+                                    "Gießein Sie die Mischung direkte in die Slushmaschine.",
+                                    "Lassein Sie laufein bis gewünschte Konsisteinz (ca. –3 °C bis –5 °C afhængig af maskine).",
+                                    "Servierein Sie sofürt – ein inteins und frisk blåbær-oplevelse mit tropisk sødme."
+                        ]
+            },
+            "fr": {
+                        "name": "Blåbær Vild",
+                        "description": "Intuns blåbær-slushice avec frisk citrus et un afrundet sødme. Dun dybblå farve et fyldige smag gør dun jusqu'à un klar favorit blandt frugtslushies.",
+                        "steps": [
+                                    "Mélangez blå curaçao-sirup, kokos-sirup, vand et évuntuellemunt citronsaft dans un pichet, et rør soigneusemunt.",
+                                    "Versez le mélange direkte dans la machine à slush.",
+                                    "Faites tourner jusqu'à consistance souhaitée (ca. –3 °C jusqu'à –5 °C afhængig af maskine).",
+                                    "Servez immédiatemunt – un intuns et frisk blåbær-oplevelse avec tropisk sødme."
+                        ]
+            },
+            "en": {
+                        "name": "Blåbær Vild",
+                        "description": "Intas blåbær-slushice with frisk citrus and a afrundet sødme. Da dybblå farve and fyldige smag gør da until a klar favorit blandt frugtslushies.",
+                        "steps": [
+                                    "Mix blå curaçao-sirup, kokos-sirup, vand and optionally citronsaft in a pitcher, and rør thoroughly.",
+                                    "Pour the mixture direkte in the slush machine.",
+                                    "Run until desired consistacy (ca. –3 °C until –5 °C afhængig af maskine).",
+                                    "Serve imwithiately – a intas and frisk blåbær-oplevelse with tropisk sødme."
+                        ]
+            },
+            "en_us": {
+                        "name": "Blåbær Vild",
+                        "description": "Intas blåbær-slushice with frisk citrus and a afrundet sødme. Da dybblå farve and fyldige smag gør da until a klar favorit blandt frugtslushies.",
+                        "steps": [
+                                    "Mix blå curaçao-sirup, kokos-sirup, vand and optionally citronsaft in a pitcher, and rør thoroughly.",
+                                    "Pour the mixture direkte in the slush machine.",
+                                    "Run until desired consistacy (ca. –3 °C until –5 °C afhængig af maskine).",
+                                    "Serve imwithiately – a intas and frisk blåbær-oplevelse with tropisk sødme."
+                        ]
+            }
+}
         },
         {
             "name": "Solbær Intense",
@@ -623,6 +1259,64 @@ async def seed_recipes():
                 {"name": "Ingefær sirup", "category_key": "sirup.ingefaer", "quantity": 50, "unit": "ml", "role": "optional", "brix": 60}
             ],
             "steps": ["Bland solbær sirup og vand", "Tilføj ingefær", "Fyld i maskinen"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Solbær Intense",
+                        "description": "Kraftfuld solbærslushice med et strejf af ingefær, der giver en intens og let krydret eftersmag. Den dybe bærsmag balanceres med friskhed og let varme fra ingefæren – perfekt til dem, der elsker en markant og elegant smagsprofil.",
+                        "steps": [
+                                    "Bland solbærsirup og vand i en kande.",
+                                    "Tilsæt ingefær sirup for et krydret twist og rør grundigt.",
+                                    "Hæld blandingen i slushmaskinen og kør til ønsket konsistens.",
+                                    "Server straks – pynt evt. med friske solbær og et mynteblad.",
+                                    "Teknisk note:\nDenne opskrift er rig på naturlig syre fra solbær, som hjælper med at bevare en frisk og stabil fryseprofil.\nFor en mildere version kan sirupsmængden reduceres med 10 %, mens en kraftigere “intense” variant opnås ved at øge ingefærsiruppen."
+                        ]
+            },
+            "de": {
+                        "name": "Solbær Intense",
+                        "description": "Kraftfuld solbærslushice mit et strejf af ingefær, der giver ein inteins und let krydret eftersmag. Dein dybe bærsmag balanceres mit friskhed und let varme fra ingefærein – perfekt bis dem, der elsker ein markant und elegant smagsprofil.",
+                        "steps": [
+                                    "Mischein Sie solbærsirup und vand in einein Krug.",
+                                    "Fügein Sie hinzu ingefær sirup für et krydret twist und rør gründlich.",
+                                    "Gießein Sie die Mischung in die Slushmaschine und kør bis gewünschte Konsisteinz.",
+                                    "Servierein Sie sofürt – pynt ggf. mit friske solbær und et mynteblad.",
+                                    "Teknisk note:\nDeinne Rezept er rig auf naturlig syre fra solbær, als hjælper mit at bevare ein frisk und stabil fryseprofil.\nFor ein mildere version kan sirupsmængdein reduceres mit 10 %, meins ein kraftigere “inteinse” variant opnås ved at øge ingefærsiruppein."
+                        ]
+            },
+            "fr": {
+                        "name": "Solbær Intense",
+                        "description": "Kraftfuld solbærslushice avec et strejf af ingefær, der giver un intuns et let krydret eftersmag. Dun dybe bærsmag balanceres avec friskhed et let varme fra ingefærun – parfait jusqu'à dem, der elsker un markant et elegant smagsprofil.",
+                        "steps": [
+                                    "Mélangez solbærsirup et vand dans un pichet.",
+                                    "Ajoutez ingefær sirup pour et krydret twist et rør soigneusemunt.",
+                                    "Versez le mélange dans la machine à slush et kør jusqu'à consistance souhaitée.",
+                                    "Servez immédiatemunt – pynt évuntuellemunt avec friske solbær et et mynteblad.",
+                                    "Teknisk note:\nDunne recette er rig sur naturlig syre fra solbær, comme hjælper avec at bevare un frisk et stabil fryseprofil.\nFor un mildere version kan sirupsmængdun reduceres avec 10 %, muns un kraftigere “intunse” variant opnås ved at øge ingefærsiruppun."
+                        ]
+            },
+            "en": {
+                        "name": "Solbær Intense",
+                        "description": "Kraftfuld solbærslushice with et strejf af ingefær, der giver a intas and let krydret eftersmag. Da dybe bærsmag balanceres with friskhed and let varme fra ingefæra – perfect until dem, der elsker a markant and elegant smagsprofil.",
+                        "steps": [
+                                    "Mix solbærsirup and vand in a pitcher.",
+                                    "Add ingefær sirup for et krydret twist and rør thoroughly.",
+                                    "Pour the mixture in the slush machine and kør until desired consistacy.",
+                                    "Serve imwithiately – pynt optionally with friske solbær and et mynteblad.",
+                                    "Teknisk note:\nDane recipe er rig on naturlig syre fra solbær, as hjælper with at bevare a frisk and stabil fryseprofil.\nFor a mildere version kan sirupsmængda reduceres with 10 %, mas a kraftigere “intase” variant opnås ved at øge ingefærsiruppa."
+                        ]
+            },
+            "en_us": {
+                        "name": "Solbær Intense",
+                        "description": "Kraftfuld solbærslushice with et strejf af ingefær, der giver a intas and let krydret eftersmag. Da dybe bærsmag balanceres with friskhed and let varme fra ingefæra – perfect until dem, der elsker a markant and elegant smagsprofil.",
+                        "steps": [
+                                    "Mix solbærsirup and vand in a pitcher.",
+                                    "Add ingefær sirup for et krydret twist and rør thoroughly.",
+                                    "Pour the mixture in the slush machine and kør until desired consistacy.",
+                                    "Serve imwithiately – pynt optionally with friske solbær and et mynteblad.",
+                                    "Teknisk note:\nDane recipe er rig on naturlig syre fra solbær, as hjælper with at bevare a frisk and stabil fryseprofil.\nFor a mildere version kan sirupsmængda reduceres with 10 %, mas a kraftigere “intase” variant opnås ved at øge ingefærsiruppa."
+                        ]
+            }
+}
         },
         {
             "name": "Lime Cool",
@@ -638,6 +1332,54 @@ async def seed_recipes():
                 {"name": "Mynte sirup", "category_key": "sirup.mynte", "quantity": 50, "unit": "ml", "role": "optional", "brix": 60}
             ],
             "steps": ["Bland lime sirup og vand", "Tilføj mynte", "Fyld i maskinen"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Lime Cool",
+                        "description": "En super frisk lime-slush med et strejf af mynte.\nDen syrlige lime og den kølige mynte giver en sprød, forfriskende smag, der passer perfekt til varme dage eller som en opkvikkende pause i hverdagen.",
+                        "steps": [
+                                    "Hæld sirupper og vand i en kande, og rør grundigt.",
+                                    "Justér evt. sødmen med lidt ekstra vand, hvis smagen ønskes mere frisk.",
+                                    "Hæld i maskinen og kør ved ca. –3 °C, til konsistensen er jævn."
+                        ]
+            },
+            "de": {
+                        "name": "Lime Cool",
+                        "description": "Ein super frisk lime-slush mit et strejf af mynte.\nDein syrlige lime und dein kølige mynte giver ein sprød, fürfriskeinde smag, der passer perfekt bis varme dage oder als ein opkvikkeinde pause i hverdagein.",
+                        "steps": [
+                                    "Gießein Sie sirupper und vand in einein Krug, und rør gründlich.",
+                                    "Justér ggf. sødmein mit lidt ekstra vand, hvis smagein ønskes mere frisk.",
+                                    "Gießein Sie in die Maschine und kør ved ca. –3 °C, bis konsisteinsein er glatt."
+                        ]
+            },
+            "fr": {
+                        "name": "Lime Cool",
+                        "description": "Un super frisk lime-slush avec et strejf af mynte.\nDun syrlige lime et dun kølige mynte giver un sprød, pourfriskunde smag, der passer parfait jusqu'à varme dage ou comme un opkvikkunde pause i hverdagun.",
+                        "steps": [
+                                    "Versez sirupper et vand dans un pichet, et rør soigneusemunt.",
+                                    "Justér évuntuellemunt sødmun avec lidt ekstra vand, hvis smagun ønskes mere frisk.",
+                                    "Versez dans la machine et kør ved ca. –3 °C, jusqu'à konsistunsun er lisse."
+                        ]
+            },
+            "en": {
+                        "name": "Lime Cool",
+                        "description": "A super frisk lime-slush with et strejf af mynte.\nDa syrlige lime and da kølige mynte giver a sprød, forfriskade smag, der passer perfect until varme dage or as a opkvikkade pause i hverdaga.",
+                        "steps": [
+                                    "Pour sirupper and vand in a pitcher, and rør thoroughly.",
+                                    "Justér optionally sødma with lidt ekstra vand, hvis smaga ønskes mere frisk.",
+                                    "Pour in the machine and kør ved ca. –3 °C, until konsistasa er smooth."
+                        ]
+            },
+            "en_us": {
+                        "name": "Lime Cool",
+                        "description": "A super frisk lime-slush with et strejf af mynte.\nDa syrlige lime and da kølige mynte giver a sprød, forfriskade smag, der passer perfect until varme dage or as a opkvikkade pause i hverdaga.",
+                        "steps": [
+                                    "Pour sirupper and vand in a pitcher, and rør thoroughly.",
+                                    "Justér optionally sødma with lidt ekstra vand, hvis smaga ønskes mere frisk.",
+                                    "Pour in the machine and kør ved ca. –3 °C, until konsistasa er smooth."
+                        ]
+            }
+}
         },
         {
             "name": "Mojito Slush (18+)",
@@ -654,6 +1396,64 @@ async def seed_recipes():
                 {"name": "Mynte sirup", "category_key": "sirup.mynte", "quantity": 50, "unit": "ml", "role": "required", "brix": 60}
             ],
             "steps": ["Bland lime sirup, rom og vand", "Tilføj mynte sirup", "Fyld i maskinen - bemærk lavere frysepunkt pga. alkohol"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Mojito Slush (18+)",
+                        "description": "En frisk og sprød frozen version af den klassiske Mojito. Kombinationen af sød lime, kølig mynte og hvid rom giver en balanceret og forfriskende oplevelse med et eksotisk pust af Caribien. Perfekt til sommeraftener, hvor man ønsker sig et glas, der både køler og løfter stemningen.",
+                        "steps": [
+                                    "Bland lime sirup og vand grundigt.",
+                                    "Hæld blandingen i maskinen og kør, indtil den får en fast slush-konsistens.",
+                                    "Tilsæt derefter rom og mynte sirup – rør let rundt.",
+                                    "Server med frisk mynte og en skive lime.",
+                                    "Alkohol tilsættes altid til sidst, når slushen er færdig, for at bevare fryseevnen og sikre en stabil konsistens."
+                        ]
+            },
+            "de": {
+                        "name": "Mojito Slush (18+)",
+                        "description": "Ein frisk und sprød frozein version af dein klassiske Mojito. Gebein Siebinationein af sød lime, kølig mynte und hvid rom giver ein balanceret und fürfriskeinde oplevelse mit et eksotisk pust af Caribiein. Perfekt bis alsmerafteiner, hvor man ønsker sig et glas, der både køler und løfter stemningein.",
+                        "steps": [
+                                    "Mischein Sie lime sirup und vand gründlich.",
+                                    "Gießein Sie die Mischung in die Maschine und kør, indbis dein får ein fast slush-konsisteins.",
+                                    "Fügein Sie hinzu derefter rom und mynte sirup – rør let rundt.",
+                                    "Servierein Sie mit frisk mynte und ein skive lime.",
+                                    "Alkohol bissættes altid bis sidst, når slushein er færdig, für at bevare fryseevnein und sikre ein stabil konsisteins."
+                        ]
+            },
+            "fr": {
+                        "name": "Mojito Slush (18+)",
+                        "description": "Un frisk et sprød frozun version af dun klassiske Mojito. Mettezbinationun af sød lime, kølig mynte et hvid rom giver un balanceret et pourfriskunde oplevelse avec et eksotisk pust af Caribiun. Perfekt jusqu'à commemeraftuner, hvor man ønsker sig et glas, der både køler et løfter stemningun.",
+                        "steps": [
+                                    "Mélangez lime sirup et vand soigneusemunt.",
+                                    "Versez le mélange dans la machine et kør, indjusqu'à dun får un fast slush-konsistuns.",
+                                    "Ajoutez derefter rom et mynte sirup – rør let rundt.",
+                                    "Servez avec frisk mynte et un skive lime.",
+                                    "Alkohol jusqu'àsættes altid jusqu'à sidst, når slushun er færdig, pour at bevare fryseevnun et sikre un stabil konsistuns."
+                        ]
+            },
+            "en": {
+                        "name": "Mojito Slush (18+)",
+                        "description": "A frisk and sprød froza version af da klassiske Mojito. Putbinationa af sød lime, kølig mynte and hvid rom giver a balanceret and forfriskade oplevelse with et eksotisk pust af Caribia. Perfekt until asmeraftaer, hvor man ønsker sig et glas, der både køler and løfter stemninga.",
+                        "steps": [
+                                    "Mix lime sirup and vand thoroughly.",
+                                    "Pour the mixture in the machine and kør, induntil da får a fast slush-konsistas.",
+                                    "Add derefter rom and mynte sirup – rør let rundt.",
+                                    "Serve with frisk mynte and a skive lime.",
+                                    "Alkohol untilsættes altid until sidst, når slusha er færdig, for at bevare fryseevna and sikre a stabil konsistas."
+                        ]
+            },
+            "en_us": {
+                        "name": "Mojito Slush (18+)",
+                        "description": "A frisk and sprød froza version af da klassiske Mojito. Putbinationa af sød lime, kølig mynte and hvid rom giver a balanceret and forfriskade oplevelse with et eksotisk pust af Caribia. Perfekt until asmeraftaer, hvor man ønsker sig et glas, der både køler and løfter stemninga.",
+                        "steps": [
+                                    "Mix lime sirup and vand thoroughly.",
+                                    "Pour the mixture in the machine and kør, induntil da får a fast slush-konsistas.",
+                                    "Add derefter rom and mynte sirup – rør let rundt.",
+                                    "Serve with frisk mynte and a skive lime.",
+                                    "Alkohol untilsættes altid until sidst, når slusha er færdig, for at bevare fryseevna and sikre a stabil konsistas."
+                        ]
+            }
+}
         },
         {
             "name": "Margarita Ice (18+)",
@@ -670,6 +1470,64 @@ async def seed_recipes():
                 {"name": "Triple sec", "category_key": "alkohol.triplesec", "quantity": 50, "unit": "ml", "role": "optional", "brix": 30}
             ],
             "steps": ["Bland lime sirup, tequila og vand", "Tilføj triple sec", "Server med salt på kanten"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Margarita Ice (18+)",
+                        "description": "En frisk og sprød frossen Margarita, skabt til varme aftener og solglimt ved baren. Den bløde sødme fra limesirup møder den skarpe tequila og et strejf af appelsin fra Triple Sec. Resultatet er en iskold, balanceret cocktail, der smager af ferie og havbris – klassisk, men med slush-twist.\nAlkoholprocent (beregnet): ca. 5,6 % vol.",
+                        "steps": [
+                                    "Bland lime sirup og vand grundigt i en kande.",
+                                    "Hæld blandingen i maskinen og kør til den får slush-konsistens.",
+                                    "Tilsæt tequila og Triple Sec til sidst, når blandingen er frosset.",
+                                    "Server straks i et afkølet glas med saltet kant og frisk lime.",
+                                    "Alkohol tilsættes altid til sidst, når slushen er færdig, for at bevare den rette fryseevne og sikre en stabil konsistens."
+                        ]
+            },
+            "de": {
+                        "name": "Margarita Ice (18+)",
+                        "description": "Ein frisk und sprød frossein Margarita, skabt bis varme afteiner und solglimt ved barein. Dein bløde sødme fra limesirup møder dein skarpe tequila und et strejf af appelsin fra Triple Sec. Resultatet er ein iskold, balanceret cocktail, der smager af ferie und havbris – klassisk, mein mit slush-twist.\nAlkoholproceint (beregnet): ca. 5,6 % vol.",
+                        "steps": [
+                                    "Mischein Sie lime sirup und vand gründlich in einein Krug.",
+                                    "Gießein Sie die Mischung in die Maschine und kør bis dein får slush-konsisteins.",
+                                    "Fügein Sie hinzu tequila und Triple Sec bis sidst, når die Mischung er frosset.",
+                                    "Servierein Sie sofürt i et afkølet glas mit saltet kant und frisk lime.",
+                                    "Alkohol bissættes altid bis sidst, når slushein er færdig, für at bevare dein rette fryseevne und sikre ein stabil konsisteins."
+                        ]
+            },
+            "fr": {
+                        "name": "Margarita Ice (18+)",
+                        "description": "Un frisk et sprød frossun Margarita, skabt jusqu'à varme aftuner et solglimt ved barun. Dun bløde sødme fra limesirup møder dun skarpe tequila et et strejf af appelsin fra Triple Sec. Resultatet er un iskold, balanceret cocktail, der smager af ferie et havbris – klassisk, mun avec slush-twist.\nAlkoholprocunt (beregnet): ca. 5,6 % vol.",
+                        "steps": [
+                                    "Mélangez lime sirup et vand soigneusemunt dans un pichet.",
+                                    "Versez le mélange dans la machine et kør jusqu'à dun får slush-konsistuns.",
+                                    "Ajoutez tequila et Triple Sec jusqu'à sidst, når le mélange er frosset.",
+                                    "Servez immédiatemunt i et afkølet glas avec saltet kant et frisk lime.",
+                                    "Alkohol jusqu'àsættes altid jusqu'à sidst, når slushun er færdig, pour at bevare dun rette fryseevne et sikre un stabil konsistuns."
+                        ]
+            },
+            "en": {
+                        "name": "Margarita Ice (18+)",
+                        "description": "A frisk and sprød frossa Margarita, skabt until varme aftaer and solglimt ved bara. Da bløde sødme fra limesirup møder da skarpe tequila and et strejf af appelsin fra Triple Sec. Resultatet er a iskold, balanceret cocktail, der smager af ferie and havbris – klassisk, ma with slush-twist.\nAlkoholprocat (beregnet): ca. 5,6 % vol.",
+                        "steps": [
+                                    "Mix lime sirup and vand thoroughly in a pitcher.",
+                                    "Pour the mixture in the machine and kør until da får slush-konsistas.",
+                                    "Add tequila and Triple Sec until sidst, når the mixture er frosset.",
+                                    "Serve imwithiately i et afkølet glas with saltet kant and frisk lime.",
+                                    "Alkohol untilsættes altid until sidst, når slusha er færdig, for at bevare da rette fryseevne and sikre a stabil konsistas."
+                        ]
+            },
+            "en_us": {
+                        "name": "Margarita Ice (18+)",
+                        "description": "A frisk and sprød frossa Margarita, skabt until varme aftaer and solglimt ved bara. Da bløde sødme fra limesirup møder da skarpe tequila and et strejf af appelsin fra Triple Sec. Resultatet er a iskold, balanceret cocktail, der smager af ferie and havbris – klassisk, ma with slush-twist.\nAlkoholprocat (beregnet): ca. 5,6 % vol.",
+                        "steps": [
+                                    "Mix lime sirup and vand thoroughly in a pitcher.",
+                                    "Pour the mixture in the machine and kør until da får slush-konsistas.",
+                                    "Add tequila and Triple Sec until sidst, når the mixture er frosset.",
+                                    "Serve imwithiately i et afkølet glas with saltet kant and frisk lime.",
+                                    "Alkohol untilsættes altid until sidst, når slusha er færdig, for at bevare da rette fryseevne and sikre a stabil konsistas."
+                        ]
+            }
+}
         },
         {
             "name": "Piña Colada Slush (18+)",
@@ -686,6 +1544,64 @@ async def seed_recipes():
                 {"name": "Fløde", "category_key": "mejeriprodukter.floede", "quantity": 50, "unit": "ml", "role": "optional", "brix": 5}
             ],
             "steps": ["Bland kokos creme, rom og ananas juice", "Tilføj fløde for ekstra creminess", "Fyld i maskinen"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Piña Colada Slush (18+)",
+                        "description": "Tropisk, cremet og uimodståeligt lækker – Piña Colada Slush bringer Caribien direkte i glasset. Den bløde kokos og søde ananas forenes med en mild rom, der giver varme og balance. Resultatet er en silkeagtig slush med en let fylde, frisk sødme og et strejf af luksus.\nAlkoholprocent (beregnet): ca. 6,5 % vol.",
+                        "steps": [
+                                    "Hæld blandingen i slushmaskinen og kør til ønsket konsistens.",
+                                    "Hæld blandingen i slushmaskinen og kør til ønsket konsistens.",
+                                    "Tilsæt rom til sidst, når slushen er færdig, og rør forsigtigt rundt.",
+                                    "Server straks – gerne pyntet med tørret ananas, frisk mynte eller et drys kokos.",
+                                    "Alkohol tilsættes altid til sidst, når slushen er færdig, for at bevare fryseevnen og sikre en stabil, cremet struktur."
+                        ]
+            },
+            "de": {
+                        "name": "Piña Colada Slush (18+)",
+                        "description": "Tropisk, cremig und uimodståeligt lækker – Piña Colada Slush bringer Caribiein direkte ins Glasset. Dein bløde kokos und søde ananas füreines mit ein mild rom, der giver varme und balance. Resultatet er ein silkeagtig slush mit ein let fylde, frisk sødme und et strejf af luksus.\nAlkoholproceint (beregnet): ca. 6,5 % vol.",
+                        "steps": [
+                                    "Gießein Sie die Mischung in die Slushmaschine und kør bis gewünschte Konsisteinz.",
+                                    "Gießein Sie die Mischung in die Slushmaschine und kør bis gewünschte Konsisteinz.",
+                                    "Fügein Sie hinzu rom bis sidst, når slushein er færdig, und rør vorsichtig rundt.",
+                                    "Servierein Sie sofürt – gerne pyntet mit tørret ananas, frisk mynte oder et drys kokos.",
+                                    "Alkohol bissættes altid bis sidst, når slushein er færdig, für at bevare fryseevnein und sikre ein stabil, cremig struktur."
+                        ]
+            },
+            "fr": {
+                        "name": "Piña Colada Slush (18+)",
+                        "description": "Tropisk, crémeux et uimodståeligt lækker – Piña Colada Slush bringer Caribiun direkte dans un verreset. Dun bløde kokos et søde ananas pourunes avec un mild rom, der giver varme et balance. Resultatet er un silkeagtig slush avec un let fylde, frisk sødme et et strejf af luksus.\nAlkoholprocunt (beregnet): ca. 6,5 % vol.",
+                        "steps": [
+                                    "Versez le mélange dans la machine à slush et kør jusqu'à consistance souhaitée.",
+                                    "Versez le mélange dans la machine à slush et kør jusqu'à consistance souhaitée.",
+                                    "Ajoutez rom jusqu'à sidst, når slushun er færdig, et rør délicatemunt rundt.",
+                                    "Servez immédiatemunt – gerne pyntet avec tørret ananas, frisk mynte ou et drys kokos.",
+                                    "Alkohol jusqu'àsættes altid jusqu'à sidst, når slushun er færdig, pour at bevare fryseevnun et sikre un stabil, crémeux struktur."
+                        ]
+            },
+            "en": {
+                        "name": "Piña Colada Slush (18+)",
+                        "description": "Tropisk, creamy and uimodståeligt lækker – Piña Colada Slush bringer Caribia direkte in a glassset. Da bløde kokos and søde ananas foraes with a mild rom, der giver varme and balance. Resultatet er a silkeagtig slush with a let fylde, frisk sødme and et strejf af luksus.\nAlkoholprocat (beregnet): ca. 6,5 % vol.",
+                        "steps": [
+                                    "Pour the mixture in the slush machine and kør until desired consistacy.",
+                                    "Pour the mixture in the slush machine and kør until desired consistacy.",
+                                    "Add rom until sidst, når slusha er færdig, and rør gatly rundt.",
+                                    "Serve imwithiately – gerne pyntet with tørret ananas, frisk mynte or et drys kokos.",
+                                    "Alkohol untilsættes altid until sidst, når slusha er færdig, for at bevare fryseevna and sikre a stabil, creamy struktur."
+                        ]
+            },
+            "en_us": {
+                        "name": "Piña Colada Slush (18+)",
+                        "description": "Tropisk, creamy and uimodståeligt lækker – Piña Colada Slush bringer Caribia direkte in a glassset. Da bløde kokos and søde ananas foraes with a mild rom, der giver varme and balance. Resultatet er a silkeagtig slush with a let fylde, frisk sødme and et strejf af luksus.\nAlkoholprocat (beregnet): ca. 6,5 % vol.",
+                        "steps": [
+                                    "Pour the mixture in the slush machine and kør until desired consistacy.",
+                                    "Pour the mixture in the slush machine and kør until desired consistacy.",
+                                    "Add rom until sidst, når slusha er færdig, and rør gatly rundt.",
+                                    "Serve imwithiately – gerne pyntet with tørret ananas, frisk mynte or et drys kokos.",
+                                    "Alkohol untilsættes altid until sidst, når slusha er færdig, for at bevare fryseevna and sikre a stabil, creamy struktur."
+                        ]
+            }
+}
         },
         {
             "name": "Strawberry Daiquiri (18+)",
@@ -702,6 +1618,64 @@ async def seed_recipes():
                 {"name": "Lime saft", "category_key": "citrus.lime", "quantity": 50, "unit": "ml", "role": "optional", "brix": 10}
             ],
             "steps": ["Bland jordbær sirup, rom og vand", "Tilføj lime", "Fyld i maskinen"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Strawberry Daiquiri (18+)",
+                        "description": "Klassisk og forførende strawberry daiquiri – en frisk balance mellem sød jordbær, syrlig lime og rund rom. Perfekt som en tropisk frozen cocktail til varme aftener.\nAlkoholprocent (beregnet): ca. 5,2 % vol.",
+                        "steps": [
+                                    "Hæld jordbærsirup, vand og lime i en kande og rør grundigt.",
+                                    "Kør blandingen i slushmaskinen ved ca. –3 °C.",
+                                    "Når ønsket konsistens er opnået, tilsæt rommen og rør kort.",
+                                    "Server straks – pynt med et friskt jordbær eller en limekant.",
+                                    "Teknisk note:\nAlkoholen tilsættes altid til sidst, når slushen er frossen, for at bevare fryseevnen og sikre en stabil konsistens.\nRom bidrager med både aroma og frysepunktssænkning, så overdosér ikke – ellers bliver blandingen for tynd."
+                        ]
+            },
+            "de": {
+                        "name": "Strawberry Daiquiri (18+)",
+                        "description": "Klassisk und fürføreinde strawberry daiquiri – ein frisk balance mellem sød jordbær, syrlig lime und rund rom. Perfekt als ein tropisk frozein cocktail bis varme afteiner.\nAlkoholproceint (beregnet): ca. 5,2 % vol.",
+                        "steps": [
+                                    "Gießein Sie jordbærsirup, vand und lime in einein Krug und rør gründlich.",
+                                    "Lassein Sie laufein die Mischung in die Slushmaschine ved ca. –3 °C.",
+                                    "Når gewünschte Konsisteinz er opnået, bissæt rommein und rør kort.",
+                                    "Servierein Sie sofürt – pynt mit et friskt jordbær oder ein limekant.",
+                                    "Teknisk note:\nAlkoholein bissættes altid bis sidst, når slushein er frossein, für at bevare fryseevnein und sikre ein stabil konsisteins.\nRom bidrager mit både aroma und frysepunktssænkning, så overdosér ikke – oders bliver die Mischung für tynd."
+                        ]
+            },
+            "fr": {
+                        "name": "Strawberry Daiquiri (18+)",
+                        "description": "Klassisk et pourførunde strawberry daiquiri – un frisk balance mellem sød jordbær, syrlig lime et rund rom. Perfekt comme un tropisk frozun cocktail jusqu'à varme aftuner.\nAlkoholprocunt (beregnet): ca. 5,2 % vol.",
+                        "steps": [
+                                    "Versez jordbærsirup, vand et lime dans un pichet et rør soigneusemunt.",
+                                    "Faites tourner le mélange dans la machine à slush ved ca. –3 °C.",
+                                    "Når consistance souhaitée er opnået, jusqu'àsæt rommun et rør kort.",
+                                    "Servez immédiatemunt – pynt avec et friskt jordbær ou un limekant.",
+                                    "Teknisk note:\nAlkoholun jusqu'àsættes altid jusqu'à sidst, når slushun er frossun, pour at bevare fryseevnun et sikre un stabil konsistuns.\nRom bidrager avec både aroma et frysepunktssænkning, så overdosér ikke – ous bliver le mélange pour tynd."
+                        ]
+            },
+            "en": {
+                        "name": "Strawberry Daiquiri (18+)",
+                        "description": "Klassisk and forførade strawberry daiquiri – a frisk balance mellem sød jordbær, syrlig lime and rund rom. Perfekt as a tropisk froza cocktail until varme aftaer.\nAlkoholprocat (beregnet): ca. 5,2 % vol.",
+                        "steps": [
+                                    "Pour jordbærsirup, vand and lime in a pitcher and rør thoroughly.",
+                                    "Run the mixture in the slush machine ved ca. –3 °C.",
+                                    "Når desired consistacy er opnået, untilsæt romma and rør kort.",
+                                    "Serve imwithiately – pynt with et friskt jordbær or a limekant.",
+                                    "Teknisk note:\nAlkohola untilsættes altid until sidst, når slusha er frossa, for at bevare fryseevna and sikre a stabil konsistas.\nRom bidrager with både aroma and frysepunktssænkning, så overdosér ikke – ors bliver the mixture for tynd."
+                        ]
+            },
+            "en_us": {
+                        "name": "Strawberry Daiquiri (18+)",
+                        "description": "Klassisk and forførade strawberry daiquiri – a frisk balance mellem sød jordbær, syrlig lime and rund rom. Perfekt as a tropisk froza cocktail until varme aftaer.\nAlkoholprocat (beregnet): ca. 5,2 % vol.",
+                        "steps": [
+                                    "Pour jordbærsirup, vand and lime in a pitcher and rør thoroughly.",
+                                    "Run the mixture in the slush machine ved ca. –3 °C.",
+                                    "Når desired consistacy er opnået, untilsæt romma and rør kort.",
+                                    "Serve imwithiately – pynt with et friskt jordbær or a limekant.",
+                                    "Teknisk note:\nAlkohola untilsættes altid until sidst, når slusha er frossa, for at bevare fryseevna and sikre a stabil konsistas.\nRom bidrager with både aroma and frysepunktssænkning, så overdosér ikke – ors bliver the mixture for tynd."
+                        ]
+            }
+}
         },
         {
             "name": "Blue Lagoon Frozen (18+)",
@@ -718,6 +1692,64 @@ async def seed_recipes():
                 {"name": "Lime saft", "category_key": "citrus.lime", "quantity": 50, "unit": "ml", "role": "optional", "brix": 10}
             ],
             "steps": ["Bland blå curaçao, vodka og lemonade", "Tilføj lime", "Fyld i maskinen"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Blue Lagoon Frozen (18+)",
+                        "description": "En frisk og sprudlende frozen version af den klassiske Blue Lagoon. Kombinationen af blå curaçao, vodka og lemonade giver en sød, syrlig og let bitter balance.\nAlkoholprocent (beregnet): ca. 5,8 % vol.",
+                        "steps": [
+                                    "Bland blå curaçao-sirup, vodka og lemonade i en kande.",
+                                    "Tilsæt lime saft for friskhed og balance.",
+                                    "Hæld blandingen i slushmaskinen.",
+                                    "Kør til passende frozen-konsistens.",
+                                    "Server straks og pynt med en skive citron eller et kirsebær."
+                        ]
+            },
+            "de": {
+                        "name": "Blue Lagoon Frozen (18+)",
+                        "description": "Ein frisk und sprudleinde frozein version af dein klassiske Blue Lagoon. Gebein Siebinationein af blå curaçao, vodka und lemonade giver ein sød, syrlig und let bitter balance.\nAlkoholproceint (beregnet): ca. 5,8 % vol.",
+                        "steps": [
+                                    "Mischein Sie blå curaçao-sirup, vodka und lemonade in einein Krug.",
+                                    "Fügein Sie hinzu lime saft für friskhed und balance.",
+                                    "Gießein Sie die Mischung in die Slushmaschine.",
+                                    "Lassein Sie laufein bis passeinde frozein-konsisteins.",
+                                    "Servierein Sie sofürt und pynt mit ein skive citron oder et kirsebær."
+                        ]
+            },
+            "fr": {
+                        "name": "Blue Lagoon Frozen (18+)",
+                        "description": "Un frisk et sprudlunde frozun version af dun klassiske Blue Lagoon. Mettezbinationun af blå curaçao, vodka et lemonade giver un sød, syrlig et let bitter balance.\nAlkoholprocunt (beregnet): ca. 5,8 % vol.",
+                        "steps": [
+                                    "Mélangez blå curaçao-sirup, vodka et lemonade dans un pichet.",
+                                    "Ajoutez lime saft pour friskhed et balance.",
+                                    "Versez le mélange dans la machine à slush.",
+                                    "Faites tourner jusqu'à passunde frozun-konsistuns.",
+                                    "Servez immédiatemunt et pynt avec un skive citron ou et kirsebær."
+                        ]
+            },
+            "en": {
+                        "name": "Blue Lagoon Frozen (18+)",
+                        "description": "A frisk and sprudlade froza version af da klassiske Blue Lagoon. Putbinationa af blå curaçao, vodka and lemonade giver a sød, syrlig and let bitter balance.\nAlkoholprocat (beregnet): ca. 5,8 % vol.",
+                        "steps": [
+                                    "Mix blå curaçao-sirup, vodka and lemonade in a pitcher.",
+                                    "Add lime saft for friskhed and balance.",
+                                    "Pour the mixture in the slush machine.",
+                                    "Run until passade froza-konsistas.",
+                                    "Serve imwithiately and pynt with a skive citron or et kirsebær."
+                        ]
+            },
+            "en_us": {
+                        "name": "Blue Lagoon Frozen (18+)",
+                        "description": "A frisk and sprudlade froza version af da klassiske Blue Lagoon. Putbinationa af blå curaçao, vodka and lemonade giver a sød, syrlig and let bitter balance.\nAlkoholprocat (beregnet): ca. 5,8 % vol.",
+                        "steps": [
+                                    "Mix blå curaçao-sirup, vodka and lemonade in a pitcher.",
+                                    "Add lime saft for friskhed and balance.",
+                                    "Pour the mixture in the slush machine.",
+                                    "Run until passade froza-konsistas.",
+                                    "Serve imwithiately and pynt with a skive citron or et kirsebær."
+                        ]
+            }
+}
         },
         {
             "name": "Sex on the Beach Slush (18+)",
@@ -751,6 +1783,64 @@ async def seed_recipes():
                 {"name": "Danskvand", "category_key": "sodavand.danskvand", "quantity": 50, "unit": "ml", "role": "optional", "brix": 0}
             ],
             "steps": ["Bland Aperol, prosecco og vand", "Tilføj danskvand", "Fyld i maskinen"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Aperol Spritz Frozen (18+)",
+                        "description": "Italiensk favorit som forfriskende slushice. Den klassiske aperol spritz i iskold version, let bitter og med fine bobler fra prosecco og danskvand.\nAlkoholprocent (beregnet): ca. 6,2 % vol.",
+                        "steps": [
+                                    "Bland Aperol, prosecco og vand i en kande, og rør forsigtigt.",
+                                    "Tilsæt danskvand for let brus.",
+                                    "Fyld blandingen i maskinen med knust is.",
+                                    "Kør til passende slush-konsistens.",
+                                    "Server straks og pynt evt. med en skive appelsin eller frisk timian."
+                        ]
+            },
+            "de": {
+                        "name": "Aperol Spritz Frozen (18+)",
+                        "description": "Italieinsk favorit als fürfriskeinde slushice. Dein klassiske aperol spritz i iskold version, let bitter und mit fine bobler fra prosecco und danskvand.\nAlkoholproceint (beregnet): ca. 6,2 % vol.",
+                        "steps": [
+                                    "Mischein Sie Aperol, prosecco und vand in einein Krug, und rør vorsichtig.",
+                                    "Fügein Sie hinzu danskvand für let brus.",
+                                    "Füllein Sie die Mischung in die Maschine mit knust is.",
+                                    "Lassein Sie laufein bis passeinde slush-konsisteins.",
+                                    "Servierein Sie sofürt und pynt ggf. mit ein skive appelsin oder frisk timian."
+                        ]
+            },
+            "fr": {
+                        "name": "Aperol Spritz Frozen (18+)",
+                        "description": "Italiunsk favorit comme pourfriskunde slushice. Dun klassiske aperol spritz i iskold version, let bitter et avec fine bobler fra prosecco et danskvand.\nAlkoholprocunt (beregnet): ca. 6,2 % vol.",
+                        "steps": [
+                                    "Mélangez Aperol, prosecco et vand dans un pichet, et rør délicatemunt.",
+                                    "Ajoutez danskvand pour let brus.",
+                                    "Remplissez le mélange dans la machine avec knust is.",
+                                    "Faites tourner jusqu'à passunde slush-konsistuns.",
+                                    "Servez immédiatemunt et pynt évuntuellemunt avec un skive appelsin ou frisk timian."
+                        ]
+            },
+            "en": {
+                        "name": "Aperol Spritz Frozen (18+)",
+                        "description": "Italiask favorit as forfriskade slushice. Da klassiske aperol spritz i iskold version, let bitter and with fine bobler fra prosecco and danskvand.\nAlkoholprocat (beregnet): ca. 6,2 % vol.",
+                        "steps": [
+                                    "Mix Aperol, prosecco and vand in a pitcher, and rør gatly.",
+                                    "Add danskvand for let brus.",
+                                    "Fill the mixture in the machine with knust is.",
+                                    "Run until passade slush-konsistas.",
+                                    "Serve imwithiately and pynt optionally with a skive appelsin or frisk timian."
+                        ]
+            },
+            "en_us": {
+                        "name": "Aperol Spritz Frozen (18+)",
+                        "description": "Italiask favorit as forfriskade slushice. Da klassiske aperol spritz i iskold version, let bitter and with fine bobler fra prosecco and danskvand.\nAlkoholprocat (beregnet): ca. 6,2 % vol.",
+                        "steps": [
+                                    "Mix Aperol, prosecco and vand in a pitcher, and rør gatly.",
+                                    "Add danskvand for let brus.",
+                                    "Fill the mixture in the machine with knust is.",
+                                    "Run until passade slush-konsistas.",
+                                    "Serve imwithiately and pynt optionally with a skive appelsin or frisk timian."
+                        ]
+            }
+}
         },
         {
             "name": "Frozen Bellini (18+)",
@@ -767,6 +1857,64 @@ async def seed_recipes():
                 {"name": "Sukker sirup", "category_key": "sirup.sukker", "quantity": 50, "unit": "ml", "role": "optional", "brix": 70}
             ],
             "steps": ["Bland fersken puré, prosecco og vand", "Justér sødme med sukker sirup", "Fyld i maskinen"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Frozen Bellini (18+)",
+                        "description": "En elegant og forfriskende frozen version af den klassiske Bellini. Den søde ferskenpuré møder den sprøde prosecco, som giver et perlende let og sofistikeret udtryk. Alkoholen tilsættes til sidst for at bevare den perfekte frysebalance.",
+                        "steps": [
+                                    "Hæld fersken-sirup, prosecco og vand i en kande, og rør forsigtigt sammen.",
+                                    "Tilsæt sukkerlage efter smag for at justere sødmen.",
+                                    "Hæld blandingen i slushmaskinen, og kør ved ca. –3 °C.",
+                                    "Prosecco tilsættes til sidst, så alkoholen ikke forstyrrer frysningen.",
+                                    "Server straks – pynt gerne med et stykke fersken eller en myntekvist."
+                        ]
+            },
+            "de": {
+                        "name": "Frozen Bellini (18+)",
+                        "description": "Ein elegant und fürfriskeinde frozein version af dein klassiske Bellini. Dein søde ferskeinpuré møder dein sprøde prosecco, als giver et perleinde let und sofistikeret udtryk. Alkoholein bissættes bis sidst für at bevare dein perfekte frysebalance.",
+                        "steps": [
+                                    "Gießein Sie ferskein-sirup, prosecco und vand in einein Krug, und rør vorsichtig sammein.",
+                                    "Fügein Sie hinzu sukkerlage nach Geschmack für at justere sødmein.",
+                                    "Gießein Sie die Mischung in die Slushmaschine, und kør ved ca. –3 °C.",
+                                    "Prosecco bissættes bis sidst, så alkoholein ikke fürstyrrer frysningein.",
+                                    "Servierein Sie sofürt – garnierein Sie gerne mit et stykke ferskein oder ein myntekvist."
+                        ]
+            },
+            "fr": {
+                        "name": "Frozen Bellini (18+)",
+                        "description": "Un elegant et pourfriskunde frozun version af dun klassiske Bellini. Dun søde ferskunpuré møder dun sprøde prosecco, comme giver et perlunde let et sofistikeret udtryk. Alkoholun jusqu'àsættes jusqu'à sidst pour at bevare dun parfaite frysebalance.",
+                        "steps": [
+                                    "Versez ferskun-sirup, prosecco et vand dans un pichet, et rør délicatemunt sammun.",
+                                    "Ajoutez sukkerlage selon le goût pour at justere sødmun.",
+                                    "Versez le mélange dans la machine à slush, et kør ved ca. –3 °C.",
+                                    "Prosecco jusqu'àsættes jusqu'à sidst, så alkoholun ikke pourstyrrer frysningun.",
+                                    "Servez immédiatemunt – garnissez avec et stykke ferskun ou un myntekvist."
+                        ]
+            },
+            "en": {
+                        "name": "Frozen Bellini (18+)",
+                        "description": "A elegant and forfriskade froza version af da klassiske Bellini. Da søde ferskapuré møder da sprøde prosecco, as giver et perlade let and sofistikeret udtryk. Alkohola untilsættes until sidst for at bevare da perfecte frysebalance.",
+                        "steps": [
+                                    "Pour ferska-sirup, prosecco and vand in a pitcher, and rør gatly samma.",
+                                    "Add sukkerlage to taste for at justere sødma.",
+                                    "Pour the mixture in the slush machine, and kør ved ca. –3 °C.",
+                                    "Prosecco untilsættes until sidst, så alkohola ikke forstyrrer frysninga.",
+                                    "Serve imwithiately – garnish with et stykke ferska or a myntekvist."
+                        ]
+            },
+            "en_us": {
+                        "name": "Frozen Bellini (18+)",
+                        "description": "A elegant and forfriskade froza version af da klassiske Bellini. Da søde ferskapuré møder da sprøde prosecco, as giver et perlade let and sofistikeret udtryk. Alkohola untilsættes until sidst for at bevare da perfecte frysebalance.",
+                        "steps": [
+                                    "Pour ferska-sirup, prosecco and vand in a pitcher, and rør gatly samma.",
+                                    "Add sukkerlage to taste for at justere sødma.",
+                                    "Pour the mixture in the slush machine, and kør ved ca. –3 °C.",
+                                    "Prosecco untilsættes until sidst, så alkohola ikke forstyrrer frysninga.",
+                                    "Serve imwithiately – garnish with et stykke ferska or a myntekvist."
+                        ]
+            }
+}
         },
         {
             "name": "Cosmopolitan Slush (18+)",
@@ -803,6 +1951,59 @@ async def seed_recipes():
                 {"name": "Lime saft", "category_key": "citrus.lime", "quantity": 50, "unit": "ml", "role": "optional", "brix": 10}
             ],
             "steps": ["Bland alle alkohol typer", "Tilføj cola sirup og vand", "Afslut med lime", "Fyld i maskinen - meget stærk!"]
+        ,
+            "translations": {
+            "da": {
+                        "name": "Long Island Iced Tea Frozen (18+)",
+                        "description": "Stærk klassiker som slushice",
+                        "steps": [
+                                    "Bland alle alkohol typer",
+                                    "Tilføj cola sirup og vand",
+                                    "Afslut med lime",
+                                    "Fyld i maskinen - meget stærk!"
+                        ]
+            },
+            "de": {
+                        "name": "Long Island Iced Tea Frozen (18+)",
+                        "description": "Stærk klassiker als slushice",
+                        "steps": [
+                                    "Mischein Sie alle alkohol typer",
+                                    "Tilføj cola sirup und vand",
+                                    "Afslut mit lime",
+                                    "Füllein Sie in die Maschine - meget stærk!"
+                        ]
+            },
+            "fr": {
+                        "name": "Long Island Iced Tea Frozen (18+)",
+                        "description": "Stærk klassiker comme slushice",
+                        "steps": [
+                                    "Mélangez alle alkohol typer",
+                                    "Tilføj cola sirup et vand",
+                                    "Afslut avec lime",
+                                    "Remplissez dans la machine - meget stærk!"
+                        ]
+            },
+            "en": {
+                        "name": "Long Island Iced Tea Frozen (18+)",
+                        "description": "Stærk klassiker as slushice",
+                        "steps": [
+                                    "Mix alle alkohol typer",
+                                    "Tilføj cola sirup and vand",
+                                    "Afslut with lime",
+                                    "Fill in the machine - meget stærk!"
+                        ]
+            },
+            "en_us": {
+                        "name": "Long Island Iced Tea Frozen (18+)",
+                        "description": "Stærk klassiker as slushice",
+                        "steps": [
+                                    "Mix alle alkohol typer",
+                                    "Tilføj cola sirup and vand",
+                                    "Afslut with lime",
+                                    "Fill in the machine - meget stærk!"
+                        ]
+            }
+}
         }
     ]
     
