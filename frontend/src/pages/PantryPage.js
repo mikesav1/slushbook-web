@@ -228,7 +228,7 @@ const PantryPage = ({ sessionId }) => {
       {/* Quick Add */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
         <div>
-          <h3 className="font-semibold mb-3">Søg i alle ingredienser</h3>
+          <h3 className="font-semibold mb-3">{t('pantry.searchAllIngredients', 'Søg i alle ingredienser')}</h3>
           <div className="relative">
             <input
               type="text"
