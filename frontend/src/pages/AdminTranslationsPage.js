@@ -91,7 +91,7 @@ const AdminTranslationsPage = () => {
       });
       
       await axios.put(
-        `${API}/admin/translations/${selectedLanguage}`,
+        `${API}/admin/translations/editor/${selectedLanguage}`,
         { translations: finalTranslations },
         {
           headers: { Authorization: `Bearer ${token}` },
