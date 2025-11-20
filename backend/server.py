@@ -122,8 +122,11 @@ api_router = APIRouter(prefix="/api")
 class Ingredient(BaseModel):
     name: str
     category_key: str
-    quantity: float
-    unit: str
+    quantity: float                      # For display (user's chosen unit)
+    unit: str                            # Display unit (what user sees)
+    quantity_ml: Optional[float] = None  # Internal storage in ml
+    display_quantity: Optional[float] = None  # Original user input
+    display_unit: Optional[str] = None   # Original user's unit choice
     role: str = "required"  # required, optional, garnish
     brix: Optional[float] = None
 
