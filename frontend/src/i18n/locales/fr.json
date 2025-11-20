@@ -439,5 +439,34 @@
       "addSuccess": "Nouvelle clé ajoutée!",
       "addError": "Veuillez remplir la clé et la valeur"
     }
+  },
+  "tips": {
+    "communityForum": "Forum Communautaire",
+    "subtitle": "Partagez vos connaissances, posez des questions et aidez-vous mutuellement",
+    "createNewTip": "Créer un nouveau conseil",
+    "categoryAll": "Tous",
+    "categoryMachines": "Machines",
+    "categoryProducts": "Produits & Ingrédients",
+    "categoryCleaning": "Nettoyage & Entretien",
+    "categoryTechnical": "Technique & Équipement",
+    "categoryUserTips": "Conseils d'utilisateurs & Expériences",
+    "categoryAccessories": "Accessoires & Service",
+    "inclInternational": "Incl. international",
+    "onlyLocal": "Seulement local",
+    "noTipsFound": "Aucun conseil trouvé",
+    "international": "International",
+    "likes": "j'aime",
+    "delete": "Supprimer",
+    "replies": "Réponses",
+    "writeReply": "Écrivez une réponse...",
+    "send": "Envoyer",
+    "loginToComment": "Connectez-vous pour commenter",
+    "deleteComment": "Supprimer le commentaire",
+    "errorFetchTips": "Impossible de charger les conseils",
+    "errorLike": "Impossible d'aimer le conseil",
+    "errorDelete": "Impossible de supprimer le conseil",
+    "errorPostComment": "Impossible d'ajouter le commentaire",
+    "errorDeleteComment": "Impossible de supprimer le commentaire",
+    "onlyProCanLike": "Seuls les utilisateurs PRO peuvent aimer les conseils. Mettez à niveau pour participer!"
   }
 }
