@@ -57,17 +57,45 @@ export const COUNTRY_DEFAULT_UNIT = {
 };
 
 /**
- * Convert any supported unit to ml
+ * Check if unit is a volume unit
+ */
+export function isVolumeUnit(unit) {
+  return VOLUME_UNITS.has(unit.toLowerCase().trim());
+}
+
+/**
+ * Check if unit is a mass unit
+ */
+export function isMassUnit(unit) {
+  return MASS_UNITS.has(unit.toLowerCase().trim());
+}
+
+/**
+ * Convert any supported volume unit to ml
  */
 export function convertToMl(amount, unit) {
   const unitLower = unit.toLowerCase().trim();
   
   if (!(unitLower in UNIT_TO_ML)) {
-    console.error(`Unsupported unit: ${unit}`);
+    console.error(`Not a volume unit: ${unit}`);
     return amount; // Fallback: return as-is
   }
   
   return amount * UNIT_TO_ML[unitLower];
+}
+
+/**
+ * Convert any supported mass unit to g
+ */
+export function convertToG(amount, unit) {
+  const unitLower = unit.toLowerCase().trim();
+  
+  if (!(unitLower in UNIT_TO_G)) {
+    console.error(`Not a mass unit: ${unit}`);
+    return amount; // Fallback: return as-is
+  }
+  
+  return amount * UNIT_TO_G[unitLower];
 }
 
 /**
