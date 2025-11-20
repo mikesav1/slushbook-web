@@ -48,7 +48,7 @@ const AdminTranslationsPage = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('session_token');
-      const response = await axios.get(`${API}/admin/translations?language=${lang}`, {
+      const response = await axios.get(`${API}/admin/translations/editor?language=${lang}`, {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true
       });
