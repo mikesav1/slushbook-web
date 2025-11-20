@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'sonner';
-import { FaGlobe, FaSearch, FaPlus, FaSave, FaDownload, FaUpload, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaGlobe, FaSearch, FaSave, FaSpinner } from 'react-icons/fa';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
-import { Label } from '../components/ui/label';
-import { useTranslation } from 'react-i18next';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API } from '../App';
 
 const LANGUAGES = {
-  da: { name: 'Dansk', flag: '🇩🇰' },
-  en: { name: 'English (UK)', flag: '🇬🇧' },
-  en_us: { name: 'English (US)', flag: '🇺🇸' },
-  de: { name: 'Deutsch', flag: '🇩🇪' },
-  fr: { name: 'Français', flag: '🇫🇷' }
+  de: { name: 'Tysk', flag: '🇩🇪' },
+  fr: { name: 'Fransk', flag: '🇫🇷' },
+  en: { name: 'Engelsk (UK)', flag: '🇬🇧' },
+  en_us: { name: 'Engelsk (US)', flag: '🇺🇸' }
 };
 
 const AdminTranslationsPage = () => {
