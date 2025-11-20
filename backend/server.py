@@ -836,6 +836,7 @@ async def seed_recipes():
             for trans_id, trans_data in recipe_translations_map.items():
                 if trans_data['name'] == recipe_data['name']:
                     doc['translations'] = trans_data['translations']
+                    logger.info(f"[SEED] Added translations for {recipe_data['name']}")
                     break
         
         # Ensure Danish translation exists
