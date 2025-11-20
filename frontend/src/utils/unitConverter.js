@@ -166,16 +166,26 @@ export function normalizeIngredient(ingredient) {
 }
 
 /**
- * Convert ingredient from ml storage back to display unit
+ * Convert ingredient from base storage (ml or g) back to display unit
  */
 export function denormalizeIngredient(ingredient, targetUnit = null) {
-  const quantityMl = ingredient.quantity_ml || 0;
-  
-  // Use target unit if provided, otherwise use stored display unit, or fall back to ml
+  // Determine display unit
   const displayUnit = targetUnit || ingredient.display_unit || ingredient.unit || 'ml';
   
-  // Convert from ml to display unit
-  const displayQuantity = convertFromMl(quantityMl, displayUnit);
+  let displayQuantity;
+  
+  // Convert based on unit type
+  if (isVolumeUnit(displayUnit)) {
+    const quantityMl = ingredient.quantity_ml || 0;
+    displayQuantity = convertFromMl(quantityMl, displayUnit);
+  } else if (isMassUnit(displayUnit)) {
+    const quantityG = ingredient.quantity_g || 0;
+    const unitLower = displayUnit.toLowerCase().trim();
+    displayQuantity = quantityG / UNIT_TO_G[unitLower];
+  } else {
+    // Fallback - use stored quantity
+    displayQuantity = ingredient.quantity || 0;
+  }
   
   return {
     ...ingredient,
