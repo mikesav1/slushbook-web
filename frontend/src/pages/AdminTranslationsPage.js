@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { toast } from 'sonner';
-import { FaGlobe, FaSearch, FaSave, FaSpinner } from 'react-icons/fa';
+import { API } from '../App';
+import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
-import { useAuth } from '../context/AuthContext';
+import { FaSearch, FaSave, FaGlobe, FaSpinner } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { API } from '../App';
 
 const LANGUAGES = {
   de: { name: 'Tysk', flag: '🇩🇪' },
@@ -17,355 +17,280 @@ const LANGUAGES = {
 };
 
 const AdminTranslationsPage = () => {
-  const { t } = useTranslation();
-  const [selectedLang, setSelectedLang] = useState('da');
-  const [translations, setTranslations] = useState({});
-  const [allTranslations, setAllTranslations] = useState({});
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedSection, setSelectedSection] = useState('all');
-  const [editingKey, setEditingKey] = useState(null);
-  const [editValue, setEditValue] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [newKey, setNewKey] = useState('');
-  const [newValue, setNewValue] = useState('');
+  const { user, isAdmin } = useAuth();
+  const navigate = useNavigate();
+  
+  // State
+  const [selectedLanguage, setSelectedLanguage] = useState('de');
+  const [translations, setTranslations] = useState([]);
+  const [editedTranslations, setEditedTranslations] = useState({});
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
 
-  // Load all translations
+  // Redirect non-admin users
   useEffect(() => {
-    loadAllTranslations();
-  }, []);
+    if (!isAdmin()) {
+      toast.error('Kun administratorer kan tilgå denne side');
+      navigate('/settings');
+    }
+  }, [isAdmin, navigate]);
 
-  const loadAllTranslations = async () => {
+  // Load translations when language changes
+  useEffect(() => {
+    if (selectedLanguage) {
+      loadTranslations(selectedLanguage);
+    }
+  }, [selectedLanguage]);
+
+  const loadTranslations = async (lang) => {
     setLoading(true);
     try {
       const token = localStorage.getItem('session_token');
-      const loadedTranslations = {};
+      const response = await axios.get(`${API}/admin/translations?language=${lang}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true
+      });
       
-      for (const lang of Object.keys(LANGUAGES)) {
-        const response = await axios.get(`${API}/admin/translations/${lang}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        loadedTranslations[lang] = response.data.translations;
-      }
-      
-      setAllTranslations(loadedTranslations);
-      setTranslations(loadedTranslations[selectedLang] || {});
+      setTranslations(response.data.translations);
+      setEditedTranslations({});
+      setHasChanges(false);
     } catch (error) {
       console.error('Error loading translations:', error);
-      console.error('Error details:', error.response?.status, error.response?.data);
-      if (error.response?.status === 403) {
-        toast.error('Du skal være logget ind som admin for at se oversættelser');
-      } else {
-        toast.error(t('admin.translations.loadError'));
-      }
+      toast.error('Kunne ikke indlæse oversættelser');
     } finally {
       setLoading(false);
     }
   };
 
-  // Get all sections from translations
-  const getSections = () => {
-    const sections = Object.keys(translations);
-    return ['all', ...sections];
+  const handleTranslationChange = (key, value) => {
+    setEditedTranslations(prev => ({
+      ...prev,
+      [key]: value
+    }));
+    setHasChanges(true);
   };
 
-  // Flatten nested object to key-value pairs
-  const flattenObject = (obj, prefix = '') => {
-    let result = [];
-    for (const [key, value] of Object.entries(obj)) {
-      const fullKey = prefix ? `${prefix}.${key}` : key;
-      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-        result = [...result, ...flattenObject(value, fullKey)];
-      } else {
-        result.push({ key: fullKey, value, section: prefix || key });
-      }
-    }
-    return result;
+  const getCurrentTranslation = (item) => {
+    // Return edited value if exists, otherwise original translation
+    return editedTranslations.hasOwnProperty(item.key) 
+      ? editedTranslations[item.key] 
+      : item.translation;
   };
 
-  // Get filtered translations
-  const getFilteredTranslations = () => {
-    const flattened = flattenObject(translations);
-    
-    let filtered = flattened;
-    
-    // Filter by section
-    if (selectedSection !== 'all') {
-      filtered = filtered.filter(item => item.section === selectedSection);
-    }
-    
-    // Filter by search term
-    if (searchTerm) {
-      filtered = filtered.filter(item => 
-        item.key.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        String(item.value).toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-    
-    return filtered;
-  };
-
-  // Save translations to backend
-  const saveTranslations = async () => {
+  const saveAllTranslations = async () => {
+    setSaving(true);
     try {
       const token = localStorage.getItem('session_token');
-      await axios.post(`${API}/admin/translations/${selectedLang}`, {
-        translations: translations
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
+      
+      // Build final translations object (merge original + edited)
+      const finalTranslations = {};
+      translations.forEach(item => {
+        finalTranslations[item.key] = getCurrentTranslation(item);
       });
       
-      // Update all translations state
-      setAllTranslations({
-        ...allTranslations,
-        [selectedLang]: translations
-      });
+      await axios.put(
+        `${API}/admin/translations/${selectedLanguage}`,
+        { translations: finalTranslations },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true
+        }
+      );
       
-      toast.success(t('admin.translations.saveSuccess', { language: LANGUAGES[selectedLang].name }));
+      toast.success(`✅ Alle oversættelser gemt for ${LANGUAGES[selectedLanguage].name}`);
+      setHasChanges(false);
+      setEditedTranslations({});
+      
+      // Reload to confirm
+      await loadTranslations(selectedLanguage);
     } catch (error) {
       console.error('Error saving translations:', error);
-      toast.error(t('admin.translations.saveError'));
+      toast.error('Kunne ikke gemme oversættelser');
+    } finally {
+      setSaving(false);
     }
   };
 
-  // Update nested object value
-  const updateNestedValue = (obj, path, value) => {
-    const keys = path.split('.');
-    const lastKey = keys.pop();
-    const target = keys.reduce((acc, key) => {
-      if (!acc[key]) acc[key] = {};
-      return acc[key];
-    }, obj);
-    target[lastKey] = value;
-    return { ...obj };
-  };
-
-  // Handle edit save
-  const handleSaveEdit = (key) => {
-    const updated = updateNestedValue(translations, key, editValue);
-    setTranslations(updated);
-    setEditingKey(null);
-    setEditValue('');
-  };
-
-  // Handle add new key
-  const handleAddKey = () => {
-    if (!newKey || !newValue) {
-      toast.error(t('admin.translations.addError'));
-      return;
-    }
+  // Filter translations based on search query
+  const filteredTranslations = translations.filter(item => {
+    if (!searchQuery.trim()) return true;
     
-    const updated = updateNestedValue(translations, newKey, newValue);
-    setTranslations(updated);
-    setShowAddModal(false);
-    setNewKey('');
-    setNewValue('');
-    toast.success(t('admin.translations.addSuccess'));
-  };
-
-  // Export translations
-  const exportTranslations = () => {
-    const dataStr = JSON.stringify(translations, null, 2);
-    const dataBlob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${selectedLang}.json`;
-    link.click();
-    toast.success(t('admin.translations.exportSuccess'));
-  };
-
-  const filteredTranslations = getFilteredTranslations();
-
-  if (loading) {
+    const query = searchQuery.toLowerCase();
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="loading-spinner"></div>
-      </div>
+      item.key.toLowerCase().includes(query) ||
+      item.master.toLowerCase().includes(query) ||
+      item.translation.toLowerCase().includes(query) ||
+      getCurrentTranslation(item).toLowerCase().includes(query)
     );
+  });
+
+  if (!isAdmin()) {
+    return null;
   }
 
   return (
-    <div className="space-y-6 fade-in">
+    <div className="space-y-6 fade-in pb-20">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-4xl font-bold mb-2">{t('admin.translations.title')}</h1>
-          <p className="text-gray-600">{t('admin.translations.subtitle')}</p>
+      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-2xl p-6 shadow-lg">
+        <div className="flex items-center gap-3 mb-2">
+          <FaGlobe className="text-3xl" />
+          <h1 className="text-4xl font-bold">Oversættelseseditor</h1>
         </div>
-        <div className="flex gap-2">
-          <Button onClick={exportTranslations} variant="outline">
-            <FaDownload className="mr-2" /> {t('admin.translations.export')}
-          </Button>
-          <Button onClick={saveTranslations} className="bg-green-600 hover:bg-green-700">
-            <FaSave className="mr-2" /> {t('admin.translations.save')}
-          </Button>
-        </div>
+        <p className="text-white/90">
+          Rediger alle oversættelser nemt og hurtigt. Vælg et sprog og ret de tekster, du ønsker.
+        </p>
       </div>
 
-      {/* Language Selector */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-        <Label className="text-sm font-medium mb-2 block">{t('admin.translations.selectLanguage')}</Label>
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-          {Object.entries(LANGUAGES).map(([code, language]) => (
+      {/* Language Tabs */}
+      <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+        <div className="flex items-center gap-2 mb-4">
+          <span className="font-semibold text-gray-700">Vælg sprog:</span>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {Object.entries(LANGUAGES).map(([code, lang]) => (
             <button
               key={code}
-              onClick={() => {
-                setSelectedLang(code);
-                setTranslations(allTranslations[code] || {});
-                setSearchTerm('');
-                setSelectedSection('all');
-              }}
-              className={`flex items-center gap-2 p-3 rounded-lg border-2 transition-all ${
-                selectedLang === code
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 hover:border-gray-300'
+              onClick={() => setSelectedLanguage(code)}
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
+                selectedLanguage === code
+                  ? 'bg-blue-500 text-white shadow-md'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              <span className="text-2xl">{language.flag}</span>
-              <span className="text-sm font-medium">{language.name}</span>
+              <span className="text-2xl">{lang.flag}</span>
+              <span>{lang.name}</span>
             </button>
           ))}
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Search */}
-          <div>
-            <Label className="text-sm font-medium mb-2 block">{t('admin.translations.search')}</Label>
-            <div className="relative">
-              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <Input
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder={t('admin.translations.searchPlaceholder')}
-                className="pl-10"
-              />
-            </div>
-          </div>
-
-          {/* Section Filter */}
-          <div>
-            <Label className="text-sm font-medium mb-2 block">{t('admin.translations.section')}</Label>
-            <select
-              value={selectedSection}
-              onChange={(e) => setSelectedSection(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              {getSections().map(section => (
-                <option key={section} value={section}>
-                  {section === 'all' ? t('admin.translations.allSections') : section}
-                </option>
-              ))}
-            </select>
-          </div>
+      {/* Search Box */}
+      <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+        <div className="relative">
+          <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          <Input
+            type="text"
+            placeholder="Søg i oversættelser (nøgle, dansk tekst eller oversættelse)..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-12 pr-4 py-3 text-lg"
+          />
         </div>
-
-        <div className="mt-4 flex justify-between items-center">
-          <p className="text-sm text-gray-600">
-            {t('admin.translations.showing', { count: filteredTranslations.length, total: flattenObject(translations).length })}
+        {searchQuery && (
+          <p className="text-sm text-gray-600 mt-2">
+            Viser {filteredTranslations.length} af {translations.length} oversættelser
           </p>
-          <Button onClick={() => setShowAddModal(true)} size="sm">
-            <FaPlus className="mr-2" /> {t('admin.translations.addKey')}
-          </Button>
-        </div>
+        )}
       </div>
+
+      {/* Loading State */}
+      {loading && (
+        <div className="flex justify-center items-center py-20">
+          <div className="flex flex-col items-center gap-4">
+            <FaSpinner className="animate-spin text-blue-500 text-5xl" />
+            <p className="text-gray-600">Indlæser oversættelser...</p>
+          </div>
+        </div>
+      )}
 
       {/* Translations List */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="divide-y divide-gray-100">
-          {filteredTranslations.map((item, index) => (
-            <div key={index} className="p-4 hover:bg-gray-50 transition-colors">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-xs font-mono bg-gray-100 px-2 py-1 rounded">
-                      {item.section}
-                    </span>
-                    <span className="text-sm font-medium text-gray-700 break-all">
-                      {item.key}
-                    </span>
-                  </div>
-                  
-                  {editingKey === item.key ? (
-                    <div className="space-y-2">
-                      <Textarea
-                        value={editValue}
-                        onChange={(e) => setEditValue(e.target.value)}
-                        rows={3}
-                        className="w-full"
-                      />
-                      <div className="flex gap-2">
-                        <Button size="sm" onClick={() => handleSaveEdit(item.key)}>
-                          {t('common.save')}
-                        </Button>
-                        <Button size="sm" variant="outline" onClick={() => setEditingKey(null)}>
-                          {t('common.cancel')}
-                        </Button>
-                      </div>
-                    </div>
-                  ) : (
-                    <p className="text-sm text-gray-600 whitespace-pre-wrap break-words">
-                      {String(item.value)}
-                    </p>
-                  )}
+      {!loading && filteredTranslations.length > 0 && (
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <div className="space-y-6">
+            {filteredTranslations.map((item, index) => (
+              <div
+                key={item.key}
+                className="border-b border-gray-200 pb-6 last:border-b-0"
+              >
+                {/* Key Label */}
+                <div className="mb-2">
+                  <span className="text-xs font-mono text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                    {item.key}
+                  </span>
                 </div>
 
-                {editingKey !== item.key && (
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => {
-                      setEditingKey(item.key);
-                      setEditValue(String(item.value));
-                    }}
-                  >
-                    <FaEdit />
-                  </Button>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  {/* Master (Danish) - Read-only */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Master (Dansk):
+                    </label>
+                    <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                      <p className="text-gray-800">{item.master}</p>
+                    </div>
+                  </div>
+
+                  {/* Translation - Editable */}
+                  <div>
+                    <label className="block text-sm font-semibold text-blue-700 mb-2">
+                      {LANGUAGES[selectedLanguage].name} (redigerbar):
+                    </label>
+                    <Textarea
+                      value={getCurrentTranslation(item)}
+                      onChange={(e) => handleTranslationChange(item.key, e.target.value)}
+                      className="min-h-[80px] resize-y"
+                      placeholder={`Oversættelse til ${LANGUAGES[selectedLanguage].name}...`}
+                    />
+                  </div>
+                </div>
+
+                {/* Show indicator if edited */}
+                {editedTranslations.hasOwnProperty(item.key) && (
+                  <div className="mt-2">
+                    <span className="text-xs text-green-600 font-semibold">
+                      ✓ Ændret (endnu ikke gemt)
+                    </span>
+                  </div>
                 )}
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Add New Key Modal */}
-      {showAddModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-6 max-w-md w-full mx-4">
-            <h2 className="text-2xl font-bold mb-4">{t('admin.translations.addNewKey')}</h2>
-            
-            <div className="space-y-4">
-              <div>
-                <Label>{t('admin.translations.keyLabel')}</Label>
-                <Input
-                  value={newKey}
-                  onChange={(e) => setNewKey(e.target.value)}
-                  placeholder={t('admin.translations.keyPlaceholder')}
-                />
-              </div>
+      {/* No Results */}
+      {!loading && filteredTranslations.length === 0 && translations.length > 0 && (
+        <div className="bg-white rounded-2xl p-12 shadow-sm border border-gray-100 text-center">
+          <p className="text-gray-500 text-lg">
+            Ingen oversættelser matchede din søgning "{searchQuery}"
+          </p>
+        </div>
+      )}
 
-              <div>
-                <Label>{t('admin.translations.valueLabel')}</Label>
-                <Textarea
-                  value={newValue}
-                  onChange={(e) => setNewValue(e.target.value)}
-                  placeholder={t('admin.translations.valuePlaceholder')}
-                  rows={3}
-                />
-              </div>
-
-              <div className="flex gap-2 justify-end">
-                <Button variant="outline" onClick={() => setShowAddModal(false)}>
-                  {t('common.cancel')}
-                </Button>
-                <Button onClick={handleAddKey}>
-                  <FaPlus className="mr-2" /> {t('admin.translations.addKey')}
-                </Button>
-              </div>
+      {/* Fixed Save Button at Bottom */}
+      {!loading && translations.length > 0 && (
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg p-4 z-50">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div>
+              {hasChanges ? (
+                <p className="text-sm text-orange-600 font-semibold">
+                  ⚠️ Du har ugemte ændringer
+                </p>
+              ) : (
+                <p className="text-sm text-gray-600">
+                  Alle ændringer er gemt
+                </p>
+              )}
             </div>
+            <Button
+              onClick={saveAllTranslations}
+              disabled={saving || !hasChanges}
+              className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 text-lg font-bold shadow-md"
+            >
+              {saving ? (
+                <>
+                  <FaSpinner className="animate-spin mr-2" />
+                  Gemmer...
+                </>
+              ) : (
+                <>
+                  <FaSave className="mr-2" />
+                  💾 Gem alle ændringer
+                </>
+              )}
+            </Button>
           </div>
         </div>
       )}
