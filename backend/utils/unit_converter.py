@@ -172,27 +172,36 @@ def get_default_unit(country_code: str = "da") -> str:
 
 def normalize_ingredient(ingredient: dict) -> dict:
     """
-    Normalize an ingredient to store in ml while preserving display unit
+    Normalize an ingredient to store in base units (ml for volume, g for mass)
     
     Args:
         ingredient: Dict with 'quantity', 'unit', and other fields
         
     Returns:
-        Dict with added 'quantity_ml', 'display_unit', 'display_quantity'
+        Dict with added 'quantity_ml' or 'quantity_g', 'display_unit', 'display_quantity'
     """
     original_quantity = ingredient.get("quantity", 0)
     original_unit = ingredient.get("unit", "ml")
     
-    # Convert to ml for storage
-    quantity_ml = convert_to_ml(original_quantity, original_unit)
-    
-    # Store both ml and display values
-    return {
+    result = {
         **ingredient,
-        "quantity_ml": quantity_ml,           # Internal storage
-        "display_quantity": original_quantity, # What user entered
-        "display_unit": original_unit,        # What user selected
+        "display_quantity": original_quantity,  # What user entered
+        "display_unit": original_unit,          # What user selected
     }
+    
+    # Determine if volume or mass and convert accordingly
+    if is_volume_unit(original_unit):
+        result["quantity_ml"] = convert_to_ml(original_quantity, original_unit)
+        result["unit_type"] = "volume"
+    elif is_mass_unit(original_unit):
+        result["quantity_g"] = convert_to_g(original_quantity, original_unit)
+        result["unit_type"] = "mass"
+    else:
+        # Unknown unit, store as-is
+        result["quantity_ml"] = original_quantity
+        result["unit_type"] = "unknown"
+    
+    return result
 
 
 def denormalize_ingredient(ingredient: dict, target_unit: str = None) -> dict:
