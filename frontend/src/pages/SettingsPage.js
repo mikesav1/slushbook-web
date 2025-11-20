@@ -884,6 +884,21 @@ const SettingsPage = ({ sessionId }) => {
               <span className="text-yellow-600">→</span>
             </div>
           </Link>
+          <Link
+            to="/admin/translations"
+            className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-blue-100"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-bold text-gray-800 flex items-center gap-2">
+                  <FaGlobe className="text-blue-500" />
+                  🌍 Oversættelser
+                </h3>
+                <p className="text-sm text-gray-600">Rediger alle oversættelser nemt og hurtigt</p>
+              </div>
+              <span className="text-blue-600">→</span>
+            </div>
+          </Link>
         </div>
       )}
 
