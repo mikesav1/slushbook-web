@@ -31,11 +31,10 @@ const AdminTranslationsPage = () => {
   const [selectedLanguage, setSelectedLanguage] = useState('de');
   const [selectedSection, setSelectedSection] = useState('all');
   const [translations, setTranslations] = useState([]);
-  const [editedTranslations, setEditedTranslations] = useState({});
+  const [allEditedTranslations, setAllEditedTranslations] = useState({}); // { de: {...}, fr: {...}, en: {...} }
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [hasChanges, setHasChanges] = useState(false);
 
   // Redirect non-admin users
   useEffect(() => {
