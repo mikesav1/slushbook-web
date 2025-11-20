@@ -254,7 +254,7 @@ const SettingsPage = ({ sessionId }) => {
         <div className="space-y-3">
           {user && (
             <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-              <span className="text-gray-700">Bruger</span>
+              <span className="text-gray-700">{t('settings.user')}</span>
               <span className="text-sm font-semibold">{user.name}</span>
             </div>
           )}
@@ -267,11 +267,11 @@ const SettingsPage = ({ sessionId }) => {
           <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
             <span className="text-gray-700">{t('settings.myRecipes')}</span>
             <span className="font-semibold">
-              {userRecipesCount} {(isAdmin() || isPro() || isEditor()) ? '(ubegrænset)' : '/ 2'}
+              {userRecipesCount} {(isAdmin() || isPro() || isEditor()) ? `(${t('settings.unlimited')})` : '/ 2'}
             </span>
           </div>
           <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-            <span className="text-gray-700">Status</span>
+            <span className="text-gray-700">{t('settings.status')}</span>
             <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
               isAdmin() ? 'bg-red-100 text-red-700' :
               isEditor() ? 'bg-purple-100 text-purple-700' :
