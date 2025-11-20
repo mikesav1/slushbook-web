@@ -632,7 +632,7 @@ const RecipeDetailPage = ({ sessionId }) => {
           data-testid="back-button"
           className="flex items-center gap-2 text-cyan-600 hover:text-cyan-700 font-semibold"
         >
-          <FaArrowLeft /> Tilbage
+          <FaArrowLeft /> {t('recipeDetail.back')}
         </button>
 
         {/* Admin Navigation Buttons */}
