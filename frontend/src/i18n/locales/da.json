@@ -216,7 +216,14 @@
     "tourRecipes": "Opskrifter",
     "tourMatchFinder": "Match Finder",
     "tourShoppingList": "Indkøbsliste",
-    "tourSettings": "Indstillinger"
+    "tourSettings": "Indstillinger",
+    "tourAddRecipe": "Tilføj Opskrift",
+    "tourHomeReset": "Hjem-guiden er nulstillet!",
+    "tourRecipesReset": "Opskrifter-guiden er nulstillet!",
+    "tourAddRecipeReset": "Tilføj Opskrift-guiden er nulstillet!",
+    "tourMatchFinderReset": "Match Finder-guiden er nulstillet!",
+    "tourShoppingListReset": "Indkøbsliste-guiden er nulstillet!",
+    "tourSettingsReset": "Indstillinger-guiden er nulstillet!"
   },
   "messages": {
     "success": {
