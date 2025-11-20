@@ -166,7 +166,7 @@ const TipsPage = () => {
       toast.success('Kommentar slettet');
     } catch (error) {
       console.error('Error deleting comment:', error);
-      toast.error('Kunne ikke slette kommentar');
+      toast.error(t('tips.errorDeleteComment'));
     }
   };
 
