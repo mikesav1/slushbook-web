@@ -775,7 +775,7 @@
     "container": "Behälter",
     "containerSize": "Behältergröße (ml)",
     "countryAndLanguage": "Land & Sprache",
-    "countryTip": "Die ausgewählte Sprache wird für Rezepte und die Benutzeroberfläche verwendet sowie um relevante Produktlinks anzuzeigen, wenn Sie auf 'Einkaufen'-Schaltflächen klicken",
+    "countryTip": "Die gewählte Sprache wird für Rezepte und Interface verwendet und zeigt passende Produktlinks an, wenn du auf „Kaufen“ klickst",
     "csvImportVendor": "CSV-Import und Lieferantenverwaltung",
     "currentDevice": "Aktuelles Gerät",
     "default": "Standard",

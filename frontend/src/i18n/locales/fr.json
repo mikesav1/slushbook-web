@@ -775,7 +775,7 @@
     "container": "",
     "containerSize": "",
     "countryAndLanguage": "Langue & Région",
-    "countryTip": "La langue sélectionnée est utilisée pour les recettes et l'interface, ainsi que pour afficher les liens produits pertinents lorsque vous cliquez sur les boutons 'Acheter'",
+    "countryTip": "La langue choisie est utilisée pour les recettes et l’interface, ainsi que pour afficher les liens produits pertinents lors du clic sur « Achat »",
     "csvImportVendor": "",
     "currentDevice": "Appareil actuel",
     "default": "",
