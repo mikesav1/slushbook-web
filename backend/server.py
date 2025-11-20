@@ -2500,12 +2500,17 @@ async def update_recipe(recipe_id: str, recipe_data: RecipeCreate, request: Requ
     recipe_dict = recipe_data.model_dump()
     session_id = recipe_dict.pop('session_id')
     
-    # Convert dl to ml in ingredients
-    for ingredient in recipe_dict.get('ingredients', []):
-        if ingredient.get('unit') == 'dl':
-            # Convert dl to ml (1 dl = 100 ml)
-            ingredient['quantity'] = ingredient.get('quantity', 0) * 100
-            ingredient['unit'] = 'ml'
+    # Normalize all ingredients to ml for internal storage
+    for i, ingredient in enumerate(recipe_dict.get('ingredients', [])):
+        try:
+            normalized = normalize_ingredient(ingredient)
+            recipe_dict['ingredients'][i] = normalized
+        except ValueError as e:
+            # If unit conversion fails, log but keep original
+            print(f"Warning: Could not normalize ingredient {ingredient.get('name')}: {e}")
+            # Still add quantity_ml field for consistency
+            if 'quantity_ml' not in ingredient:
+                ingredient['quantity_ml'] = ingredient.get('quantity', 0)
     
     # Check permissions
     if existing_system:
