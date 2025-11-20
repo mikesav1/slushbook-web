@@ -257,7 +257,7 @@ const TipsPage = () => {
       <div className="space-y-3">
         {tips.length === 0 ? (
           <div className="bg-white rounded-xl p-8 text-center">
-            <p className="text-gray-500">Ingen tips fundet</p>
+            <p className="text-gray-500">{t('tips.noTipsFound')}</p>
           </div>
         ) : (
           tips.map((tip) => {
