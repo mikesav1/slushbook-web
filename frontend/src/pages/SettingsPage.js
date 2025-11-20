@@ -845,8 +845,8 @@ const SettingsPage = ({ sessionId }) => {
           >
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-bold text-gray-800">Admin panel</h3>
-                <p className="text-sm text-gray-600">CSV import og vendor management</p>
+                <h3 className="font-bold text-gray-800">{t('settings.adminPanel')}</h3>
+                <p className="text-sm text-gray-600">{t('settings.csvImportVendor')}</p>
               </div>
               <span className="text-red-600">→</span>
             </div>
