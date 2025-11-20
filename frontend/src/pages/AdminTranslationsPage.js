@@ -121,8 +121,24 @@ const AdminTranslationsPage = () => {
     }
   };
 
-  // Filter translations based on search query
+  // Filter translations based on section and search query
   const filteredTranslations = translations.filter(item => {
+    // Section filter
+    if (selectedSection !== 'all') {
+      if (selectedSection === 'ui') {
+        // UI section = everything except recipeContent and ingredients
+        if (item.key.startsWith('recipeContent.') || item.key.startsWith('ingredients.')) {
+          return false;
+        }
+      } else {
+        // Specific section
+        if (!item.key.startsWith(selectedSection + '.')) {
+          return false;
+        }
+      }
+    }
+    
+    // Search filter
     if (!searchQuery.trim()) return true;
     
     const query = searchQuery.toLowerCase();
