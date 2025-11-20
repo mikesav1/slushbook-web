@@ -362,7 +362,7 @@ const TipsPage = () => {
                         className="flex items-center justify-between cursor-pointer hover:bg-gray-50 -mx-4 px-4 py-2 rounded-lg transition-colors"
                         onClick={() => setCollapsedComments(prev => ({ ...prev, [tip.id]: !prev[tip.id] }))}
                       >
-                        <h4 className="font-bold text-gray-700">💬 Svar ({tipComments.length})</h4>
+                        <h4 className="font-bold text-gray-700">💬 {t('tips.replies')} ({tipComments.length})</h4>
                         {collapsedComments[tip.id] ? (
                           <FaChevronDown className="text-gray-400" size={16} />
                         ) : (
