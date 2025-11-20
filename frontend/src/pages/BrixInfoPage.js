@@ -67,11 +67,11 @@ const BrixInfoPage = () => {
 
                 {/* Juice-baseret */}
                 <tr className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 text-gray-800 font-medium">Juice-baseret</td>
+                  <td className="px-6 py-4 text-gray-800 font-medium">{t('brix.typeJuice')}</td>
                   <td className="px-6 py-4 bg-cyan-500 text-white text-center font-bold whitespace-nowrap">
                     11 – 13 °Bx
                   </td>
-                  <td className="px-6 py-4 text-gray-700">Indeholder naturligt frugtsukker.</td>
+                  <td className="px-6 py-4 text-gray-700">{t('brix.typeJuiceComment')}</td>
                 </tr>
 
                 {/* Sodavands-slush */}
