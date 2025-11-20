@@ -47,7 +47,21 @@ const AddRecipePage = ({ sessionId }) => {
 
   useEffect(() => {
     checkLimits();
-  }, [sessionId]);
+    // Fetch supported units based on language
+    fetchSupportedUnits();
+  }, [sessionId, i18n.language]);
+
+  const fetchSupportedUnits = async () => {
+    try {
+      const lang = i18n.language || 'da';
+      const response = await axios.get(`${API}/units/supported?language=${lang}`);
+      setSupportedUnits(response.data.units);
+    } catch (error) {
+      console.error('Could not fetch supported units:', error);
+      // Fallback to default Danish units
+      setSupportedUnits(['ml', 'dl', 'l']);
+    }
+  };
 
   // Start tour if coming from RecipesPage
   useEffect(() => {
