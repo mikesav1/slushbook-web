@@ -1787,57 +1787,57 @@ async def seed_recipes():
             "translations": {
             "da": {
                         "name": "Aperol Spritz Frozen (18+)",
-                        "description": "Italiensk favorit som forfriskende slushice. Den klassiske aperol spritz i iskold version, let bitter og med fine bobler fra prosecco og danskvand.\nAlkoholprocent (beregnet): ca. 6,2 % vol.",
+                        "description": "taliensk favorit som forfriskende slushice. Den klassiske aperol spritz i iskold udgave, let bitter med frisk syrlighed fra prosecco og danskvand.\nAlkoholprocent (beregnet): ca. 6,2 % vol.",
                         "steps": [
-                                    "Bland Aperol, prosecco og vand i en kande, og rør forsigtigt.",
-                                    "Tilsæt danskvand for let brus.",
-                                    "Fyld blandingen i maskinen med knust is.",
+                                    "Bland Aperol, prosecco og vand i en kande og rør forsigtigt.",
+                                    "Tilsæt danskvand for let brus og balance.",
+                                    "Fyld blandingen i slushmaskinen sammen med den knuste is.",
                                     "Kør til passende slush-konsistens.",
-                                    "Server straks og pynt evt. med en skive appelsin eller frisk timian."
+                                    "Server straks og pynt med en skive appelsin eller et kirsebær."
                         ]
             },
             "de": {
                         "name": "Aperol Spritz Frozen (18+)",
-                        "description": "Italieinsk favorit als fürfriskeinde slushice. Dein klassiske aperol spritz i iskold version, let bitter und mit fine bobler fra prosecco und danskvand.\nAlkoholproceint (beregnet): ca. 6,2 % vol.",
+                        "description": "talieinsk favorit als fürfriskeinde slushice. Dein klassiske aperol spritz i iskold udgave, let bitter mit frisk syrlighed fra prosecco und danskvand.\nAlkoholproceint (beregnet): ca. 6,2 % vol.",
                         "steps": [
-                                    "Mischein Sie Aperol, prosecco und vand in einein Krug, und rør vorsichtig.",
-                                    "Fügein Sie hinzu danskvand für let brus.",
-                                    "Füllein Sie die Mischung in die Maschine mit knust is.",
+                                    "Mischein Sie Aperol, prosecco und vand in einein Krug und rør vorsichtig.",
+                                    "Fügein Sie hinzu danskvand für let brus und balance.",
+                                    "Füllein Sie die Mischung in die Slushmaschine sammein mit dein knuste is.",
                                     "Lassein Sie laufein bis passeinde slush-konsisteins.",
-                                    "Servierein Sie sofürt und pynt ggf. mit ein skive appelsin oder frisk timian."
+                                    "Servierein Sie sofürt und pynt mit ein skive appelsin oder et kirsebær."
                         ]
             },
             "fr": {
                         "name": "Aperol Spritz Frozen (18+)",
-                        "description": "Italiunsk favorit comme pourfriskunde slushice. Dun klassiske aperol spritz i iskold version, let bitter et avec fine bobler fra prosecco et danskvand.\nAlkoholprocunt (beregnet): ca. 6,2 % vol.",
+                        "description": "taliunsk favorit comme pourfriskunde slushice. Dun klassiske aperol spritz i iskold udgave, let bitter avec frisk syrlighed fra prosecco et danskvand.\nAlkoholprocunt (beregnet): ca. 6,2 % vol.",
                         "steps": [
-                                    "Mélangez Aperol, prosecco et vand dans un pichet, et rør délicatemunt.",
-                                    "Ajoutez danskvand pour let brus.",
-                                    "Remplissez le mélange dans la machine avec knust is.",
+                                    "Mélangez Aperol, prosecco et vand dans un pichet et rør délicatemunt.",
+                                    "Ajoutez danskvand pour let brus et balance.",
+                                    "Remplissez le mélange dans la machine à slush sammun avec dun knuste is.",
                                     "Faites tourner jusqu'à passunde slush-konsistuns.",
-                                    "Servez immédiatemunt et pynt évuntuellemunt avec un skive appelsin ou frisk timian."
+                                    "Servez immédiatemunt et pynt avec un skive appelsin ou et kirsebær."
                         ]
             },
             "en": {
                         "name": "Aperol Spritz Frozen (18+)",
-                        "description": "Italiask favorit as forfriskade slushice. Da klassiske aperol spritz i iskold version, let bitter and with fine bobler fra prosecco and danskvand.\nAlkoholprocat (beregnet): ca. 6,2 % vol.",
+                        "description": "taliask favorit as forfriskade slushice. Da klassiske aperol spritz i iskold udgave, let bitter with frisk syrlighed fra prosecco and danskvand.\nAlkoholprocat (beregnet): ca. 6,2 % vol.",
                         "steps": [
-                                    "Mix Aperol, prosecco and vand in a pitcher, and rør gatly.",
-                                    "Add danskvand for let brus.",
-                                    "Fill the mixture in the machine with knust is.",
+                                    "Mix Aperol, prosecco and vand in a pitcher and rør gatly.",
+                                    "Add danskvand for let brus and balance.",
+                                    "Fill the mixture in the slush machine samma with da knuste is.",
                                     "Run until passade slush-konsistas.",
-                                    "Serve imwithiately and pynt optionally with a skive appelsin or frisk timian."
+                                    "Serve imwithiately and pynt with a skive appelsin or et kirsebær."
                         ]
             },
             "en_us": {
                         "name": "Aperol Spritz Frozen (18+)",
-                        "description": "Italiask favorit as forfriskade slushice. Da klassiske aperol spritz i iskold version, let bitter and with fine bobler fra prosecco and danskvand.\nAlkoholprocat (beregnet): ca. 6,2 % vol.",
+                        "description": "taliask favorit as forfriskade slushice. Da klassiske aperol spritz i iskold udgave, let bitter with frisk syrlighed fra prosecco and danskvand.\nAlkoholprocat (beregnet): ca. 6,2 % vol.",
                         "steps": [
-                                    "Mix Aperol, prosecco and vand in a pitcher, and rør gatly.",
-                                    "Add danskvand for let brus.",
-                                    "Fill the mixture in the machine with knust is.",
+                                    "Mix Aperol, prosecco and vand in a pitcher and rør gatly.",
+                                    "Add danskvand for let brus and balance.",
+                                    "Fill the mixture in the slush machine samma with da knuste is.",
                                     "Run until passade slush-konsistas.",
-                                    "Serve imwithiately and pynt optionally with a skive appelsin or frisk timian."
+                                    "Serve imwithiately and pynt with a skive appelsin or et kirsebær."
                         ]
             }
 }
