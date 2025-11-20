@@ -11,7 +11,7 @@ import re
 from datetime import datetime, timezone, timedelta
 
 # Configuration
-BASE_URL = "https://translation-editor.preview.emergentagent.com/api"
+BASE_URL = "https://unit-converter-13.preview.emergentagent.com/api"
 
 class ShoppingListTester:
     def __init__(self):

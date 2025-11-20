@@ -1,152 +1,173 @@
 <analysis>**original_problem_statement:**
-The user's initial request was to build a new Admin Translation Editor feature. Over the course of the session, the scope expanded significantly to include five major new features and, finally, to address a series of UI/UX bugs reported by the user in the German version of the application.
+The user's initial request was to fix several internationalization (i18n) bugs in the German version of the application, where Danish text was still appearing. This involved translating multiple pages (, , , , ).
 
-The full list of user requests addressed in this session:
-1.  **P0: Implement Admin Translation Editor:** Build a UI for admins to edit i18n language files directly in the app.
-2.  **P1: Language-based Product Links:** Ensure product links are filtered based on the user's selected language/country.
-3.  **P2: In-app Notifications:** Implement a full notification system with a bell icon and dropdown for events like comments and favorites.
-4.  **P3: Badges/Achievements System:** Create a system to award users badges based on the number of recipes they create.
-5.  **P4: Google OAuth Integration:** Add a Continue with Google login option using an Emergent-managed solution.
-6.  **P5: Pro-User Sharing Feature:** Allow Pro users to share private recipes via a unique, revocable link.
-7.  **Bug Fixes:** After the features were built, the user tested the app in German and reported several issues: mixed Danish/German text, broken tooltips, and a misaligned user profile dropdown menu.
+The scope then expanded to a major technical refactoring of the ingredient measurement system. The new requirements were:
+1.  **Dual-System for Units:** Internally store all liquid ingredient quantities in  and all solid ingredient quantities in .
+2.  **Country-Specific Units:** The UI dropdown for units should show different options based on the user's selected country (e.g.,  only for Denmark; ,  for the US).
+3.  **Preserve User Input:** The UI must always display the quantity and unit that the user originally entered, even though the backend stores a normalized / value for calculations.
+4.  **Backend Calculations:** All scaling and Brix calculations must use the internal / values.
+5.  **Data Migration:** Existing recipes in the database need to be converted to this new format.
 
-**User's preferred language**: Danish. The next agent MUST respond in Danish.
+The agent has completed most of the i18n fixes and has implemented the new unit conversion system in both the frontend and backend. The current task is to fix the last remaining i18n issues on the .
+
+**User's preferred language**: Danish
 
 **what currently exists?**
-The application is a feature-rich full-stack recipe platform. All five major features (Admin Editor, Notifications, Badges, Google OAuth, Pro-Sharing) have been fully implemented, tested, and verified by the user.
+The application is a full-stack recipe platform. The agent has successfully internationalized the , , , and  into all 5 supported languages (Danish, German, French, English UK, American English).
 
-The agent was in the middle of addressing a list of UI/UX bugs reported by the user for the German language version. The misaligned dropdown and the broken tooltip system have been successfully fixed. The main remaining issue is incomplete internationalization, with some UI elements still showing hardcoded Danish text instead of German. The agent was actively working on translating the  when the session ended.
+A major refactoring of the ingredient unit system is also complete. There are now separate backend () and frontend () utilities to handle conversions. The backend stores ingredients with  (for liquids) and  (for solids) while preserving the user's original input in  and . The frontend has been updated to use this new system for creating and editing recipes, and it dynamically fetches country-specific units from a new API endpoint.
+
+The agent was in the middle of translating the .
 
 **Last working item**:
-The agent was in the process of fixing incomplete translations in the German UI, as reported by the user. The focus was on the  page, which was almost entirely hardcoded in Danish.
+The agent was fixing the internationalization of the . The user reported that the placeholder message shown to non-PRO users was still in Danish, even when the language was set to German.
 
-- **Last item agent was working:** Internationalizing the . The agent identified all the hardcoded Danish text, generated the corresponding translation keys in a JSON format for both Danish and German, and was about to update the language files and refactor the component.
+- **Last item agent was working:** Finding and translating the hardcoded PRO-feature placeholder messages on .
 - **Status:** IN PROGRESS
 - **Agent Testing Done:** N
-- **Which testing method agent to use?** Screenshot tool. After implementing the fix, the agent should navigate to the  page while the language is set to German and take a screenshot to verify that all text has been translated correctly.
+- **Which testing method agent to use?** Screenshot tool. The agent must log in as a **non-PRO user**, set the language to German, navigate to the  page, and take a screenshot to verify the placeholder is correctly translated.
 - **User Testing Done:** N
 
 **All Pending/In progress Issue list**:
--   **Issue 1 (P0):** Incomplete internationalization in the German UI.
--   **Issue 2 (P2):** User cannot save to GitHub.
+-   **Issue 1 (P0):** Incomplete internationalization on .
+-   **Issue 2 (P1):** The user mentioned the brix udrfegningen (Brix calculation) also needs to be translated for all languages.
+-   **Issue 3 (P2):** Existing recipes in the database have not been migrated to the new / unit system.
+-   **Issue 4 (P3):** User cannot save to GitHub.
 
 **Issues Detail:**
--   **Issue 1: Incomplete internationalization in the German UI.**
-    -   **Attempted fixes:** The agent has already started fixing this by preparing translation keys for the . It also successfully fixed the related tooltip system bug, which the user confirmed is now working correctly.
+-   **Issue 1: Incomplete internationalization on **
+    -   **Attempted fixes:** The agent added translation keys for most of the page, but missed the specific messages that appear for non-PRO users (Match-Finder er en PRO-funktion, Opgradér til PRO...). The last test failed because these texts were still hardcoded.
     -   **Next debug checklist:**
-        1.  Resume work on .
-        2.  Use the prepared JSON to update  and  with the new  section.
-        3.  Refactor  to replace all hardcoded text elements with the  translation function (e.g., ).
-        4.  Perform a global search () across all  files in the frontend for common Danish words (Opskrift, Tilbage, Gem) to find any other remaining hardcoded text.
-        5.  Translate any newly found keys and add them to all language files.
-        6.  Test the  page and any other fixed pages in German using the screenshot tool.
-    -   **Why fix this issue and what will be achieved with the fix?** To resolve the user's direct feedback and provide a correct, professional user experience for German-speaking users.
+        1.  Locate the hardcoded Danish text for the PRO-feature placeholder in .
+        2.  Create new translation keys (e.g., , , ).
+        3.  Add the new keys and their translations to all five language files: , , , , and .
+        4.  Replace the hardcoded text in  with the  function using the new keys.
+        5.  Test using the screenshot tool as a non-PRO user with the language set to German.
     -   **Status:** IN PROGRESS
     -   **Is recurring issue?** N
     -   **Should Test frontend/backend/both after fix?** Frontend
     -   **Blocked on other issue:** None.
--   **Issue 2: User cannot save to GitHub.**
-    -   **Attempted fixes:** None in this session; this was deprioritized.
-    -   **Next debug checklist:** This is a recurring platform-level issue. Re-confirm with the user if it's still a priority. If so, advise the user to try disconnecting and reconnecting their GitHub account. If the issue persists, call the .
-    -   **Why fix this issue and what will be achieved with the fix?** Allows the user to maintain version control and backups of their codebase.
+
+-   **Issue 2: Translate the Brix calculation page/logic**
+    -   **Attempted fixes:** None. The agent has already translated the static , but the user may be referring to UI elements related to Brix calculation during recipe creation.
+    -   **Next debug checklist:**
+        1.  Ask the user for clarification: which page or part of the Brix calculation still needs translation?
+        2.  Inspect  and  for any hardcoded labels or text related to Brix.
+        3.  Add any necessary translation keys to all language files and update the components.
+    -   **Status:** NOT STARTED
+    -   **Is recurring issue?** N
+    -   **Should Test frontend/backend/both after fix?** Frontend
+    -   **Blocked on other issue:** None.
+
+-   **Issue 3: Migrate existing recipes to the new / unit format.**
+    -   **Attempted fixes:** None. This was part of the plan for the unit conversion feature but has not been implemented.
+    -   **Next debug checklist:**
+        1.  Create a new, admin-only backend endpoint (e.g., ).
+        2.  This endpoint should iterate through all recipes in the database.
+        3.  For each ingredient in a recipe, if  and  are  or not present, use the logic from  to calculate the base  or  value from the existing  and .
+        4.  Update the ingredient document to set /,  (original quantity), and  (original unit).
+        5.  This is a destructive operation and should be handled with care. Inform the user before running the migration.
+    -   **Status:** NOT STARTED
+    -   **Is recurring issue?** N
+    -   **Should Test frontend/backend/both after fix?** Backend (and verify on the frontend)
+    -   **Blocked on other issue:** None.
+
+-   **Issue 4: User cannot save to GitHub.**
+    -   **Attempted fixes:** None in this session.
+    -   **Next debug checklist:** This is a recurring platform-level issue. Advise the user to use the Save to GitHub feature from the UI. If it fails, call the  for assistance.
     -   **Status:** NOT STARTED
     -   **Is recurring issue?** Y
-    -   **Should Test frontend/backend/both after fix?** N/A (Platform issue)
+    -   **Should Test frontend/backend/both after fix?** N/A
     -   **Blocked on other issue:** None.
 
 **In progress Task List**:
--   **Task 1: Complete the internationalization of **
-    -   **Where to resume:** The agent has already generated the JSON content for the new translation keys. The next step is to write this content to the  and  files and then edit the  component to use these new keys.
-    -   **What will be achieved with this?** The  page will be fully translated, fixing a key part of the user's bug report.
+-   **Task 1: Complete internationalization of **
+    -   **Where to resume:** The agent has identified the hardcoded PRO-feature messages. The next step is to add the required translation keys to the JSON language files and then update the React component.
+    -   **What will be achieved with this?** The  will be fully translated for all user types (PRO and non-PRO).
     -   **Status:** IN PROGRESS
     -   **Should Test frontend/backend/both after fix?** Frontend
     -   **Blocked on something:** None.
 
 **Upcoming and Future Tasks**
-All planned features for this session have been completed. The only upcoming work is to finish the bug fixes listed above.
+-   **Upcoming Tasks:**
+    -   P0: Translate the Brix calculation UI components as requested by the user.
+    -   P1: Implement and run the data migration script to convert all existing recipes to the new / unit system.
+-   **Future Tasks:**
+    -   Address the recurring Save to GitHub platform issue by involving the .
 
 **Completed work in this session**
--   **Admin Translation Editor (Feature P0):** Fully implemented and user-verified. Includes backend APIs to manage JSON files and a functional frontend UI.
--   **Language-based Product Links (Feature P1):** Investigated and confirmed the existing system already works as desired. Verified by the user.
--   **In-app Notifications (Feature P2):** Fully implemented with backend triggers and a frontend UI (). Verified by the user.
--   **Badges/Achievements System (Feature P3):** Implemented automatic badge assignment and UI display on the user's profile page. Verified by the user.
--   **Google OAuth Integration (Feature P4):** Fully implemented using the Emergent-managed solution for both new and existing users. Verified by the user.
--   **Pro-User Sharing (Feature P5):** Implemented a complete private sharing system with unique links, guest view pages (), and a management UI (). Verified by the user.
--   **Bug Fixes:**
-    -   Fixed a CSS issue causing the user profile dropdown to be misaligned.
-    -   Fixed the onboarding tooltip system, which was not starting correctly. The user confirmed the tour now runs as expected.
-    -   Fixed a UX bug in the sharing flow where a user would lose the shared recipe page after signing up.
-
-**Earlier issues found/mentioned but not fixed**
--   **Issue 1: User cannot save to GitHub.**
-    -   **Debug checklist:** Confirm priority with the user, suggest reconnecting GitHub account, escalate to .
-    -   **Why to solve this issue and what will be achieved with this?** To enable user-managed version control.
-    -   **Should Test frontend/backend/both after fix:** N/A.
-    -   **Is recurring issue?** Y.
+-   **Full Internationalization of Multiple Pages:**
+    -   : Translated into all 5 languages.
+    -   : Fully translated after several iterative fixes based on user feedback.
+    -   : Translated into all 5 languages.
+    -   : Translated into all 5 languages.
+-   **Ingredient Unit System Refactor (Major Feature):**
+    -   Implemented a new dual-system for internally storing units as  (liquids) and  (solids).
+    -   Created backend () and frontend () utility modules for robust, bidirectional unit conversion.
+    -   Updated the backend data model for Ingredients to support the new structure (, , , ).
+    -   Created a new API endpoint () to provide country-specific unit lists to the frontend.
+    -   Refactored  and  to fetch and display the correct units and to normalize/denormalize ingredient data on save/load.
+    -   Successfully configured the unit lists as per user's final specification (e.g., 'g' available everywhere, 'dl' only in Denmark).
 
 **Code Architecture**
 
 
 **Key Technical Concepts**
--   **Full-Stack Feature Development:** Implemented multiple complex features end-to-end (backend API, DB schema, frontend UI).
--   **Emergent-managed Google OAuth:** Integrated a third-party auth solution without needing user-provided credentials.
--   **Token-Based Private Sharing:** Created a secure system for sharing private content with non-authenticated users.
--   **Event-Driven Notifications:** Built a system where backend actions (e.g., creating a comment) trigger notifications for other users.
--   **Internationalization (i18n) Debugging:** Systematically identified and fixed hardcoded text and bugs in a  setup.
+-   **Systematic Internationalization (i18n):** Fixed hardcoded text across multiple complex React components using , including handling plurals and dynamic text from the backend.
+-   **Complex Data Model Refactoring:** Redesigned the ingredient data model to support a dual-unit system ( for volume,  for mass) while preserving the user's original input for display purposes (, ).
+-   **Synchronized Backend/Frontend Logic:** Created parallel utility modules in Python (backend) and JavaScript (frontend) to ensure consistent unit conversion rules across the full stack.
+-   **Dynamic, Country-Specific UI:** Implemented an API-driven approach where the frontend fetches and displays a list of measurement units based on the user's selected country/language.
 
 **key DB schema**
--   **notifications:** 
--   **recipe_shares:** 
--   **users:** Modified to include  (Array),  (Array).
+-   **recipes.ingredients (Array of Objects):** The schema for each ingredient object has been updated to:
+    -    (Base value for liquids)
+    -    (Base value for solids)
+    -    (The original number the user entered)
+    -    (The original unit the user selected)
+    -   (Older fields like  and  are now legacy).
 
 **All files**
--   **/app/backend/server.py:** Heavily modified to add all backend logic for translations, notifications, badges, Google OAuth, and the sharing feature.
--   **/app/frontend/src/App.js:** Modified to add new routes for  and , and to include the new  component.
--   **/app/frontend/src/pages/AdminTranslationsPage.js:** Updated to fetch data from the new backend API and handle authentication correctly.
--   **/app/frontend/src/pages/GuidePage.js:** Identified as having hardcoded text; internationalization is in progress.
--   **/app/frontend/src/pages/LoginPage.js & SignupPage.js:** Modified to handle the Google OAuth flow and the return to shared recipe logic.
--   **/app/frontend/src/pages/ProfilePage.js:** Updated to fetch and display the user's badges and progress.
--   **/app/frontend/src/pages/RecipeDetailPage.js:** Modified to add the Share button, modal, and associated logic.
--   **/app/frontend/src/components/NotificationBell.js:** New component for displaying notifications.
--   **/app/frontend/src/pages/SharedRecipePage.js:** New page for displaying privately shared recipes to guests.
--   **/app/frontend/src/pages/ManageSharesPage.js:** New page for Pro users to manage and revoke their shared links.
--   **/app/frontend/src/utils/onboarding.js:** Modified to fix bugs that prevented tours from starting or completing correctly.
+-   **/app/backend/utils/unit_converter.py:** New file containing all server-side logic for unit conversions, country-specific unit lists, and distinguishing between mass and volume.
+-   **/app/frontend/src/utils/unitConverter.js:** New file containing the client-side mirror of the conversion logic to ensure UI consistency.
+-   **/app/backend/server.py:** Heavily modified to add the  endpoint and to integrate the unit normalization/denormalization logic into the , , and  endpoints.
+-   **/app/frontend/src/pages/AddRecipePage.js & EditRecipePage.js:** Refactored to fetch dynamic units, remove hardcoded unit lists, and normalize ingredient data before sending it to the backend.
+-   **/app/frontend/src/pages/{GuidePage, SettingsPage, TipsPage, BrixInfoPage, MatchFinderPage}.js:** All were modified to remove hardcoded Danish text and replace it with  translation keys.
+-   **/app/frontend/src/i18n/locales/*.json:** All five language files were extensively updated with new keys for the translated pages.
 
 **key api endpoints**
--   **Translations:** 
--   **Notifications:** , , 
--   **Badges:** Logic integrated into user and recipe endpoints.
--   **Google OAuth:** , 
--   **Sharing:** , , , , 
--   **Tours:** , 
+-   ** (NEW):** Returns a list of measurement units valid for the specified country/language.
+-   ** &  (Modified):** Now expect  and , and internally convert them to  or  for storage.
+-   ** (Modified):** The recipe data returned now includes the denormalized  and  for each ingredient, ready for UI display.
 
 **Critical Info for New Agent**
--   **Your primary task is to finish fixing the internationalization bugs.** All major feature development for this job is complete and user-verified.
--   Start by completing the in-progress work on .
--   After fixing the , conduct a thorough review of the application in German to find and fix any other remaining hardcoded text.
--   The user has been very active in testing and providing feedback. Expect to work closely with them to verify the fixes.
--   **You must communicate in Danish.**
-
-**documents created in this job**
--    was updated with notes about the new Admin Translation Editor.
+-   Your primary task is to finish the internationalization of the . This involves translating the PRO-feature placeholder.
+-   After that, you must clarify with the user which part of the Brix calculation needs translation.
+-   The new unit conversion system is a major change. Be aware that the migration for existing recipes has not been run yet. This is a critical upcoming task.
+-   Always respond in **Danish**.
 
 **Last 5 User Messages and any pending user messages**
-1.  **User Report:** The user tested the German version and found several bugs: mixed languages, broken tooltips, and a misaligned user dropdown. (Status: Work In Progress)
-2.  **User Report 2:** The user tried to restart the tooltips, but they only appeared briefly on some pages and then disappeared. (Status: Resolved by agent)
-3.  **User Confirmation:** The user confirmed that after the agent's latest fix, the entire tooltip tour now runs correctly. (Status: Resolved)
-4.  **User Next Step:** The user stated that the next step is to fix the remaining places where Danish text is still visible. (Status: Work In Progress)
-5.  **User Clarification:** The user gave more detail on the tooltip issue, which was subsequently fixed. (Status: Resolved)
+1.  **User Message:** Confirms that the new unit system logic appears correct based on their testing. (Status: Completed)
+2.  **User Message:** Asks to switch back to fixing i18n issues and provides a screenshot of the  showing mixed languages. (Status: In Progress)
+3.  **User Message:** User confirms the agent's summary and asks to proceed. (Status: Completed)
+4.  **User Message:** User provides a new screenshot of the , pointing out that the PRO-feature message is still in Danish. (Status: In Progress)
+5.  **User Message:** Asks to fix the PRO-feature message. (Status: In Progress)
 
 **Project Health Check:**
--   **Broken:** The internationalization for the German language is incomplete, with hardcoded Danish text appearing in several places.
+-   **Broken:**
+    -   The internationalization for the  is incomplete for non-PRO users.
+    -   Existing recipes created before the unit system refactor will not have the correct / values and may cause issues in calculations or display until the data migration is performed.
 -   **Mocked:** None.
 
 **Testing status**
--   **Testing agent used after significant changes:** NO. The agent primarily used the screenshot tool and relied on extensive manual testing feedback from the user.
--   **Troubleshoot agent used after agent stuck in loop:** YES, once for an authentication issue. The analysis pointed to an empty database, which helped the agent pivot to asking the user for correct login credentials.
--   **Test files created:** None.
--   **Known regressions:** The recent feature work seems to have caused regressions in the German internationalization, which is now being fixed.
+-   **Testing agent used after significant changes:** NO
+-   **Troubleshoot agent used after agent stuck in loop:** NO
+-   **Test files created:** None
+-   **Known regressions:** None, but the un-migrated recipe data is a known issue.
 
 **Credentials to test flow:**
--   **Admin:** 
--   **Password:** </analysis>
+-   **Admin/PRO:** 
+-   **Password:** 
+-   (To test non-PRO features, you would need credentials for a standard user, which are not provided. You may need to create one or ask the user.)
+
+**What agent forgot to execute**
+-   The agent created a plan for the unit conversion feature which included migrating existing data, but this step was not implemented.</analysis>
