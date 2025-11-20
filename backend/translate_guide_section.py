@@ -24,23 +24,19 @@ async def translate_guide_section(source_text, target_lang, api_key):
         'en_us': 'Use American English spelling (e.g., "flavor", "color", "favorite").'
     }
     
-    prompt = f"""Translate this SLUSHBOOK guide text from Danish to {lang_names[target_lang]}.
+    prompt = f"""Translate this EXACT Danish text to {lang_names[target_lang]}.
 
-CONTEXT: This is a user guide for a slushie recipe app. The tone should be friendly, clear, and professional.
+CRITICAL RULES:
+1. Translate ONLY what is given - DO NOT add extra content, explanations, or embellishments
+2. Keep the EXACT same length and structure as the original
+3. DO NOT translate: SLUSHBOOK, PRO, BRIX, emojis (🆕, ⭐, etc.)
+4. {lang_instructions[target_lang]}
+5. Translate naturally but stay concise - match the original tone and length
 
-RULES:
-1. Translate naturally and idiomatically - NOT word-for-word
-2. Keep technical terms accurate: BRIX (sugar content), slush, smoothie, etc.
-3. DO NOT translate: SLUSHBOOK (brand name), PRO (subscription tier), BRIX (technical term)
-4. DO translate: all UI elements, instructions, and descriptions
-5. Keep emojis unchanged (🆕, ⭐, etc.)
-6. {lang_instructions[target_lang]}
-7. Maintain the same friendly, helpful tone as the Danish original
-
-Danish text to translate:
+Danish text:
 {source_text}
 
-Return ONLY the translated text in {lang_names[target_lang]}, no explanations."""
+Return ONLY the direct translation - nothing more, nothing less."""
 
     # Create chat instance
     chat = LlmChat(
