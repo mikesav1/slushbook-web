@@ -225,11 +225,18 @@ const AdminTranslationsPage = () => {
             className="pl-12 pr-4 py-3 text-lg"
           />
         </div>
-        {searchQuery && (
-          <p className="text-sm text-gray-600 mt-2">
-            Viser {filteredTranslations.length} af {translations.length} oversættelser
-          </p>
-        )}
+        <div className="text-sm text-gray-600 mt-2">
+          {searchQuery ? (
+            <p>
+              Viser {filteredTranslations.length} af {translations.length} oversættelser
+              {selectedSection !== 'all' && ` i ${SECTIONS[selectedSection].name}`}
+            </p>
+          ) : (
+            <p>
+              {filteredTranslations.length} oversættelser i {SECTIONS[selectedSection].name}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Loading State */}
