@@ -5571,14 +5571,14 @@ async def get_translations_for_editor(
         raise HTTPException(status_code=500, detail="Failed to load translations")
 
 
-@api_router.put("/admin/translations/{language}")
-async def update_translations(
+@api_router.put("/admin/translations/editor/{language}")
+async def update_translations_from_editor(
     language: str,
     request: Request,
     credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
 ):
     """
-    Update all translations for a specific language.
+    Update all translations for a specific language from the simple editor.
     Only accessible to admin users.
     
     Expects body: {
