@@ -391,7 +391,7 @@ const TipsPage = () => {
                                 <button
                                   onClick={() => handleDeleteComment(tip.id, comment.id)}
                                   className="text-red-500 hover:text-red-700 transition-colors"
-                                  title="Slet kommentar"
+                                  title={t('tips.deleteComment')}
                                 >
                                   <FaTrash size={12} />
                                 </button>
