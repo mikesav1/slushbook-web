@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
 """
 Translate the guide section from Danish to French, English UK, and English US
-using OpenAI GPT-5 with Emergent LLM key
+using OpenAI GPT-4o with Emergent LLM key via emergentintegrations
 """
 
 import json
 import os
-from openai import OpenAI
+import asyncio
+from emergentintegrations.llm.chat import LlmChat, UserMessage
 
-# Initialize OpenAI client with Emergent LLM key
-client = OpenAI(api_key=os.environ.get('EMERGENT_LLM_KEY', 'sk-emergent-0A93663479e74011f0'))
-
-def translate_guide_section(source_text, target_lang):
+async def translate_guide_section(source_text, target_lang, api_key):
     """Translate guide section to target language"""
     
     lang_names = {
