@@ -552,10 +552,9 @@ const EditRecipePage = ({ sessionId }) => {
                   onChange={(e) => updateIngredient(index, 'unit', e.target.value)}
                   className="px-3 py-2 border border-gray-200 rounded-md"
                 >
-                  <option value="ml">ml</option>
-                  <option value="dl">dl</option>
-                  <option value="l">l</option>
-                  <option value="g">g</option>
+                  {supportedUnits.map(unit => (
+                    <option key={unit} value={unit}>{unit}</option>
+                  ))}
                 </select>
                 <select
                   value={ingredient.role}
