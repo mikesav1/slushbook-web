@@ -280,7 +280,7 @@ const PantryPage = ({ sessionId }) => {
         </div>
         
         <div>
-          <h3 className="font-semibold mb-3">Hurtig Tilføjelse (Populære)</h3>
+          <h3 className="font-semibold mb-3">{t('pantry.quickAddPopular', 'Hurtig Tilføjelse (Populære)')}</h3>
           <div className="flex flex-wrap gap-2">
             {commonIngredients.map((ingredient, index) => (
               <button
