@@ -423,7 +423,7 @@ const TipsPage = () => {
                             onClick={() => handlePostComment(tip.id)}
                             className="px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors flex items-center gap-2 font-medium"
                           >
-                            <FaPaperPlane size={14} /> Send
+                            <FaPaperPlane size={14} /> {t('tips.send')}
                           </button>
                         </div>
                       ) : (
