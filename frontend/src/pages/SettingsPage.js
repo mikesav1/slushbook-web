@@ -328,12 +328,12 @@ const SettingsPage = ({ sessionId }) => {
                       </h3>
                       {device.is_current && (
                         <span className="text-xs bg-green-500 text-white px-2 py-1 rounded-full">
-                          Nuværende enhed
+                          {t('settings.currentDevice')}
                         </span>
                       )}
                     </div>
                     <p className="text-xs text-gray-500">
-                      Sidst aktiv: {new Date(device.last_active).toLocaleString('da-DK')}
+                      {t('settings.lastActive')}: {new Date(device.last_active).toLocaleString()}
                     </p>
                     <p className="text-xs text-gray-400">
                       IP: {device.ip_address}
