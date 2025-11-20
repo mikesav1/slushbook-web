@@ -55,7 +55,10 @@ Return ONLY the translated text in {lang_names[target_lang]}, no explanations.""
     
     return response.strip()
 
-def main():
+async def main():
+    # Get API key
+    api_key = os.environ.get('EMERGENT_LLM_KEY', 'sk-emergent-0A93663479e74011f0')
+    
     # Load Danish source
     with open('/app/frontend/src/i18n/locales/da.json', 'r', encoding='utf-8') as f:
         da_data = json.load(f)
@@ -79,10 +82,10 @@ def main():
         # Translate each key
         translated_guide = {}
         for i, (key, da_text) in enumerate(guide_da.items(), 1):
-            print(f"  [{i}/{len(guide_da)}] {key}...", end=' ')
+            print(f"  [{i}/{len(guide_da)}] {key}...", end=' ', flush=True)
             
             try:
-                translated_text = translate_guide_section(da_text, lang_code)
+                translated_text = await translate_guide_section(da_text, lang_code, api_key)
                 translated_guide[key] = translated_text
                 print("✅")
             except Exception as e:
@@ -102,4 +105,4 @@ def main():
     print("\n🎉 All guide translations completed!")
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
