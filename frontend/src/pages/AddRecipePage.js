@@ -379,8 +379,23 @@ const AddRecipePage = ({ sessionId }) => {
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
-                className="w-full"
+                id="recipe-image-upload"
+                className="hidden"
               />
+              <label
+                htmlFor="recipe-image-upload"
+                className="block w-full cursor-pointer"
+              >
+                <div className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg hover:from-cyan-600 hover:to-blue-700 transition-all">
+                  <FaPlus />
+                  <span>{imageFile ? t('addRecipe.changeImage') : t('addRecipe.chooseImage')}</span>
+                </div>
+                {imageFile && (
+                  <p className="text-xs text-gray-600 mt-1 text-center">
+                    {t('addRecipe.selectedFile')}: {imageFile.name}
+                  </p>
+                )}
+              </label>
             </div>
           </div>
           
