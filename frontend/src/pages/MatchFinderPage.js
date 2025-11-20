@@ -196,7 +196,7 @@ const MatchFinderPage = ({ sessionId }) => {
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <Link to="/pantry" className="w-full sm:w-auto">
               <Button variant="outline" size="sm" className="w-full" data-tour="add-pantry-button">
-                <FaPlus className="mr-2" /> {t('matchFinder.addMore', 'Tilføj Flere')}
+                <FaPlus className="mr-2" /> {t('matchFinder.addMore')}
               </Button>
             </Link>
             <Button
