@@ -71,18 +71,29 @@ const AdminTranslationsPage = () => {
   };
 
   const handleTranslationChange = (key, value) => {
-    setEditedTranslations(prev => ({
+    setAllEditedTranslations(prev => ({
       ...prev,
-      [key]: value
+      [selectedLanguage]: {
+        ...(prev[selectedLanguage] || {}),
+        [key]: value
+      }
     }));
-    setHasChanges(true);
   };
 
   const getCurrentTranslation = (item) => {
-    // Return edited value if exists, otherwise original translation
-    return editedTranslations.hasOwnProperty(item.key) 
-      ? editedTranslations[item.key] 
+    // Return edited value if exists for current language, otherwise original translation
+    const languageEdits = allEditedTranslations[selectedLanguage] || {};
+    return languageEdits.hasOwnProperty(item.key) 
+      ? languageEdits[item.key] 
       : item.translation;
+  };
+  
+  const hasChanges = () => {
+    return Object.keys(allEditedTranslations).length > 0;
+  };
+  
+  const getChangedLanguagesCount = () => {
+    return Object.keys(allEditedTranslations).length;
   };
 
   const saveAllTranslations = async () => {
