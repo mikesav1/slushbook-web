@@ -10,6 +10,7 @@ import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { normalizeIngredient, getSupportedUnits, denormalizeIngredient } from '../utils/unitConverter';
 
 const EditRecipePage = ({ sessionId }) => {
   const { id } = useParams();
