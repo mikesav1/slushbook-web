@@ -24,6 +24,7 @@ const AdminRecipeTranslationsPage = () => {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [selectedLanguage, setSelectedLanguage] = useState('de');
   const [searchQuery, setSearchQuery] = useState('');
+  const [filterMode, setFilterMode] = useState('all'); // 'all', 'missing', 'incomplete'
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   
