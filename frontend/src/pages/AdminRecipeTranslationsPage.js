@@ -166,22 +166,29 @@ const AdminRecipeTranslationsPage = () => {
   const handleStepChange = (index, value) => {
     if (!selectedRecipe) return;
     
-    const currentSteps = getCurrentTranslation('steps') || [];
-    const newSteps = [...currentSteps];
-    newSteps[index] = value;
-    
-    setAllTranslations(prev => ({
-      ...prev,
-      [selectedRecipe.id]: {
-        ...(prev[selectedRecipe.id] || {}),
-        [selectedLanguage]: {
-          ...(prev[selectedRecipe.id]?.[selectedLanguage] || {}),
-          name: getCurrentTranslation('name'),
-          description: getCurrentTranslation('description'),
-          steps: newSteps
+    setAllTranslations(prev => {
+      // Get existing translations for this recipe and language
+      const existingRecipeTranslations = prev[selectedRecipe.id] || {};
+      const existingLangTranslations = existingRecipeTranslations[selectedLanguage] || {};
+      
+      // Get current steps (from existing state or database)
+      const currentSteps = existingLangTranslations.steps || getCurrentTranslation('steps') || [];
+      const newSteps = [...currentSteps];
+      newSteps[index] = value;
+      
+      // Preserve existing values, only update steps
+      return {
+        ...prev,
+        [selectedRecipe.id]: {
+          ...existingRecipeTranslations,
+          [selectedLanguage]: {
+            name: existingLangTranslations.name || getCurrentTranslation('name'),
+            description: existingLangTranslations.description || getCurrentTranslation('description'),
+            steps: newSteps
+          }
         }
-      }
-    }));
+      };
+    });
   };
 
   const getCurrentTranslation = (field) => {
