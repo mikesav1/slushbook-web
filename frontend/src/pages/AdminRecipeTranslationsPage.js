@@ -249,9 +249,12 @@ const AdminRecipeTranslationsPage = () => {
         
         // Update the recipe via API
         try {
-          await axios.patch(
+          await axios.put(
             `${API}/recipes/${recipeId}`,
-            { translations: updatedTranslations },
+            { 
+              ...recipe,
+              translations: updatedTranslations 
+            },
             {
               headers: { Authorization: `Bearer ${token}` },
               withCredentials: true
