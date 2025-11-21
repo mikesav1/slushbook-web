@@ -175,10 +175,37 @@ const AdminRecipeTranslationsPage = () => {
     }
   };
 
-  // Filter recipes by search
+  // Check if a recipe is missing translations for a language
+  const isMissingTranslation = (recipe, langCode) => {
+    const trans = recipe.translations?.[langCode];
+    if (!trans) return true;
+    if (!trans.description || trans.description.trim() === '') return true;
+    if (!trans.steps || trans.steps.length === 0) return true;
+    return false;
+  };
+
+  // Check if a recipe is incomplete (missing any language)
+  const isIncomplete = (recipe) => {
+    return Object.keys(LANGUAGES).some(langCode => isMissingTranslation(recipe, langCode));
+  };
+
+  // Filter recipes by search and filter mode
   const filteredRecipes = recipes.filter(recipe => {
-    if (!searchQuery.trim()) return true;
-    return recipe.name.toLowerCase().includes(searchQuery.toLowerCase());
+    // Search filter
+    if (searchQuery.trim() && !recipe.name.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return false;
+    }
+
+    // Mode filter
+    if (filterMode === 'missing') {
+      // Show only recipes missing translation for currently selected language
+      return isMissingTranslation(recipe, selectedLanguage);
+    } else if (filterMode === 'incomplete') {
+      // Show only recipes that are missing any language
+      return isIncomplete(recipe);
+    }
+
+    return true;
   });
 
   if (!isAdmin()) {
