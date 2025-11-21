@@ -239,7 +239,7 @@ const AdminRecipeTranslationsPage = () => {
   }
 
   return (
-    <div className="pb-20">
+    <div className="relative pb-20">
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-2xl p-6 shadow-lg mb-6">
         <div className="flex items-center gap-3 mb-2">
@@ -252,10 +252,22 @@ const AdminRecipeTranslationsPage = () => {
       </div>
 
       {/* Sticky Language Selector */}
-      <div className="sticky top-0 z-50 bg-white border-b-2 border-gray-300 shadow-md py-4 mb-6 -mx-6 px-6">
+      <div 
+        className="sticky top-0 z-50 bg-white border-b-2 border-gray-300 shadow-lg py-4 mb-6"
+        style={{ 
+          position: 'sticky',
+          top: 0,
+          left: 0,
+          right: 0,
+          marginLeft: '-1.5rem',
+          marginRight: '-1.5rem',
+          paddingLeft: '1.5rem',
+          paddingRight: '1.5rem'
+        }}
+      >
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-semibold text-gray-700">Sprog:</span>
+            <span className="font-semibold text-gray-700">Sprog (brug ← → piletaster):</span>
             <div className="flex gap-2">
               {Object.entries(LANGUAGES).map(([code, lang]) => (
                 <button
@@ -263,7 +275,7 @@ const AdminRecipeTranslationsPage = () => {
                   onClick={() => setSelectedLanguage(code)}
                   className={`flex items-center gap-2 px-3 py-2 rounded-lg font-semibold transition-all text-sm ${
                     selectedLanguage === code
-                      ? 'bg-purple-500 text-white shadow-md'
+                      ? 'bg-purple-500 text-white shadow-md ring-2 ring-purple-300'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
