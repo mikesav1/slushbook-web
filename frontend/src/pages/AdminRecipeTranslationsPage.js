@@ -244,10 +244,20 @@ const AdminRecipeTranslationsPage = () => {
       // Mode filter
       if (filterMode === 'missing') {
         // Show only recipes missing translation for currently selected language
-        return isMissingTranslation(recipe, selectedLanguage);
+        const trans = recipe.translations?.[selectedLanguage];
+        if (!trans) return true;
+        if (!trans.description || trans.description.trim() === '') return true;
+        if (!trans.steps || trans.steps.length === 0) return true;
+        return false;
       } else if (filterMode === 'incomplete') {
         // Show only recipes that are missing any language
-        return isIncomplete(recipe);
+        return Object.keys(LANGUAGES).some(langCode => {
+          const trans = recipe.translations?.[langCode];
+          if (!trans) return true;
+          if (!trans.description || trans.description.trim() === '') return true;
+          if (!trans.steps || trans.steps.length === 0) return true;
+          return false;
+        });
       }
 
       return true;
