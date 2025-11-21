@@ -285,7 +285,7 @@ const AdminRecipeTranslationsPage = () => {
       >
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-semibold text-gray-700">Sprog (brug ← → piletaster):</span>
+            <span className="font-semibold text-gray-700">Sprog (← → til sprog, ↑ ↓ til opskrift):</span>
             <div className="flex gap-2">
               {Object.entries(LANGUAGES).map(([code, lang]) => (
                 <button
