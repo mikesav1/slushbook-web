@@ -532,7 +532,7 @@ const AdminRecipeTranslationsPage = () => {
             <div>
               {hasChanges() ? (
                 <p className="text-sm text-orange-600 font-semibold">
-                  ⚠️ Du har ugemte ændringer i {getChangedRecipesCount()} opskrifter
+                  ⚠️ Du har {getChangedRecipesCount()} ugemte ændringer
                 </p>
               ) : (
                 <p className="text-sm text-gray-600">
@@ -553,7 +553,7 @@ const AdminRecipeTranslationsPage = () => {
               ) : (
                 <>
                   <FaSave className="mr-2" />
-                  💾 Gem alle ændringer ({getChangedRecipesCount()} opskrifter)
+                  💾 Gem alle ændringer ({getChangedRecipesCount()})
                 </>
               )}
             </Button>
