@@ -222,9 +222,16 @@ const AdminRecipeTranslationsPage = () => {
   const getChangedRecipesCount = () => {
     // Count total number of (recipe × language) changes, not just recipes
     let totalChanges = 0;
+    const details = [];
     for (const recipeId in allTranslations) {
-      totalChanges += Object.keys(allTranslations[recipeId]).length;
+      const recipe = recipes.find(r => r.id === recipeId);
+      const langs = Object.keys(allTranslations[recipeId]);
+      totalChanges += langs.length;
+      if (recipe) {
+        details.push(`${recipe.name}: ${langs.join(', ')}`);
+      }
     }
+    console.log('Changed translations:', { totalChanges, details, allTranslations });
     return totalChanges;
   };
 
