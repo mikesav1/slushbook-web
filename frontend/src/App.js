@@ -66,16 +66,17 @@ const Navigation = () => {
   const { user, logout, isGuest } = useAuth();
   const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
   const { t } = useTranslation();
+  const userMenuRef = React.useRef(null);
 
   // Close dropdown when clicking outside
   React.useEffect(() => {
     const handleClickOutside = (e) => {
-      if (isUserMenuOpen && !e.target.closest('.relative')) {
+      if (isUserMenuOpen && userMenuRef.current && !userMenuRef.current.contains(e.target)) {
         setIsUserMenuOpen(false);
       }
     };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isUserMenuOpen]);
 
   const navItems = [
