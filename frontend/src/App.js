@@ -121,7 +121,7 @@ const Navigation = () => {
             
             {/* Notifications & User Info / Login */}
             {user ? (
-              <div className="relative pl-6 border-l border-white/20 flex items-center gap-4">
+              <div ref={userMenuRef} className="relative pl-6 border-l border-white/20 flex items-center gap-4">
                 {/* Notification Bell */}
                 <NotificationBell />
                 
