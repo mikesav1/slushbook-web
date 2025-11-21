@@ -154,7 +154,6 @@ const AdminRecipeTranslationsPage = () => {
         [selectedRecipe.id]: {
           ...existingRecipeTranslations,
           [selectedLanguage]: {
-            name: existingLangTranslations.name || getCurrentTranslation('name'),
             description: value,
             steps: existingLangTranslations.steps || getCurrentTranslation('steps')
           }
