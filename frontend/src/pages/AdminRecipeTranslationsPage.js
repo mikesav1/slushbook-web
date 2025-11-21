@@ -225,10 +225,52 @@ const AdminRecipeTranslationsPage = () => {
         </p>
       </div>
 
+      {/* Sticky Language Selector */}
+      <div className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-md py-4 px-6 -mx-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-gray-700">Sprog:</span>
+              <div className="flex gap-2">
+                {Object.entries(LANGUAGES).map(([code, lang]) => (
+                  <button
+                    key={code}
+                    onClick={() => setSelectedLanguage(code)}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg font-semibold transition-all text-sm ${
+                      selectedLanguage === code
+                        ? 'bg-purple-500 text-white shadow-md'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    <span className="text-lg">{lang.flag}</span>
+                    <span className="hidden sm:inline">{lang.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold text-gray-700">Vis:</span>
+              <select
+                value={filterMode}
+                onChange={(e) => setFilterMode(e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium"
+              >
+                <option value="all">Alle opskrifter ({recipes.length})</option>
+                <option value="missing">
+                  Mangler {LANGUAGES[selectedLanguage].name} ({recipes.filter(r => isMissingTranslation(r, selectedLanguage)).length})
+                </option>
+                <option value="incomplete">Ufuldstændige ({recipes.filter(r => isIncomplete(r)).length})</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left: Recipe List */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 sticky top-4">
+          <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 sticky top-24">
             <h3 className="font-bold text-lg mb-3">Vælg Opskrift</h3>
             
             {/* Search */}
@@ -243,26 +285,39 @@ const AdminRecipeTranslationsPage = () => {
               />
             </div>
 
+            {/* Stats */}
+            <div className="mb-3 p-2 bg-gray-50 rounded-lg text-xs">
+              <div className="font-semibold text-gray-700">Viser {filteredRecipes.length} af {recipes.length} opskrifter</div>
+            </div>
+
             {/* Recipe List */}
             <div className="space-y-2 max-h-[600px] overflow-y-auto">
-              {filteredRecipes.map(recipe => (
-                <button
-                  key={recipe.id}
-                  onClick={() => setSelectedRecipe(recipe)}
-                  className={`w-full text-left p-3 rounded-lg transition-colors ${
-                    selectedRecipe?.id === recipe.id
-                      ? 'bg-purple-100 border-2 border-purple-500'
-                      : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'
-                  }`}
-                >
-                  <div className="font-medium text-sm">{recipe.name}</div>
-                  {allTranslations[recipe.id] && (
-                    <span className="text-xs text-green-600 font-semibold">
-                      ✓ Ændret
-                    </span>
-                  )}
-                </button>
-              ))}
+              {filteredRecipes.map(recipe => {
+                const missing = isMissingTranslation(recipe, selectedLanguage);
+                return (
+                  <button
+                    key={recipe.id}
+                    onClick={() => setSelectedRecipe(recipe)}
+                    className={`w-full text-left p-3 rounded-lg transition-colors ${
+                      selectedRecipe?.id === recipe.id
+                        ? 'bg-purple-100 border-2 border-purple-500'
+                        : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="font-medium text-sm flex-1">{recipe.name}</div>
+                      <div className="flex items-center gap-1">
+                        {missing && (
+                          <span className="text-xs text-orange-600 font-semibold">⚠️</span>
+                        )}
+                        {allTranslations[recipe.id] && (
+                          <span className="text-xs text-green-600 font-semibold">✓</span>
+                        )}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -271,28 +326,6 @@ const AdminRecipeTranslationsPage = () => {
         <div className="lg:col-span-2">
           {selectedRecipe && (
             <div className="space-y-6">
-              {/* Language Tabs */}
-              <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="font-semibold text-gray-700">Vælg sprog:</span>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {Object.entries(LANGUAGES).map(([code, lang]) => (
-                    <button
-                      key={code}
-                      onClick={() => setSelectedLanguage(code)}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
-                        selectedLanguage === code
-                          ? 'bg-purple-500 text-white shadow-md'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      <span className="text-xl">{lang.flag}</span>
-                      <span>{lang.name}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
 
               {/* Description */}
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
