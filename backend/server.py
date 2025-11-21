@@ -3832,6 +3832,35 @@ async def update_recipe(recipe_id: str, recipe_data: RecipeCreate, request: Requ
     
     return recipe
 
+@api_router.patch("/recipes/{recipe_id}/translations")
+async def update_recipe_translations(recipe_id: str, translations: dict, request: Request):
+    """Update only the translations field of a recipe"""
+    # Get current user
+    user = await get_current_user(request, None, db)
+    
+    # Check if recipe exists in system recipes
+    existing = await db.recipes.find_one({"id": recipe_id})
+    
+    if not existing:
+        raise HTTPException(status_code=404, detail="Recipe not found")
+    
+    # Only admin can edit system recipes
+    if not user or user.role != "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Kun admin kan redigere system opskrifter"
+        )
+    
+    # Update only translations field
+    await db.recipes.update_one(
+        {"id": recipe_id},
+        {"$set": {"translations": translations}}
+    )
+    
+    # Return updated recipe
+    updated = await db.recipes.find_one({"id": recipe_id}, {"_id": 0})
+    return updated
+
 @api_router.delete("/recipes/{recipe_id}")
 async def delete_recipe(recipe_id: str, session_id: str):
     result = await db.user_recipes.delete_one(
