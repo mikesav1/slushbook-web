@@ -436,7 +436,8 @@ const AdminRecipeTranslationsPage = () => {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 };
 
