@@ -143,18 +143,24 @@ const AdminRecipeTranslationsPage = () => {
   const handleDescriptionChange = (value) => {
     if (!selectedRecipe) return;
     
-    setAllTranslations(prev => ({
-      ...prev,
-      [selectedRecipe.id]: {
-        ...(prev[selectedRecipe.id] || {}),
-        [selectedLanguage]: {
-          ...(prev[selectedRecipe.id]?.[selectedLanguage] || {}),
-          name: getCurrentTranslation('name'),
-          description: value,
-          steps: getCurrentTranslation('steps')
+    setAllTranslations(prev => {
+      // Get existing translations for this recipe and language
+      const existingRecipeTranslations = prev[selectedRecipe.id] || {};
+      const existingLangTranslations = existingRecipeTranslations[selectedLanguage] || {};
+      
+      // Preserve existing values, only update description
+      return {
+        ...prev,
+        [selectedRecipe.id]: {
+          ...existingRecipeTranslations,
+          [selectedLanguage]: {
+            name: existingLangTranslations.name || getCurrentTranslation('name'),
+            description: value,
+            steps: existingLangTranslations.steps || getCurrentTranslation('steps')
+          }
         }
-      }
-    }));
+      };
+    });
   };
 
   const handleStepChange = (index, value) => {
