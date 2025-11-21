@@ -44,7 +44,7 @@ const AdminRecipeTranslationsPage = () => {
     loadRecipes();
   }, []);
 
-  // Keyboard navigation for language and recipe switching
+  // Keyboard navigation for language switching
   useEffect(() => {
     const handleKeyDown = (e) => {
       // Only handle arrow keys when not typing in input/textarea
@@ -65,28 +65,64 @@ const AdminRecipeTranslationsPage = () => {
         setSelectedLanguage(languages[currentLangIndex + 1]);
         toast.success(`Skiftet til ${LANGUAGES[languages[currentLangIndex + 1]].name}`);
       }
-      
-      // Up/Down: Switch recipe
-      else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedLanguage]);
+
+  // Keyboard navigation for recipe switching (separate useEffect to avoid circular dependency)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Only handle arrow keys when not typing in input/textarea
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return;
+      }
+
+      // Up/Down: Switch recipe - calculate filtered recipes here
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
         e.preventDefault();
         
-        if (filteredRecipes.length === 0) return;
+        // Calculate filtered recipes inline
+        const currentFiltered = recipes.filter(recipe => {
+          if (searchQuery.trim() && !recipe.name.toLowerCase().includes(searchQuery.toLowerCase())) {
+            return false;
+          }
+          if (filterMode === 'missing') {
+            const trans = recipe.translations?.[selectedLanguage];
+            if (!trans) return true;
+            if (!trans.description || trans.description.trim() === '') return true;
+            if (!trans.steps || trans.steps.length === 0) return true;
+            return false;
+          } else if (filterMode === 'incomplete') {
+            return Object.keys(LANGUAGES).some(langCode => {
+              const trans = recipe.translations?.[langCode];
+              if (!trans) return true;
+              if (!trans.description || trans.description.trim() === '') return true;
+              if (!trans.steps || trans.steps.length === 0) return true;
+              return false;
+            });
+          }
+          return true;
+        });
         
-        const currentRecipeIndex = filteredRecipes.findIndex(r => r.id === selectedRecipe?.id);
+        if (currentFiltered.length === 0) return;
+        
+        const currentRecipeIndex = currentFiltered.findIndex(r => r.id === selectedRecipe?.id);
         
         if (e.key === 'ArrowUp' && currentRecipeIndex > 0) {
-          setSelectedRecipe(filteredRecipes[currentRecipeIndex - 1]);
-          toast.success(`📋 ${filteredRecipes[currentRecipeIndex - 1].name}`);
-        } else if (e.key === 'ArrowDown' && currentRecipeIndex < filteredRecipes.length - 1) {
-          setSelectedRecipe(filteredRecipes[currentRecipeIndex + 1]);
-          toast.success(`📋 ${filteredRecipes[currentRecipeIndex + 1].name}`);
+          setSelectedRecipe(currentFiltered[currentRecipeIndex - 1]);
+          toast.success(`📋 ${currentFiltered[currentRecipeIndex - 1].name}`);
+        } else if (e.key === 'ArrowDown' && currentRecipeIndex < currentFiltered.length - 1) {
+          setSelectedRecipe(currentFiltered[currentRecipeIndex + 1]);
+          toast.success(`📋 ${currentFiltered[currentRecipeIndex + 1].name}`);
         }
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedLanguage, selectedRecipe, filteredRecipes]);
+  }, [recipes, searchQuery, filterMode, selectedLanguage, selectedRecipe]);
 
   const loadRecipes = async () => {
     setLoading(true);
