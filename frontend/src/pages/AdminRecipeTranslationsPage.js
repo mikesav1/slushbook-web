@@ -247,14 +247,11 @@ const AdminRecipeTranslationsPage = () => {
         
         console.log(`Updating recipe ${recipe.name}:`, { recipeId, languageTranslations, updatedTranslations });
         
-        // Update the recipe via API
+        // Update the recipe translations via dedicated endpoint
         try {
-          await axios.put(
-            `${API}/recipes/${recipeId}`,
-            { 
-              ...recipe,
-              translations: updatedTranslations 
-            },
+          await axios.patch(
+            `${API}/recipes/${recipeId}/translations`,
+            updatedTranslations,
             {
               headers: { Authorization: `Bearer ${token}` },
               withCredentials: true
