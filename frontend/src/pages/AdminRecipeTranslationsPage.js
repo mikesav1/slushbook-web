@@ -193,7 +193,6 @@ const AdminRecipeTranslationsPage = () => {
         [selectedRecipe.id]: {
           ...existingRecipeTranslations,
           [selectedLanguage]: {
-            name: existingLangTranslations.name || getCurrentTranslation('name'),
             description: existingLangTranslations.description || getCurrentTranslation('description'),
             steps: newSteps
           }
