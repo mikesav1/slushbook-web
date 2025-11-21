@@ -373,6 +373,29 @@ const AdminRecipeTranslationsPage = () => {
         </p>
       </div>
 
+      {/* Info Box for Categories */}
+      <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r-lg">
+        <div className="flex items-start gap-3">
+          <div className="text-blue-500 text-xl">ℹ️</div>
+          <div>
+            <h3 className="font-semibold text-blue-900 mb-1">Kategorier og tags oversættes på UI-oversættelsessiden</h3>
+            <p className="text-sm text-blue-800 mb-2">
+              Opskrift kategorier (klassisk, smoothie, juice, etc.) og tags (børn, frisk, sød, etc.) oversættes via{' '}
+              <a 
+                href="/admin/translations" 
+                className="underline font-semibold hover:text-blue-600"
+              >
+                UI Oversættelser
+              </a>
+              {' '}under sektionen "Opskrifter".
+            </p>
+            <p className="text-xs text-blue-700">
+              💡 Tip: Vælg "📕 Opskrifter" filter på UI Oversættelser-siden for at finde alle kategori og tag oversættelser.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Sticky Language Selector */}
       <div 
         className="sticky top-0 z-50 bg-white border-b-2 border-gray-300 shadow-lg py-4 mb-6"
