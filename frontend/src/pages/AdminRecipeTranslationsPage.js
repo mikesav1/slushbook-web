@@ -44,7 +44,7 @@ const AdminRecipeTranslationsPage = () => {
     loadRecipes();
   }, []);
 
-  // Keyboard navigation for language switching
+  // Keyboard navigation for language and recipe switching
   useEffect(() => {
     const handleKeyDown = (e) => {
       // Only handle arrow keys when not typing in input/textarea
@@ -53,22 +53,40 @@ const AdminRecipeTranslationsPage = () => {
       }
 
       const languages = Object.keys(LANGUAGES);
-      const currentIndex = languages.indexOf(selectedLanguage);
+      const currentLangIndex = languages.indexOf(selectedLanguage);
 
-      if (e.key === 'ArrowLeft' && currentIndex > 0) {
+      // Left/Right: Switch language
+      if (e.key === 'ArrowLeft' && currentLangIndex > 0) {
         e.preventDefault();
-        setSelectedLanguage(languages[currentIndex - 1]);
-        toast.success(`Skiftet til ${LANGUAGES[languages[currentIndex - 1]].name}`);
-      } else if (e.key === 'ArrowRight' && currentIndex < languages.length - 1) {
+        setSelectedLanguage(languages[currentLangIndex - 1]);
+        toast.success(`Skiftet til ${LANGUAGES[languages[currentLangIndex - 1]].name}`);
+      } else if (e.key === 'ArrowRight' && currentLangIndex < languages.length - 1) {
         e.preventDefault();
-        setSelectedLanguage(languages[currentIndex + 1]);
-        toast.success(`Skiftet til ${LANGUAGES[languages[currentIndex + 1]].name}`);
+        setSelectedLanguage(languages[currentLangIndex + 1]);
+        toast.success(`Skiftet til ${LANGUAGES[languages[currentLangIndex + 1]].name}`);
+      }
+      
+      // Up/Down: Switch recipe
+      else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        
+        if (filteredRecipes.length === 0) return;
+        
+        const currentRecipeIndex = filteredRecipes.findIndex(r => r.id === selectedRecipe?.id);
+        
+        if (e.key === 'ArrowUp' && currentRecipeIndex > 0) {
+          setSelectedRecipe(filteredRecipes[currentRecipeIndex - 1]);
+          toast.success(`📋 ${filteredRecipes[currentRecipeIndex - 1].name}`);
+        } else if (e.key === 'ArrowDown' && currentRecipeIndex < filteredRecipes.length - 1) {
+          setSelectedRecipe(filteredRecipes[currentRecipeIndex + 1]);
+          toast.success(`📋 ${filteredRecipes[currentRecipeIndex + 1].name}`);
+        }
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedLanguage]);
+  }, [selectedLanguage, selectedRecipe, filteredRecipes]);
 
   const loadRecipes = async () => {
     setLoading(true);
