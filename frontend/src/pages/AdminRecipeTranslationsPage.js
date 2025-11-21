@@ -221,12 +221,23 @@ const AdminRecipeTranslationsPage = () => {
     try {
       const token = localStorage.getItem('session_token');
       let savedCount = 0;
+      let totalChanges = 0;
+      
+      // Count total changes
+      for (const recipeId in allTranslations) {
+        totalChanges += Object.keys(allTranslations[recipeId]).length;
+      }
+      
+      console.log('Saving translations:', { allTranslations, totalChanges });
       
       // For each recipe that has changes
       for (const [recipeId, languageTranslations] of Object.entries(allTranslations)) {
         // Get the full recipe
         const recipe = recipes.find(r => r.id === recipeId);
-        if (!recipe) continue;
+        if (!recipe) {
+          console.warn(`Recipe not found: ${recipeId}`);
+          continue;
+        }
         
         // Build the complete translations object
         const updatedTranslations = {
@@ -234,27 +245,37 @@ const AdminRecipeTranslationsPage = () => {
           ...languageTranslations
         };
         
-        // Update the recipe via API
-        await axios.patch(
-          `${API}/recipes/${recipeId}`,
-          { translations: updatedTranslations },
-          {
-            headers: { Authorization: `Bearer ${token}` },
-            withCredentials: true
-          }
-        );
+        console.log(`Updating recipe ${recipe.name}:`, { recipeId, languageTranslations, updatedTranslations });
         
-        savedCount++;
+        // Update the recipe via API
+        try {
+          await axios.patch(
+            `${API}/recipes/${recipeId}`,
+            { translations: updatedTranslations },
+            {
+              headers: { Authorization: `Bearer ${token}` },
+              withCredentials: true
+            }
+          );
+          savedCount++;
+        } catch (err) {
+          console.error(`Failed to save recipe ${recipeId}:`, err.response?.data || err.message);
+          toast.error(`Fejl ved ${recipe.name}: ${err.response?.data?.detail || err.message}`);
+        }
       }
       
-      toast.success(`✅ Gemt oversættelser for ${savedCount} opskrifter!`);
-      setAllTranslations({});
-      
-      // Reload recipes
-      await loadRecipes();
+      if (savedCount > 0) {
+        toast.success(`✅ Gemt ${totalChanges} oversættelser i ${savedCount} opskrifter!`);
+        setAllTranslations({});
+        
+        // Reload recipes
+        await loadRecipes();
+      } else {
+        toast.error('Kunne ikke gemme nogen oversættelser');
+      }
     } catch (error) {
       console.error('Error saving translations:', error);
-      toast.error('Kunne ikke gemme oversættelser');
+      toast.error(`Kunne ikke gemme oversættelser: ${error.message}`);
     } finally {
       setSaving(false);
     }
