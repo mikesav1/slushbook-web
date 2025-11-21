@@ -887,11 +887,26 @@ const SettingsPage = ({ sessionId }) => {
               <div>
                 <h3 className="font-bold text-gray-800 flex items-center gap-2">
                   <FaGlobe className="text-blue-500" />
-                  🌍 Oversættelser
+                  🌍 UI Oversættelser
                 </h3>
-                <p className="text-sm text-gray-600">Rediger alle oversættelser nemt og hurtigt</p>
+                <p className="text-sm text-gray-600">Rediger UI tekster (knapper, labels, beskeder)</p>
               </div>
               <span className="text-blue-600">→</span>
+            </div>
+          </Link>
+          <Link
+            to="/admin/recipe-translations"
+            className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-purple-100"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-bold text-gray-800 flex items-center gap-2">
+                  <FaBook className="text-purple-500" />
+                  📖 Opskrift Oversættelser
+                </h3>
+                <p className="text-sm text-gray-600">Oversæt opskrifter (beskrivelser og trin)</p>
+              </div>
+              <span className="text-purple-600">→</span>
             </div>
           </Link>
         </div>
