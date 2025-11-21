@@ -207,7 +207,12 @@ const AdminRecipeTranslationsPage = () => {
   };
 
   const getChangedRecipesCount = () => {
-    return Object.keys(allTranslations).length;
+    // Count total number of (recipe × language) changes, not just recipes
+    let totalChanges = 0;
+    for (const recipeId in allTranslations) {
+      totalChanges += Object.keys(allTranslations[recipeId]).length;
+    }
+    return totalChanges;
   };
 
   const saveAllTranslations = async () => {
