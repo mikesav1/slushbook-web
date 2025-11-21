@@ -233,24 +233,26 @@ const AdminRecipeTranslationsPage = () => {
     return Object.keys(LANGUAGES).some(langCode => isMissingTranslation(recipe, langCode));
   };
 
-  // Filter recipes by search and filter mode
-  const filteredRecipes = recipes.filter(recipe => {
-    // Search filter
-    if (searchQuery.trim() && !recipe.name.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return false;
-    }
+  // Filter recipes by search and filter mode - use useMemo for keyboard navigation
+  const filteredRecipes = useMemo(() => {
+    return recipes.filter(recipe => {
+      // Search filter
+      if (searchQuery.trim() && !recipe.name.toLowerCase().includes(searchQuery.toLowerCase())) {
+        return false;
+      }
 
-    // Mode filter
-    if (filterMode === 'missing') {
-      // Show only recipes missing translation for currently selected language
-      return isMissingTranslation(recipe, selectedLanguage);
-    } else if (filterMode === 'incomplete') {
-      // Show only recipes that are missing any language
-      return isIncomplete(recipe);
-    }
+      // Mode filter
+      if (filterMode === 'missing') {
+        // Show only recipes missing translation for currently selected language
+        return isMissingTranslation(recipe, selectedLanguage);
+      } else if (filterMode === 'incomplete') {
+        // Show only recipes that are missing any language
+        return isIncomplete(recipe);
+      }
 
-    return true;
-  });
+      return true;
+    });
+  }, [recipes, searchQuery, filterMode, selectedLanguage]);
 
   if (!isAdmin()) {
     return null;
