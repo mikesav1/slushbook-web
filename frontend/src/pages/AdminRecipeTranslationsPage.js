@@ -44,6 +44,32 @@ const AdminRecipeTranslationsPage = () => {
     loadRecipes();
   }, []);
 
+  // Keyboard navigation for language switching
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Only handle arrow keys when not typing in input/textarea
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return;
+      }
+
+      const languages = Object.keys(LANGUAGES);
+      const currentIndex = languages.indexOf(selectedLanguage);
+
+      if (e.key === 'ArrowLeft' && currentIndex > 0) {
+        e.preventDefault();
+        setSelectedLanguage(languages[currentIndex - 1]);
+        toast.success(`Skiftet til ${LANGUAGES[languages[currentIndex - 1]].name}`);
+      } else if (e.key === 'ArrowRight' && currentIndex < languages.length - 1) {
+        e.preventDefault();
+        setSelectedLanguage(languages[currentIndex + 1]);
+        toast.success(`Skiftet til ${LANGUAGES[languages[currentIndex + 1]].name}`);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedLanguage]);
+
   const loadRecipes = async () => {
     setLoading(true);
     try {
