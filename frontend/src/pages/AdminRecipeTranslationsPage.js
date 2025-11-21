@@ -149,7 +149,7 @@ const AdminRecipeTranslationsPage = () => {
       const existingLangTranslations = existingRecipeTranslations[selectedLanguage] || {};
       
       // Preserve existing values, only update description
-      return {
+      const newState = {
         ...prev,
         [selectedRecipe.id]: {
           ...existingRecipeTranslations,
@@ -160,6 +160,18 @@ const AdminRecipeTranslationsPage = () => {
           }
         }
       };
+      
+      console.log('handleDescriptionChange:', {
+        recipeId: selectedRecipe.id,
+        recipeName: selectedRecipe.name,
+        language: selectedLanguage,
+        previousState: prev,
+        newState: newState,
+        totalRecipes: Object.keys(newState).length,
+        totalChanges: Object.keys(newState).reduce((sum, rid) => sum + Object.keys(newState[rid]).length, 0)
+      });
+      
+      return newState;
     });
   };
 
