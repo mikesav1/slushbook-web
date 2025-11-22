@@ -81,6 +81,14 @@ export const AuthProvider = ({ children }) => {
     setUser(userData);
     console.log('[AuthContext] User logged in:', userData.email);
     
+    // Cache user data in localStorage for offline/mobile persistence
+    try {
+      localStorage.setItem('cached_user', JSON.stringify(userData));
+      console.log('[AuthContext] Cached user data for offline mode');
+    } catch (e) {
+      console.error('[AuthContext] Failed to cache user data:', e);
+    }
+    
     // Stop any pending checkAuth calls after login to prevent immediate logout
     if (skipAuthCheck) {
       console.log('[AuthContext] Skipping immediate auth check after login');
