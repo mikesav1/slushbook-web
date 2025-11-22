@@ -3833,11 +3833,16 @@ async def update_recipe(recipe_id: str, recipe_data: RecipeCreate, request: Requ
     
     return recipe
 
+class RecipeTranslationsUpdate(BaseModel):
+    translations: dict
+
 @api_router.patch("/recipes/{recipe_id}/translations")
-async def update_recipe_translations(recipe_id: str, translations: dict, request: Request):
+async def update_recipe_translations(recipe_id: str, body: RecipeTranslationsUpdate, request: Request):
     """Update only the translations field of a recipe"""
     # Get current user
     user = await get_current_user(request, None, db)
+    
+    translations = body.translations
     
     # Check if recipe exists in system recipes
     existing = await db.recipes.find_one({"id": recipe_id})
