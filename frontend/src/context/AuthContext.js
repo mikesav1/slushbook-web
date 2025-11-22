@@ -21,6 +21,11 @@ export const AuthProvider = ({ children }) => {
         headers['Authorization'] = `Bearer ${sessionToken}`;
       }
       
+      console.log('[AuthContext] Checking auth...', {
+        hasLocalStorageToken: !!sessionToken,
+        userAgent: navigator.userAgent.substring(0, 50)
+      });
+      
       const response = await axios.get(`${API}/auth/me`, {
         withCredentials: true,
         headers
@@ -29,8 +34,14 @@ export const AuthProvider = ({ children }) => {
       console.log('[AuthContext] User loaded from /auth/me:', response.data.email);
     } catch (error) {
       // Not authenticated - user is null
-      setUser(null);
-      console.log('[AuthContext] Not authenticated');
+      console.log('[AuthContext] Not authenticated, error:', error.response?.status, error.message);
+      // Only clear user if we're certain they're not logged in
+      // Avoid clearing on network errors
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        setUser(null);
+      } else {
+        console.warn('[AuthContext] Network/other error during auth check, keeping existing user state');
+      }
     } finally {
       setLoading(false);
     }
