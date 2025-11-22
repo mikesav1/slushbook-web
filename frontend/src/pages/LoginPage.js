@@ -188,8 +188,8 @@ const LoginPage = ({ onLogin }) => {
         console.log(`[LoginPage] Loaded user language from database: ${userLang}`);
       }
       
-      // Save user data
-      onLogin(response.data.user);
+      // Save user data (skip immediate auth check to prevent logout loop)
+      onLogin(response.data.user, true);
       
       // Check if user came from shared recipe page
       const returnToShared = localStorage.getItem('return_to_shared');
