@@ -60,12 +60,20 @@ const AdminImportRecipes = () => {
       }
     } catch (error) {
       console.error('Import error:', error);
+      console.error('Error response:', error.response?.data);
+      
       if (error.response?.data?.detail) {
-        toast.error(`Fejl: ${error.response.data.detail}`);
+        if (Array.isArray(error.response.data.detail)) {
+          // Pydantic validation errors
+          const errorMsg = error.response.data.detail.map(e => `${e.loc.join('.')}: ${e.msg}`).join(', ');
+          toast.error(`Validerings fejl: ${errorMsg}`);
+        } else {
+          toast.error(`Fejl: ${error.response.data.detail}`);
+        }
       } else if (error.message.includes('JSON')) {
         toast.error('Ugyldig JSON fil');
       } else {
-        toast.error('Import fejlede - tjek console for detaljer');
+        toast.error(`Import fejlede: ${error.message}`);
       }
     } finally {
       setLoading(false);
