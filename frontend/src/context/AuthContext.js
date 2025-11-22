@@ -106,6 +106,7 @@ export const AuthProvider = ({ children }) => {
       // Clear user state AND localStorage
       setUser(null);
       localStorage.removeItem('session_token');
+      localStorage.removeItem('cached_user');
       
       // Reset language to Danish (default) on logout
       localStorage.removeItem('user_language');
