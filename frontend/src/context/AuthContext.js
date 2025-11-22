@@ -10,6 +10,14 @@ export const AuthProvider = ({ children }) => {
   const [skipNextCheck, setSkipNextCheck] = useState(false);
 
   useEffect(() => {
+    // Skip check if we just logged in
+    if (skipNextCheck) {
+      console.log('[AuthContext] Skipping initial auth check (just logged in)');
+      setLoading(false);
+      setSkipNextCheck(false);
+      return;
+    }
+    
     // Delay checkAuth on mobile to avoid login loop
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     
@@ -21,7 +29,7 @@ export const AuthProvider = ({ children }) => {
     } else {
       checkAuth();
     }
-  }, []);
+  }, [skipNextCheck]);
 
   const checkAuth = async () => {
     try {
