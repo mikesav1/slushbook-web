@@ -9,7 +9,17 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    checkAuth();
+    // Delay checkAuth on mobile to avoid login loop
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      console.log('[AuthContext] Mobile detected, delaying auth check by 2 seconds');
+      setTimeout(() => {
+        checkAuth();
+      }, 2000);
+    } else {
+      checkAuth();
+    }
   }, []);
 
   const checkAuth = async () => {
