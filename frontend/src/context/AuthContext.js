@@ -47,9 +47,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = (userData) => {
+  const login = (userData, skipAuthCheck = false) => {
     setUser(userData);
-    console.log('[AuthContext] User set via login:', userData.email);
+    console.log('[AuthContext] User logged in:', userData.email);
+    
+    // Stop any pending checkAuth calls after login to prevent immediate logout
+    if (skipAuthCheck) {
+      console.log('[AuthContext] Skipping immediate auth check after login');
+    }
   };
 
   const logout = async () => {
