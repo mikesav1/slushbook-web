@@ -3861,8 +3861,11 @@ async def update_recipe_translations(recipe_id: str, translations: dict, request
     updated = await db.recipes.find_one({"id": recipe_id}, {"_id": 0})
     return updated
 
+class RecipeImportRequest(BaseModel):
+    recipes: List[dict]
+
 @api_router.post("/admin/import-recipes-bulk")
-async def import_recipes_bulk(recipes: List[dict], request: Request):
+async def import_recipes_bulk(data: RecipeImportRequest, request: Request):
     """
     Import/update multiple recipes at once (Admin only)
     Updates existing recipes or creates new ones based on ID
@@ -3876,7 +3879,7 @@ async def import_recipes_bulk(recipes: List[dict], request: Request):
     errors = 0
     details = []
     
-    for recipe_data in recipes:
+    for recipe_data in data.recipes:
         recipe_id = recipe_data.get('id')
         recipe_name = recipe_data.get('name', 'Unknown')
         
