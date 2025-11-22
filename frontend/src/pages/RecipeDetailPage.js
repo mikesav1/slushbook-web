@@ -916,6 +916,20 @@ const RecipeDetailPage = ({ sessionId }) => {
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
             
+            {/* Favorite Heart Icon - Top Right */}
+            <button
+              onClick={toggleFavorite}
+              data-testid="toggle-favorite-button"
+              className="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white shadow-lg flex items-center justify-center transition-all hover:scale-110 z-10"
+              title={recipe.is_favorite ? 'Fjern favorit' : 'Tilføj favorit'}
+            >
+              {recipe.is_favorite ? (
+                <FaHeart className="text-red-500" size={24} />
+              ) : (
+                <FaRegHeart className="text-gray-600" size={24} />
+              )}
+            </button>
+            
             {/* Type Icon - Mobile (in corner of image) */}
             {recipe.type && (
               <div className="md:hidden absolute bottom-4 left-4">
