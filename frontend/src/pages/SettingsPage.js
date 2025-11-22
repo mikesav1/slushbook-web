@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
-import { FaCog, FaPlus, FaTrash, FaEdit, FaBook, FaGlobe, FaQuestionCircle, FaChevronDown, FaChevronUp, FaComments } from 'react-icons/fa';
+import { FaCog, FaPlus, FaTrash, FaEdit, FaBook, FaGlobe, FaQuestionCircle, FaChevronDown, FaChevronUp, FaComments, FaUpload } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { API } from '../App';
 import { useAuth } from '../context/AuthContext';
