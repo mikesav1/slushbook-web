@@ -7,112 +7,47 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const justLoggedIn = React.useRef(false);
 
   useEffect(() => {
-    // Skip check if we just logged in
-    if (skipNextCheck) {
-      console.log('[AuthContext] Skipping initial auth check (just logged in)');
-      setLoading(false);
-      setSkipNextCheck(false);
-      return;
-    }
-    
-    // Delay checkAuth on mobile to avoid login loop
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    
-    if (isMobile) {
-      console.log('[AuthContext] Mobile detected, delaying auth check by 2 seconds');
-      setTimeout(() => {
-        checkAuth();
-      }, 2000);
-    } else {
-      checkAuth();
-    }
-  }, [skipNextCheck]);
+    checkAuth();
+  }, []);
 
   const checkAuth = async () => {
     try {
-      // ALWAYS prefer localStorage token (more reliable on mobile)
-      const sessionToken = localStorage.getItem('session_token');
-      const headers = {};
-      if (sessionToken) {
-        headers['Authorization'] = `Bearer ${sessionToken}`;
-      }
-      
-      console.log('[AuthContext] Checking auth...', {
-        hasLocalStorageToken: !!sessionToken,
-        isMobile: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
-        userAgent: navigator.userAgent.substring(0, 50)
-      });
+      console.log('[AuthContext] Checking auth...');
       
       const response = await axios.get(`${API}/auth/me`, {
         withCredentials: true,
-        headers,
-        timeout: 10000 // 10 second timeout
+        timeout: 10000
       });
       
       setUser(response.data);
-      console.log('[AuthContext] User loaded from /auth/me:', response.data.email);
+      console.log('[AuthContext] User loaded:', response.data.email);
       
-      // Re-save session token to ensure it's fresh
+      // Store session token in localStorage for reference
       if (response.data.session_token) {
         localStorage.setItem('session_token', response.data.session_token);
       }
     } catch (error) {
-      console.log('[AuthContext] Auth check failed:', {
-        status: error.response?.status,
-        message: error.message,
-        hasToken: !!localStorage.getItem('session_token')
-      });
+      console.log('[AuthContext] Auth check failed:', error.response?.status || error.message);
       
-      // Only clear user if we're CERTAIN they're not logged in
-      // 401 = Invalid/expired token (clear user)
-      // 403 = Forbidden (clear user)
-      // Network errors = Keep user (they might be offline)
+      // Clear session on 401/403
       if (error.response?.status === 401 || error.response?.status === 403) {
-        console.log('[AuthContext] Session invalid, logging out');
         localStorage.removeItem('session_token');
-        localStorage.removeItem('user_country');
-        localStorage.removeItem('user_country_manual');
-        localStorage.removeItem('user_country_timestamp');
         setUser(null);
-      } else {
-        console.warn('[AuthContext] Network/timeout error, keeping user logged in (offline mode)');
-        // Try to load user from localStorage as fallback
-        const cachedUser = localStorage.getItem('cached_user');
-        if (cachedUser && !user) {
-          try {
-            const userData = JSON.parse(cachedUser);
-            setUser(userData);
-            console.log('[AuthContext] Loaded cached user (offline mode):', userData.email);
-          } catch (e) {
-            console.error('[AuthContext] Failed to parse cached user');
-          }
-        }
       }
     } finally {
       setLoading(false);
     }
   };
 
-  const login = (userData, skipAuthCheck = false) => {
+  const login = (userData) => {
     setUser(userData);
     console.log('[AuthContext] User logged in:', userData.email);
     
-    // Cache user data in localStorage for offline/mobile persistence
-    try {
-      localStorage.setItem('cached_user', JSON.stringify(userData));
-      console.log('[AuthContext] Cached user data for offline mode');
-    } catch (e) {
-      console.error('[AuthContext] Failed to cache user data:', e);
-    }
-    
-    // Set flag to skip next auth check (prevents login loop on mobile)
-    if (skipAuthCheck) {
-      console.log('[AuthContext] Will skip next auth check after login');
-      setSkipNextCheck(true);
-      setLoading(false); // Immediately stop loading
+    // Store session token
+    if (userData.session_token) {
+      localStorage.setItem('session_token', userData.session_token);
     }
   };
 
