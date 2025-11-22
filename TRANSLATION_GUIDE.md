@@ -2,7 +2,7 @@
 
 ## 📥 Step 1: Download CSV
 
-**Download linket:** https://i18n-workflow-1.preview.emergentagent.com/recipe_translations_export.csv
+**Download linket:** https://multilingual-chef-3.preview.emergentagent.com/recipe_translations_export.csv
 
 Filen indeholder:
 - 81 opskrifter
