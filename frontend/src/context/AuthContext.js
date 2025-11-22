@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuth = async () => {
     try {
-      // Get session_token from localStorage as fallback if cookies don't work
+      // ALWAYS prefer localStorage token (more reliable on mobile)
       const sessionToken = localStorage.getItem('session_token');
       const headers = {};
       if (sessionToken) {
@@ -23,24 +23,54 @@ export const AuthProvider = ({ children }) => {
       
       console.log('[AuthContext] Checking auth...', {
         hasLocalStorageToken: !!sessionToken,
+        isMobile: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
         userAgent: navigator.userAgent.substring(0, 50)
       });
       
       const response = await axios.get(`${API}/auth/me`, {
         withCredentials: true,
-        headers
+        headers,
+        timeout: 10000 // 10 second timeout
       });
+      
       setUser(response.data);
       console.log('[AuthContext] User loaded from /auth/me:', response.data.email);
+      
+      // Re-save session token to ensure it's fresh
+      if (response.data.session_token) {
+        localStorage.setItem('session_token', response.data.session_token);
+      }
     } catch (error) {
-      // Not authenticated - user is null
-      console.log('[AuthContext] Not authenticated, error:', error.response?.status, error.message);
-      // Only clear user if we're certain they're not logged in
-      // Avoid clearing on network errors
+      console.log('[AuthContext] Auth check failed:', {
+        status: error.response?.status,
+        message: error.message,
+        hasToken: !!localStorage.getItem('session_token')
+      });
+      
+      // Only clear user if we're CERTAIN they're not logged in
+      // 401 = Invalid/expired token (clear user)
+      // 403 = Forbidden (clear user)
+      // Network errors = Keep user (they might be offline)
       if (error.response?.status === 401 || error.response?.status === 403) {
+        console.log('[AuthContext] Session invalid, logging out');
+        localStorage.removeItem('session_token');
+        localStorage.removeItem('user_country');
+        localStorage.removeItem('user_country_manual');
+        localStorage.removeItem('user_country_timestamp');
         setUser(null);
       } else {
-        console.warn('[AuthContext] Network/other error during auth check, keeping existing user state');
+        console.warn('[AuthContext] Network/timeout error, keeping user logged in (offline mode)');
+        // Try to load user from localStorage as fallback
+        const cachedUser = localStorage.getItem('cached_user');
+        if (cachedUser && !user) {
+          try {
+            const userData = JSON.parse(cachedUser);
+            setUser(userData);
+            console.log('[AuthContext] Loaded cached user (offline mode):', userData.email);
+          } catch (e) {
+            console.error('[AuthContext] Failed to parse cached user');
+          }
+        }
       }
     } finally {
       setLoading(false);
