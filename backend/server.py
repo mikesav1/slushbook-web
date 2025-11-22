@@ -3861,6 +3861,61 @@ async def update_recipe_translations(recipe_id: str, translations: dict, request
     updated = await db.recipes.find_one({"id": recipe_id}, {"_id": 0})
     return updated
 
+@api_router.post("/admin/import-recipes-bulk")
+async def import_recipes_bulk(recipes: List[dict], request: Request):
+    """
+    Import/update multiple recipes at once (Admin only)
+    Updates existing recipes or creates new ones based on ID
+    """
+    user = await get_current_user(request, None, db)
+    if not user or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Kun admin kan importere opskrifter")
+    
+    created = 0
+    updated = 0
+    errors = 0
+    details = []
+    
+    for recipe_data in recipes:
+        recipe_id = recipe_data.get('id')
+        recipe_name = recipe_data.get('name', 'Unknown')
+        
+        if not recipe_id:
+            errors += 1
+            details.append(f"⚠️ {recipe_name}: Mangler ID")
+            continue
+        
+        try:
+            # Check if exists
+            existing = await db.recipes.find_one({'id': recipe_id})
+            
+            if existing:
+                # Update existing
+                await db.recipes.replace_one(
+                    {'id': recipe_id},
+                    recipe_data
+                )
+                updated += 1
+                details.append(f"✅ Opdateret: {recipe_name}")
+            else:
+                # Create new
+                await db.recipes.insert_one(recipe_data)
+                created += 1
+                details.append(f"✨ Oprettet: {recipe_name}")
+        
+        except Exception as e:
+            errors += 1
+            details.append(f"❌ {recipe_name}: {str(e)}")
+    
+    return {
+        "success": errors == 0,
+        "message": f"Import færdig: {created} oprettet, {updated} opdateret, {errors} fejl",
+        "created": created,
+        "updated": updated,
+        "errors": errors,
+        "details": details[:50]  # Limit to first 50 details
+    }
+
 @api_router.delete("/recipes/{recipe_id}")
 async def delete_recipe(recipe_id: str, session_id: str):
     result = await db.user_recipes.delete_one(
