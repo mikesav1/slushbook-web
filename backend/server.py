@@ -2319,8 +2319,9 @@ async def login(request: LoginRequest, response: Response, http_request: Request
         value=session_token,
         httponly=True,
         secure=True,
-        samesite="none",  # Changed from "lax" to "none" for better cross-domain support
-        max_age=30 * 24 * 60 * 60  # 30 days (matches session expiration)
+        samesite="lax",  # Changed to "lax" for better mobile browser support
+        max_age=30 * 24 * 60 * 60,  # 30 days (matches session expiration)
+        path="/"  # Ensure cookie is available for all paths
     )
     
     # Remove password from response
