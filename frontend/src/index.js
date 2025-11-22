@@ -8,8 +8,11 @@ import App from "@/App";
 // This fixes admin authentication issues on custom domains where cookies don't work
 axios.interceptors.request.use(
   (config) => {
-    // Only add session token if no Authorization header is already set
-    if (!config.headers.Authorization) {
+    // Skip adding Authorization header for login/signup requests
+    const isAuthRequest = config.url?.includes('/auth/login') || config.url?.includes('/auth/signup');
+    
+    // Only add session token if no Authorization header is already set and it's not an auth request
+    if (!isAuthRequest && !config.headers.Authorization) {
       const token = localStorage.getItem('session_token');
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
