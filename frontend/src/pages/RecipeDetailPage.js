@@ -832,21 +832,6 @@ const RecipeDetailPage = ({ sessionId }) => {
                   <span className="text-sm font-medium">Rediger</span>
                 </Link>
               )}
-              {/* Tilføj favorit - Show for all users (guests get upgrade message) */}
-              <button
-                onClick={toggleFavorite}
-                data-testid="toggle-favorite-button"
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-              >
-                {recipe.is_favorite ? (
-                  <FaHeart className="text-red-500" size={20} />
-                ) : (
-                  <FaRegHeart className="text-gray-600" size={20} />
-                )}
-                <span className="text-sm font-medium">
-                  {recipe.is_favorite ? 'Fjern favorit' : 'Tilføj favorit'}
-                </span>
-              </button>
               
               {/* Del - Only for Pro users and recipe author */}
               {isAuthor() && user && ['pro', 'admin', 'editor'].includes(user.role) && (
