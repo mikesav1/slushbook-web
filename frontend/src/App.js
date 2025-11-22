@@ -42,6 +42,7 @@ import AdminLinksPage from "./pages/AdminLinksPage";
 import AdminAdsPage from "./pages/AdminAdsPage";
 import AdminTranslationsPage from "./pages/AdminTranslationsPage";
 import AdminRecipeTranslationsPage from "./pages/AdminRecipeTranslationsPage";
+import AdminImportRecipes from "./pages/AdminImportRecipes";
 import SharedRecipePage from "./pages/SharedRecipePage";
 import ManageSharesPage from "./pages/ManageSharesPage";
 import AdSlot from "./components/AdSlot";
