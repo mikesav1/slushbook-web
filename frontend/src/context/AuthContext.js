@@ -108,9 +108,11 @@ export const AuthProvider = ({ children }) => {
       console.error('[AuthContext] Failed to cache user data:', e);
     }
     
-    // Stop any pending checkAuth calls after login to prevent immediate logout
+    // Set flag to skip next auth check (prevents login loop on mobile)
     if (skipAuthCheck) {
-      console.log('[AuthContext] Skipping immediate auth check after login');
+      console.log('[AuthContext] Will skip next auth check after login');
+      setSkipNextCheck(true);
+      setLoading(false); // Immediately stop loading
     }
   };
 
