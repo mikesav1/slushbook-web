@@ -909,6 +909,21 @@ const SettingsPage = ({ sessionId }) => {
               <span className="text-purple-600">→</span>
             </div>
           </Link>
+          <Link
+            to="/admin/import-recipes"
+            className="block p-4 bg-white rounded-lg hover:shadow-md transition-all border border-green-100"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-bold text-gray-800 flex items-center gap-2">
+                  <FaUpload className="text-green-500" />
+                  📥 Import Opskrifter
+                </h3>
+                <p className="text-sm text-gray-600">Upload JSON fil med opskrifter og oversættelser</p>
+              </div>
+              <span className="text-green-600">→</span>
+            </div>
+          </Link>
         </div>
       )}
 
