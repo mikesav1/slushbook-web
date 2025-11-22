@@ -2450,10 +2450,17 @@ async def logout_all_devices(request: Request):
 @api_router.get("/auth/me")
 async def get_me(request: Request):
     """Get current user info"""
-    async def get_user_with_db(req):
-        return await get_current_user(req, None, db)
+    # Parse Authorization header manually
+    auth_header = request.headers.get("Authorization", "")
+    credentials = None
+    if auth_header.startswith("Bearer "):
+        from fastapi.security import HTTPAuthorizationCredentials
+        credentials = HTTPAuthorizationCredentials(
+            scheme="Bearer",
+            credentials=auth_header.replace("Bearer ", "")
+        )
     
-    user = await get_user_with_db(request)
+    user = await get_current_user(request, credentials, db)
     if not user:
         raise HTTPException(
             status_code=401,
