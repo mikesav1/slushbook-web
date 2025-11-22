@@ -5,26 +5,21 @@ import "@/index.css";
 import App from "@/App";
 
 // Global axios interceptor to add Authorization header from localStorage
-// This fixes admin authentication issues on custom domains where cookies don't work
+// This fixes authentication on custom domains where cookies don't work cross-domain
 axios.interceptors.request.use(
   (config) => {
-    // Skip adding Authorization header for login/signup requests (more robust matching)
+    // Skip adding Authorization header for login/signup requests
     const isAuthRequest = config.url?.includes('/auth/login') || 
                          config.url?.includes('/auth/signup') || 
                          config.url?.endsWith('/auth/login') || 
                          config.url?.endsWith('/auth/signup');
-    
-    console.log('[Axios Interceptor] URL:', config.url, 'isAuthRequest:', isAuthRequest);
     
     // Only add session token if no Authorization header is already set and it's not an auth request
     if (!isAuthRequest && !config.headers.Authorization) {
       const token = localStorage.getItem('session_token');
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
-        console.log('[Axios Interceptor] Added Authorization header');
       }
-    } else {
-      console.log('[Axios Interceptor] Skipped Authorization header (isAuthRequest:', isAuthRequest, ')');
     }
     return config;
   },
