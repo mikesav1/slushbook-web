@@ -26,13 +26,18 @@ axios.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor to handle 401 errors
+// Response interceptor to handle 401 errors  
+// Only clear session on 401 from authenticated endpoints, not auth requests
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const url = error.config?.url || '';
+    const isAuthRequest = url.includes('/auth/login') || url.includes('/auth/signup');
+    
+    // Only clear session token if 401 comes from authenticated endpoint (not login/signup)
+    if (error.response?.status === 401 && !isAuthRequest) {
       localStorage.removeItem('session_token');
-      console.log('[Axios] 401 Unauthorized - cleared session_token');
+      console.log('[Axios] 401 from authenticated endpoint - cleared session_token');
     }
     return Promise.reject(error);
   }
