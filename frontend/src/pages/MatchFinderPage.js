@@ -96,6 +96,7 @@ const MatchFinderPage = ({ sessionId }) => {
       
       // Clear matches since pantry changed
       setMatches(null);
+      sessionStorage.removeItem(`matches_${sessionId}`);
       
       checkPantry(); // Refresh pantry count
     } catch (error) {
