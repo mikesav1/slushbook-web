@@ -151,7 +151,8 @@ const LoginPage = ({ onLogin }) => {
         device_id: deviceId,
         device_name: deviceName
       }, {
-        withCredentials: true
+        withCredentials: true,
+        timeout: 15000 // 15 second timeout for mobile networks
       });
 
       // Show device limit warning if applicable
