@@ -157,7 +157,7 @@ const Navigation = () => {
                     </div>
                     <Link
                       to="/profile"
-                      onClick={() => setIsUserMenuOpen(false)}
+                      onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
                       className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -168,7 +168,7 @@ const Navigation = () => {
                     
                     <Link
                       to="/tips"
-                      onClick={() => setIsUserMenuOpen(false)}
+                      onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
                       className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                     >
                       <FaLightbulb className="w-4 h-4 text-yellow-500" />
