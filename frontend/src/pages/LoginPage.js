@@ -202,8 +202,49 @@ const LoginPage = ({ onLogin }) => {
       }
     } catch (error) {
       console.error('Login error:', error);
-      toast.error(error.response?.data?.detail || t('auth.loginFailed', 'Login failed'));
-      setLoading(false);
+      
+      // If timeout or network error, check if session was actually created
+      if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
+        console.log('[LoginPage] Request timeout - checking if session exists...');
+        toast.info('Logger ind... Tjekker forbindelse...');
+        
+        // Wait a moment then check auth
+        setTimeout(async () => {
+          try {
+            const checkResponse = await axios.get(`${API}/auth/me`, {
+              withCredentials: true,
+              timeout: 10000
+            });
+            
+            if (checkResponse.data && checkResponse.data.email) {
+              // Login actually succeeded!
+              console.log('[LoginPage] Login succeeded despite timeout!');
+              toast.success('Login lykkedes!');
+              
+              // Initialize preferences
+              const userCountry = checkResponse.data.country || 'DK';
+              const userLang = checkResponse.data.language || 'da';
+              await updateUserPreferences(userCountry, userLang, false);
+              
+              if (window.i18n) {
+                window.i18n.changeLanguage(userLang);
+              }
+              
+              onLogin(checkResponse.data);
+              navigate('/');
+            } else {
+              toast.error('Login fejlede');
+              setLoading(false);
+            }
+          } catch (checkError) {
+            toast.error(error.response?.data?.detail || t('auth.loginFailed', 'Login failed'));
+            setLoading(false);
+          }
+        }, 2000);
+      } else {
+        toast.error(error.response?.data?.detail || t('auth.loginFailed', 'Login failed'));
+        setLoading(false);
+      }
     }
   };
 
