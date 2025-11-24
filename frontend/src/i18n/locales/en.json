@@ -190,6 +190,7 @@
     "back": "Back",
     "canRestartInSettings": "can be restarted in Settings",
     "cancel": "Cancel",
+    "stepCount": "Step {{current}} of {{total}}",
     "close": "Close",
     "confirm": "Confirm",
     "delete": "Delete",
