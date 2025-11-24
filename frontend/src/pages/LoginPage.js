@@ -194,19 +194,14 @@ const LoginPage = ({ onLogin }) => {
       // Check if user came from shared recipe page
       const returnToShared = localStorage.getItem('return_to_shared');
       
-      // Navigate to appropriate page
-      setTimeout(() => {
-        if (returnToShared) {
-          // Clear the token and navigate back to shared recipe
-          localStorage.removeItem('return_to_shared');
-          navigate(`/shared/${returnToShared}`);
-          toast.success('Du kan nu kopiere opskriften til din samling!');
-        } else {
-          navigate('/');
-          // Force reload to apply language change
-          window.location.reload();
-        }
-      }, 500);
+      // Navigate to appropriate page (without reload to preserve localStorage)
+      if (returnToShared) {
+        localStorage.removeItem('return_to_shared');
+        navigate(`/shared/${returnToShared}`);
+        toast.success('Du kan nu kopiere opskriften til din samling!');
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       console.error('Login error:', error);
       toast.error(error.response?.data?.detail || t('auth.loginFailed', 'Login failed'));
