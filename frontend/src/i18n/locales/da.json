@@ -5,6 +5,7 @@
     "delete": "Slet",
     "edit": "Rediger",
     "close": "Luk",
+    "stepCount": "Trin {{current}} af {{total}}",
     "back": "Tilbage",
     "next": "Næste",
     "previous": "Forrige",
