@@ -17,6 +17,7 @@
     "brixOptionalPlaceholder": "Brix (optional)",
     "brixRecommended": "Recommended: 13-15°Bx for good consistency.",
     "cancel": "Cancel",
+    "stepCount": "Step {{current}} of {{total}}",
     "category": "Category",
     "categoryPlaceholder": "Category * (e.g. syrup.berries)",
     "changeImage": "Change image",

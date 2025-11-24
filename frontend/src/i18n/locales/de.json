@@ -17,6 +17,7 @@
     "brixOptionalPlaceholder": "Brix (optional)",
     "brixRecommended": "Empfohlen: 13-15°Bx für gute Konsistenz.",
     "cancel": "Abbrechen",
+    "stepCount": "Schritt {{current}} von {{total}}",
     "category": "Kategorie",
     "categoryPlaceholder": "Kategorie * (z.B. sirup.baer)",
     "changeImage": "Bild ändern",
