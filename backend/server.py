@@ -3851,27 +3851,39 @@ async def update_recipe_translations(recipe_id: str, body: RecipeTranslationsUpd
     
     translations = body.translations
     
-    # Check if recipe exists in system recipes
+    # Check if recipe exists in system recipes FIRST
     existing = await db.recipes.find_one({"id": recipe_id})
+    is_system_recipe = existing is not None
+    
+    # If not found in system recipes, check user_recipes
+    if not existing:
+        existing = await db.user_recipes.find_one({"id": recipe_id})
+        is_system_recipe = False
     
     if not existing:
         raise HTTPException(status_code=404, detail="Recipe not found")
     
-    # Only admin can edit system recipes
+    # Only admin can edit recipes
     if not user or user.role != "admin":
         raise HTTPException(
             status_code=403,
-            detail="Kun admin kan redigere system opskrifter"
+            detail="Kun admin kan redigere opskrifter"
         )
     
-    # Update only translations field
-    await db.recipes.update_one(
-        {"id": recipe_id},
-        {"$set": {"translations": translations}}
-    )
+    # Update translations field in the correct collection
+    if is_system_recipe:
+        await db.recipes.update_one(
+            {"id": recipe_id},
+            {"$set": {"translations": translations}}
+        )
+        updated = await db.recipes.find_one({"id": recipe_id}, {"_id": 0})
+    else:
+        await db.user_recipes.update_one(
+            {"id": recipe_id},
+            {"$set": {"translations": translations}}
+        )
+        updated = await db.user_recipes.find_one({"id": recipe_id}, {"_id": 0})
     
-    # Return updated recipe
-    updated = await db.recipes.find_one({"id": recipe_id}, {"_id": 0})
     return updated
 
 class RecipeImportRequest(BaseModel):
