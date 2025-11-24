@@ -154,8 +154,9 @@ const MatchFinderPage = ({ sessionId }) => {
       
       setMatches(response.data);
       
-      // Save matches to sessionStorage
+      // Save matches AND pantry snapshot to sessionStorage
       sessionStorage.setItem(`matches_${sessionId}`, JSON.stringify(response.data));
+      sessionStorage.setItem(`pantry_snapshot_${sessionId}`, JSON.stringify(pantryItems));
       
       toast.success(t('matchFinder.foundMatches', `Fandt ${response.data.can_make_now?.length || 0} matches!`, { count: response.data.can_make_now?.length || 0 }));
     } catch (error) {
