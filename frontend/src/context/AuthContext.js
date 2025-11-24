@@ -28,15 +28,6 @@ export const AuthProvider = ({ children }) => {
       if (response.data.session_token) {
         localStorage.setItem('session_token', response.data.session_token);
       }
-      
-      // Initialize language preference if not set
-      if (!localStorage.getItem('user_language')) {
-        const userLang = response.data.language || 'da';
-        const userCountry = response.data.country || 'DK';
-        localStorage.setItem('user_language', userLang);
-        localStorage.setItem('user_country', userCountry);
-        console.log('[AuthContext] Initialized language preferences:', userLang);
-      }
     } catch (error) {
       console.log('[AuthContext] Auth check failed:', error.response?.status || error.message);
       
