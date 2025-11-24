@@ -22,17 +22,44 @@ const MatchFinderPage = ({ sessionId }) => {
   const [previousPantryCount, setPreviousPantryCount] = useState(0);
 
   useEffect(() => {
-    checkPantry();
-    
-    // Restore previous match results if they exist
-    const savedMatches = sessionStorage.getItem(`matches_${sessionId}`);
-    if (savedMatches) {
-      try {
-        setMatches(JSON.parse(savedMatches));
-      } catch (e) {
-        console.error('Error restoring matches:', e);
+    const loadData = async () => {
+      await checkPantry();
+      
+      // Restore previous match results if they exist AND pantry hasn't changed
+      const savedMatches = sessionStorage.getItem(`matches_${sessionId}`);
+      const savedPantrySnapshot = sessionStorage.getItem(`pantry_snapshot_${sessionId}`);
+      
+      if (savedMatches && savedPantrySnapshot) {
+        try {
+          const matches = JSON.parse(savedMatches);
+          const snapshot = JSON.parse(savedPantrySnapshot);
+          
+          // Check if current pantry matches the snapshot
+          const response = await axios.get(`${API}/pantry/${sessionId}`);
+          const currentPantry = response.data;
+          
+          const pantryIds = currentPantry.map(item => item.id).sort().join(',');
+          const snapshotIds = snapshot.map(item => item.id).sort().join(',');
+          
+          if (pantryIds === snapshotIds) {
+            // Pantry unchanged, restore matches
+            setMatches(matches);
+            console.log('[MatchFinder] Restored cached matches');
+          } else {
+            // Pantry changed, clear cache
+            console.log('[MatchFinder] Pantry changed, clearing cached matches');
+            sessionStorage.removeItem(`matches_${sessionId}`);
+            sessionStorage.removeItem(`pantry_snapshot_${sessionId}`);
+          }
+        } catch (e) {
+          console.error('Error restoring matches:', e);
+          sessionStorage.removeItem(`matches_${sessionId}`);
+          sessionStorage.removeItem(`pantry_snapshot_${sessionId}`);
+        }
       }
-    }
+    };
+    
+    loadData();
   }, [sessionId]);
 
   // Clear matches when pantry changes
