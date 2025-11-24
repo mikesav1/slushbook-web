@@ -115,16 +115,13 @@ const LoginPage = ({ onLogin }) => {
         const returnToShared = localStorage.getItem('return_to_shared');
 
         // Navigate to appropriate page
-        setTimeout(() => {
-          if (returnToShared) {
-            localStorage.removeItem('return_to_shared');
-            navigate(`/shared/${returnToShared}`);
-            toast.success('Du kan nu kopiere opskriften til din samling!');
-          } else {
-            navigate('/');
-            window.location.reload(); // Force refresh to update auth state
-          }
-        }, 500);
+        if (returnToShared) {
+          localStorage.removeItem('return_to_shared');
+          navigate(`/shared/${returnToShared}`);
+          toast.success('Du kan nu kopiere opskriften til din samling!');
+        } else {
+          navigate('/');
+        }
 
       } catch (error) {
         console.error('Google auth error:', error);
