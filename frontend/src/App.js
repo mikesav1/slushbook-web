@@ -67,13 +67,19 @@ const Navigation = () => {
   const { user, logout, isGuest } = useAuth();
   const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
   const { t } = useTranslation();
-  const userMenuRef = React.useRef(null);
+  const desktopMenuRef = React.useRef(null);
+  const mobileMenuRef = React.useRef(null);
 
-  // Close dropdown when clicking outside
+  // Close dropdown when clicking outside (check both refs)
   React.useEffect(() => {
     const handleClickOutside = (e) => {
-      if (isUserMenuOpen && userMenuRef.current && !userMenuRef.current.contains(e.target)) {
-        setIsUserMenuOpen(false);
+      if (isUserMenuOpen) {
+        const clickedInsideDesktop = desktopMenuRef.current && desktopMenuRef.current.contains(e.target);
+        const clickedInsideMobile = mobileMenuRef.current && mobileMenuRef.current.contains(e.target);
+        
+        if (!clickedInsideDesktop && !clickedInsideMobile) {
+          setIsUserMenuOpen(false);
+        }
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
