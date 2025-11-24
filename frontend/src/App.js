@@ -344,8 +344,13 @@ const Navigation = () => {
                 >
                 <Link
                   to="/profile"
-                  onClick={() => setIsUserMenuOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    console.log('[App] Profile clicked');
+                    setIsUserMenuOpen(false);
+                  }}
+                  className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer active:bg-gray-100"
+                  style={{ WebkitTapHighlightColor: 'transparent' }}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -355,8 +360,13 @@ const Navigation = () => {
                 
                 <Link
                   to="/tips"
-                  onClick={() => setIsUserMenuOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    console.log('[App] Tips clicked');
+                    setIsUserMenuOpen(false);
+                  }}
+                  className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer active:bg-gray-100"
+                  style={{ WebkitTapHighlightColor: 'transparent' }}
                 >
                   <FaLightbulb className="w-4 h-4 text-yellow-500" />
                   Tips & Tricks
@@ -364,8 +374,13 @@ const Navigation = () => {
                 
                 <Link
                   to="/favorites"
-                  onClick={() => setIsUserMenuOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    console.log('[App] Favorites clicked');
+                    setIsUserMenuOpen(false);
+                  }}
+                  className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer active:bg-gray-100"
+                  style={{ WebkitTapHighlightColor: 'transparent' }}
                 >
                   <FaHeart className="w-4 h-4" />
                   Favoritter
