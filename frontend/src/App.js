@@ -389,6 +389,7 @@ const Navigation = () => {
                 <Link
                   to="/settings"
                   onClick={(e) => {
+                    e.stopPropagation();
                     console.log('[App] Settings clicked');
                     setIsUserMenuOpen(false);
                   }}
