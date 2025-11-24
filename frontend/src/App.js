@@ -329,19 +329,14 @@ const Navigation = () => {
             
             {/* Dropdown menu */}
             {isUserMenuOpen && (
-              <>
-                {/* Overlay to close menu when clicking outside */}
-                <div 
-                  className="fixed inset-0 z-40"
-                  onClick={() => {
-                    console.log('[App] Overlay clicked - closing menu');
-                    setIsUserMenuOpen(false);
-                  }}
-                />
-                <div 
-                  className="fixed right-4 top-20 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50"
-                  style={{ display: 'block', visibility: 'visible' }}
-                >
+              <div 
+                className="fixed right-4 top-20 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50"
+                style={{ display: 'block', visibility: 'visible' }}
+                onClick={(e) => {
+                  // Stop clicks inside menu from closing it
+                  e.stopPropagation();
+                }}
+              >
                 <Link
                   to="/profile"
                   onClick={(e) => {
