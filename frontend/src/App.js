@@ -338,7 +338,10 @@ const Navigation = () => {
                     setIsUserMenuOpen(false);
                   }}
                 />
-                <div className="fixed right-4 top-20 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                <div 
+                  className="fixed right-4 top-20 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50"
+                  style={{ display: 'block', visibility: 'visible' }}
+                >
                 <Link
                   to="/profile"
                   onClick={() => setIsUserMenuOpen(false)}
