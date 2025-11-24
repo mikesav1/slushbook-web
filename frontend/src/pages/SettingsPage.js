@@ -42,11 +42,8 @@ const SettingsPage = ({ sessionId }) => {
     fetchData();
     fetchDevices();
     // Update selected country and language from localStorage when component mounts
-    const country = getUserCountry();
-    const language = getUserLanguage();
-    console.log('[SettingsPage] Loading preferences - Country:', country, 'Language:', language);
-    setSelectedCountry(country);
-    setSelectedLanguage(language);
+    setSelectedCountry(getUserCountry());
+    setSelectedLanguage(getUserLanguage());
   }, [sessionId]);
 
   // Start tour for first-time users
