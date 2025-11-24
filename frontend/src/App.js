@@ -82,8 +82,9 @@ const Navigation = () => {
         }
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    // Changed from 'mousedown' to 'click' to allow Link navigation to happen first
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
   }, [isUserMenuOpen]);
 
   const navItems = [
