@@ -2068,13 +2068,14 @@ def calculate_match_score(recipe: Dict, pantry_items: List[Dict]) -> Dict:
     missing = []
     have = []
     
-    # Build pantry items with normalized names (lowercase, no extra spaces)
+    # Build pantry items with multiple normalized forms
     pantry_items_normalized = []
     for item in pantry_items:
-        normalized_name = ' '.join(item['ingredient_name'].lower().split())
+        name = item['ingredient_name'].lower()
         pantry_items_normalized.append({
             'original': item['ingredient_name'],
-            'normalized': normalized_name,
+            'normalized': ' '.join(name.split()),  # with spaces normalized
+            'no_space': name.replace(' ', ''),      # without any spaces
             'category': item.get('category_key', '')
         })
     
@@ -2082,13 +2083,22 @@ def calculate_match_score(recipe: Dict, pantry_items: List[Dict]) -> Dict:
         if ingredient['role'] == 'garnish':
             continue
         
-        ingredient_name_normalized = ' '.join(ingredient['name'].lower().split())
+        ingredient_name = ingredient['name'].lower()
+        ingredient_normalized = ' '.join(ingredient_name.split())
+        ingredient_no_space = ingredient_name.replace(' ', '')
         
-        # Try exact normalized match first
-        matched = any(
-            ingredient_name_normalized == pantry_item['normalized']
-            for pantry_item in pantry_items_normalized
-        )
+        # Try multiple matching strategies:
+        # 1. Exact normalized match (with normalized spaces)
+        # 2. No-space match (e.g., "jordbær sirup" matches "jordbærsirup")
+        # 3. Contains match (e.g., "jordbær" in "jordbærsirup")
+        matched = False
+        for pantry_item in pantry_items_normalized:
+            if (ingredient_normalized == pantry_item['normalized'] or
+                ingredient_no_space == pantry_item['no_space'] or
+                pantry_item['no_space'] in ingredient_no_space or
+                ingredient_no_space in pantry_item['no_space']):
+                matched = True
+                break
         
         if matched:
             if ingredient['role'] == 'required':
