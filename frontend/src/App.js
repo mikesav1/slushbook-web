@@ -313,8 +313,14 @@ const Navigation = () => {
         {user ? (
           <div className="relative">
             <button
-              onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-              className="flex items-center justify-center p-3 bg-white/10 backdrop-blur-md rounded-full hover:bg-white/20 transition-all"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('[App] Mobile menu toggled');
+                setIsUserMenuOpen(!isUserMenuOpen);
+              }}
+              className="flex items-center justify-center p-3 bg-white/10 backdrop-blur-md rounded-full hover:bg-white/20 transition-all cursor-pointer active:bg-white/30"
+              style={{ WebkitTapHighlightColor: 'transparent' }}
               data-testid="mobile-profile-button"
               data-tour="settings-menu"
             >
