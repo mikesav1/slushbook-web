@@ -4070,19 +4070,6 @@ async def match_recipes(request: MatchRequest):
     can_make = [m for m in recipes_with_matches if m['match']['can_make_now']]
     has_some = [m for m in recipes_with_matches if not m['match']['can_make_now']]
     
-    # DEBUG: Log match results
-    logger.info(f"[MATCH] Results: can_make={len(can_make)}, has_some={len(has_some)}, total_with_matches={len(recipes_with_matches)}")
-    if len(recipes_with_matches) > 0:
-        logger.info(f"[MATCH] Top 3 matches: {[(m['recipe']['name'], len(m['match']['have']), len(m['match']['missing'])) for m in recipes_with_matches[:3]]}")
-    else:
-        logger.warning(f"[MATCH] NO MATCHES FOUND! Pantry: {[item['ingredient_name'] for item in pantry_items]}")
-        # Sample 3 random recipe ingredient names for debugging
-        if len(all_recipes) > 0:
-            sample_recipes = all_recipes[:3]
-            for r in sample_recipes:
-                ingredients = [ing['name'] for ing in r.get('ingredients', [])[:5]]
-                logger.warning(f"[MATCH] Sample recipe '{r.get('name', 'Unknown')}' has ingredients: {ingredients}")
-    
     return {
         "can_make_now": can_make[:50],  # Increased limit
         "almost": has_some[:50],  # These are recipes where user has some ingredients
