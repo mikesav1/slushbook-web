@@ -229,7 +229,7 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
         <div className={`${isMobile ? 'p-4' : 'p-6'}`}>
           {/* Step indicator at top */}
           <div className="text-xs text-gray-500 font-semibold mb-3 text-center">
-            Trin {currentStep + 1} af {steps.length}
+            {t('common.stepCount', { current: currentStep + 1, total: steps.length })}
           </div>
           
           {/* Content */}
