@@ -183,7 +183,7 @@ const Navigation = () => {
                         </div>
                         <Link
                           to="/members"
-                          onClick={() => setIsUserMenuOpen(false)}
+                          onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
                           className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -193,7 +193,7 @@ const Navigation = () => {
                         </Link>
                         <Link
                           to="/admin/sandbox"
-                          onClick={() => setIsUserMenuOpen(false)}
+                          onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
                           className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                         >
                           <FaSearch className="w-4 h-4" />
@@ -201,7 +201,7 @@ const Navigation = () => {
                         </Link>
                         <Link
                           to="/admin/ingredients"
-                          onClick={() => setIsUserMenuOpen(false)}
+                          onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
                           className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                         >
                           <FaSeedling className="w-4 h-4" />
@@ -209,7 +209,7 @@ const Navigation = () => {
                         </Link>
                         <Link
                           to="/admin/match-images"
-                          onClick={() => setIsUserMenuOpen(false)}
+                          onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
                           className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                         >
                           <FaImage className="w-4 h-4" />
@@ -217,7 +217,7 @@ const Navigation = () => {
                         </Link>
                         <Link
                           to="/admin/seed-ingredients"
-                          onClick={() => setIsUserMenuOpen(false)}
+                          onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
                           className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                         >
                           <FaSeedling className="w-4 h-4" />
@@ -225,7 +225,7 @@ const Navigation = () => {
                         </Link>
                         <Link
                           to="/admin/fix-approvals"
-                          onClick={() => setIsUserMenuOpen(false)}
+                          onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
                           className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                         >
                           <FaCheckCircle className="w-4 h-4" />
@@ -233,7 +233,7 @@ const Navigation = () => {
                         </Link>
                         <Link
                           to="/admin/delete-recipes"
-                          onClick={() => setIsUserMenuOpen(false)}
+                          onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
                           className="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                         >
                           <FaTrash className="w-4 h-4" />
@@ -241,7 +241,7 @@ const Navigation = () => {
                         </Link>
                         <Link
                           to="/admin/links"
-                          onClick={() => setIsUserMenuOpen(false)}
+                          onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
                           className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                         >
                           <FaLink className="w-4 h-4" />
@@ -249,7 +249,7 @@ const Navigation = () => {
                         </Link>
                         <Link
                           to="/admin/ads"
-                          onClick={() => setIsUserMenuOpen(false)}
+                          onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
                           className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                         >
                           <FaAd className="w-4 h-4" />
@@ -257,7 +257,7 @@ const Navigation = () => {
                         </Link>
                         <Link
                           to="/admin/recipe-translations"
-                          onClick={() => setIsUserMenuOpen(false)}
+                          onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
                           className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                         >
                           <FaBook className="w-4 h-4" />
@@ -265,7 +265,7 @@ const Navigation = () => {
                         </Link>
                         <Link
                           to="/admin"
-                          onClick={() => setIsUserMenuOpen(false)}
+                          onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
                           className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                         >
                           <FaCog className="w-4 h-4" />
@@ -276,7 +276,7 @@ const Navigation = () => {
                     
                     <Link
                       to="/settings"
-                      onClick={() => setIsUserMenuOpen(false)}
+                      onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
                       className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 border-t border-gray-100 mt-2"
                     >
                       <FaCog className="w-4 h-4" />
