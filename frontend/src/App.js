@@ -387,7 +387,7 @@ const Navigation = () => {
                   onClick={(e) => {
                     e.stopPropagation();
                     console.log('[App] Settings clicked');
-                    setIsUserMenuOpen(false);
+                    setTimeout(() => setIsUserMenuOpen(false), 100);
                   }}
                   className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-t border-gray-100 cursor-pointer active:bg-gray-100"
                   style={{ WebkitTapHighlightColor: 'transparent' }}
