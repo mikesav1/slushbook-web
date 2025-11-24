@@ -363,12 +363,21 @@ const Navigation = () => {
                 </Link>
                 
                 <button
-                  onClick={async () => {
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('[App] Logout clicked');
                     setIsUserMenuOpen(false);
-                    await logout();
-                    navigate('/login');
+                    try {
+                      await logout();
+                      console.log('[App] Logout complete, navigating to login');
+                      navigate('/login');
+                    } catch (error) {
+                      console.error('[App] Logout error:', error);
+                    }
                   }}
-                  className="flex items-center gap-3 w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 border-t border-gray-100"
+                  className="flex items-center gap-3 w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 border-t border-gray-100 cursor-pointer active:bg-red-100"
+                  style={{ WebkitTapHighlightColor: 'transparent' }}
                 >
                   <FaSignOutAlt className="w-4 h-4" />
                   Log ud
