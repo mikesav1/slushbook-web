@@ -402,6 +402,7 @@ const Navigation = () => {
                   Log ud
                 </button>
               </div>
+              </>
             )}
           </div>
         ) : (
