@@ -329,7 +329,16 @@ const Navigation = () => {
             
             {/* Dropdown menu */}
             {isUserMenuOpen && (
-              <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+              <>
+                {/* Overlay to close menu when clicking outside */}
+                <div 
+                  className="fixed inset-0 z-40"
+                  onClick={() => {
+                    console.log('[App] Overlay clicked - closing menu');
+                    setIsUserMenuOpen(false);
+                  }}
+                />
+                <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
                 <Link
                   to="/profile"
                   onClick={() => setIsUserMenuOpen(false)}
