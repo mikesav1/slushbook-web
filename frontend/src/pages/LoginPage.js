@@ -174,19 +174,19 @@ const LoginPage = ({ onLogin }) => {
       }
       
       // Save user's country and language preferences to localStorage
-      // ALWAYS use the user's database language (mark as manual=false to allow Settings to override later)
-      if (response.data.user.country && response.data.user.language) {
-        const userLang = response.data.user.language;
-        await updateUserPreferences(response.data.user.country, userLang, false);
-        
-        // CRITICAL: Also update i18next immediately to ensure UI shows correct language
-        if (window.i18n) {
-          window.i18n.changeLanguage(userLang);
-          console.log(`[LoginPage] Changed i18n language to: ${userLang}`);
-        }
-        
-        console.log(`[LoginPage] Loaded user language from database: ${userLang}`);
+      // Use database values OR defaults if not set
+      const userCountry = response.data.user.country || 'DK';
+      const userLang = response.data.user.language || 'da';
+      
+      await updateUserPreferences(userCountry, userLang, false);
+      
+      // Update i18next immediately to ensure UI shows correct language
+      if (window.i18n) {
+        window.i18n.changeLanguage(userLang);
+        console.log(`[LoginPage] Changed i18n language to: ${userLang}`);
       }
+      
+      console.log(`[LoginPage] Set user preferences - Country: ${userCountry}, Language: ${userLang}`);
       
       // Save user data
       onLogin(response.data.user);
