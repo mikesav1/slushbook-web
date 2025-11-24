@@ -50,7 +50,7 @@ const MatchFinderPage = ({ sessionId }) => {
       }
     }
     setPreviousPantryCount(pantryCount);
-  }, [pantryCount, sessionId]);
+  }, [pantryCount]);
 
 
   // Start tour for first-time users
