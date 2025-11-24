@@ -315,7 +315,7 @@ const Navigation = () => {
       </div>
 
       {/* Mobile menu button */}
-      <div ref={userMenuRef} className="absolute right-4 top-4 lg:hidden">
+      <div ref={mobileMenuRef} className="absolute right-4 top-4 lg:hidden">
         {user ? (
           <div className="relative">
             <button
