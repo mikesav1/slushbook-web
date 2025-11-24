@@ -4022,6 +4022,9 @@ async def match_recipes(request: MatchRequest):
     if not pantry_items:
         return {"message": "Tilføj ingredienser til dit pantry først!", "matches": []}
     
+    # DEBUG: Log pantry items
+    logger.info(f"[MATCH] Pantry items ({len(pantry_items)}): {[item['ingredient_name'] for item in pantry_items]}")
+    
     # Get all recipes that user has access to
     # System recipes: Only published ones (unless user is admin)
     recipes = await db.recipes.find(
@@ -4039,6 +4042,9 @@ async def match_recipes(request: MatchRequest):
     user_recipes = await db.user_recipes.find(user_recipes_query, {"_id": 0}).to_list(1000)
     
     all_recipes = recipes + user_recipes
+    
+    # DEBUG: Log recipe count
+    logger.info(f"[MATCH] Total recipes to search: {len(all_recipes)} (system: {len(recipes)}, user: {len(user_recipes)})")
     
     # Calculate matches
     matches = []
