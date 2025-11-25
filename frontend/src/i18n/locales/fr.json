@@ -661,6 +661,7 @@
     "deleteCommentError": "Impossible de supprimer le commentaire",
     "deleteError": "Impossible de supprimer la recette",
     "deleteRecipe": "Supprimer la recette",
+    "aiTipsTooltip": "💡 Nouvelle fonctionnalité ! Obtenez des conseils d'experts sur le goût, la consistance, les substitutions d'ingrédients et les conseils machine de l'assistant IA.",
     "edit": "Modifier",
     "edited": "modifié",
     "next": "Suivant",
