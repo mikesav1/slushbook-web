@@ -7044,31 +7044,42 @@ async def ai_brix_assistant(request: AIQueryRequest):
     """
     AI assistant for Brix calculations and ingredient advice.
     Queries the ingredients database and provides expert recommendations.
+    Uses gpt-5.1 model for accurate calculations.
     """
     try:
         # Load system prompt
-        system_prompt = load_system_prompt('brix_assistant.txt')
+        system_prompt = load_system_prompt('brix_prompt.txt')
         
-        # Fetch relevant ingredients from database (limit to 50 for context)
-        ingredients_cursor = db.ingredients.find({}, {"_id": 0}).limit(50)
-        ingredients_list = await ingredients_cursor.to_list(50)
+        # Fetch ALL ingredients from database (no limit for accurate calculations)
+        ingredients_cursor = db.ingredients.find({}, {"_id": 0})
+        ingredients_list = await ingredients_cursor.to_list(None)
         
         # Build context with ingredient data
         if ingredients_list:
-            context = "Tilgængelige ingredienser i databasen:\n\n"
+            context = "Ingredienser i databasen:\n\n"
             for ing in ingredients_list:
                 name = ing.get('name', '')
                 brix = ing.get('brix', 0)
+                volume_ml = ing.get('volume_ml')
                 category = ing.get('category', '')
+                keywords = ing.get('keywords', [])
+                alcohol_vol = ing.get('alcohol_vol')
+                
                 context += f"- {name}: {brix}°Bx"
+                if volume_ml:
+                    context += f", {volume_ml}ml"
                 if category:
                     context += f" ({category})"
+                if alcohol_vol:
+                    context += f", {alcohol_vol}% alkohol"
+                if keywords:
+                    context += f" [keywords: {', '.join(keywords[:3])}]"
                 context += "\n"
         else:
             context = "Ingen ingrediensdata tilgængelig endnu."
         
-        # Query OpenAI
-        response = await query_openai(system_prompt, request.query, context)
+        # Query OpenAI with gpt-5.1 for precise calculations
+        response = await query_openai(system_prompt, request.query, context, model="gpt-5.1")
         
         return {
             "success": True,
