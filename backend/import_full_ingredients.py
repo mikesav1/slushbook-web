@@ -412,25 +412,37 @@ async def import_ingredients():
         },
         {
             "name": "Vanilje Sirup",
-            "brix": None,
+            "brand": "Monin",
+            "brix": 60.1,
             "volume_ml": None,
             "category": "sirup",
+            "density_g_per_ml": 1.284,
+            "ph": 3.0,
+            "carbs_g_per_100ml": 79.8,
+            "sugars_g_per_100ml": 79.6,
+            "energy_kcal_per_100ml": 322,
+            "vanilla_origin": "Madagascar Bourbon",
+            "vanilla_type": "Natural vanilla flavouring",
+            "juice_content_percent": 0,
+            "acidity_type": None,
+            "acid_g_per_l": None,
             "keywords": {
-                "da": ["vanilje sirup"],
-                "de": ["vanillesirup"],
-                "fr": ["sirop vanille"],
-                "en_uk": ["vanilla syrup"],
-                "en_us": ["vanilla syrup"]
+                "da": ["vanilje sirup", "vaniljesirup", "monin vanilje", "vanilla syrup"],
+                "de": ["vanille sirup", "vanillesirup", "monin vanille"],
+                "fr": ["sirop vanille", "sirop de vanille", "monin vanille"],
+                "en_uk": ["vanilla syrup", "vanilla flavour syrup", "monin vanilla syrup"],
+                "en_us": ["vanilla syrup", "vanilla flavored syrup", "monin vanilla syrup"]
             },
-            "country": ["DK"],
-            "alcohol_vol": None,
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
             "links": {
                 "DK": None,
                 "DE": None,
                 "FR": None,
                 "EN_UK": None,
                 "EN_US": None
-            }
+            },
+            "brix_source": "Monin Vanilla Syrup Product Specification (2020)"
         },
         {
             "name": "Coca-Cola",
