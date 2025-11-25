@@ -7076,7 +7076,7 @@ async def ai_brix_assistant(request: AIQueryRequest):
                 brix = ing.get('brix', 0)
                 volume_ml = ing.get('volume_ml')
                 category = ing.get('category', '')
-                keywords = ing.get('keywords', [])
+                keywords = ing.get('keywords', {})
                 alcohol_vol = ing.get('alcohol_vol')
                 
                 context += f"- {name}: {brix}°Bx"
@@ -7086,8 +7086,16 @@ async def ai_brix_assistant(request: AIQueryRequest):
                     context += f" ({category})"
                 if alcohol_vol:
                     context += f", {alcohol_vol}% alkohol"
-                if keywords:
-                    context += f" [keywords: {', '.join(keywords[:3])}]"
+                
+                # Build keyword string from all languages
+                if keywords and isinstance(keywords, dict):
+                    all_keywords = []
+                    for lang_keywords in keywords.values():
+                        if isinstance(lang_keywords, list):
+                            all_keywords.extend(lang_keywords)
+                    if all_keywords:
+                        context += f" [keywords: {', '.join(all_keywords[:5])}]"
+                
                 context += "\n"
         else:
             context = "Ingen ingrediensdata tilgængelig endnu."
