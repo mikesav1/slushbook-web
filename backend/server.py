@@ -7211,6 +7211,122 @@ async def adjust_brix_endpoint(request: BrixAdjustmentRequest):
         logger.error(f"Brix adjustment error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Adjustment failed: {str(e)}")
 
+class AICreateRecipeRequest(BaseModel):
+    query: str = Field(..., min_length=1, max_length=2000, description="User's recipe request")
+    language: Optional[str] = Field(default="da", description="Language for the recipe")
+
+@api_router.post("/ai/create-recipe")
+async def ai_create_recipe(request: AICreateRecipeRequest):
+    """
+    AI-powered recipe generation.
+    
+    User describes what they want, AI generates a complete recipe
+    with ingredients from database, validated structure, and Brix calculation.
+    
+    Example request:
+    {
+        "query": "Lav en syrlig 2 liters grøn slush med lime og ananas",
+        "language": "da"
+    }
+    
+    Returns structured JSON matching recipe form fields.
+    """
+    try:
+        # Load system prompt for recipe creation
+        prompt_path = ROOT_DIR / 'prompts' / 'create_recipe_prompt.txt'
+        if prompt_path.exists():
+            system_prompt = prompt_path.read_text(encoding='utf-8')
+        else:
+            # Fallback system prompt
+            system_prompt = """Du er en ekspert i at lave slushice-opskrifter.
+
+Når brugeren beder om en opskrift, skal du:
+1. Vælge passende ingredienser fra ingredients-databasen
+2. Beregne korrekt Brix (ideal: 12-14°Bx)
+3. Angive præcise mængder i ml
+4. Foreslå en procedure
+
+Regler:
+- Brug KUN ingredienser fra databasen
+- Beregn total Brix præcist
+- Alkohol tilsættes altid til sidst
+- Standardvolumen: 2000ml
+- Returner ALTID valid JSON"""
+        
+        # Fetch ingredients from database for context
+        ingredients_cursor = db.ingredients.find({}, {"_id": 0})
+        ingredients_list = await ingredients_cursor.to_list(None)
+        
+        # Build context
+        context = "Tilgængelige ingredienser:\n\n"
+        for ing in ingredients_list[:50]:  # Limit for context size
+            name = ing.get('name', '')
+            brix = ing.get('brix')
+            category = ing.get('category', '')
+            context += f"- {name}: {brix if brix is not None else 'null'}°Bx ({category})\n"
+        
+        context += f"\n\nBrugers anmodning: {request.query}\n\n"
+        context += """Returner PRÆCIS denne JSON-struktur (ingen ekstra tekst):
+
+{
+  "name": "Opskriftens navn",
+  "description": "Kort beskrivelse",
+  "type": "Klassisk",
+  "brix": 13.0,
+  "base_volume_ml": 2000,
+  "contains_alcohol": false,
+  "tags": ["tag1", "tag2"],
+  "ingredients": [
+    {
+      "name": "Ingrediens navn fra database",
+      "category": "sirup/juice/sodavand/alkohol/vand",
+      "amount": 500,
+      "unit": "ml",
+      "required": true,
+      "brix": 12.8
+    }
+  ],
+  "procedure": [
+    "Trin 1",
+    "Trin 2"
+  ]
+}"""
+        
+        # Query AI
+        api_key = os.environ.get('EMERGENT_LLM_KEY', 'sk-emergent-0A93663479e74011f0')
+        
+        chat = LlmChat(
+            api_key=api_key,
+            session_id=f"create_recipe_{datetime.now().timestamp()}",
+            system_message=system_prompt
+        ).with_model("openai", "gpt-4o")
+        
+        user_message = UserMessage(text=context)
+        response = await chat.send_message(user_message)
+        
+        # Parse JSON response
+        import json
+        import re
+        
+        # Try to extract JSON from response
+        json_match = re.search(r'\{.*\}', response, re.DOTALL)
+        if json_match:
+            recipe_json = json.loads(json_match.group())
+        else:
+            recipe_json = json.loads(response)
+        
+        return {
+            "success": True,
+            "recipe": recipe_json
+        }
+        
+    except json.JSONDecodeError as e:
+        logger.error(f"JSON parse error in recipe creation: {str(e)}")
+        raise HTTPException(status_code=500, detail="AI returnerede invalid JSON")
+    except Exception as e:
+        logger.error(f"AI recipe creation error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Recipe creation failed: {str(e)}")
+
 
 # =============================================================================
 # TRANSLATION EDITOR ENDPOINTS (Admin Only)
