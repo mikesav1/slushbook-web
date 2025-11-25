@@ -94,6 +94,7 @@ const Navigation = () => {
     { path: "/match", icon: FaMagic, label: t('nav.match') },
     ...(user && user.role !== 'guest' ? [{ path: "/shopping", icon: FaShoppingCart, label: t('nav.shoppingList') }] : []),
     ...(user && user.role !== 'guest' ? [{ path: "/favorites", icon: FaHeart, label: t('nav.favorites') }] : []),
+    { path: "/ai", icon: FaRobot, label: "SlushBook AI", badge: "BETA" },
     { path: "/settings", icon: FaCog, label: t('nav.settings') },
   ];
 
