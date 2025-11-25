@@ -212,6 +212,73 @@ async def add_monin_syrups():
                 "EN_US": None
             },
             "brix_source": "Monin Vanilla Syrup Product Specification (2020)"
+        },
+        {
+            "name": "Hasselnød Sirup",
+            "brand": "Monin",
+            "brix": 63.9,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.309,
+            "ph": 3.1,
+            "carbs_g_per_100ml": 83.5,
+            "sugars_g_per_100ml": 82.9,
+            "energy_kcal_per_100ml": 336,
+            "juice_content_percent": 0,
+            "nut_content_type": "Natural hazelnut flavouring",
+            "contains_nut_allergen": False,
+            "color": "amber / golden",
+            "acidity_type": None,
+            "acid_g_per_l": None,
+            "keywords": {
+                "da": ["hasselnød sirup", "hasselnødsirup", "monin hasselnød", "monin hazelnut"],
+                "de": ["haselnuss sirup", "haselnusssirup", "monin haselnuss"],
+                "fr": ["sirop noisette", "sirop de noisette", "monin noisette"],
+                "en_uk": ["hazelnut syrup", "hazelnut flavour syrup", "monin hazelnut syrup"],
+                "en_us": ["hazelnut syrup", "hazelnut flavored syrup", "monin hazelnut syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Hazelnut Syrup Product Specification (2020)"
+        },
+        {
+            "name": "Mynte Sirup",
+            "brand": "Monin",
+            "brix": 55.8,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.257,
+            "water_activity": 0.898,
+            "carbs_g_per_100ml": 70,
+            "sugars_g_per_100ml": 70,
+            "energy_kcal_per_100ml": 282,
+            "juice_content_percent": 0,
+            "mint_flavour_type": "Natural mint flavouring",
+            "color": "clear / pale green",
+            "keywords": {
+                "da": ["mynte sirup", "mynte-sirup", "monin mynte", "monin mint"],
+                "de": ["minzsirup", "minze sirup", "monin minze"],
+                "fr": ["sirop menthe", "sirop de menthe", "monin menthe"],
+                "en_uk": ["mint syrup", "mint flavour syrup", "monin mint syrup"],
+                "en_us": ["mint syrup", "mint flavored syrup", "monin mint syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Mojito Mint Syrup Product Specification, 10/02/2021"
         }
     ]
     
