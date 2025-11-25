@@ -50,6 +50,8 @@ const AddRecipePage = ({ sessionId }) => {
   // AI States
   const [showAICreatePopup, setShowAICreatePopup] = useState(false);
   const [showBrixAIPopup, setShowBrixAIPopup] = useState(false);
+  const [showCreateTooltip, setShowCreateTooltip] = useState(true);
+  const [showBrixTooltip, setShowBrixTooltip] = useState(true);
 
   useEffect(() => {
     checkLimits();
