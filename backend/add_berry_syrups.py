@@ -698,6 +698,76 @@ async def add_monin_syrups():
                 "EN_US": None
             },
             "brix_source": "Monin Kiwi Syrup Product Specification (2020)"
+        },
+        {
+            "name": "Kirsebær Sirup",
+            "brand": "Monin",
+            "brix": 61.5,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.292,
+            "ph": 3.0,
+            "carbs_g_per_100ml": 80.4,
+            "sugars_g_per_100ml": 79.9,
+            "energy_kcal_per_100ml": 323,
+            "juice_content_percent": 15,
+            "cherry_juice_percent": 15,
+            "flavour_profile": "Sweet cherry, almond-like notes, red berry",
+            "color": "dark red",
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 6.6,
+            "keywords": {
+                "da": ["kirsebær sirup", "kirsebærsirup", "monin kirsebær", "cherry syrup"],
+                "de": ["kirsch sirup", "kirschsirup", "monin kirsch"],
+                "fr": ["sirop cerise", "sirop de cerise", "monin cerise"],
+                "en_uk": ["cherry syrup", "monin cherry syrup"],
+                "en_us": ["cherry syrup", "cherry flavored syrup", "monin cherry syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Cherry Syrup Product Specification (2020)"
+        },
+        {
+            "name": "Pink Grapefruit Sirup",
+            "brand": "Monin",
+            "brix": 56.2,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.271,
+            "ph": 2.7,
+            "carbs_g_per_100ml": 75.9,
+            "sugars_g_per_100ml": 75.5,
+            "energy_kcal_per_100ml": 295,
+            "juice_content_percent": 20,
+            "grapefruit_juice_percent": 20,
+            "flavour_profile": "Sharp citrus, bitter-sweet, refreshing, zesty",
+            "color": "pink-orange",
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 7.9,
+            "keywords": {
+                "da": ["pink grapefruit sirup", "grapefrugt sirup", "rosa grapefrugt", "monin pink grapefruit"],
+                "de": ["pink grapefruit sirup", "rosen grapefruit sirup", "monin pink grapefruit"],
+                "fr": ["sirop pamplemousse rose", "sirop pamplemousse", "monin pamplemousse rose"],
+                "en_uk": ["pink grapefruit syrup", "monin pink grapefruit syrup"],
+                "en_us": ["pink grapefruit syrup", "grapefruit flavored syrup", "monin pink grapefruit syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Pink Grapefruit Syrup Product Specification (2020)"
         }
     ]
     
