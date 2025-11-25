@@ -7010,10 +7010,16 @@ def load_system_prompt(prompt_file: str) -> str:
         return prompt_path.read_text(encoding='utf-8')
     return "Du er en hjælpsom assistent."
 
-async def query_openai(system_prompt: str, user_query: str, context: str = "") -> str:
+async def query_openai(system_prompt: str, user_query: str, context: str = "", model: str = "gpt-5.1") -> str:
     """
     Query OpenAI with system prompt and user query
     Uses Emergent LLM key for authentication
+    
+    Args:
+        system_prompt: System instructions for the AI
+        user_query: User's question
+        context: Optional context (e.g., ingredient data)
+        model: OpenAI model to use (default: gpt-5.1)
     """
     api_key = os.environ.get('EMERGENT_LLM_KEY', 'sk-emergent-0A93663479e74011f0')
     
@@ -7026,7 +7032,7 @@ async def query_openai(system_prompt: str, user_query: str, context: str = "") -
         api_key=api_key,
         session_id=f"ai_assistant_{datetime.now().timestamp()}",
         system_message=system_prompt
-    ).with_model("openai", "gpt-4o")
+    ).with_model("openai", model)
     
     user_message = UserMessage(text=full_prompt)
     response = await chat.send_message(user_message)
