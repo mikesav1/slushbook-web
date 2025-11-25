@@ -7102,8 +7102,8 @@ async def ai_general_help(request: AIQueryRequest):
         # Load system prompt
         system_prompt = load_system_prompt('help_prompt.txt')
         
-        # Query OpenAI with o1-mini (fast and cost-effective)
-        response = await query_openai(system_prompt, request.query, model="o1-mini")
+        # Query OpenAI with gpt-4o-mini (fast and cost-effective)
+        response = await query_openai(system_prompt, request.query, model="gpt-4o-mini")
         
         return {
             "success": True,
