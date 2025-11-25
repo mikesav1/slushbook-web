@@ -643,14 +643,22 @@ const AddRecipePage = ({ sessionId }) => {
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold">{t('addRecipe.ingredientsTitle')}</h2>
             <div className="flex gap-2">
-              <Button 
-                type="button" 
-                onClick={() => setShowBrixAIPopup(true)}
-                className="bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white"
-                size="sm"
-              >
-                <FaCalculator className="mr-2" /> Brix AI
-              </Button>
+              <div className="relative">
+                <Button 
+                  type="button" 
+                  onClick={() => setShowBrixAIPopup(true)}
+                  className="bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white"
+                  size="sm"
+                >
+                  <FaCalculator className="mr-2" /> Brix AI
+                </Button>
+                <AITooltip
+                  storageKey="ai_brix_tooltip_shown"
+                  message={t('addRecipe.aiBrixTooltip')}
+                  show={showBrixTooltip}
+                  onClose={() => setShowBrixTooltip(false)}
+                />
+              </div>
               <Button type="button" onClick={addIngredient} size="sm">
                 <FaPlus className="mr-2" /> {t('addRecipe.addTag')}
               </Button>
