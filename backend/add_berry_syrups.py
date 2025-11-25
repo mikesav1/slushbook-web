@@ -348,6 +348,75 @@ async def add_monin_syrups():
                 "EN_US": None
             },
             "brix_source": "Monin Grenadine Syrup Product Specification (2020)"
+        },
+        {
+            "name": "Appelsin Sirup",
+            "brand": "Monin",
+            "brix": 58.2,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.276,
+            "ph": 2.9,
+            "carbs_g_per_100ml": 77.8,
+            "sugars_g_per_100ml": 77.5,
+            "energy_kcal_per_100ml": 311,
+            "juice_content_percent": 24,
+            "orange_juice_percent": 24,
+            "flavour_profile": "Sweet orange peel, citrus zest, mild bitterness",
+            "color": "bright orange",
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 6.9,
+            "keywords": {
+                "da": ["appelsin sirup", "appelsinsirup", "monin appelsin", "monin orange"],
+                "de": ["orangensirup", "monin orange sirup", "orange sirup"],
+                "fr": ["sirop orange", "sirop d'orange", "monin orange"],
+                "en_uk": ["orange syrup", "citrus orange syrup", "monin orange syrup"],
+                "en_us": ["orange syrup", "orange flavored syrup", "monin orange syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Orange Syrup Product Specification (2020)"
+        },
+        {
+            "name": "Monin Blue Curaçao Sirup",
+            "brand": "Monin",
+            "brix": 50.5,
+            "volume_ml": 700,
+            "category": "sirup",
+            "density_g_per_ml": 1.240,
+            "ph": 3.0,
+            "carbs_g_per_100ml": 72.1,
+            "sugars_g_per_100ml": 71.8,
+            "energy_kcal_per_100ml": 285,
+            "juice_content_percent": 0,
+            "flavour_profile": "Citrus (bitter orange / curaçao orange), sweet, vibrant",
+            "color": "bright blue (E133)",
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 5.8,
+            "keywords": {
+                "da": ["blå curaçao sirup", "blå curacao sirup", "blue curacao sirup", "monin blå curaçao"],
+                "de": ["blauer curaçao sirup", "blau curacao sirup", "monin curaçao blau"],
+                "fr": ["sirop curaçao bleu", "sirop bleu curaçao", "monin curaçao bleu"],
+                "en_uk": ["blue curaçao syrup", "blue curacao syrup", "monin blue curaçao syrup"],
+                "en_us": ["blue curaçao syrup", "blue curacao syrup", "monin blue curaçao syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": "https://barshopen.dk/da/barudstyr/mixers-og-sirup/monin-blue-curacao-70-cl/",
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Blue Curaçao Syrup Product Specification (2019)"
         }
     ]
     
