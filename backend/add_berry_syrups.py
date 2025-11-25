@@ -279,6 +279,75 @@ async def add_monin_syrups():
                 "EN_US": None
             },
             "brix_source": "Monin Mojito Mint Syrup Product Specification, 10/02/2021"
+        },
+        {
+            "name": "Pink Shake Sirup",
+            "brand": "Monin",
+            "brix": 57.4,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.273,
+            "ph": 2.7,
+            "carbs_g_per_100ml": 78.3,
+            "sugars_g_per_100ml": 78.1,
+            "energy_kcal_per_100ml": 314,
+            "juice_content_percent": 22,
+            "pink_grapefruit_juice_percent": 22,
+            "flavour_profile": "Pink grapefruit, floral citrus, light bitterness",
+            "color": "pink / rose",
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 7.4,
+            "keywords": {
+                "da": ["pink shake", "pink shake sirup", "pink grape sirup", "pink grapefrugt sirup", "monin pink shake"],
+                "de": ["pink grapefruit sirup", "pink grapefruitsirup", "monin pink grapefruit"],
+                "fr": ["sirop pamplemousse rose", "sirop pamplemousse", "monin pamplemousse rose"],
+                "en_uk": ["pink grapefruit syrup", "pink shake syrup", "monin pink grapefruit syrup"],
+                "en_us": ["pink grapefruit syrup", "pink shake syrup", "monin pink grapefruit syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Pink Grapefruit Syrup Product Specification (2020)"
+        },
+        {
+            "name": "Grenadine Sirup",
+            "brand": "Monin",
+            "brix": 68.0,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.328,
+            "ph": 3.1,
+            "carbs_g_per_100ml": 85.7,
+            "sugars_g_per_100ml": 85.4,
+            "energy_kcal_per_100ml": 341,
+            "juice_content_percent": 10,
+            "flavour_profile": "Pomegranate and red berry flavours",
+            "color": "deep red",
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 5.9,
+            "keywords": {
+                "da": ["grenadine sirup", "grenadinesirup", "monin grenadine"],
+                "de": ["grenadinesirup", "grenadine sirup", "monin grenadine"],
+                "fr": ["sirop grenadine", "monin grenadine"],
+                "en_uk": ["grenadine syrup", "monin grenadine syrup"],
+                "en_us": ["grenadine syrup", "monin grenadine syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Grenadine Syrup Product Specification (2020)"
         }
     ]
     
