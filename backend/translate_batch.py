@@ -85,7 +85,10 @@ async def translate_recipe(recipe, api_key, db):
     da_description = da_trans.get('description', '')
     da_steps = da_trans.get('steps', [])
     
-    if not da_description and not da_steps:
+    # Get ingredients from recipe root (not from translations)
+    ingredients = recipe.get('ingredients', [])
+    
+    if not da_description and not da_steps and not ingredients:
         print(f"    ⚠️  No Danish content, skipping")
         return
     
@@ -116,11 +119,33 @@ async def translate_recipe(recipe, api_key, db):
                 )
                 translated_steps.append(translated_step)
             
+            # Translate ingredients
+            translated_ingredients = []
+            for ingredient in ingredients:
+                ingredient_name = ingredient.get('name', '')
+                if ingredient_name:
+                    translated_name = await translate_recipe_content(
+                        ingredient_name,
+                        'ingredient',
+                        recipe_name,
+                        lang,
+                        api_key
+                    )
+                    translated_ingredients.append({
+                        'name': translated_name,
+                        'category_key': ingredient.get('category_key', ''),
+                        'quantity': ingredient.get('quantity', 0),
+                        'unit': ingredient.get('unit', ''),
+                        'role': ingredient.get('role', 'required'),
+                        'brix': ingredient.get('brix', 0)
+                    })
+            
             if lang not in translations:
                 translations[lang] = {}
             
             translations[lang]['description'] = translated_desc
             translations[lang]['steps'] = translated_steps
+            translations[lang]['ingredients'] = translated_ingredients
             
             print("✅")
             
