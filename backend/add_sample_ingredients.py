@@ -26,62 +26,80 @@ async def add_sample_ingredients():
     print(f"Connected to database: {db_name}")
     
     # Sample ingredients - EDIT THIS LIST TO ADD YOUR OWN
+    # Structure matches exact specification:
+    # {name, brix, volume_ml, category, keywords, country, alcohol_vol}
     sample_ingredients = [
         {
+            "name": "Marie Brizard Rørsukkersirup",
+            "brix": 63,
+            "volume_ml": 1000,
+            "category": "sirup",
+            "keywords": ["sukkerlage", "rørsukker", "marie brizard", "canesugar", "pure sugar syrup"],
+            "country": ["DK", "FR"],
+            "alcohol_vol": None
+        },
+        {
             "name": "Jordbær sirup",
-            "brix": 65.0,
-            "category": "sirup.baer.jordbaer",
-            "keywords": ["jordbær", "bær", "sirup", "frugt", "rød"],
-            "description": "Klassisk jordbærsirup til slushice"
+            "brix": 65,
+            "volume_ml": 700,
+            "category": "sirup",
+            "keywords": ["jordbær", "bær", "strawberry", "frugt"],
+            "country": ["DK"],
+            "alcohol_vol": None
         },
         {
             "name": "Vand",
-            "brix": 0.0,
-            "category": "base.vand",
-            "keywords": ["vand", "base", "neutral"],
-            "description": "Rent vand eller knust is"
+            "brix": 0,
+            "volume_ml": None,
+            "category": "base",
+            "keywords": ["vand", "water", "base", "neutral"],
+            "country": ["DK"],
+            "alcohol_vol": None
         },
         {
             "name": "Citron juice",
-            "brix": 2.5,
-            "category": "frugt.citrus.citron",
-            "keywords": ["citron", "syre", "juice", "citrus"],
-            "description": "Frisk citronsaft for syrlig smag"
-        },
-        {
-            "name": "Sukkersirup",
-            "brix": 66.0,
-            "category": "sirup.basis",
-            "keywords": ["sukker", "sirup", "sød", "basis"],
-            "description": "Standard sukkersirup (2:1 sukker:vand)"
+            "brix": 2,
+            "volume_ml": 500,
+            "category": "juice",
+            "keywords": ["citron", "lemon", "syre", "juice", "citrus"],
+            "country": ["DK"],
+            "alcohol_vol": None
         },
         {
             "name": "Hindbær sirup",
-            "brix": 64.0,
-            "category": "sirup.baer.hindbaer",
-            "keywords": ["hindbær", "bær", "sirup", "frugt", "rød"],
-            "description": "Hindbærsirup med intens bærsmag"
+            "brix": 64,
+            "volume_ml": 700,
+            "category": "sirup",
+            "keywords": ["hindbær", "raspberry", "bær", "frugt"],
+            "country": ["DK"],
+            "alcohol_vol": None
         },
         {
-            "name": "Blåbær sirup",
-            "brix": 63.0,
-            "category": "sirup.baer.blabaer",
-            "keywords": ["blåbær", "bær", "sirup", "frugt", "blå"],
-            "description": "Blåbærsirup med naturlig farve"
+            "name": "Vodka",
+            "brix": 0,
+            "volume_ml": 700,
+            "category": "spiritus",
+            "keywords": ["vodka", "alkohol", "spiritus", "neutral"],
+            "country": ["DK", "RU"],
+            "alcohol_vol": 40
+        },
+        {
+            "name": "Baileys",
+            "brix": 25,
+            "volume_ml": 700,
+            "category": "likør",
+            "keywords": ["baileys", "likør", "cream", "irish", "kaffe"],
+            "country": ["IE"],
+            "alcohol_vol": 17
         },
         {
             "name": "Mælk",
-            "brix": 5.0,
-            "category": "base.maelk",
-            "keywords": ["mælk", "dairy", "cremet"],
-            "description": "Sødmælk til milkshake-slush"
-        },
-        {
-            "name": "Lime juice",
-            "brix": 2.0,
-            "category": "frugt.citrus.lime",
-            "keywords": ["lime", "syre", "juice", "citrus", "grøn"],
-            "description": "Frisk limesaft for syrlig-frisk smag"
+            "brix": 5,
+            "volume_ml": 1000,
+            "category": "base",
+            "keywords": ["mælk", "milk", "dairy", "cremet"],
+            "country": ["DK"],
+            "alcohol_vol": None
         }
     ]
     
