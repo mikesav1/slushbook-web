@@ -45,6 +45,7 @@ const RecipeDetailPage = ({ sessionId }) => {
   
   // AI state
   const [showTipsAIPopup, setShowTipsAIPopup] = useState(false);
+  const [showTipsTooltip, setShowTipsTooltip] = useState(true);
   
   // Category display name mapper
   const getCategoryDisplayName = (categoryKey) => {
