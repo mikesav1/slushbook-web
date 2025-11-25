@@ -1091,7 +1091,7 @@ const RecipeDetailPage = ({ sessionId }) => {
       )}
 
       {/* Tips & Tricks AI */}
-      <div className="bg-gradient-to-r from-green-500 to-teal-600 rounded-2xl p-6 shadow-lg mb-6">
+      <div className="bg-gradient-to-r from-green-500 to-teal-600 rounded-2xl p-6 shadow-lg mb-6 relative">
         <div className="flex items-center justify-between">
           <div className="text-white">
             <div className="flex items-center gap-3 mb-2">
@@ -1100,12 +1100,20 @@ const RecipeDetailPage = ({ sessionId }) => {
             </div>
             <p className="text-white/90">Få hjælp til smag, konsistens, variationer og udskiftninger</p>
           </div>
-          <Button
-            onClick={() => setShowTipsAIPopup(true)}
-            className="bg-white text-green-600 hover:bg-gray-100 font-bold px-8 py-3 text-lg"
-          >
-            <FaRobot className="mr-2" /> Stil spørgsmål
-          </Button>
+          <div className="relative">
+            <Button
+              onClick={() => setShowTipsAIPopup(true)}
+              className="bg-white text-green-600 hover:bg-gray-100 font-bold px-8 py-3 text-lg"
+            >
+              <FaRobot className="mr-2" /> Stil spørgsmål
+            </Button>
+            <AITooltip
+              storageKey="ai_tips_tooltip_shown"
+              message={t('recipeDetail.aiTipsTooltip')}
+              show={showTipsTooltip}
+              onClose={() => setShowTipsTooltip(false)}
+            />
+          </div>
         </div>
       </div>
 
