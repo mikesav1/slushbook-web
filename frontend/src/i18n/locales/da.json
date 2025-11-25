@@ -8,6 +8,7 @@
     "stepCount": "Trin {{current}} af {{total}}",
     "back": "Tilbage",
     "next": "Næste",
+    "done": "Færdig",
     "previous": "Forrige",
     "confirm": "Bekræft",
     "loading": "Indlæser...",
