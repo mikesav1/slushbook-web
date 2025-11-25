@@ -204,4 +204,4 @@ async def add_monin_syrups():
     client.close()
 
 if __name__ == "__main__":
-    asyncio.run(add_berry_syrups())
+    asyncio.run(add_monin_syrups())
