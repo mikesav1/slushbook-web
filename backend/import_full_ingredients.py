@@ -346,25 +346,36 @@ async def import_ingredients():
         },
         {
             "name": "Citron Sirup",
-            "brix": None,
+            "brand": "Monin",
+            "brix": 55.7,
             "volume_ml": None,
             "category": "sirup",
+            "density_g_per_ml": 1.269,
+            "ph": 2.5,
+            "carbs_g_per_100ml": 76.9,
+            "sugars_g_per_100ml": 76.6,
+            "energy_kcal_per_100ml": 308,
+            "juice_content_percent": 22,
+            "lemon_juice_percent": 22,
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 8.1,
             "keywords": {
-                "da": ["citron sirup"],
-                "de": ["zitronensirup"],
-                "fr": ["sirop citron"],
-                "en_uk": ["lemon syrup"],
-                "en_us": ["lemon syrup"]
+                "da": ["citron sirup", "citronsirup", "monin citron", "monin lemon"],
+                "de": ["zitronensirup", "zitrone sirup", "monin zitrone"],
+                "fr": ["sirop citron", "sirop de citron", "monin citron"],
+                "en_uk": ["lemon syrup", "lemon flavour syrup", "monin lemon syrup"],
+                "en_us": ["lemon syrup", "lemon flavored syrup", "monin lemon syrup"]
             },
-            "country": ["DK"],
-            "alcohol_vol": None,
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
             "links": {
                 "DK": None,
                 "DE": None,
                 "FR": None,
                 "EN_UK": None,
                 "EN_US": None
-            }
+            },
+            "brix_source": "Monin Lemon Syrup Product Specification 2020"
         },
         {
             "name": "Lime Sirup",
