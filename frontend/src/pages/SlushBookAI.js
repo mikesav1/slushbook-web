@@ -159,7 +159,7 @@ const SlushBookAI = () => {
       <AIChatPopup
         isOpen={showBrixPopup}
         onClose={() => setShowBrixPopup(false)}
-        endpoint="/api/ai/brix"
+        endpoint="/ai/brix"
         title="Brix Assistent"
         placeholder="Beskriv dine ingredienser og mængder..."
       />
@@ -167,7 +167,7 @@ const SlushBookAI = () => {
       <AIChatPopup
         isOpen={showTipsPopup}
         onClose={() => setShowTipsPopup(false)}
-        endpoint="/api/ai/help"
+        endpoint="/ai/help"
         title="Tips & Tricks"
         placeholder="Stil dit spørgsmål om slushice..."
       />
@@ -175,7 +175,7 @@ const SlushBookAI = () => {
       <AIChatPopup
         isOpen={showChatPopup}
         onClose={() => setShowChatPopup(false)}
-        endpoint="/api/ai/create-recipe"
+        endpoint="/ai/create-recipe"
         title="Opskriftsgenerator"
         placeholder="Beskriv din ønskede slush-opskrift..."
       />
