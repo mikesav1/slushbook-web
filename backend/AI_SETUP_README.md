@@ -52,39 +52,58 @@ Generel AI-hjælp uden database-opslag.
 
 ## 📦 MongoDB Collection: `ingredients`
 
-### Collection Struktur
+### Collection Struktur (Præcis specifikation)
 ```javascript
 {
-  "name": "Jordbær sirup",           // Ingrediens navn
-  "brix": 65.0,                      // Brix værdi (sukkerindhold)
-  "category": "sirup.baer.jordbaer", // Kategori/nøgle
-  "volume_ml": null,                 // Standard volumen (optional)
-  "keywords": ["jordbær", "bær", "sirup"], // Søgeord (optional)
-  "description": "Klassisk jordbærsirup til slushice" // Beskrivelse (optional)
+  "name": "Marie Brizard Rørsukkersirup",  // Originalt produktnavn
+  "brix": 63,                              // Brix værdi (sukkerindhold) - integer
+  "volume_ml": 1000,                       // Standard volumen i ml - integer eller null
+  "category": "sirup",                     // Kategori (sirup, base, juice, spiritus, likør)
+  "keywords": ["sukkerlage", "rørsukker", "marie brizard", "canesugar", "pure sugar syrup"], // Søgeord til AI
+  "country": ["DK", "FR"],                 // Landekoder (ISO 3166-1 alpha-2)
+  "alcohol_vol": null                      // Alkoholprocent (kun ved spiritus/likør) - number eller null
 }
 ```
+
+**VIGTIGE REGLER:**
+- `name` = originalt produktnavn (ikke oversæt)
+- `brix` = integer (ikke decimal)
+- `volume_ml` = integer eller null
+- `keywords` = bruges til AI-søgning (inkluder både dansk og engelsk)
+- `country` = array af landekoder (["DK", "FR", etc.])
+- `alcohol_vol` = kun udfyldt for alkoholholdige produkter
+- Alle felter er lowercase
 
 ### Eksempel på data
 ```javascript
 // Tilføj til MongoDB via mongosh eller script:
 db.ingredients.insertMany([
   {
-    "name": "Jordbær sirup",
-    "brix": 65.0,
-    "category": "sirup.baer.jordbaer",
-    "keywords": ["jordbær", "bær", "sirup", "frugt"]
+    "name": "Marie Brizard Rørsukkersirup",
+    "brix": 63,
+    "volume_ml": 1000,
+    "category": "sirup",
+    "keywords": ["sukkerlage", "rørsukker", "marie brizard", "canesugar", "pure sugar syrup"],
+    "country": ["DK", "FR"],
+    "alcohol_vol": null
+  },
+  {
+    "name": "Vodka",
+    "brix": 0,
+    "volume_ml": 700,
+    "category": "spiritus",
+    "keywords": ["vodka", "alkohol", "spiritus", "neutral"],
+    "country": ["DK", "RU"],
+    "alcohol_vol": 40
   },
   {
     "name": "Vand",
-    "brix": 0.0,
-    "category": "base.vand",
-    "keywords": ["vand", "base"]
-  },
-  {
-    "name": "Citron juice",
-    "brix": 2.5,
-    "category": "frugt.citrus.citron",
-    "keywords": ["citron", "syre", "juice"]
+    "brix": 0,
+    "volume_ml": null,
+    "category": "base",
+    "keywords": ["vand", "water", "base", "neutral"],
+    "country": ["DK"],
+    "alcohol_vol": null
   }
 ])
 ```
