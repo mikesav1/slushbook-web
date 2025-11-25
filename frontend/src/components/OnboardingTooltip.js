@@ -248,7 +248,7 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
                     isMobile ? 'px-4 py-2.5 text-base' : 'px-8 py-3 text-lg'
                   } rounded-xl font-bold shadow-lg hover:shadow-xl transition-all`}
                 >
-                  Færdig ✓
+                  {t('common.done')} ✓
                 </button>
               ) : (
                 <button
@@ -257,7 +257,7 @@ const OnboardingTooltip = ({ steps, currentStep, onNext, onSkip, onFinish }) => 
                     isMobile ? 'px-4 py-2.5 text-base' : 'px-8 py-3 text-lg'
                   } rounded-xl font-bold shadow-lg hover:shadow-xl transition-all`}
                 >
-                  Næste →
+                  {t('common.next')} →
                 </button>
               )}
             </div>
