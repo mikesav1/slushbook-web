@@ -250,25 +250,38 @@ async def import_ingredients():
         },
         {
             "name": "Pink Shake Sirup",
-            "brix": None,
+            "brand": "Monin",
+            "brix": 57.4,
             "volume_ml": None,
             "category": "sirup",
+            "density_g_per_ml": 1.273,
+            "ph": 2.7,
+            "carbs_g_per_100ml": 78.3,
+            "sugars_g_per_100ml": 78.1,
+            "energy_kcal_per_100ml": 314,
+            "juice_content_percent": 22,
+            "pink_grapefruit_juice_percent": 22,
+            "flavour_profile": "Pink grapefruit, floral citrus, light bitterness",
+            "color": "pink / rose",
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 7.4,
             "keywords": {
-                "da": ["pink shake", "pink grape sirup"],
-                "de": ["pink grapefruit sirup"],
-                "fr": ["sirop pamplemousse rose"],
-                "en_uk": ["pink grapefruit syrup"],
-                "en_us": ["pink grapefruit syrup"]
+                "da": ["pink shake", "pink shake sirup", "pink grape sirup", "pink grapefrugt sirup", "monin pink shake"],
+                "de": ["pink grapefruit sirup", "pink grapefruitsirup", "monin pink grapefruit"],
+                "fr": ["sirop pamplemousse rose", "sirop pamplemousse", "monin pamplemousse rose"],
+                "en_uk": ["pink grapefruit syrup", "pink shake syrup", "monin pink grapefruit syrup"],
+                "en_us": ["pink grapefruit syrup", "pink shake syrup", "monin pink grapefruit syrup"]
             },
-            "country": ["DK"],
-            "alcohol_vol": None,
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
             "links": {
                 "DK": None,
                 "DE": None,
                 "FR": None,
                 "EN_UK": None,
                 "EN_US": None
-            }
+            },
+            "brix_source": "Monin Pink Grapefruit Syrup Product Specification (2020)"
         },
         {
             "name": "Jordbær Sirup",
