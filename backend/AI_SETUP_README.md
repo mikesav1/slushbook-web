@@ -114,20 +114,34 @@ db.ingredients.insertMany([
 
 Prompts ligger i `/app/backend/prompts/`:
 
-### `brix_assistant.txt`
+### `brix_prompt.txt`
 Prompt til Brix-assistenten. Har adgang til ingrediensdatabase.
+Bruger **gpt-5.1** model for præcise beregninger.
 
-**Sådan redigerer du:**
+**Systemregler:**
+- Må KUN bruge data fra ingredients-collectionen
+- Må ALDRIG opfinde Brix-værdier
+- "Sukker" = sukkerlage (ikke krystalsukker)
+- Alkohol tilføjes ALTID til sidst
+- Beregner: samlet Brix, alkohol%, mængdeforhold, frysestabilitet
+
+**Redigér:**
 ```bash
-nano /app/backend/prompts/brix_assistant.txt
+nano /app/backend/prompts/brix_prompt.txt
 ```
 
-### `general_help.txt`
-Prompt til generel hjælp-assistent. Ingen database-adgang.
+### `help_prompt.txt`
+Prompt til Tips & Tricks-assistent. Ingen database-adgang.
+Bruger **o1-mini** model for hurtige, effektive svar.
 
-**Sådan redigerer du:**
+**Systemregler:**
+- Korte, praktiske svar
+- Kun verificeret viden
+- Følg SlushBook-regler (sukker = sukkerlage, alkohol til sidst)
+
+**Redigér:**
 ```bash
-nano /app/backend/prompts/general_help.txt
+nano /app/backend/prompts/help_prompt.txt
 ```
 
 ---
