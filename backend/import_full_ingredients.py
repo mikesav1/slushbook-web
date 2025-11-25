@@ -379,25 +379,36 @@ async def import_ingredients():
         },
         {
             "name": "Lime Sirup",
-            "brix": None,
+            "brand": "Monin",
+            "brix": 55.1,
             "volume_ml": None,
             "category": "sirup",
+            "density_g_per_ml": 1.268,
+            "ph": 2.4,
+            "carbs_g_per_100ml": 76.5,
+            "sugars_g_per_100ml": 76.2,
+            "energy_kcal_per_100ml": 307,
+            "juice_content_percent": 20,
+            "lime_juice_percent": 20,
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 8.5,
             "keywords": {
-                "da": ["lime sirup"],
-                "de": ["limettensirup"],
-                "fr": ["sirop citron vert"],
-                "en_uk": ["lime syrup"],
-                "en_us": ["lime syrup"]
+                "da": ["lime sirup", "limesirup", "monin lime", "lime flavor"],
+                "de": ["limetten sirup", "limettensirup", "monin limette"],
+                "fr": ["sirop citron vert", "sirop de lime", "monin citron vert"],
+                "en_uk": ["lime syrup", "lime flavour syrup", "monin lime syrup"],
+                "en_us": ["lime syrup", "lime flavored syrup", "monin lime syrup"]
             },
-            "country": ["DK"],
-            "alcohol_vol": None,
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
             "links": {
                 "DK": None,
                 "DE": None,
                 "FR": None,
                 "EN_UK": None,
                 "EN_US": None
-            }
+            },
+            "brix_source": "Monin Lime Syrup Product Specification 2020"
         },
         {
             "name": "Vanilje Sirup",
