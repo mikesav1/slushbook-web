@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'sonner';
-import { FaArrowLeft, FaPlus, FaTrash, FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import { FaArrowLeft, FaPlus, FaTrash, FaArrowUp, FaArrowDown, FaRobot, FaCalculator } from 'react-icons/fa';
 import { API } from '../App';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -13,6 +13,7 @@ import OnboardingTooltip from '../components/OnboardingTooltip';
 import { addRecipePageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } from '../utils/onboarding';
 import { useTranslation } from 'react-i18next';
 import { normalizeIngredient, getSupportedUnits } from '../utils/unitConverter';
+import AIChatPopup from '../components/AIChatPopup';
 
 const AddRecipePage = ({ sessionId }) => {
   const { user, updateCompletedTours } = useAuth();
