@@ -9,7 +9,7 @@ Begge AI endpoints er nu live og klar til test i preview.
 ## 📍 Endpoints
 
 ### 1. POST `/api/ai/brix` - Brix Beregninger
-**URL:** `https://bugfix-intl-tour.preview.emergentagent.com/api/ai/brix`
+**URL:** `https://slushmaster.preview.emergentagent.com/api/ai/brix`
 
 **Request:**
 ```json
@@ -36,7 +36,7 @@ Begge AI endpoints er nu live og klar til test i preview.
 ---
 
 ### 2. POST `/api/ai/help` - Tips & Tricks
-**URL:** `https://bugfix-intl-tour.preview.emergentagent.com/api/ai/help`
+**URL:** `https://slushmaster.preview.emergentagent.com/api/ai/help`
 
 **Request:**
 ```json
@@ -83,12 +83,12 @@ Begge AI endpoints er nu live og klar til test i preview.
 ### Test fra terminal:
 ```bash
 # Test Help endpoint
-curl -X POST https://bugfix-intl-tour.preview.emergentagent.com/api/ai/help \
+curl -X POST https://slushmaster.preview.emergentagent.com/api/ai/help \
   -H "Content-Type: application/json" \
   -d '{"query": "Hvordan får jeg min slush til at fryse hurtigere?"}'
 
 # Test Brix endpoint
-curl -X POST https://bugfix-intl-tour.preview.emergentagent.com/api/ai/brix \
+curl -X POST https://slushmaster.preview.emergentagent.com/api/ai/brix \
   -H "Content-Type: application/json" \
   -d '{"query": "Hvad er den ideelle Brix for en klassisk slushice?"}'
 ```

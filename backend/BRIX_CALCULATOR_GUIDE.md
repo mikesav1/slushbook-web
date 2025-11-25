@@ -377,9 +377,9 @@ print(f"Add {adjustment['ml_to_add']}ml water")
 Alle 3 endpoints er testet og klar i preview:
 
 ```
-POST https://bugfix-intl-tour.preview.emergentagent.com/api/ai/brix
-POST https://bugfix-intl-tour.preview.emergentagent.com/api/brix/calculate
-POST https://bugfix-intl-tour.preview.emergentagent.com/api/brix/adjust
+POST https://slushmaster.preview.emergentagent.com/api/ai/brix
+POST https://slushmaster.preview.emergentagent.com/api/brix/calculate
+POST https://slushmaster.preview.emergentagent.com/api/brix/adjust
 ```
 
 **Matematikken er korrekt. Formlen virker. Start med at integrere i UI! 🎉**

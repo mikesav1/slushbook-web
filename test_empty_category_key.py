@@ -11,7 +11,7 @@ import re
 from datetime import datetime, timezone, timedelta
 
 # Configuration
-BASE_URL = "https://bugfix-intl-tour.preview.emergentagent.com/api"
+BASE_URL = "https://slushmaster.preview.emergentagent.com/api"
 
 class EmptyCategoryKeyTester:
     def __init__(self):

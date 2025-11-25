@@ -2,7 +2,7 @@
 
 ## 📥 Step 1: Download CSV
 
-**Download linket:** https://bugfix-intl-tour.preview.emergentagent.com/recipe_translations_export.csv
+**Download linket:** https://slushmaster.preview.emergentagent.com/recipe_translations_export.csv
 
 Filen indeholder:
 - 81 opskrifter
