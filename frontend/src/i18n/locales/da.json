@@ -488,7 +488,9 @@
     "saveChanges": "Gem Ændringer",
     "fetchError": "Kunne ikke hente opskrift",
     "imageSizeError": "Billede må maks være 5MB",
-    "updateError": "Kunne ikke opdatere opskrift"
+    "updateError": "Kunne ikke opdatere opskrift",
+    "aiCreateTooltip": "🤖 Ny funktion! Beskriv din ønskede slush, og AI genererer en komplet opskrift med ingredienser, trin og Brix-beregning.",
+    "aiBrixTooltip": "🧮 Ny funktion! Brug AI til at beregne samlet Brix-værdi og få forslag til justering af din opskrift."
   },
   "recipeDetail": {
     "back": "Tilbage",
