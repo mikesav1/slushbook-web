@@ -125,6 +125,11 @@ const Navigation = () => {
                 >
                   <Icon />
                   <span className="text-sm font-medium">{item.label}</span>
+                  {item.badge && (
+                    <span className="px-2 py-0.5 bg-yellow-400 text-gray-900 text-[10px] font-bold rounded-full">
+                      {item.badge}
+                    </span>
+                  )}
                 </Link>
               );
             })}
