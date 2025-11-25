@@ -50,13 +50,30 @@ const AIChatPopup = ({
         query: userMessage
       });
 
-      const aiResponse = response.data.response || response.data.recipe;
+      // Handle different response types
+      let aiResponse, displayContent, rawData;
+      
+      if (response.data.recipe) {
+        // create-recipe endpoint
+        aiResponse = response.data.recipe;
+        displayContent = `✅ Opskrift genereret!\n\n${aiResponse.name}\n\n${aiResponse.description}\n\nBrix: ${aiResponse.brix}°Bx\nVolumen: ${aiResponse.base_volume_ml}ml\n\nIngredienser: ${aiResponse.ingredients.length}\nTrin: ${aiResponse.procedure.length}`;
+        rawData = aiResponse;
+      } else if (response.data.response) {
+        // brix/help endpoint
+        aiResponse = response.data.response;
+        displayContent = aiResponse;
+        rawData = aiResponse;
+      } else {
+        aiResponse = response.data;
+        displayContent = JSON.stringify(aiResponse, null, 2);
+        rawData = aiResponse;
+      }
       
       // Add AI response
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: typeof aiResponse === 'string' ? aiResponse : JSON.stringify(aiResponse, null, 2),
-        data: aiResponse // Store raw data for insert functionality
+        content: displayContent,
+        data: rawData // Store raw data for insert functionality
       }]);
     } catch (error) {
       console.error('AI Error:', error);
