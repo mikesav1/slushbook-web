@@ -326,6 +326,76 @@ async def import_ingredients():
             "brix_source": "Monin Watermelon Syrup Product Specification (2020)"
         },
         {
+            "name": "Mango Sirup",
+            "brand": "Monin",
+            "brix": 63.0,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.308,
+            "ph": 3.3,
+            "carbs_g_per_100ml": 83.1,
+            "sugars_g_per_100ml": 82.7,
+            "energy_kcal_per_100ml": 334,
+            "juice_content_percent": 22,
+            "mango_juice_percent": 22,
+            "flavour_profile": "Ripe mango, tropical, sweet, slightly floral",
+            "color": "deep golden / orange",
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 6.7,
+            "keywords": {
+                "da": ["mango sirup", "mangosirup", "monin mango", "mango syrup"],
+                "de": ["mango sirup", "mangosirup", "monin mango"],
+                "fr": ["sirop mangue", "sirop de mangue", "monin mangue"],
+                "en_uk": ["mango syrup", "mango flavour syrup", "monin mango syrup"],
+                "en_us": ["mango syrup", "mango flavored syrup", "monin mango syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Mango Syrup Product Specification (2020)"
+        },
+        {
+            "name": "Passionsfrugt Sirup",
+            "brand": "Monin",
+            "brix": 63.4,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.309,
+            "ph": 3.0,
+            "carbs_g_per_100ml": 83.4,
+            "sugars_g_per_100ml": 83.0,
+            "energy_kcal_per_100ml": 335,
+            "juice_content_percent": 35,
+            "passionfruit_juice_percent": 35,
+            "flavour_profile": "Intense passion fruit, tart, exotic, tropical sweet-sour",
+            "color": "yellow-orange",
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 7.1,
+            "keywords": {
+                "da": ["passionsfrugt sirup", "passionssirup", "monin passionsfrugt", "passion fruit sirup"],
+                "de": ["passionsfrucht sirup", "maracuja sirup", "monin passionsfrucht"],
+                "fr": ["sirop fruit de la passion", "monin passion"],
+                "en_uk": ["passion fruit syrup", "passionfruit syrup", "monin passion fruit syrup"],
+                "en_us": ["passion fruit syrup", "passionfruit flavored syrup", "monin passion fruit syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Passion Fruit Syrup Product Specification (2020)"
+        },
+        {
             "name": "Mynte Sirup",
             "brand": "Monin",
             "brix": 55.8,
