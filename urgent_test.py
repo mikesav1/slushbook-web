@@ -10,7 +10,7 @@ import uuid
 from datetime import datetime, timezone, timedelta
 
 # Configuration
-BASE_URL = "https://multilingual-chef-3.preview.emergentagent.com/api"
+BASE_URL = "https://bugfix-intl-tour.preview.emergentagent.com/api"
 
 class UrgentTester:
     def __init__(self, base_url=BASE_URL):

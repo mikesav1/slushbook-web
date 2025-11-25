@@ -201,7 +201,7 @@ const AdminImportRecipes = () => {
             Hvis du ikke allerede har filen, download den her:
           </p>
           <a
-            href="https://multilingual-chef-3.preview.emergentagent.com/complete_recipes_export.json"
+            href="https://bugfix-intl-tour.preview.emergentagent.com/complete_recipes_export.json"
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-600 hover:text-blue-800 underline font-semibold"

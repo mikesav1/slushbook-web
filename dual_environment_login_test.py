@@ -25,7 +25,7 @@ def test_login_both_environments():
     
     # Environment URLs
     environments = {
-        "PREVIEW": "https://multilingual-chef-3.preview.emergentagent.com/api",
+        "PREVIEW": "https://bugfix-intl-tour.preview.emergentagent.com/api",
         "PRODUCTION": "https://slushice-recipes.emergent.host/api"
     }
     

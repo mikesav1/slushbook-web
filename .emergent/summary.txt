@@ -1,180 +1,168 @@
 <analysis>**original_problem_statement:**
-The user's initial goal was to fix all remaining internationalization (i18n) issues. This included fixing hardcoded UI text, providing a CSV export/import workflow for high-quality recipe translations, and improving the translation editor pages.
+The user provided a PDF detailing several issues with the application. The primary goal is to fix all outstanding bugs and hardcoded text to prepare for a presentation to a potential investor.
 
-During this session, several new requirements and issues emerged:
-1.  Automate the translation of all recipe content (descriptions and steps) using the Emergent LLM key.
-2.  Improve the UX of the  page with a sticky header and keyboard navigation (up/down for recipes, left/right for languages).
-3.  Fix various bugs on the recipe translation page, including the change counter and the save functionality.
-4.  Resolve a critical deployment issue where the preview and production environments used different databases, preventing translations from going live. This was solved by creating a UI-driven bulk import/export feature.
-5.  Fix a persistent login issue where users were immediately logged out after logging in, especially on mobile devices. This issue has since escalated.
-6.  Improve the UI on the recipe detail page by replacing the Add to Favorites button with a heart icon on the image.
+The initial list of problems included:
+- **Critical Issues:**
+  - Inability to access Settings on iPhone, resulting in logout.
+  - A login loop on the custom domain () where users are logged out after selecting a language.
+  - The Match feature for finding recipes based on pantry ingredients was not working.
+- **Translation & UI Issues:**
+  - Recipes were displaying in English even when the UI language was Danish.
+  - No language was selected by default upon login.
+  - Saving translations for recipes failed with a 404 error.
+  - The Brix calculation UI and recipe ingredients were not translated.
+- **Data Migration:**
+  - A pending task to migrate recipe data to a new / unit system.
 
 PRODUCT REQUIREMENTS:
-1.  The application must be fully translated into German, French, and English.
-2.  All dynamic content (recipes, ingredients, descriptions, steps) must be translatable.
-3.  The admin translation tools should be user-friendly and robust.
-4.  A mechanism must exist to synchronize data (like the newly translated recipes) from the preview environment to production.
-5.  User sessions must be persistent, especially on mobile devices, so users do not have to log in repeatedly.
+1.  The application must be fully and correctly translated into German, French, and English, with no hardcoded Danish or English text remaining.
+2.  The Match feature must work reliably.
+3.  All UI components, especially navigation menus, must be fully functional on both desktop and mobile devices (including iOS).
+4.  The application must be stable on the custom production domain ().
 
 **User's preferred language**: Danish
 
 **what currently exists?**
-The application now has a complete, automated translation workflow. The  page and all 81 system recipes (descriptions and steps) have been translated into German, French, UK English, and US English using a script that leverages the Emergent LLM key.
+The agent has successfully resolved several critical UI and backend bugs. The most significant fix was for the mobile and desktop dropdown menus, which were previously unclickable. This was a complex issue involving CSS positioning, React event propagation ( vs. ), and a conflict with React s, which is now resolved. The recipe saving functionality, which failed with a 404 error, has also been fixed by ensuring the backend  endpoint correctly queries all recipe collections.
 
-To solve the data synchronization problem between preview and production, a new UI-driven import/export feature was built. This includes a new admin page () and a backend endpoint () that allows an admin to upload a JSON file to bulk-create/update recipes. The user has successfully used this feature to delete all old production recipes and import the 81 newly translated recipes.
-
-The  page has been significantly enhanced with a sticky language selector, keyboard navigation, a filter for missing translations, and a working save mechanism that uses a new dedicated PATCH endpoint.
-
-However, the application is suffering from a critical session/login bug that logs users out immediately after a successful login, which has escalated from a mobile-only issue to affecting desktop browsers as well.
+The agent is now focused on the final requirement from the user: fixing all remaining hardcoded text for an investor presentation. Work has begun on the  component.
 
 **Last working item**:
-The agent was trying to fix a critical and escalating session persistence issue. The user reported being logged out immediately after a successful login, initially on iPhone, but now also on their Mac. The agent's previous attempts to fix this by adding complex logic to the  file have made the problem worse.
+The agent is working on internationalizing (i18n) the  component to remove hardcoded text. The user reported that even after some fixes, the Step X of Y counter and the Next button text remain in Danish on non-Danish language settings.
 
-- **Last item agent was working:** Debugging a critical login loop that affects both mobile and desktop users.
-- **Status:** BLOCKED
-- **Agent Testing Done:** N
-- **Which testing method agent to use?** Manual testing by the agent is required. The next agent should simplify the authentication logic and test the login flow thoroughly on both preview and by asking the user to test on production. Use browser developer tools to inspect console logs, network requests, and local storage/cookies.
-- **User Testing Done:** Y (User confirmed the issue is now worse and affects their Mac).
+-   **Last item agent was working:** Fixing hardcoded text in the  component, specifically the step counter and the Next button.
+-   **Status:** IN PROGRESS
+-   **Agent Testing Done:** N
+-   **Which testing method agent to use?** Frontend testing agent. The agent should instruct the tester to log in, trigger the onboarding tour, and verify the text in the tooltip for different languages (e.g., French, English).
+-   **User Testing Done:** Y (User confirmed parts of the tooltip are still not translated).
 
 **All Pending/In progress Issue list**:
--   **Issue 1 (P0):** Critical Login Loop: Users are logged out immediately after a successful login. This was initially a mobile-only issue but now affects desktop (Mac) as well, making the application unusable for logged-in users.
--   **Issue 2 (P1):** Save functionality on the main translation page () is broken. The user reported a  error when trying to save changes on this page.
--   **Issue 3 (P2):** The Brix calculation UI still needs to be translated (task from a previous session).
--   **Issue 4 (P3):** Recipe data migration to the new / unit system has not been implemented (task from a previous session).
+-   **Issue 1 (P0):** OnboardingTooltip text is not fully translated.
+-   **Issue 2 (P1):** Recipe ingredients are not translated in the UI.
+-   **Issue 3 (P2):** Save functionality on the main UI translation page () is broken.
+-   **Issue 4 (P3):** Recipe data migration to the new / unit system has not been implemented.
 
 **Issues Detail:**
--   **Issue 1: Critical Login Loop**
-    -   **Attempted fixes:** The agent made multiple complex changes to  and . Fixes included changing the cookie's  attribute, caching user data in localStorage, and adding  and  flags to prevent immediate re-authentication. These changes have exacerbated the problem.
+-   **Issue 1: OnboardingTooltip not fully translated**
+    -   **Attempted fixes:** The agent internationalized the Step X of Y text by adding a  key to all language files and using it in . However, the user reports it and the Next button are still in Danish.
     -   **Next debug checklist:**
-        1.  Review the latest changes in .
-        2.  **Strongly consider rolling back the complex logic** (e.g.,  flag, user data caching in localStorage, ) to a simpler state. The complexity is the likely cause of the new bugs.
-        3.  In , review the session cookie settings (, , ). A  setting is a safer default than .
-        4.  Ensure  in  correctly handles cases where a session token exists but the API call fails, to prevent logging out a valid user due to a transient network error.
-        5.  Call the  if the issue persists after simplification, as it's a recurring and escalating blocker.
-    -   **Why fix this issue and what will be achieved with the fix?** This is a critical blocker. The application is currently unusable for any logged-in user.
+        1.  Verify the latest deployment contains the internationalization changes. The user's description of a hard reset changing the language suggests a caching or deployment issue.
+        2.  Inspect  and locate the Next button. It is likely hardcoded.
+        3.  Replace the hardcoded Næste text with a translation key (e.g., ).
+        4.  Ensure the  key exists with the correct translation in all  language files (, , , , ).
+    -   **Why fix this issue and what will be achieved with the fix?** To ensure a polished, professional UI for the investor presentation.
     -   **Status:** IN PROGRESS
-    -   **Is recurring issue?** Y
-    -   **Should Test frontend/backend/both after fix?** Both.
-    -   **Blocked on other issue:** None. This issue is the main blocker.
+    -   **Is recurring issue?** N
+    -   **Should Test frontend/backend/both after fix?** Frontend.
 
--   **Issue 2: Save functionality broken on  page**
-    -   **Attempted fixes:** None directly for this page. The agent fixed a similar issue on a different page () by creating a new API endpoint.
+-   **Issue 2: Recipe ingredients are not translated**
+    -   **Attempted fixes:** None.
     -   **Next debug checklist:**
-        1.  Navigate to  in the application.
-        2.  Make a change to a translation and click the Save button.
-        3.  Open the browser's developer tools and inspect the Network tab to identify the exact API endpoint being called and the HTTP error code (user reported 404).
-        4.  Inspect  to find the save handler function.
-        5.  Check  to verify if the endpoint path and HTTP method (e.g., POST, PUT, PATCH) in the frontend code match the defined API route. It's likely a mismatch.
-    -   **Why fix this issue and what will be achieved with the fix?** The user cannot update UI translations, which is a core part of the admin functionality.
+        1.  Acknowledge that this is a backend data translation issue, not a simple UI fix. The ingredients are stored as strings within the recipe documents in the database.
+        2.  The backend  function in  currently translates the recipe's , , and , but does not iterate through and translate the  array.
+        3.  Propose a plan to the user: Extend the translation scripts (e.g., ) to also translate ingredient names and store them within each recipe's  object. This is a significant data-level change.
+    -   **Why fix this issue and what will be achieved with the fix?** This is a critical part of the internationalization effort for the investor demo. An app with a translated UI but untranslated content is incomplete.
+    -   **Status:** NOT STARTED
+    -   **Is recurring issue?** N
+    -   **Should Test frontend/backend/both after fix?** Backend (for the data script) and Frontend (to verify the display).
+
+-   **Issue 3: Save functionality broken on  page**
+    -   **Attempted fixes:** None. This issue was carried over from the initial handoff summary.
+    -   **Next debug checklist:**
+        1.  Follow the same debugging process used to fix the recipe translation save: open browser dev tools, click Save on the  page, and inspect the failing network request to identify the endpoint and error (likely a 404).
+        2.  Check the relevant frontend component to find the API call logic.
+        3.  Verify the endpoint exists in  and that the method (e.g., POST/PATCH) and URL path match.
+    -   **Why fix this issue and what will be achieved with the fix?** Allows the admin to manage UI string translations.
     -   **Status:** NOT STARTED
     -   **Is recurring issue?** N
     -   **Should Test frontend/backend/both after fix?** Both.
 
 **In progress Task List**:
-None. All major development tasks from this session were completed, but they introduced critical bugs that are now the priority.
+-   **Task 1: Finalize Internationalization for Investor Demo**
+    -   **Where to resume:** Resume by fixing the Next button in . After that is complete and verified, move on to implementing the translation for recipe ingredients.
+    -   **What will be achieved with this?** A fully translated application, ready for the investor presentation.
+    -   **Status:** IN PROGRESS
+    -   **Should Test frontend/backend/both after fix?** Both.
+    -   **Blocked on something:** Nothing.
 
 **Upcoming and Future Tasks**
--   **Upcoming Tasks:**
-    -   P1: Translate the Brix calculation UI.
 -   **Future Tasks:**
-    -   P0: Implement and execute the recipe data migration to the new / unit system.
+    -   P0: Implement and execute the recipe data migration to the new / unit system. This is a carry-over task from a previous session and has been deprioritized.
 
 **Completed work in this session**
--   **Automatic Content Translation:**
-    -   Fixed the CSV export script to correctly pull recipe data from MongoDB.
-    -   Created a Python script () and successfully translated all 90 keys for the  page.
-    -   Created and ran a batch translation script () to automatically translate all 81 system recipes into four languages.
--   **Deployment/Data Sync Solution:**
-    -   Created a new admin page () and backend endpoint () to allow bulk import of recipes via a JSON file upload, resolving the issue of different databases between preview and production.
-    -   User successfully used this flow to delete old production recipes and import the 81 newly translated ones.
--   **Admin Page UX/UI Enhancements ():**
-    -   Implemented a sticky header with a language selector that remains visible on scroll.
-    -   Added keyboard navigation: / to switch languages and / to switch between recipes.
-    -   Added a filter to show only recipes with missing translations.
-    -   Fixed bugs related to the pending change counter and save functionality by creating a new  endpoint.
--   **General UI Improvements:**
-    -   On the , replaced the Add to Favorites button with a heart icon overlaid on the top-right of the recipe image.
-    -   Added a navigation link to the new Opskrift Oversættelser page in the main user dropdown menu.
-    -   Fixed a bug where the user dropdown menu would not close when clicking outside of it.
+-   **Critical Desktop & Mobile Menu Fix:**
+    -   Resolved a persistent bug where dropdown menu links were unclickable with a mouse. The final fix involved changing the  event listener from  to  and creating separate React s for the mobile and desktop menus to resolve a conflict.
+-   **Recipe Save Functionality Fix:**
+    -   Fixed a 404 error that occurred when saving user-created recipe translations. The  endpoint in  was updated to search both  and  collections, ensuring user recipes can be found and updated.
+-   **Match Finder Cache Fix:**
+    -   Resolved a caching bug in the Match Finder where old results were shown.  was updated to correctly clear  when pantry ingredients are changed.
+-   **Login and Language Initialization:**
+    -   Improved the login flow in  and  to ensure a default language ('da') is always set in , fixing an issue where no language was selected on first login.
 
 **Earlier issues found/mentioned but not fixed**
--   See **All Pending/In progress Issue list**. The primary issue is the critical login loop.
+-   See **All Pending/In progress Issue list**.
 
 **Known issue recurrence from previous fork**
--   None.
+-   **Platform Instability:** The session was interrupted by several platform errors (502, 503, 520) and a recurring CORS configuration issue on the custom domain. While the user indicates these are currently resolved, the platform's stability is a known risk.
 
 **Code Architecture**
 
 
 **Key Technical Concepts**
--   **Batch Processing:** Executing long-running API-dependent tasks (like translation) in smaller chunks to avoid timeouts.
--   **UI-Driven Data Migration:** Creating a dedicated admin page for users to perform data synchronization (export/import) between environments without needing terminal access.
--   **Robust Keyboard Navigation:** Implementing  with  event listeners in React to control application state (switching languages/recipes).
--   **CSS Sticky Positioning:** Using  and  classes to create headers that remain fixed during scrolling.
--   **API Endpoint Design:** Creating a dedicated  endpoint for updating a specific field () on a resource, which is more appropriate than using a general  that replaces the whole object.
--   **Cross-Device Debugging:** The session issues highlight the differences in how mobile vs. desktop browsers handle cookies and localStorage, especially with  policies.
+-   **React Event Propagation:** Debugged the difference between  and  event timing to fix a UI interaction bug where a menu would close before a link's click handler could fire.
+-   **React Refs:** Solved a critical bug caused by two different components ( and ) sharing the same  instance, which led to the click-outside-to-close functionality failing for one of them.
+-   **Frontend Caching:** Managed  to cache API results and implemented logic to correctly invalidate the cache when underlying data changes.
+-   **Database Consistency:** Diagnosed and fixed a bug where a  endpoint and a  endpoint for the same resource were querying different database collections, causing not found errors.
 
 **key DB schema**
--   No changes to the schema were made. The existing  object was populated by the new scripts.
+-   No schema changes were made. The agent worked with the existing  and  collections.
 
 **changes in tech stack**
 -   None.
 
 **All files**
--   **/app/backend/server.py:** Heavily modified to add new API endpoints for recipe translation updates () and bulk recipe import (), and multiple failed attempts to fix session cookie logic.
--   **/app/frontend/src/context/AuthContext.js:** Heavily modified with complex and currently buggy logic to address session persistence issues. **This file is the likely source of the P0 login issue.**
--   **/app/frontend/src/pages/AdminRecipeTranslationsPage.js:** Overhauled with a new sticky header, keyboard navigation, filters, and a corrected save mechanism.
--   **/app/frontend/src/pages/AdminImportRecipes.js:** A new page created to provide a UI for the bulk recipe import feature.
--   **/app/frontend/src/pages/RecipeDetailPage.js:** Modified to move the favoriting action to a heart icon on the recipe image.
--   **/app/backend/translate_guide_section.py, /app/backend/translate_batch.py:** New scripts created for one-off automated translation tasks.
--   **/app/backend/export_all_recipes.py:** New script to create a full JSON export of all recipes for the import-export workflow.
+-   **/app/frontend/src/App.js:** Heavily modified to fix the user dropdown menu on both mobile and desktop. This involved creating separate s for each menu and changing the  listener to use the  event instead of .
+-   **/app/backend/server.py:** The  endpoint was updated to search both the  (system) and  collections to fix a 404 error. The  endpoint logic was also briefly improved.
+-   **/app/frontend/src/pages/MatchFinderPage.js:** Updated to correctly clear  when pantry items change, fixing a caching bug.
+-   **/app/frontend/src/components/OnboardingTooltip.js:** The hardcoded step counter (Trin X af Y) was replaced with an i18n key ().
+-   **/app/frontend/src/i18n/locales/*.json:** The  key was added to all five language files.
 
 **Areas that need refactoring**:
--   **:** This file needs immediate simplification. The multiple layers of fixes have made it buggy and hard to debug. It should be rolled back to a more straightforward implementation.
+-   The user dropdown menu logic in  is complex and has separate-but-similar implementations for desktop and mobile. This could be refactored into a single, reusable component to simplify  and reduce code duplication.
 
 **key api endpoints**
--   : **NEW**. Updates the translation object for a specific recipe.
--   : **NEW**. Accepts a JSON file with an array of recipe objects to bulk create/update recipes in the database.
--   : **MODIFIED**. The cookie setting logic was changed multiple times.
+-   : This endpoint was debugged and fixed. It now correctly searches both system and user recipe collections.
 
 **Critical Info for New Agent**
--   **IMMEDIATE PRIORITY (P0):** The login is critically broken. Users are logged out immediately after login on both mobile and desktop. Your first action MUST be to address this. The last agent's complex additions to  are the likely cause. **Simplify this file first.** Do not attempt to add more complexity.
--   **User has already migrated data:** The user has successfully deleted the old production recipes and used the new UI-driven import tool to upload the 81 translated recipes. The data on production should now be correct.
--   **Admin tasks are secondary:** The user has stated that translating the admin interface is not a priority as they are the only user. Focus on user-facing bugs and features.
+-   **Highest Priority:** The user is preparing for an investor presentation. The top priority is to fix all remaining hardcoded text and visual bugs.
+-   **Environment Note:** The database in the local fork environment is empty. All testing of features requiring data (like login, recipe editing, match finder) must be done by deploying to the preview environment.
+-   **Platform Stability:** The platform has shown instability (5xx errors, CORS issues). While the user reports it's working now, be aware that deployment or runtime errors may not be due to code changes. The custom domain () is particularly sensitive to CORS configuration issues at the platform level.
+-   **Current Task:** The immediate next step is to finish internationalizing the  component by finding and translating the Next button. After that, address the untranslated recipe ingredients.
 
 **documents created in this job**
--   /app/backend/test_translate_2_recipes.py
--   /app/backend/translate_batch.py
--   /app/backend/export_all_recipes.py
--   /app/backend/import_all_recipes.py
--   /app/frontend/src/pages/AdminImportRecipes.js
--   /app/backend/export_translations_to_json.py
--   /app/backend/import_translations_from_json.py
--   /app/backend/test_import_endpoint.py
--   /app/deployment_checklist.md
+-   None.
 
 **Last 5 User Messages and any pending user messages**
-1.  **User:** Now I have the same login problem on my Mac too. (Status: Acknowledged, issue escalated to P0).
-2.  **User:** Something we need to make work is that when you are logged in on your phone, you should stay logged in. (Status: Attempted fix failed and made things worse).
-3.  **User:** I still have problems saving in translations. (with screenshot of 404 error on ) (Status: Not started).
-4.  **User:** Reports the heart icon fix looks good in preview and clarifies that the recipe the agent couldn't find exists only on production, not in preview, which is correct behavior. (Status: Resolved).
-5.  **User:** Reports being logged out immediately after a successful login. (Status: This is the core of the P0 bug).
+1.  **User:** Reports desktop dropdown menu links are not working with a mouse, only with the Tab key. (Status: **Completed**. Agent fixed a React ref conflict and an event timing issue).
+2.  **User:** Confirms desktop menu now works. Asks to check mobile view and then fix remaining hardcoded text in tooltips (1 ud af 3, Næste button) and recipe ingredients for an investor presentation. (Status: **In Progress**. This is the current active task).
+3.  **User:** Deploys and provides an update. Says 1 ud af 3 and Næste are still in Danish. Also notes that after a hard reset, the language changed to French, which suggests a caching issue or that the user has multiple accounts with different language settings. Mentions untranslated ingredients in an English recipe screenshot. (Status: **In Progress**. This is the direct feedback on the last working item).
+4.  **User:** Clarifies that the investor meeting is later in the week, so there is time to do the fixes properly. (Status: **Acknowledged**).
+5.  **User:** godmorgen... (Good morning...) - repeats the issue from message 3, confirming the 1 ud af 3 and Næste button text is still not translated. (Status: **In Progress**).
 
 **Project Health Check:**
--   **Broken:**
-    -   The entire authentication/session system is broken, preventing users from staying logged in.
-    -   The save functionality on the  page is non-functional (404 error).
+-   **Mocked:** None.
+-   **Broken:** The internationalization is incomplete, with hardcoded text remaining in tooltips and recipe ingredient lists. The save functionality on  is also reported as broken.
 
 **Testing status**
 -   **Testing agent used after significant changes:** NO
--   **Troubleshoot agent used after agent stuck in loop:** NO
+-   **Troubleshoot agent used after agent stuck in loop:** YES (Used to diagnose a 502 Bad Gateway error, which was identified as a platform issue).
 -   **Test files created:** []
--   **Known regressions:** The login functionality, which previously worked on desktop, is now broken.
+-   **Known regressions:** None in this session; the agent successfully fixed several long-standing bugs.
 
 **Credentials to test flow:**
--   **Admin (PRO):**  / 
--   **User for mobile testing:**  (password not provided, but issue is with login persistence, not credentials).
+-   **Admin:**  / 
+-   **User (for multi-language testing):**  (password not provided, but login works). The user has also created four separate accounts, one for each language, which might be useful for testing.
 
 **What agent forgot to execute**
--   The agent did not start work on translating the Brix calculation UI.
--   The agent did not start the data migration to the new  unit system.</analysis>
+-   The agent has not yet addressed the broken save functionality on the main translation page (), which was a known issue from the initial handoff summary.
+-   The agent has not started the data migration task for  units, though this has been correctly deprioritized.</analysis>
