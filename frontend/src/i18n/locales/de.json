@@ -101,6 +101,8 @@
     "type": "Typ",
     "unit": "Einheit",
     "updateError": "Rezept konnte nicht aktualisiert werden",
+    "aiCreateTooltip": "🤖 Neue Funktion! Beschreiben Sie Ihren gewünschten Slush, und KI generiert ein komplettes Rezept mit Zutaten, Schritten und Brix-Berechnung.",
+    "aiBrixTooltip": "🧮 Neue Funktion! Verwenden Sie KI, um den Gesamt-Brix-Wert zu berechnen und Vorschläge zur Anpassung Ihres Rezepts zu erhalten.",
     "upgradePrompt": "Upgraden Sie, um weitere hinzuzufügen",
     "uploadImage": "Bild hochladen",
     "volumeDescription": "Geben Sie das <strong>Gesamtvolumen</strong> an, das dieses Rezept ergibt.",
