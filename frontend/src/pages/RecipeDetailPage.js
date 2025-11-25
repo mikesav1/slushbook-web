@@ -1368,7 +1368,7 @@ const RecipeDetailPage = ({ sessionId }) => {
       <AIChatPopup
         isOpen={showTipsAIPopup}
         onClose={() => setShowTipsAIPopup(false)}
-        endpoint="/api/ai/help"
+        endpoint="/ai/help"
         title="Tips & Tricks AI"
         placeholder="Spørg om smag, konsistens, variationer, udskiftninger..."
         initialMessage={recipe ? `Jeg har en opskrift: ${recipe.name}. ` : ''}
