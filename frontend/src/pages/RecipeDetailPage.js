@@ -11,6 +11,7 @@ import { toSentenceCase } from '../utils/textUtils';
 import { getUserCountry, getUserLanguage, detectUserLocation } from '../utils/geolocation';
 import { useTranslation } from 'react-i18next';
 import AIChatPopup from '../components/AIChatPopup';
+import AITooltip from '../components/AITooltip';
 
 const RecipeDetailPage = ({ sessionId }) => {
   const { id } = useParams();
