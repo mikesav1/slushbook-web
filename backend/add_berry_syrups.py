@@ -417,6 +417,77 @@ async def add_monin_syrups():
                 "EN_US": None
             },
             "brix_source": "Monin Blue Curaçao Syrup Product Specification (2019)"
+        },
+        {
+            "name": "Chokolade Sirup",
+            "brand": "Monin",
+            "brix": 64.6,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.318,
+            "ph": 6.0,
+            "carbs_g_per_100ml": 84.7,
+            "sugars_g_per_100ml": 84.4,
+            "energy_kcal_per_100ml": 337,
+            "juice_content_percent": 0,
+            "cocoa_content_percent": 3.5,
+            "flavour_profile": "Chocolate, cocoa bean, sweet creamy notes",
+            "color": "dark brown",
+            "allergen_info": "Contains no dairy (non-milk chocolate flavouring)",
+            "acidity_type": None,
+            "acid_g_per_l": None,
+            "keywords": {
+                "da": ["chokolade sirup", "chokoladesirup", "kakao sirup", "monin chokolade"],
+                "de": ["schokoladensirup", "kakao sirup", "monin schokolade"],
+                "fr": ["sirop chocolat", "sirop de chocolat", "monin chocolat"],
+                "en_uk": ["chocolate syrup", "cocoa syrup", "monin chocolate syrup"],
+                "en_us": ["chocolate syrup", "cocoa flavored syrup", "monin chocolate syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Chocolate Syrup Product Specification (2020)"
+        },
+        {
+            "name": "Kokos Sirup",
+            "brand": "Monin",
+            "brix": 61.2,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.287,
+            "ph": 4.9,
+            "carbs_g_per_100ml": 79.6,
+            "sugars_g_per_100ml": 79.2,
+            "energy_kcal_per_100ml": 321,
+            "juice_content_percent": 0,
+            "coconut_flavour_type": "Natural coconut flavouring",
+            "color": "milky / opaque white",
+            "allergen_info": "Contains no actual coconut allergen (aroma based)",
+            "acidity_type": None,
+            "acid_g_per_l": None,
+            "keywords": {
+                "da": ["kokos sirup", "kokossirup", "monin kokos", "coconut syrup"],
+                "de": ["kokossirup", "kokos sirup", "monin kokosnuss"],
+                "fr": ["sirop coco", "sirop de noix de coco", "monin coco"],
+                "en_uk": ["coconut syrup", "coconut flavour syrup", "monin coconut syrup"],
+                "en_us": ["coconut syrup", "coconut flavored syrup", "monin coconut syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Coconut Syrup Product Specification (2020)"
         }
     ]
     
