@@ -394,7 +394,7 @@ const AddRecipePage = ({ sessionId }) => {
       </div>
 
       {/* AI Create Recipe Button */}
-      <div className="bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl p-6 shadow-lg">
+      <div className="bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl p-6 shadow-lg relative">
         <div className="flex items-center justify-between">
           <div className="text-white">
             <div className="flex items-center gap-3 mb-2">
@@ -403,13 +403,21 @@ const AddRecipePage = ({ sessionId }) => {
             </div>
             <p className="text-white/90">Beskriv din ønskede slush, og AI genererer en komplet opskrift</p>
           </div>
-          <Button
-            type="button"
-            onClick={() => setShowAICreatePopup(true)}
-            className="bg-white text-purple-600 hover:bg-gray-100 font-bold px-8 py-3 text-lg"
-          >
-            Start AI
-          </Button>
+          <div className="relative">
+            <Button
+              type="button"
+              onClick={() => setShowAICreatePopup(true)}
+              className="bg-white text-purple-600 hover:bg-gray-100 font-bold px-8 py-3 text-lg"
+            >
+              Start AI
+            </Button>
+            <AITooltip
+              storageKey="ai_create_tooltip_shown"
+              message={t('addRecipe.aiCreateTooltip')}
+              show={showCreateTooltip}
+              onClose={() => setShowCreateTooltip(false)}
+            />
+          </div>
         </div>
       </div>
 
