@@ -117,25 +117,37 @@ async def import_ingredients():
         },
         {
             "name": "Monin Blue Curaçao Sirup",
-            "brix": None,
+            "brand": "Monin",
+            "brix": 50.5,
             "volume_ml": 700,
             "category": "sirup",
+            "density_g_per_ml": 1.240,
+            "ph": 3.0,
+            "carbs_g_per_100ml": 72.1,
+            "sugars_g_per_100ml": 71.8,
+            "energy_kcal_per_100ml": 285,
+            "juice_content_percent": 0,
+            "flavour_profile": "Citrus (bitter orange / curaçao orange), sweet, vibrant",
+            "color": "bright blue (E133)",
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 5.8,
             "keywords": {
-                "da": ["blå curaçao sirup", "blue curacao sirup"],
-                "de": ["blau curaçao sirup"],
-                "fr": ["sirop curaçao bleu"],
-                "en_uk": ["blue curacao syrup"],
-                "en_us": ["blue curacao syrup"]
+                "da": ["blå curaçao sirup", "blå curacao sirup", "blue curacao sirup", "monin blå curaçao"],
+                "de": ["blauer curaçao sirup", "blau curacao sirup", "monin curaçao blau"],
+                "fr": ["sirop curaçao bleu", "sirop bleu curaçao", "monin curaçao bleu"],
+                "en_uk": ["blue curaçao syrup", "blue curacao syrup", "monin blue curaçao syrup"],
+                "en_us": ["blue curaçao syrup", "blue curacao syrup", "monin blue curaçao syrup"]
             },
-            "country": ["DK"],
-            "alcohol_vol": None,
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
             "links": {
                 "DK": "https://barshopen.dk/da/barudstyr/mixers-og-sirup/monin-blue-curacao-70-cl/",
                 "DE": None,
                 "FR": None,
                 "EN_UK": None,
                 "EN_US": None
-            }
+            },
+            "brix_source": "Monin Blue Curaçao Syrup Product Specification (2019)"
         },
         {
             "name": "Chokolade Sirup",
