@@ -6103,6 +6103,10 @@ def apply_translation(recipe: dict, lang: str = "da") -> dict:
     recipe_copy["description"] = translation.get("description", recipe.get("description", ""))
     recipe_copy["steps"] = translation.get("steps", recipe.get("steps", []))
     
+    # Apply translated ingredients if available
+    if "ingredients" in translation:
+        recipe_copy["ingredients"] = translation["ingredients"]
+    
     # Keep original translations object for admin purposes
     # but mark which language is currently displayed
     recipe_copy["_current_language"] = lang
