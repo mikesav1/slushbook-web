@@ -508,7 +508,8 @@
     "edited": "redigeret",
     "edit": "Rediger",
     "delete": "Slet",
-    "deleteRecipe": "Slet Opskrift"
+    "deleteRecipe": "Slet Opskrift",
+    "aiTipsTooltip": "💡 Ny funktion! Få ekspertråd om smag, konsistens, ingrediens-udskiftninger og maskintips fra AI-assistenten."
   },
   "profile": {
     "passwordsDontMatch": "Nye passwords stemmer ikke overens",
