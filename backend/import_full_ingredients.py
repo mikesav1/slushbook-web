@@ -249,25 +249,35 @@ async def import_ingredients():
         },
         {
             "name": "Jordbær Sirup",
-            "brix": None,
+            "brand": "Monin",
+            "brix": 64.4,
             "volume_ml": None,
             "category": "sirup",
+            "density_g_per_ml": 1.31,
+            "ph": 2.9,
+            "water_activity": 0.849,
+            "carbs_g_per_100ml": 83.7,
+            "sugars_g_per_100ml": 83.6,
+            "energy_kcal_per_100ml": 339,
+            "juice_content_percent": 18,
+            "dilution_recommendation": "1+8 (1 del sirup til 8 dele væske)",
             "keywords": {
-                "da": ["jordbær sirup"],
-                "de": ["erdbeersirup"],
-                "fr": ["sirop fraise"],
-                "en_uk": ["strawberry syrup"],
-                "en_us": ["strawberry syrup"]
+                "da": ["jordbær sirup", "jordbærsirup", "monin jordbær", "monin strawberry"],
+                "de": ["erdbeer sirup", "erdbeersirup", "monin erdbeer"],
+                "fr": ["sirop fraise", "sirop de fraise", "monin fraise"],
+                "en_uk": ["strawberry syrup", "strawberry flavour syrup", "monin strawberry syrup"],
+                "en_us": ["strawberry syrup", "strawberry flavored syrup", "monin strawberry syrup"]
             },
-            "country": ["DK"],
-            "alcohol_vol": None,
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
             "links": {
                 "DK": None,
                 "DE": None,
                 "FR": None,
                 "EN_UK": None,
                 "EN_US": None
-            }
+            },
+            "brix_source": "Monin Strawberry Syrup product specification, 10/03/2021"
         },
         {
             "name": "Hindbær Sirup",
