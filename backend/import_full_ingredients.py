@@ -256,6 +256,76 @@ async def import_ingredients():
             "brix_source": "Monin Coconut Syrup Product Specification (2020)"
         },
         {
+            "name": "Mandel Sirup",
+            "brand": "Monin",
+            "brix": 64.0,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.311,
+            "ph": 6.4,
+            "carbs_g_per_100ml": 84.2,
+            "sugars_g_per_100ml": 83.8,
+            "energy_kcal_per_100ml": 336,
+            "juice_content_percent": 0,
+            "almond_flavour_type": "Bitter almond + orange blossom aroma",
+            "contains_nut_allergen": False,
+            "color": "milky white",
+            "acidity_type": None,
+            "acid_g_per_l": None,
+            "keywords": {
+                "da": ["mandel sirup", "mandelsirup", "orgeat sirup", "monin mandel", "monin orgeat"],
+                "de": ["mandelsirup", "orgeat sirup", "monin mandel"],
+                "fr": ["sirop orgeat", "sirop amande", "monin orgeat"],
+                "en_uk": ["orgeat syrup", "almond syrup", "monin orgeat syrup"],
+                "en_us": ["almond syrup", "orgeat syrup", "monin almond syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Orgeat (Almond) Syrup Product Specification (2020)"
+        },
+        {
+            "name": "Vandmelon Sirup",
+            "brand": "Monin",
+            "brix": 52.9,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.259,
+            "ph": 3.5,
+            "carbs_g_per_100ml": 73.4,
+            "sugars_g_per_100ml": 73.1,
+            "energy_kcal_per_100ml": 287,
+            "juice_content_percent": 20,
+            "watermelon_juice_percent": 20,
+            "flavour_profile": "Fresh watermelon, sweet, light, summery",
+            "color": "bright red / pink",
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 6.4,
+            "keywords": {
+                "da": ["vandmelon sirup", "vandmelonsirup", "monin vandmelon", "watermelon syrup"],
+                "de": ["wassermelone sirup", "wassermelonensirup", "monin wassermelone"],
+                "fr": ["sirop pastèque", "sirop de pastèque", "monin pastèque"],
+                "en_uk": ["watermelon syrup", "monin watermelon syrup"],
+                "en_us": ["watermelon syrup", "watermelon flavored syrup", "monin watermelon syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Watermelon Syrup Product Specification (2020)"
+        },
+        {
             "name": "Mynte Sirup",
             "brand": "Monin",
             "brix": 55.8,
