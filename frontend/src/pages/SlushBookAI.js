@@ -175,9 +175,9 @@ const SlushBookAI = () => {
       <AIChatPopup
         isOpen={showChatPopup}
         onClose={() => setShowChatPopup(false)}
-        endpoint="/api/ai/help"
-        title="Fri Chat"
-        placeholder="Hvad vil du vide om slushice?"
+        endpoint="/api/ai/create-recipe"
+        title="Opskriftsgenerator"
+        placeholder="Beskriv din ønskede slush-opskrift..."
       />
     </div>
   );
