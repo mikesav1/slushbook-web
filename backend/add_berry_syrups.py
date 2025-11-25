@@ -1,5 +1,6 @@
 """
-Add/update berry syrups to ingredients collection with verified Monin data
+Add/update Monin syrups to ingredients collection with verified data
+Berry syrups (Jordbær, Hindbær, Blåbær) + Citrus syrups (Citron, Lime)
 """
 import asyncio
 from motor.motor_asyncio import AsyncIOMotorClient
