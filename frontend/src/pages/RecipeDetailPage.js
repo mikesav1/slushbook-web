@@ -41,6 +41,9 @@ const RecipeDetailPage = ({ sessionId }) => {
   const [shareLoading, setShareLoading] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
   
+  // AI state
+  const [showTipsAIPopup, setShowTipsAIPopup] = useState(false);
+  
   // Category display name mapper
   const getCategoryDisplayName = (categoryKey) => {
     const categoryMap = {
