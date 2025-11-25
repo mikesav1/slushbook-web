@@ -860,6 +860,30 @@ const AddRecipePage = ({ sessionId }) => {
           </Button>
         </div>
       </form>
+
+      {/* AI Create Recipe Popup */}
+      {showAICreatePopup && (
+        <AIChatPopup
+          isOpen={showAICreatePopup}
+          onClose={() => setShowAICreatePopup(false)}
+          onResult={handleAICreateRecipe}
+          title="Lav opskrift med AI"
+          placeholder="Beskriv din ønskede slush... f.eks. 'En sød jordbær slush med lidt citrus'"
+          systemPrompt="Du er en ekspert i slush opskrifter. Brugeren vil beskrive en ønsket slush, og du skal generere en komplet opskrift i JSON format med følgende struktur: {name, description, type, brix, base_volume_ml, contains_alcohol, tags, ingredients: [{name, category, amount, unit, required, brix}], procedure: [steps]}. Svar kun med valid JSON."
+        />
+      )}
+
+      {/* Brix AI Popup */}
+      {showBrixAIPopup && (
+        <AIChatPopup
+          isOpen={showBrixAIPopup}
+          onClose={() => setShowBrixAIPopup(false)}
+          onResult={handleBrixAIInsert}
+          title="Beregn Brix med AI"
+          placeholder="Beskriv dine ingredienser og mængder..."
+          systemPrompt="Du er en ekspert i sukkerindhold beregning. Baseret på brugerens ingredienser, beregn det samlede Brix niveau. Svar med kun tallet efterfulgt af °Bx, f.eks. '14.2°Bx'."
+        />
+      )}
     </div>
   );
 };
