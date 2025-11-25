@@ -249,6 +249,50 @@ const AddRecipePage = ({ sessionId }) => {
     }
   };
 
+  // AI Handler: Create recipe from description
+  const handleAICreateRecipe = async (aiRecipe) => {
+    try {
+      // Map AI recipe to form state
+      setRecipe({
+        name: aiRecipe.name || '',
+        description: aiRecipe.description || '',
+        type: aiRecipe.type || 'Klassisk',
+        target_brix: aiRecipe.brix || 13,
+        base_volume_ml: aiRecipe.base_volume_ml || 2000,
+        contains_alcohol: aiRecipe.contains_alcohol || false,
+        tags: aiRecipe.tags || [],
+        ingredients: (aiRecipe.ingredients || []).map(ing => ({
+          name: ing.name,
+          category_key: ing.category,
+          quantity: ing.amount,
+          unit: ing.unit || 'ml',
+          role: ing.required ? 'required' : 'optional',
+          brix: ing.brix
+        })),
+        steps: aiRecipe.procedure || []
+      });
+      
+      setShowAICreatePopup(false);
+      toast.success('Opskrift indlæst fra AI! Gennemgå og gem.');
+    } catch (error) {
+      console.error('Error parsing AI recipe:', error);
+      toast.error('Kunne ikke indlæse opskrift');
+    }
+  };
+
+  // AI Handler: Insert Brix value
+  const handleBrixAIInsert = (brixData) => {
+    // Extract Brix value from AI response
+    const brixMatch = brixData.match(/(\d+\.?\d*)\s*°?Bx/i);
+    if (brixMatch) {
+      setRecipe({ ...recipe, target_brix: parseFloat(brixMatch[1]) });
+      setShowBrixAIPopup(false);
+      toast.success(`Brix ${brixMatch[1]}°Bx indsat!`);
+    } else {
+      toast.info('Kunne ikke finde Brix værdi i svaret');
+    }
+  };
+
   const submitRecipe = async (e) => {
     e.preventDefault();
     
