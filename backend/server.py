@@ -6998,10 +6998,24 @@ async def broadcast_notification(
 
 from pathlib import Path
 from emergentintegrations.llm.chat import LlmChat, UserMessage
+from utils.brix_calculator import (
+    calculate_brix,
+    calculate_adjustment_to_target_brix,
+    Ingredient,
+    BrixResult
+)
 
 class AIQueryRequest(BaseModel):
     query: str = Field(..., min_length=1, max_length=2000, description="User's question or request")
     language: Optional[str] = Field(default="da", description="Response language (da, en, de, fr)")
+
+class BrixCalculationRequest(BaseModel):
+    ingredients: List[Dict[str, Any]] = Field(..., min_items=1, description="List of ingredients with volume_ml and brix")
+
+class BrixAdjustmentRequest(BaseModel):
+    ingredients: List[Dict[str, Any]] = Field(..., min_items=1)
+    target_brix: float = Field(default=13.0, ge=10, le=15, description="Target Brix value")
+    adjustment_type: str = Field(default="water", description="'water' or 'syrup'")
 
 def load_system_prompt(prompt_file: str) -> str:
     """Load system prompt from file"""
