@@ -536,6 +536,76 @@ async def import_ingredients():
             "brix_source": "Monin Pink Grapefruit Syrup Product Specification (2020)"
         },
         {
+            "name": "Fersken Sirup",
+            "brand": "Monin",
+            "brix": 61.8,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.294,
+            "ph": 3.1,
+            "carbs_g_per_100ml": 80.8,
+            "sugars_g_per_100ml": 80.4,
+            "energy_kcal_per_100ml": 325,
+            "juice_content_percent": 15,
+            "peach_juice_percent": 15,
+            "flavour_profile": "Sweet peach, soft fruit, floral notes, candy-like sweetness",
+            "color": "peach/orange",
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 6.7,
+            "keywords": {
+                "da": ["fersken sirup", "ferskensirup", "monin fersken", "peach syrup"],
+                "de": ["pfirsich sirup", "pfirsichsirup", "monin pfirsich"],
+                "fr": ["sirop pêche", "sirop de pêche", "monin pêche"],
+                "en_uk": ["peach syrup", "monin peach syrup"],
+                "en_us": ["peach syrup", "peach flavored syrup", "monin peach syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Peach Syrup Product Specification (2020)"
+        },
+        {
+            "name": "Pære Sirup",
+            "brand": "Monin",
+            "brix": 62.0,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.296,
+            "ph": 3.3,
+            "carbs_g_per_100ml": 81.2,
+            "sugars_g_per_100ml": 80.8,
+            "energy_kcal_per_100ml": 326,
+            "juice_content_percent": 12,
+            "pear_juice_percent": 12,
+            "flavour_profile": "Sweet pear, floral, soft, light fruity sweetness",
+            "color": "pale yellow / light gold",
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 6.4,
+            "keywords": {
+                "da": ["pære sirup", "pæresirup", "monin pære", "pear syrup"],
+                "de": ["birnen sirup", "birnensirup", "monin birne"],
+                "fr": ["sirop poire", "sirop de poire", "monin poire"],
+                "en_uk": ["pear syrup", "monin pear syrup"],
+                "en_us": ["pear syrup", "pear flavored syrup", "monin pear syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Pear Syrup Product Specification (2020)"
+        },
+        {
             "name": "Mynte Sirup",
             "brand": "Monin",
             "brix": 55.8,
