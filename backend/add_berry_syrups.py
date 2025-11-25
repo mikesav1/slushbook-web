@@ -15,7 +15,7 @@ async def add_monin_syrups():
     
     print(f"Connected to database: {db_name}")
     
-    berry_syrups = [
+    monin_syrups = [
         {
             "name": "Jordbær Sirup",
             "brand": "Monin",
