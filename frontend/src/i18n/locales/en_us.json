@@ -661,6 +661,7 @@
     "deleteCommentError": "Could not delete comment",
     "deleteError": "Could not delete recipe",
     "deleteRecipe": "Delete Recipe",
+    "aiTipsTooltip": "💡 New feature! Get expert advice on taste, consistency, ingredient substitutions, and machine tips from the AI assistant.",
     "edit": "Edit",
     "edited": "edited",
     "next": "Next",
