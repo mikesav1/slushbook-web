@@ -186,25 +186,39 @@ async def import_ingredients():
         },
         {
             "name": "Chokolade Sirup",
-            "brix": None,
+            "brand": "Monin",
+            "brix": 64.6,
             "volume_ml": None,
             "category": "sirup",
+            "density_g_per_ml": 1.318,
+            "ph": 6.0,
+            "carbs_g_per_100ml": 84.7,
+            "sugars_g_per_100ml": 84.4,
+            "energy_kcal_per_100ml": 337,
+            "juice_content_percent": 0,
+            "cocoa_content_percent": 3.5,
+            "flavour_profile": "Chocolate, cocoa bean, sweet creamy notes",
+            "color": "dark brown",
+            "allergen_info": "Contains no dairy (non-milk chocolate flavouring)",
+            "acidity_type": None,
+            "acid_g_per_l": None,
             "keywords": {
-                "da": ["chokolade sirup"],
-                "de": ["schokoladensirup"],
-                "fr": ["sirop chocolat"],
-                "en_uk": ["chocolate syrup"],
-                "en_us": ["chocolate syrup"]
+                "da": ["chokolade sirup", "chokoladesirup", "kakao sirup", "monin chokolade"],
+                "de": ["schokoladensirup", "kakao sirup", "monin schokolade"],
+                "fr": ["sirop chocolat", "sirop de chocolat", "monin chocolat"],
+                "en_uk": ["chocolate syrup", "cocoa syrup", "monin chocolate syrup"],
+                "en_us": ["chocolate syrup", "cocoa flavored syrup", "monin chocolate syrup"]
             },
-            "country": ["DK"],
-            "alcohol_vol": None,
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
             "links": {
                 "DK": None,
                 "DE": None,
                 "FR": None,
                 "EN_UK": None,
                 "EN_US": None
-            }
+            },
+            "brix_source": "Monin Chocolate Syrup Product Specification (2020)"
         },
         {
             "name": "Mynte Sirup",
