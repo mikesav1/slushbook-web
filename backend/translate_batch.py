@@ -92,6 +92,19 @@ async def translate_recipe(recipe, api_key, db):
         print(f"    ⚠️  No Danish content, skipping")
         return
     
+    # Ensure Danish translation has ingredients (as they are originally in Danish)
+    if 'da' not in translations:
+        translations['da'] = {}
+    if 'ingredients' not in translations['da'] and ingredients:
+        translations['da']['ingredients'] = [{
+            'name': ing.get('name', ''),
+            'category_key': ing.get('category_key', ''),
+            'quantity': ing.get('quantity', 0),
+            'unit': ing.get('unit', ''),
+            'role': ing.get('role', 'required'),
+            'brix': ing.get('brix', 0)
+        } for ing in ingredients]
+    
     target_langs = ['de', 'fr', 'en', 'en_us']
     
     for lang in target_langs:
