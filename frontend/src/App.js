@@ -548,6 +548,7 @@ const AppContent = ({ sessionId }) => {
             <Route path="/edit-recipe/:id" element={<EditRecipePage sessionId={effectiveSessionId} />} />
             <Route path="/members" element={<MembersPage />} />
             <Route path="/brix-info" element={<BrixInfoPage />} />
+            <Route path="/ai" element={<SlushBookAI />} />
             <Route path="/admin" element={<AdminPage sessionId={effectiveSessionId} />} />
             <Route path="/admin/sandbox" element={<AdminSandboxPage sessionId={effectiveSessionId} />} />
             <Route path="/admin/comments" element={<AdminCommentsPage />} />
