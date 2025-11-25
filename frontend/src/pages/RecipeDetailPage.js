@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'sonner';
-import { FaHeart, FaRegHeart, FaStar, FaWineBottle, FaShoppingCart, FaArrowLeft, FaBalanceScale, FaTrash, FaTimes, FaChevronDown, FaChevronUp, FaShare, FaCopy, FaCheck } from 'react-icons/fa';
+import { FaHeart, FaRegHeart, FaStar, FaWineBottle, FaShoppingCart, FaArrowLeft, FaBalanceScale, FaTrash, FaTimes, FaChevronDown, FaChevronUp, FaShare, FaCopy, FaCheck, FaRobot, FaLightbulb } from 'react-icons/fa';
 import { API } from '../App';
 import { Button } from '../components/ui/button';
 import { Label } from '../components/ui/label';
@@ -10,6 +10,7 @@ import { useAuth } from '../context/AuthContext';
 import { toSentenceCase } from '../utils/textUtils';
 import { getUserCountry, getUserLanguage, detectUserLocation } from '../utils/geolocation';
 import { useTranslation } from 'react-i18next';
+import AIChatPopup from '../components/AIChatPopup';
 
 const RecipeDetailPage = ({ sessionId }) => {
   const { id } = useParams();
