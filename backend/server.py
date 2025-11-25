@@ -7010,7 +7010,7 @@ def load_system_prompt(prompt_file: str) -> str:
         return prompt_path.read_text(encoding='utf-8')
     return "Du er en hjælpsom assistent."
 
-async def query_openai(system_prompt: str, user_query: str, context: str = "", model: str = "gpt-5.1") -> str:
+async def query_openai(system_prompt: str, user_query: str, context: str = "", model: str = "gpt-4o") -> str:
     """
     Query OpenAI with system prompt and user query
     Uses Emergent LLM key for authentication
