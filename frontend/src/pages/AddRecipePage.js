@@ -631,9 +631,19 @@ const AddRecipePage = ({ sessionId }) => {
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4 ingredients-section" data-tour="recipe-ingredients">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold">{t('addRecipe.ingredientsTitle')}</h2>
-            <Button type="button" onClick={addIngredient} size="sm">
-              <FaPlus className="mr-2" /> {t('addRecipe.addTag')}
-            </Button>
+            <div className="flex gap-2">
+              <Button 
+                type="button" 
+                onClick={() => setShowBrixAIPopup(true)}
+                className="bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white"
+                size="sm"
+              >
+                <FaCalculator className="mr-2" /> Brix AI
+              </Button>
+              <Button type="button" onClick={addIngredient} size="sm">
+                <FaPlus className="mr-2" /> {t('addRecipe.addTag')}
+              </Button>
+            </div>
           </div>
 
           {recipe.ingredients.map((ingredient, index) => (
