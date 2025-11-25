@@ -6,7 +6,7 @@ import asyncio
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 
-async def add_berry_syrups():
+async def add_monin_syrups():
     # Connect to MongoDB
     mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
     db_name = os.environ.get('DB_NAME', 'slushbook')
