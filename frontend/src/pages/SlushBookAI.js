@@ -39,15 +39,15 @@ const SlushBookAI = () => {
     },
     {
       id: 'chat',
-      name: 'Fri Chat',
+      name: 'Opskriftsgenerator',
       icon: FaComments,
       color: 'from-purple-500 to-pink-600',
-      description: 'Stil generelle spørgsmål om slushice',
+      description: 'Generer en komplet opskrift fra din beskrivelse',
       features: [
-        'Åbent chat-format',
-        'Alle typer spørgsmål',
-        'Kreative ideer',
-        'Generel vejledning'
+        'Automatisk opskriftsgenerering',
+        'Brix-beregning inkluderet',
+        'Ingredienser og trin',
+        'Flersprogsunderstøttelse'
       ]
     }
   ];
