@@ -236,20 +236,33 @@ sudo supervisorctl restart backend
 
 ## ⚙️ Customization
 
-### Ændre AI Model
-I `server.py` linje ~7050:
-```python
-.with_model("openai", "gpt-4o")  # Skift til "gpt-4o-mini" for hurtigere svar
-```
+### AI Modeller (Allerede sat op)
+- **Brix endpoint:** `gpt-5.1` (præcise beregninger)
+- **Help endpoint:** `o1-mini` (hurtig og billig)
+
+Modeller er hardcoded i endpoints og skal ikke ændres.
 
 ### Tilføj flere felter til ingredients
 Du kan udvide collection strukturen efter behov. AI'en vil automatisk se alle felter.
 
-### Ændre maksimal context
-I `server.py` linje ~7040:
-```python
-ingredients_cursor = db.ingredients.find({}, {"_id": 0}).limit(50)  # Ændre limit
+**Eksempel:**
+```javascript
+{
+  "name": "Ny Ingrediens",
+  "brix": 50,
+  "volume_ml": 500,
+  "category": "sirup",
+  "keywords": ["test"],
+  "country": ["DK"],
+  "alcohol_vol": null,
+  "supplier": "Leverandør navn",  // Nyt felt
+  "price_dkk": 49.95              // Nyt felt
+}
 ```
+
+### Ingredient Context
+Brix endpoint henter ALLE ingredienser (ingen limit).
+Dette sikrer præcise beregninger med komplet data.
 
 ---
 
