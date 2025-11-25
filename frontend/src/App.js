@@ -4,7 +4,7 @@ import axios from "axios";
 import './i18n/config'; // Initialize i18n
 import { useTranslation } from 'react-i18next';
 import { toast, Toaster } from "sonner";
-import { FaHome, FaBook, FaBoxOpen, FaShoppingCart, FaHeart, FaSearch, FaCog, FaMagic, FaPlus, FaSignOutAlt, FaSeedling, FaLink, FaAd, FaLightbulb, FaImage, FaCheckCircle, FaTrash, FaGlobe } from "react-icons/fa";
+import { FaHome, FaBook, FaBoxOpen, FaShoppingCart, FaHeart, FaSearch, FaCog, FaMagic, FaPlus, FaSignOutAlt, FaSeedling, FaLink, FaAd, FaLightbulb, FaImage, FaCheckCircle, FaTrash, FaGlobe, FaRobot } from "react-icons/fa";
 import "@/App.css";
 import { getSessionId } from "./utils/session";
 import { AuthProvider, useAuth } from "./context/AuthContext";
