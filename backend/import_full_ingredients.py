@@ -315,25 +315,34 @@ async def import_ingredients():
         },
         {
             "name": "Blåbær Sirup",
-            "brix": None,
+            "brand": "Monin",
+            "brix": 65.3,
             "volume_ml": None,
             "category": "sirup",
+            "density_g_per_ml": 1.317,
+            "ph": 2.8,
+            "carbs_g_per_100ml": 84.9,
+            "sugars_g_per_100ml": 84.7,
+            "energy_kcal_per_100ml": 339,
+            "juice_content_percent": 17,
+            "blueberry_juice_percent": 12,
             "keywords": {
-                "da": ["blåbær sirup"],
-                "de": ["heidelbeersirup"],
-                "fr": ["sirop myrtille"],
-                "en_uk": ["blueberry syrup"],
-                "en_us": ["blueberry syrup"]
+                "da": ["blåbær sirup", "blåbærsirup", "monin blåbær"],
+                "de": ["heidelbeersirup", "blau beer sirup", "monin heidelbeer"],
+                "fr": ["sirop myrtille", "sirop de myrtille", "monin myrtille"],
+                "en_uk": ["blueberry syrup", "blueberry flavour syrup", "monin blueberry syrup"],
+                "en_us": ["blueberry syrup", "blueberry flavored syrup", "monin blueberry syrup"]
             },
-            "country": ["DK"],
-            "alcohol_vol": None,
+            "country": ["DK", "FR"],
+            "alcohol_vol": 0,
             "links": {
                 "DK": None,
                 "DE": None,
                 "FR": None,
                 "EN_UK": None,
                 "EN_US": None
-            }
+            },
+            "brix_source": "Monin Blueberry Syrup specification 2018"
         },
         {
             "name": "Citron Sirup",
