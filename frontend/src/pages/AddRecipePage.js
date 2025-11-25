@@ -45,6 +45,10 @@ const AddRecipePage = ({ sessionId }) => {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [imageRightsConfirmed, setImageRightsConfirmed] = useState(false);
+  
+  // AI States
+  const [showAICreatePopup, setShowAICreatePopup] = useState(false);
+  const [showBrixAIPopup, setShowBrixAIPopup] = useState(false);
 
   useEffect(() => {
     checkLimits();
