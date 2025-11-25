@@ -6993,6 +6993,111 @@ async def broadcast_notification(
 
 
 # =============================================================================
+# AI ASSISTANT ENDPOINTS
+# =============================================================================
+
+from pathlib import Path
+from emergentintegrations.llm.chat import LlmChat, UserMessage
+
+class AIQueryRequest(BaseModel):
+    query: str = Field(..., min_length=1, max_length=2000, description="User's question or request")
+    language: Optional[str] = Field(default="da", description="Response language (da, en, de, fr)")
+
+def load_system_prompt(prompt_file: str) -> str:
+    """Load system prompt from file"""
+    prompt_path = ROOT_DIR / 'prompts' / prompt_file
+    if prompt_path.exists():
+        return prompt_path.read_text(encoding='utf-8')
+    return "Du er en hjælpsom assistent."
+
+async def query_openai(system_prompt: str, user_query: str, context: str = "") -> str:
+    """
+    Query OpenAI with system prompt and user query
+    Uses Emergent LLM key for authentication
+    """
+    api_key = os.environ.get('EMERGENT_LLM_KEY', 'sk-emergent-0A93663479e74011f0')
+    
+    # Build full prompt with context if provided
+    full_prompt = user_query
+    if context:
+        full_prompt = f"{context}\n\nBrugers spørgsmål: {user_query}"
+    
+    chat = LlmChat(
+        api_key=api_key,
+        session_id=f"ai_assistant_{datetime.now().timestamp()}",
+        system_message=system_prompt
+    ).with_model("openai", "gpt-4o")
+    
+    user_message = UserMessage(text=full_prompt)
+    response = await chat.send_message(user_message)
+    
+    return response.strip()
+
+@api_router.post("/ai/brix")
+async def ai_brix_assistant(request: AIQueryRequest):
+    """
+    AI assistant for Brix calculations and ingredient advice.
+    Queries the ingredients database and provides expert recommendations.
+    """
+    try:
+        # Load system prompt
+        system_prompt = load_system_prompt('brix_assistant.txt')
+        
+        # Fetch relevant ingredients from database (limit to 50 for context)
+        ingredients_cursor = db.ingredients.find({}, {"_id": 0}).limit(50)
+        ingredients_list = await ingredients_cursor.to_list(50)
+        
+        # Build context with ingredient data
+        if ingredients_list:
+            context = "Tilgængelige ingredienser i databasen:\n\n"
+            for ing in ingredients_list:
+                name = ing.get('name', '')
+                brix = ing.get('brix', 0)
+                category = ing.get('category', '')
+                context += f"- {name}: {brix}°Bx"
+                if category:
+                    context += f" ({category})"
+                context += "\n"
+        else:
+            context = "Ingen ingrediensdata tilgængelig endnu."
+        
+        # Query OpenAI
+        response = await query_openai(system_prompt, request.query, context)
+        
+        return {
+            "success": True,
+            "response": response,
+            "ingredients_count": len(ingredients_list)
+        }
+        
+    except Exception as e:
+        logger.error(f"AI Brix assistant error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"AI request failed: {str(e)}")
+
+@api_router.post("/ai/help")
+async def ai_general_help(request: AIQueryRequest):
+    """
+    General AI assistant for tips, tricks, and troubleshooting.
+    No database queries - pure conversational help.
+    """
+    try:
+        # Load system prompt
+        system_prompt = load_system_prompt('general_help.txt')
+        
+        # Query OpenAI (no additional context needed)
+        response = await query_openai(system_prompt, request.query)
+        
+        return {
+            "success": True,
+            "response": response
+        }
+        
+    except Exception as e:
+        logger.error(f"AI general help error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"AI request failed: {str(e)}")
+
+
+# =============================================================================
 # TRANSLATION EDITOR ENDPOINTS (Admin Only)
 # =============================================================================
 
