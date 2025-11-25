@@ -161,25 +161,35 @@ async def import_ingredients():
         },
         {
             "name": "Mynte Sirup",
-            "brix": None,
+            "brand": "Monin",
+            "brix": 55.8,
             "volume_ml": None,
             "category": "sirup",
+            "density_g_per_ml": 1.257,
+            "water_activity": 0.898,
+            "carbs_g_per_100ml": 70,
+            "sugars_g_per_100ml": 70,
+            "energy_kcal_per_100ml": 282,
+            "juice_content_percent": 0,
+            "mint_flavour_type": "Natural mint flavouring",
+            "color": "clear / pale green",
             "keywords": {
-                "da": ["mynte sirup"],
-                "de": ["minzsirup"],
-                "fr": ["sirop menthe"],
-                "en_uk": ["mint syrup"],
-                "en_us": ["mint syrup"]
+                "da": ["mynte sirup", "mynte-sirup", "monin mynte", "monin mint"],
+                "de": ["minzsirup", "minze sirup", "monin minze"],
+                "fr": ["sirop menthe", "sirop de menthe", "monin menthe"],
+                "en_uk": ["mint syrup", "mint flavour syrup", "monin mint syrup"],
+                "en_us": ["mint syrup", "mint flavored syrup", "monin mint syrup"]
             },
-            "country": ["DK"],
-            "alcohol_vol": None,
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
             "links": {
                 "DK": None,
                 "DE": None,
                 "FR": None,
                 "EN_UK": None,
                 "EN_US": None
-            }
+            },
+            "brix_source": "Monin Mojito Mint Syrup Product Specification, 10/02/2021"
         },
         {
             "name": "Karamel Sirup",
