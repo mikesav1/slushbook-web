@@ -284,6 +284,40 @@ async def import_ingredients():
             "brix_source": "Monin Pink Grapefruit Syrup Product Specification (2020)"
         },
         {
+            "name": "Grenadine Sirup",
+            "brand": "Monin",
+            "brix": 68.0,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.328,
+            "ph": 3.1,
+            "carbs_g_per_100ml": 85.7,
+            "sugars_g_per_100ml": 85.4,
+            "energy_kcal_per_100ml": 341,
+            "juice_content_percent": 10,
+            "flavour_profile": "Pomegranate and red berry flavours",
+            "color": "deep red",
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 5.9,
+            "keywords": {
+                "da": ["grenadine sirup", "grenadinesirup", "monin grenadine"],
+                "de": ["grenadinesirup", "grenadine sirup", "monin grenadine"],
+                "fr": ["sirop grenadine", "monin grenadine"],
+                "en_uk": ["grenadine syrup", "monin grenadine syrup"],
+                "en_us": ["grenadine syrup", "monin grenadine syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Grenadine Syrup Product Specification (2020)"
+        },
+        {
             "name": "Jordbær Sirup",
             "brand": "Monin",
             "brix": 64.4,
