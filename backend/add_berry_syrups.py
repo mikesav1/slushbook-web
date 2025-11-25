@@ -112,11 +112,77 @@ async def add_monin_syrups():
                 "EN_US": None
             },
             "brix_source": "Monin Blueberry Syrup specification 2018"
+        },
+        {
+            "name": "Citron Sirup",
+            "brand": "Monin",
+            "brix": 55.7,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.269,
+            "ph": 2.5,
+            "carbs_g_per_100ml": 76.9,
+            "sugars_g_per_100ml": 76.6,
+            "energy_kcal_per_100ml": 308,
+            "juice_content_percent": 22,
+            "lemon_juice_percent": 22,
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 8.1,
+            "keywords": {
+                "da": ["citron sirup", "citronsirup", "monin citron", "monin lemon"],
+                "de": ["zitronensirup", "zitrone sirup", "monin zitrone"],
+                "fr": ["sirop citron", "sirop de citron", "monin citron"],
+                "en_uk": ["lemon syrup", "lemon flavour syrup", "monin lemon syrup"],
+                "en_us": ["lemon syrup", "lemon flavored syrup", "monin lemon syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Lemon Syrup Product Specification 2020"
+        },
+        {
+            "name": "Lime Sirup",
+            "brand": "Monin",
+            "brix": 55.1,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.268,
+            "ph": 2.4,
+            "carbs_g_per_100ml": 76.5,
+            "sugars_g_per_100ml": 76.2,
+            "energy_kcal_per_100ml": 307,
+            "juice_content_percent": 20,
+            "lime_juice_percent": 20,
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 8.5,
+            "keywords": {
+                "da": ["lime sirup", "limesirup", "monin lime", "lime flavor"],
+                "de": ["limetten sirup", "limettensirup", "monin limette"],
+                "fr": ["sirop citron vert", "sirop de lime", "monin citron vert"],
+                "en_uk": ["lime syrup", "lime flavour syrup", "monin lime syrup"],
+                "en_us": ["lime syrup", "lime flavored syrup", "monin lime syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Lime Syrup Product Specification 2020"
         }
     ]
     
     # Insert or update each syrup
-    for syrup in berry_syrups:
+    for syrup in monin_syrups:
         existing = await db.ingredients.find_one({"name": syrup["name"]})
         
         if existing:
