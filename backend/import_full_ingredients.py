@@ -215,25 +215,38 @@ async def import_ingredients():
         },
         {
             "name": "Hasselnød Sirup",
-            "brix": None,
+            "brand": "Monin",
+            "brix": 63.9,
             "volume_ml": None,
             "category": "sirup",
+            "density_g_per_ml": 1.309,
+            "ph": 3.1,
+            "carbs_g_per_100ml": 83.5,
+            "sugars_g_per_100ml": 82.9,
+            "energy_kcal_per_100ml": 336,
+            "juice_content_percent": 0,
+            "nut_content_type": "Natural hazelnut flavouring",
+            "contains_nut_allergen": False,
+            "color": "amber / golden",
+            "acidity_type": None,
+            "acid_g_per_l": None,
             "keywords": {
-                "da": ["hasselnød sirup"],
-                "de": ["haselnusssirup"],
-                "fr": ["sirop noisette"],
-                "en_uk": ["hazelnut syrup"],
-                "en_us": ["hazelnut syrup"]
+                "da": ["hasselnød sirup", "hasselnødsirup", "monin hasselnød", "monin hazelnut"],
+                "de": ["haselnuss sirup", "haselnusssirup", "monin haselnuss"],
+                "fr": ["sirop noisette", "sirop de noisette", "monin noisette"],
+                "en_uk": ["hazelnut syrup", "hazelnut flavour syrup", "monin hazelnut syrup"],
+                "en_us": ["hazelnut syrup", "hazelnut flavored syrup", "monin hazelnut syrup"]
             },
-            "country": ["DK"],
-            "alcohol_vol": None,
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
             "links": {
                 "DK": None,
                 "DE": None,
                 "FR": None,
                 "EN_UK": None,
                 "EN_US": None
-            }
+            },
+            "brix_source": "Monin Hazelnut Syrup Product Specification (2020)"
         },
         {
             "name": "Pink Shake Sirup",
