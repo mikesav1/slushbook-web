@@ -10,7 +10,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from emergentintegrations.llm.chat import LlmChat, UserMessage
 
 async def translate_recipe_content(content, content_type, recipe_name, target_lang, api_key):
-    """Translate recipe description or step"""
+    """Translate recipe description, step, or ingredient name"""
     
     lang_names = {
         'de': 'German',
@@ -26,9 +26,25 @@ async def translate_recipe_content(content, content_type, recipe_name, target_la
         'en_us': 'Use American English spelling (e.g., "flavor", "color").'
     }
     
-    context = "recipe description" if content_type == "description" else "step-by-step instruction"
-    
-    prompt = f"""Translate this slushie {context} from Danish to {lang_names[target_lang]}.
+    if content_type == "ingredient":
+        context = "ingredient name"
+        prompt = f"""Translate this ingredient name from Danish to {lang_names[target_lang]}.
+
+Recipe: {recipe_name}
+
+RULES:
+1. Translate only the ingredient name naturally
+2. DO NOT translate: Brand names, ml, g, %
+3. Keep it short and simple
+4. {lang_instructions[target_lang]}
+
+Danish ingredient:
+{content}
+
+Return ONLY the translated ingredient name."""
+    else:
+        context = "recipe description" if content_type == "description" else "step-by-step instruction"
+        prompt = f"""Translate this slushie {context} from Danish to {lang_names[target_lang]}.
 
 Recipe: {recipe_name}
 
