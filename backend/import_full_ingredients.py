@@ -150,6 +150,41 @@ async def import_ingredients():
             "brix_source": "Monin Blue Curaçao Syrup Product Specification (2019)"
         },
         {
+            "name": "Appelsin Sirup",
+            "brand": "Monin",
+            "brix": 58.2,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.276,
+            "ph": 2.9,
+            "carbs_g_per_100ml": 77.8,
+            "sugars_g_per_100ml": 77.5,
+            "energy_kcal_per_100ml": 311,
+            "juice_content_percent": 24,
+            "orange_juice_percent": 24,
+            "flavour_profile": "Sweet orange peel, citrus zest, mild bitterness",
+            "color": "bright orange",
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 6.9,
+            "keywords": {
+                "da": ["appelsin sirup", "appelsinsirup", "monin appelsin", "monin orange"],
+                "de": ["orangensirup", "monin orange sirup", "orange sirup"],
+                "fr": ["sirop orange", "sirop d'orange", "monin orange"],
+                "en_uk": ["orange syrup", "citrus orange syrup", "monin orange syrup"],
+                "en_us": ["orange syrup", "orange flavored syrup", "monin orange syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Orange Syrup Product Specification (2020)"
+        },
+        {
             "name": "Chokolade Sirup",
             "brix": None,
             "volume_ml": None,
