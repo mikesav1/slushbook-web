@@ -14,6 +14,7 @@ import { addRecipePageSteps, isTourCompleted, markTourCompleted, TOUR_KEYS } fro
 import { useTranslation } from 'react-i18next';
 import { normalizeIngredient, getSupportedUnits } from '../utils/unitConverter';
 import AIChatPopup from '../components/AIChatPopup';
+import AITooltip from '../components/AITooltip';
 
 const AddRecipePage = ({ sessionId }) => {
   const { user, updateCompletedTours } = useAuth();
