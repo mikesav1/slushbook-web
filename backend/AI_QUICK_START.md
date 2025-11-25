@@ -175,6 +175,25 @@ db.ingredients.insertOne({
 
 ## 🔧 Opdater System Prompts
 
+### 📝 System Prompts (Med Flersprogsunderstøttelse)
+
+**`/app/backend/prompts/brix_prompt.txt`:**
+- ✅ Understøtter 5 sprog: Dansk, Engelsk (UK/US), Tysk, Fransk
+- ✅ Svarer automatisk på samme sprog som spørgsmålet
+- ✅ Matcher ingredienser via keywords på tværs af sprog (f.eks. "strawberry" → "Jordbær sirup")
+- ✅ Må kun bruge ingrediensdata fra databasen - aldrig gætte
+- ✅ Sukker = sukkerlage, Alkohol altid til sidst
+- ✅ Beregner: Samlet Brix, alkohol%, mængdeforhold, frysestabilitet (12-14°Bx range)
+
+**`/app/backend/prompts/help_prompt.txt`:**
+- ✅ Understøtter 5 sprog med automatisk sprogdetektion
+- ✅ Korte, praktiske svar på brugerens sprog
+- ✅ Henviser til Brix-assistent ved beregningsspørgsmål
+- ✅ Kun verificeret viden, følger SlushBook-regler
+- ✅ Hjælpsom, rolig og teknisk klar tone
+
+Du kan redigere disse filer direkte og genstarte backend for at opdatere AI'ens opførsel.
+
 ### Brix Assistant Prompt:
 ```bash
 nano /app/backend/prompts/brix_prompt.txt
