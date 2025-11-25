@@ -25,81 +25,184 @@ async def add_sample_ingredients():
     
     print(f"Connected to database: {db_name}")
     
-    # Sample ingredients - EDIT THIS LIST TO ADD YOUR OWN
-    # Structure matches exact specification:
-    # {name, brix, volume_ml, category, keywords, country, alcohol_vol}
+    # Sample ingredients - COMPLETE STRUCTURE WITH 5-LANGUAGE KEYWORDS
+    # Structure: {name, brix, volume_ml, category, keywords{da,de,fr,en_uk,en_us}, country, alcohol_vol, links}
     sample_ingredients = [
         {
             "name": "Marie Brizard Rørsukkersirup",
             "brix": 63,
             "volume_ml": 1000,
             "category": "sirup",
-            "keywords": ["sukkerlage", "rørsukker", "marie brizard", "canesugar", "pure sugar syrup"],
+            "keywords": {
+                "da": ["sukkerlage", "rørsukker", "marie brizard", "canesugar", "pure sugar syrup"],
+                "de": ["zuckersirup", "rohrzucker"],
+                "fr": ["sirop de sucre", "marie brizard"],
+                "en_uk": ["sugar syrup", "pure cane sugar syrup"],
+                "en_us": ["simple syrup", "pure cane sugar syrup"]
+            },
             "country": ["DK", "FR"],
-            "alcohol_vol": None
+            "alcohol_vol": None,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            }
         },
         {
-            "name": "Jordbær sirup",
-            "brix": 65,
+            "name": "Monin Blue Curaçao Sirup",
+            "brix": None,
             "volume_ml": 700,
             "category": "sirup",
-            "keywords": ["jordbær", "bær", "strawberry", "frugt"],
+            "keywords": {
+                "da": ["blå curaçao", "blue curacao", "curaçao sirup"],
+                "de": ["blau curaçao sirup"],
+                "fr": ["sirop curaçao bleu"],
+                "en_uk": ["blue curacao syrup"],
+                "en_us": ["blue curacao syrup"]
+            },
             "country": ["DK"],
-            "alcohol_vol": None
+            "alcohol_vol": None,
+            "links": {
+                "DK": "https://barshopen.dk/da/barudstyr/mixers-og-sirup/monin-blue-curacao-70-cl/",
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            }
+        },
+        {
+            "name": "Chokolade Sirup",
+            "brix": None,
+            "volume_ml": None,
+            "category": "sirup",
+            "keywords": {
+                "da": ["chokolade sirup"],
+                "de": ["schokoladensirup"],
+                "fr": ["sirop chocolat"],
+                "en_uk": ["chocolate syrup"],
+                "en_us": ["chocolate syrup"]
+            },
+            "country": ["DK"],
+            "alcohol_vol": None,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            }
+        },
+        {
+            "name": "Mynte Sirup",
+            "brix": None,
+            "volume_ml": None,
+            "category": "sirup",
+            "keywords": {
+                "da": ["mynte sirup"],
+                "de": ["minzsirup"],
+                "fr": ["sirop menthe"],
+                "en_uk": ["mint syrup"],
+                "en_us": ["mint syrup"]
+            },
+            "country": ["DK"],
+            "alcohol_vol": None,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            }
+        },
+        {
+            "name": "Mountain Dew",
+            "brix": None,
+            "volume_ml": 330,
+            "category": "sodavand",
+            "keywords": {
+                "da": ["mountain dew"],
+                "de": ["mountain dew"],
+                "fr": ["mountain dew"],
+                "en_uk": ["mountain dew"],
+                "en_us": ["mountain dew"]
+            },
+            "country": ["DK", "US"],
+            "alcohol_vol": None,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            }
         },
         {
             "name": "Vand",
             "brix": 0,
             "volume_ml": None,
             "category": "base",
-            "keywords": ["vand", "water", "base", "neutral"],
+            "keywords": {
+                "da": ["vand"],
+                "de": ["wasser"],
+                "fr": ["eau"],
+                "en_uk": ["water"],
+                "en_us": ["water"]
+            },
             "country": ["DK"],
-            "alcohol_vol": None
-        },
-        {
-            "name": "Citron juice",
-            "brix": 2,
-            "volume_ml": 500,
-            "category": "juice",
-            "keywords": ["citron", "lemon", "syre", "juice", "citrus"],
-            "country": ["DK"],
-            "alcohol_vol": None
-        },
-        {
-            "name": "Hindbær sirup",
-            "brix": 64,
-            "volume_ml": 700,
-            "category": "sirup",
-            "keywords": ["hindbær", "raspberry", "bær", "frugt"],
-            "country": ["DK"],
-            "alcohol_vol": None
+            "alcohol_vol": None,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            }
         },
         {
             "name": "Vodka",
             "brix": 0,
             "volume_ml": 700,
             "category": "spiritus",
-            "keywords": ["vodka", "alkohol", "spiritus", "neutral"],
+            "keywords": {
+                "da": ["vodka", "spiritus"],
+                "de": ["wodka", "spiritus"],
+                "fr": ["vodka", "spiritueux"],
+                "en_uk": ["vodka", "spirits"],
+                "en_us": ["vodka", "spirits"]
+            },
             "country": ["DK", "RU"],
-            "alcohol_vol": 40
+            "alcohol_vol": 40,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            }
         },
         {
             "name": "Baileys",
             "brix": 25,
             "volume_ml": 700,
             "category": "likør",
-            "keywords": ["baileys", "likør", "cream", "irish", "kaffe"],
+            "keywords": {
+                "da": ["baileys", "likør", "cream"],
+                "de": ["baileys", "likör", "sahne"],
+                "fr": ["baileys", "liqueur", "crème"],
+                "en_uk": ["baileys", "liqueur", "cream"],
+                "en_us": ["baileys", "liqueur", "cream"]
+            },
             "country": ["IE"],
-            "alcohol_vol": 17
-        },
-        {
-            "name": "Mælk",
-            "brix": 5,
-            "volume_ml": 1000,
-            "category": "base",
-            "keywords": ["mælk", "milk", "dairy", "cremet"],
-            "country": ["DK"],
-            "alcohol_vol": None
+            "alcohol_vol": 17,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            }
         }
     ]
     
