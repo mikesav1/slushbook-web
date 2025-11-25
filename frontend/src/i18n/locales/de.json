@@ -661,6 +661,7 @@
     "deleteCommentError": "Kommentar konnte nicht gelöscht werden",
     "deleteError": "Rezept konnte nicht gelöscht werden",
     "deleteRecipe": "Rezept löschen",
+    "aiTipsTooltip": "💡 Neue Funktion! Erhalten Sie Expertenrat zu Geschmack, Konsistenz, Zutatenaustausch und Maschinentipps vom KI-Assistenten.",
     "edit": "Bearbeiten",
     "edited": "bearbeitet",
     "next": "Nächste",
