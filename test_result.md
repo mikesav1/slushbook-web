@@ -525,7 +525,7 @@ metadata:
 
 test_plan:
   current_focus: 
-    - "New Comment Functionality Testing - COMPLETED"
+    - "SlushBook AI Features Testing - COMPLETED"
   stuck_tasks: 
     - "New Ingredient Filter Feature Testing - Production deployment issue"
   test_all: false
