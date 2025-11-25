@@ -7096,13 +7096,14 @@ async def ai_general_help(request: AIQueryRequest):
     """
     General AI assistant for tips, tricks, and troubleshooting.
     No database queries - pure conversational help.
+    Uses o1-mini model for fast and efficient responses.
     """
     try:
         # Load system prompt
-        system_prompt = load_system_prompt('general_help.txt')
+        system_prompt = load_system_prompt('help_prompt.txt')
         
-        # Query OpenAI (no additional context needed)
-        response = await query_openai(system_prompt, request.query)
+        # Query OpenAI with o1-mini (fast and cost-effective)
+        response = await query_openai(system_prompt, request.query, model="o1-mini")
         
         return {
             "success": True,
