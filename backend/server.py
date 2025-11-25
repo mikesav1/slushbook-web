@@ -7078,8 +7078,8 @@ async def ai_brix_assistant(request: AIQueryRequest):
         else:
             context = "Ingen ingrediensdata tilgængelig endnu."
         
-        # Query OpenAI with gpt-5.1 for precise calculations
-        response = await query_openai(system_prompt, request.query, context, model="gpt-5.1")
+        # Query OpenAI with gpt-4o for precise calculations  
+        response = await query_openai(system_prompt, request.query, context, model="gpt-4o")
         
         return {
             "success": True,
