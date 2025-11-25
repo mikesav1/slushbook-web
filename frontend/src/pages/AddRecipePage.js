@@ -894,7 +894,7 @@ const AddRecipePage = ({ sessionId }) => {
       <AIChatPopup
         isOpen={showAICreatePopup}
         onClose={() => setShowAICreatePopup(false)}
-        endpoint="/api/ai/create-recipe"
+        endpoint="/ai/create-recipe"
         title="Lav opskrift med AI"
         placeholder="Beskriv din ønskede slush... f.eks. 'En sød jordbær slush med lidt citrus'"
         onInsert={handleAICreateRecipe}
@@ -905,7 +905,7 @@ const AddRecipePage = ({ sessionId }) => {
       <AIChatPopup
         isOpen={showBrixAIPopup}
         onClose={() => setShowBrixAIPopup(false)}
-        endpoint="/api/ai/brix"
+        endpoint="/ai/brix"
         title="Beregn Brix med AI"
         placeholder="Beskriv dine ingredienser og mængder..."
         onInsert={handleBrixAIInsert}
