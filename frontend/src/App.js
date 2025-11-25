@@ -38,6 +38,7 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import ProfilePage from "./pages/ProfilePage";
 import MembersPage from "./pages/MembersPage";
 import BrixInfoPage from "./pages/BrixInfoPage";
+import SlushBookAI from './pages/SlushBookAI';
 import AdminLinksPage from "./pages/AdminLinksPage";
 import AdminAdsPage from "./pages/AdminAdsPage";
 import AdminTranslationsPage from "./pages/AdminTranslationsPage";
