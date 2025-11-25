@@ -396,6 +396,76 @@ async def import_ingredients():
             "brix_source": "Monin Passion Fruit Syrup Product Specification (2020)"
         },
         {
+            "name": "Ananas Sirup",
+            "brand": "Monin",
+            "brix": 54.8,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.265,
+            "ph": 3.3,
+            "carbs_g_per_100ml": 74.9,
+            "sugars_g_per_100ml": 74.5,
+            "energy_kcal_per_100ml": 292,
+            "juice_content_percent": 20,
+            "pineapple_juice_percent": 20,
+            "flavour_profile": "Fresh pineapple, sweet, tropical acidity",
+            "color": "yellow / light golden",
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 6.8,
+            "keywords": {
+                "da": ["ananas sirup", "ananassirup", "monin ananas", "pineapple syrup"],
+                "de": ["ananas sirup", "ananassirup", "monin ananas"],
+                "fr": ["sirop ananas", "sirop d'ananas", "monin ananas"],
+                "en_uk": ["pineapple syrup", "monin pineapple syrup"],
+                "en_us": ["pineapple syrup", "pineapple flavored syrup", "monin pineapple syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Pineapple Syrup Product Specification (2020)"
+        },
+        {
+            "name": "Kiwi Sirup",
+            "brand": "Monin",
+            "brix": 54.0,
+            "volume_ml": None,
+            "category": "sirup",
+            "density_g_per_ml": 1.263,
+            "ph": 3.2,
+            "carbs_g_per_100ml": 74.1,
+            "sugars_g_per_100ml": 73.7,
+            "energy_kcal_per_100ml": 289,
+            "juice_content_percent": 15,
+            "kiwi_juice_percent": 15,
+            "flavour_profile": "Fresh green kiwi, sweet-tart, fruity and vibrant",
+            "color": "bright green",
+            "acidity_type": "citric acid",
+            "acid_g_per_l": 6.5,
+            "keywords": {
+                "da": ["kiwi sirup", "kiwisirup", "monin kiwi", "kiwi syrup"],
+                "de": ["kiwi sirup", "kiwisirup", "monin kiwi"],
+                "fr": ["sirop kiwi", "sirop de kiwi", "monin kiwi"],
+                "en_uk": ["kiwi syrup", "green kiwi syrup", "monin kiwi syrup"],
+                "en_us": ["kiwi syrup", "kiwi flavored syrup", "monin kiwi syrup"]
+            },
+            "country": ["FR", "DK"],
+            "alcohol_vol": 0,
+            "links": {
+                "DK": None,
+                "DE": None,
+                "FR": None,
+                "EN_UK": None,
+                "EN_US": None
+            },
+            "brix_source": "Monin Kiwi Syrup Product Specification (2020)"
+        },
+        {
             "name": "Mynte Sirup",
             "brand": "Monin",
             "brix": 55.8,
