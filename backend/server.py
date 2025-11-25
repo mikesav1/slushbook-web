@@ -7128,6 +7128,81 @@ async def ai_general_help(request: AIQueryRequest):
         logger.error(f"AI general help error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"AI request failed: {str(e)}")
 
+@api_router.post("/brix/calculate")
+async def calculate_brix_endpoint(request: BrixCalculationRequest):
+    """
+    Direct Brix calculation without AI.
+    Fast and precise mathematical calculation.
+    
+    Formula: Samlet Brix = (∑(brix_i × ml_i)) / (∑ ml_i)
+    
+    Example request:
+    {
+        "ingredients": [
+            {"name": "Hindbær sirup", "volume_ml": 200, "brix": 59},
+            {"name": "Vand", "volume_ml": 800, "brix": 0}
+        ]
+    }
+    """
+    try:
+        # Convert dict to Ingredient objects
+        ingredients = [Ingredient(**ing) for ing in request.ingredients]
+        
+        # Calculate Brix
+        result = calculate_brix(ingredients)
+        
+        return {
+            "success": True,
+            "total_brix": result.total_brix,
+            "total_volume_ml": result.total_volume_ml,
+            "alcohol_percentage": result.alcohol_percentage,
+            "is_stable_for_slush": result.is_stable_for_slush,
+            "recommendation": result.recommendation
+        }
+        
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Brix calculation error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Calculation failed: {str(e)}")
+
+@api_router.post("/brix/adjust")
+async def adjust_brix_endpoint(request: BrixAdjustmentRequest):
+    """
+    Calculate how much water or syrup to add to reach target Brix.
+    
+    Example request:
+    {
+        "ingredients": [
+            {"name": "Sirup", "volume_ml": 300, "brix": 65},
+            {"name": "Vand", "volume_ml": 700, "brix": 0}
+        ],
+        "target_brix": 13.0,
+        "adjustment_type": "water"
+    }
+    """
+    try:
+        # Convert dict to Ingredient objects
+        ingredients = [Ingredient(**ing) for ing in request.ingredients]
+        
+        # Calculate adjustment
+        adjustment = calculate_adjustment_to_target_brix(
+            ingredients,
+            target_brix=request.target_brix,
+            adjustment_ingredient=request.adjustment_type
+        )
+        
+        return {
+            "success": True,
+            **adjustment
+        }
+        
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Brix adjustment error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Adjustment failed: {str(e)}")
+
 
 # =============================================================================
 # TRANSLATION EDITOR ENDPOINTS (Admin Only)
