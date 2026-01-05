@@ -98,14 +98,7 @@ UPLOADS_DIR.mkdir(exist_ok=True)
 
 # Create the main app
 app = FastAPI()
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["https://slushbook.itopgaver.dk"],
-    allow_origin_regex=r"^https:\/\/.*\.vercel\.app$",
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+
 # Startup event to clean up old sessions
 @app.on_event("startup")
 async def cleanup_old_sessions():

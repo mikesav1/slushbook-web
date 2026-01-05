@@ -4,11 +4,7 @@ import axios from "axios";
 import './i18n/config'; // Initialize i18n
 import { useTranslation } from 'react-i18next';
 import { toast, Toaster } from "sonner";
-import {
-  FaHome, FaBook, FaBoxOpen, FaShoppingCart, FaHeart, FaSearch, FaCog, FaMagic,
-  FaPlus, FaSignOutAlt, FaSeedling, FaLink, FaAd, FaLightbulb, FaImage,
-  FaCheckCircle, FaTrash, FaGlobe, FaRobot
-} from "react-icons/fa";
+import { FaHome, FaBook, FaBoxOpen, FaShoppingCart, FaHeart, FaSearch, FaCog, FaMagic, FaPlus, FaSignOutAlt, FaSeedling, FaLink, FaAd, FaLightbulb, FaImage, FaCheckCircle, FaTrash, FaGlobe, FaRobot } from "react-icons/fa";
 import "@/App.css";
 import { getSessionId } from "./utils/session";
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -55,7 +51,7 @@ import GuidePage from "./pages/GuidePage";
 
 // Backend URL configuration - uses environment variable
 // Deployment system will automatically set REACT_APP_BACKEND_URL
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || window.location.origin;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 export const API = `${BACKEND_URL}/api`;
 export const BACKEND = BACKEND_URL;
 
@@ -65,11 +61,11 @@ axios.defaults.withCredentials = true;
 console.log('[App] Hostname:', window.location.hostname);
 console.log('[App] Backend URL:', BACKEND_URL);
 
-// Navigation Component (TOP BAR + menus)
-// VIGTIGT: Her må vi IKKE bruge isAuthPage (den findes i AppContent)
+// Navigation Component
 const Navigation = () => {
   const location = useLocation();
-  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const { user, logout, isGuest } = useAuth();
   const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
   const { t } = useTranslation();
   const desktopMenuRef = React.useRef(null);
@@ -81,7 +77,7 @@ const Navigation = () => {
       if (isUserMenuOpen) {
         const clickedInsideDesktop = desktopMenuRef.current && desktopMenuRef.current.contains(e.target);
         const clickedInsideMobile = mobileMenuRef.current && mobileMenuRef.current.contains(e.target);
-
+        
         if (!clickedInsideDesktop && !clickedInsideMobile) {
           setIsUserMenuOpen(false);
         }
@@ -98,20 +94,21 @@ const Navigation = () => {
     { path: "/match", icon: FaMagic, label: t('nav.match') },
     ...(user && user.role !== 'guest' ? [{ path: "/shopping", icon: FaShoppingCart, label: t('nav.shoppingList') }] : []),
     ...(user && user.role !== 'guest' ? [{ path: "/favorites", icon: FaHeart, label: t('nav.favorites') }] : []),
+    { path: "/ai", icon: FaRobot, label: "SlushBook AI", badge: "BETA" },
     { path: "/settings", icon: FaCog, label: t('nav.settings') },
   ];
 
   return (
-    <nav className="border-b border-gray-200 sticky top-0 z-40 shadow-sm relative" style={{ backgroundColor: '#115DA8' }}>
+    <nav className="border-b border-gray-200 sticky top-0 z-40 shadow-sm relative" style={{backgroundColor: '#115DA8'}}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* SLUSHBOOK Text - Visible on mobile, hidden on desktop */}
           <Link to="/" className="flex-shrink-0 lg:hidden">
-            <span className="text-2xl font-bold text-white" style={{ fontFamily: 'Fredoka' }}>
+            <span className="text-2xl font-bold text-white" style={{fontFamily: 'Fredoka'}}>
               SLUSHBOOK
             </span>
           </Link>
-
+          
           {/* Desktop Navigation - Right side only */}
           <div className="hidden lg:flex items-center gap-4 ml-auto">
             {navItems.map((item) => {
@@ -122,10 +119,9 @@ const Navigation = () => {
                   key={item.path}
                   to={item.path}
                   data-testid={`nav-${item.label.toLowerCase()}`}
-                  className={`nav-link flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${isActive
-                    ? "bg-white/20 text-white"
-                    : "text-white/80 hover:bg-white/10 hover:text-white"
-                    }`}
+                  className={`nav-link flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
+                    isActive ? "bg-white/20 text-white" : "text-white/80 hover:bg-white/10 hover:text-white"
+                  }`}
                 >
                   <Icon />
                   <span className="text-sm font-medium">{item.label}</span>
@@ -137,12 +133,13 @@ const Navigation = () => {
                 </Link>
               );
             })}
-
+            
             {/* Notifications & User Info / Login */}
             {user ? (
               <div ref={desktopMenuRef} className="relative pl-6 border-l border-white/20 flex items-center gap-4">
+                {/* Notification Bell */}
                 <NotificationBell />
-
+                
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                   className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/10 transition-colors"
@@ -159,18 +156,19 @@ const Navigation = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-
+                
+                {/* Dropdown Menu */}
                 {isUserMenuOpen && (
                   <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
                     <div className="px-4 py-3 border-b border-gray-100">
                       <div className="text-sm font-medium text-gray-800">{user.name}</div>
                       <div className="text-xs text-gray-500">{user.email}</div>
                     </div>
-
+                    
+                    {/* Bruger Platformen Section */}
                     <div className="px-4 py-2 text-xs font-semibold text-gray-500 tracking-wider">
                       Bruger platformen
                     </div>
-
                     <Link
                       to="/profile"
                       onClick={() => setIsUserMenuOpen(false)}
@@ -181,7 +179,7 @@ const Navigation = () => {
                       </svg>
                       Min profil
                     </Link>
-
+                    
                     <Link
                       to="/tips"
                       onClick={() => setIsUserMenuOpen(false)}
@@ -190,72 +188,106 @@ const Navigation = () => {
                       <FaLightbulb className="w-4 h-4 text-yellow-500" />
                       Tips & Tricks
                     </Link>
-
+                    
+                    {/* Admin Section */}
                     {user.role === 'admin' && (
                       <>
                         <div className="px-4 py-2 mt-2 text-xs font-semibold text-gray-500 tracking-wider border-t border-gray-100">
                           Admin
                         </div>
-
-                        <Link to="/members" onClick={() => setIsUserMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                        <Link
+                          to="/members"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                        >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                           </svg>
                           Medlemmer
                         </Link>
-
-                        <Link to="/admin/sandbox" onClick={() => setIsUserMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                        <Link
+                          to="/admin/sandbox"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                        >
                           <FaSearch className="w-4 h-4" />
                           Sandkasse
                         </Link>
-
-                        <Link to="/admin/ingredients" onClick={() => setIsUserMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                        <Link
+                          to="/admin/ingredients"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                        >
                           <FaSeedling className="w-4 h-4" />
                           Ingredienser
                         </Link>
-
-                        <Link to="/admin/match-images" onClick={() => setIsUserMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                        <Link
+                          to="/admin/match-images"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                        >
                           <FaImage className="w-4 h-4" />
                           Match Billeder
                         </Link>
-
-                        <Link to="/admin/seed-ingredients" onClick={() => setIsUserMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                        <Link
+                          to="/admin/seed-ingredients"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                        >
                           <FaSeedling className="w-4 h-4" />
                           Seed Ingredienser
                         </Link>
-
-                        <Link to="/admin/fix-approvals" onClick={() => setIsUserMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                        <Link
+                          to="/admin/fix-approvals"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                        >
                           <FaCheckCircle className="w-4 h-4" />
                           Godkend Alle
                         </Link>
-
-                        <Link to="/admin/delete-recipes" onClick={() => setIsUserMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                        <Link
+                          to="/admin/delete-recipes"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                        >
                           <FaTrash className="w-4 h-4" />
                           Slet Alle Opskrifter
                         </Link>
-
-                        <Link to="/admin/links" onClick={() => setIsUserMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                        <Link
+                          to="/admin/links"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                        >
                           <FaLink className="w-4 h-4" />
                           Leverandør Links
                         </Link>
-
-                        <Link to="/admin/ads" onClick={() => setIsUserMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                        <Link
+                          to="/admin/ads"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                        >
                           <FaAd className="w-4 h-4" />
                           Reklamer
                         </Link>
-
-                        <Link to="/admin/recipe-translations" onClick={() => setIsUserMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                        <Link
+                          to="/admin/recipe-translations"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                        >
                           <FaBook className="w-4 h-4" />
                           Opskrift Oversættelser
                         </Link>
-
-                        <Link to="/admin" onClick={() => setIsUserMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                        <Link
+                          to="/admin"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                        >
                           <FaCog className="w-4 h-4" />
                           Admin panel
                         </Link>
                       </>
                     )}
-
+                    
                     <Link
                       to="/settings"
                       onClick={() => setIsUserMenuOpen(false)}
@@ -264,7 +296,6 @@ const Navigation = () => {
                       <FaCog className="w-4 h-4" />
                       {t('nav.settings')}
                     </Link>
-
                     <button
                       onClick={async () => {
                         setIsUserMenuOpen(false);
@@ -280,7 +311,10 @@ const Navigation = () => {
                 )}
               </div>
             ) : (
-              <Link to="/login" className="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-white/90 font-medium">
+              <Link
+                to="/login"
+                className="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-white/90 font-medium"
+              >
                 Log ind
               </Link>
             )}
@@ -306,18 +340,23 @@ const Navigation = () => {
             >
               <FaCog size={24} className="text-white" />
             </button>
-
+            
+            {/* Dropdown menu */}
             {isUserMenuOpen && (
-              <div
+              <div 
                 className="fixed right-4 top-20 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50"
                 style={{ display: 'block', visibility: 'visible' }}
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  // Stop clicks inside menu from closing it
+                  e.stopPropagation();
+                }}
               >
                 <Link
                   to="/profile"
                   onClick={(e) => {
                     e.stopPropagation();
                     console.log('[App] Profile clicked');
+                    // Don't close menu immediately - let navigation happen first
                     setIsUserMenuOpen(false);
                   }}
                   className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer active:bg-gray-100"
@@ -328,7 +367,7 @@ const Navigation = () => {
                   </svg>
                   Min profil
                 </Link>
-
+                
                 <Link
                   to="/tips"
                   onClick={(e) => {
@@ -342,7 +381,7 @@ const Navigation = () => {
                   <FaLightbulb className="w-4 h-4 text-yellow-500" />
                   Tips & Tricks
                 </Link>
-
+                
                 <Link
                   to="/favorites"
                   onClick={(e) => {
@@ -356,7 +395,7 @@ const Navigation = () => {
                   <FaHeart className="w-4 h-4" />
                   Favoritter
                 </Link>
-
+                
                 <Link
                   to="/settings"
                   onClick={(e) => {
@@ -370,7 +409,7 @@ const Navigation = () => {
                   <FaCog className="w-4 h-4" />
                   {t('nav.settings')}
                 </Link>
-
+                
                 <button
                   onClick={async (e) => {
                     e.preventDefault();
@@ -380,7 +419,7 @@ const Navigation = () => {
                     try {
                       await logout();
                       console.log('[App] Logout complete, navigating to login');
-                      window.location.href = '/login';
+                      navigate('/login');
                     } catch (error) {
                       console.error('[App] Logout error:', error);
                     }
@@ -396,10 +435,18 @@ const Navigation = () => {
           </div>
         ) : (
           <div className="flex items-center gap-2">
-            <Link to="/login" className="px-3 py-2 bg-white text-blue-600 rounded-lg hover:bg-white/90 font-medium text-sm" data-testid="mobile-login-button">
+            <Link
+              to="/login"
+              className="px-3 py-2 bg-white text-blue-600 rounded-lg hover:bg-white/90 font-medium text-sm"
+              data-testid="mobile-login-button"
+            >
               Log ind
             </Link>
-            <Link to="/signup" className="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 font-medium text-sm" data-testid="mobile-signup-button">
+            <Link
+              to="/signup"
+              className="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 font-medium text-sm"
+              data-testid="mobile-signup-button"
+            >
               Tilmeld
             </Link>
           </div>
@@ -432,18 +479,37 @@ const App = () => {
       </AuthProvider>
     </BrowserRouter>
   );
-};
+}
 
 // Separate component to use AuthContext
 const AppContent = ({ sessionId }) => {
   const { user, loading, login } = useAuth();
   const location = useLocation();
-  const navigate = useNavigate();
-
+  
   // Use user.id as sessionId for logged-in users, otherwise use guest sessionId
+  // More robust check: user must be object with id property
   const effectiveSessionId = (user && typeof user === 'object' && user.id) ? user.id : sessionId;
+  
+  // Debug logging
+  React.useEffect(() => {
+    console.log('[App] User object:', user);
+    console.log('[App] User type:', typeof user);
+    console.log('[App] User.id:', user?.id);
+    console.log('[App] User:', user ? `${user.email} (id: ${user.id})` : 'Guest');
+    console.log('[App] Guest sessionId:', sessionId);
+    console.log('[App] Effective sessionId:', effectiveSessionId);
+  }, [user, sessionId, effectiveSessionId]);
 
   const { t } = useTranslation();
+  
+  const navItems = [
+    { path: "/", icon: FaHome, label: t('nav.home') },
+    { path: "/recipes", icon: FaBook, label: t('nav.recipes') },
+    { path: "/match", icon: FaMagic, label: t('nav.match') },
+    ...(user && user.role !== 'guest' ? [{ path: "/shopping", icon: FaShoppingCart, label: t('nav.shoppingList') }] : []),
+    ...(user && user.role !== 'guest' ? [{ path: "/favorites", icon: FaHeart, label: t('nav.favorites') }] : []),
+    { path: "/settings", icon: FaCog, label: t('nav.settings') },
+  ];
 
   // Don't show nav on auth pages
   const isAuthPage = ['/login', '/signup', '/forgot-password', '/reset-password'].includes(location.pathname);
@@ -512,18 +578,6 @@ const AppContent = ({ sessionId }) => {
         </main>
       </div>
 
-      {/* Floating AI button (HOST-STYLE) */}
-      {!isAuthPage && user && user.role !== 'guest' && (
-        <button
-          onClick={() => navigate('/ai')}
-          className="fixed bottom-6 right-6 z-50 rounded-2xl shadow-xl bg-black/80 p-2 hover:bg-black"
-          aria-label="Open SlushBook AI"
-          type="button"
-        >
-          <img src="/icons/ai/64.png" alt="AI" className="h-14 w-14" />
-        </button>
-      )}
-
       {/* Global Ad Slot for guests - shows on all pages except auth pages */}
       {!isAuthPage && <AdSlot placement="bottom_banner" />}
 
@@ -531,27 +585,57 @@ const AppContent = ({ sessionId }) => {
       {!isAuthPage && (
         <div className="lg:hidden border-t border-gray-200 bg-white fixed bottom-0 left-0 right-0 z-40 shadow-lg">
           <div className="grid grid-cols-5 gap-1 p-2">
-            <Link to="/" className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${location.pathname === '/' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"}`}>
+            {/* Home */}
+            <Link
+              to="/"
+              className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
+                location.pathname === '/' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
+              }`}
+            >
               <FaHome size={18} />
               <span className="text-xs font-medium">{t('nav.home')}</span>
             </Link>
-
-            <Link to="/recipes" className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${location.pathname === '/recipes' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"}`}>
+            
+            {/* Recipes */}
+            <Link
+              to="/recipes"
+              className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
+                location.pathname === '/recipes' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
+              }`}
+            >
               <FaBook size={18} />
               <span className="text-xs font-medium">{t('nav.recipes')}</span>
             </Link>
-
-            <Link to="/match" className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${location.pathname === '/match' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"}`}>
+            
+            {/* Match */}
+            <Link
+              to="/match"
+              className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
+                location.pathname === '/match' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
+              }`}
+            >
               <FaMagic size={18} />
               <span className="text-xs font-medium">Match</span>
             </Link>
-
-            <Link to="/shopping" className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${location.pathname === '/shopping' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"}`}>
+            
+            {/* Liste (Shopping) */}
+            <Link
+              to="/shopping"
+              className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
+                location.pathname === '/shopping' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
+              }`}
+            >
               <FaShoppingCart size={18} />
               <span className="text-xs font-medium">Liste</span>
             </Link>
-
-            <Link to="/profile" className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${location.pathname === '/profile' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"}`}>
+            
+            {/* Settings/Profile */}
+            <Link
+              to="/profile"
+              className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
+                location.pathname === '/profile' ? "bg-cyan-50 text-cyan-600" : "text-gray-600"
+              }`}
+            >
               <FaCog size={18} />
               <span className="text-xs font-medium">Profil</span>
             </Link>
@@ -562,6 +646,6 @@ const AppContent = ({ sessionId }) => {
       <Toaster position="top-center" richColors />
     </div>
   );
-};
+}
 
 export default App;
