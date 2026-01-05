@@ -61,8 +61,7 @@
     "ajv-formats": "2.1.1"
   },
   "overrides": {
-     "schema-utils@*": "4.2.0",
-      "fork-ts-checker-webpack-plugin@*": "7.2.13"
+     "schema-utils@*": "2.7.1"
   },
   "scripts": {
     "start": "craco start",
