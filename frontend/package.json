@@ -61,7 +61,7 @@
     "ajv-formats": "2.1.1"
   },
   "overrides": {
-     "schema-utils@*": "2.7.1"
+     "schema-utils@*": "3.3.0"
   },
   "scripts": {
     "start": "craco start",
