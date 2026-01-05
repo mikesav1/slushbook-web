@@ -94,7 +94,6 @@ const Navigation = () => {
     { path: "/match", icon: FaMagic, label: t('nav.match') },
     ...(user && user.role !== 'guest' ? [{ path: "/shopping", icon: FaShoppingCart, label: t('nav.shoppingList') }] : []),
     ...(user && user.role !== 'guest' ? [{ path: "/favorites", icon: FaHeart, label: t('nav.favorites') }] : []),
-    { path: "/ai", icon: FaRobot, label: "SlushBook AI", badge: "BETA" },
     { path: "/settings", icon: FaCog, label: t('nav.settings') },
   ];
 
@@ -321,7 +320,17 @@ const Navigation = () => {
           </div>
         </div>
       </div>
-
+{/* Floating AI button (matches host-style) */}
+{!isAuthPage && user && user.role !== 'guest' && (
+  <button
+    onClick={() => navigate('/ai')}
+    className="fixed bottom-6 right-6 z-50 rounded-2xl shadow-xl bg-black/80 p-2 hover:bg-black"
+    aria-label="Open SlushBook AI"
+    type="button"
+  >
+    <img src="/icons/ai/64.png" alt="AI" className="h-14 w-14" />
+  </button>
+)}
       {/* Mobile menu button */}
       <div ref={mobileMenuRef} className="absolute right-4 top-4 lg:hidden">
         {user ? (
