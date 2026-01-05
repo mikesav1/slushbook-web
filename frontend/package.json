@@ -60,9 +60,6 @@
     "ajv-keywords": "5.1.0",
     "ajv-formats": "2.1.1"
   },
-  "overrides": {
-     "schema-utils@*": "3.3.0"
-  },
   "scripts": {
     "start": "craco start",
     "build": "craco build",
