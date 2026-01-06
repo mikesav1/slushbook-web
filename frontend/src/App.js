@@ -51,8 +51,8 @@ import GuidePage from "./pages/GuidePage";
 
 // Backend URL configuration - uses environment variable
 // Deployment system will automatically set REACT_APP_BACKEND_URL
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
-export const API = `${BACKEND_URL}/api`;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+export const API = '/api';
 export const BACKEND = BACKEND_URL;
 
 // Configure axios to send cookies with all requests (required for SameSite=none)
